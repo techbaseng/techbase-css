@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 25: CSS Float and Clear — Techbase CSS Course</title>
+<meta name="description" content="Understand floats for text wrap effects and earn your Batch 1 completion badge!">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+ }
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+/* HERO */
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+/* MAIN CONTENT */
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+/* CONCEPT BOX */
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+/* CODE BLOCK */
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.code-body pre .cm{color:#64748b} /* comment */
+.code-body pre .tg{color:#38bdf8} /* tag */
+.code-body pre .at{color:#c084fc} /* attribute */
+.code-body pre .vl{color:#86efac} /* value */
+.code-body pre .tx{color:#e2e8f0} /* text */
+/* TASK BOX */
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+/* NEXT BUTTON */
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+/* PROJECT BOX */
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+/* CAPSTONE BOX */
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+/* FILE TABS */
+.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
+.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
+.file-tab.active{background:#0f172a;color:#e2e8f0}
+.file-content{display:none}.file-content.active{display:block}
+/* GITHUB ACCORDION */
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+/* LESSON NAV */
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+/* UTILS */
+code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
+.emoji{font-style:normal}
+@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
+
+</style>
+</head>
+<body>
+<nav class="lesson-nav-bar">
+  <a href="../index.html" class="nav-back">← CSS Course</a>
+  <span class="nav-lesson">Lesson 25 of 73 &nbsp;·&nbsp; CSS Float and Clear</span>
+  <div class="nav-actions"><a href="lesson_24.html" class="ln-btn">← Lesson 24</a><a href="lesson_26.html" class="ln-btn primary">Lesson 26 →</a></div>
+</nav>
+<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
+<section class="lesson-hero">
+  <div class="hero-inner">
+    <div class="lesson-num-badge">Lesson 25</div>
+    <h1>CSS Float and Clear</h1>
+    <p class="lesson-tagline">Understand floats for text wrap effects and earn your Batch 1 completion badge!</p>
+    <div class="lesson-meta">
+      <span>📚 2 phases</span>
+      <span>🏗️ Build: My Floated Magazine Layout</span>
+      <span>🏆 Capstone Included</span>
+    </div>
+  </div>
+</section>
+<main class="lesson-main">
+<div class="welcome-box">
+  <div class="welcome-label">👋 Welcome to Lesson 25!</div>
+  <h2>CSS Float and Clear</h2>
+  <p>Understand floats for text wrap effects and earn your Batch 1 completion badge!. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
+  This lesson ends with a <strong>Capstone Project</strong>! 🏆</p>
+</div>
+<div class="phase " id="phase1" data-phase="1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1</div><div class="phase-title">Float Basics</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p><code>float</code> removes an element from normal flow and pushes it left or right, letting text wrap around it. Values: <code>left</code>, <code>right</code>, <code>none</code>. Today floats are mainly used for <strong>wrapping text around images</strong> — for layout, use Flexbox or Grid. Always add margin between the float and the text wrapping around it.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Float image left — text wraps right */
+.float-left {
+  float: left;
+  margin: 0 16px 12px 0;
+  border-radius: 8px;
+}
+
+/* Float image right — text wraps left */
+.float-right {
+  float: right;
+  margin: 0 0 12px 16px;
+  border-radius: 8px;
+}
+
+/* Clear — stop content from wrapping next to float */
+.clear       { clear: both; }
+.clear-left  { clear: left; }
+.clear-right { clear: right; }</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Add an image to a paragraph and set <code>float: left</code>. Add <code>margin: 0 16px 12px 0</code>. Text should wrap to the right. Try <code>float: right</code> — text wraps left. Notice how floated images are used in newspaper-style layouts.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(1)">
+      Next Phase → <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div><div class="phase locked" id="phase2" data-phase="2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2</div><div class="phase-title">Clearfix and Containing Floats</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>A common problem: a parent div with only floated children collapses to zero height. The modern fix is <code>display: flow-root</code> on the parent — cleaner than the old clearfix hack. Another option: <code>overflow: hidden</code> on the parent. Always use one of these when floated children should be contained in their parent.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Problem: parent collapses */
+.broken { background: #dbeafe; /* invisible — height: 0 */ }
+.broken img { float: left; }
+
+/* Fix 1: display flow-root (best modern approach) */
+.fix-flow { display: flow-root; }
+
+/* Fix 2: overflow hidden */
+.fix-overflow { overflow: hidden; }
+
+/* Fix 3: clearfix pseudo-element (classic) */
+.clearfix::after {
+  content: ''; display: block; clear: both;
+}
+
+/* Best practice: only use float for text wrapping.
+   Use Flexbox/Grid for column layouts! */</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Create a parent div with floated images inside. Notice it collapses. Add <code>display: flow-root</code> to the parent — the height is restored! Then try the clearfix: add <code>.clearfix::after { content:''; display:block; clear:both; }</code>.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(2)">
+      Build It! 🚀 <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It!</div>
+  <div class="project-name">My Floated Magazine Layout</div>
+  <p class="project-desc">Build a magazine-style article with floated images, a pull quote, and flow-root containers.</p>
+  <div class="code-wrap">
+    <div class="code-bar">
+      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+      <span class="code-filename">starter.html — copy this into a new file!</span>
+    </div>
+    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Float Layout Demo&lt;/title&gt;
+    &lt;style&gt;
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: Georgia, serif; background: #f0f9ff; padding: 30px; max-width: 820px; margin: 0 auto; color: #0f172a; }
+      h1 { font-family: Arial; color: #0284c7; font-size: 2rem; border-bottom: 3px solid #0284c7; padding-bottom: 10px; margin-bottom: 6px; }
+      .meta { color: #94a3b8; font-size: 13px; font-family: Arial; margin-bottom: 24px; }
+      p  { line-height: 1.85; color: #334155; margin-bottom: 14px; }
+      h2 { font-family: Arial; color: #0369a1; margin: 24px 0 12px; }
+      .article-section { display: flow-root; margin-bottom: 24px; }
+      .img-left  { float: left;  width: 220px; height: 150px; object-fit: cover; border-radius: 10px; margin: 0 20px 12px 0; }
+      .img-right { float: right; width: 220px; height: 150px; object-fit: cover; border-radius: 10px; margin: 0 0 12px 20px; }
+      .pull-quote { float: right; width: 230px; margin: 0 0 12px 24px; border-left: 4px solid #0284c7; padding: 12px 16px; background: #e0f2fe; font-style: italic; font-size: 1rem; color: #0369a1; border-radius: 0 8px 8px 0; }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;The Art of Coding&lt;/h1&gt;
+    &lt;p class="meta"&gt;By [Your Name] · Techbase Academy · CSS Lesson 25&lt;/p&gt;
+    &lt;div class="article-section"&gt;
+      &lt;img class="img-left" src="https://via.placeholder.com/220x150/0284c7/fff?text=Float+Left" alt="Coding"&gt;
+      &lt;p&gt;Learning to code is one of the most rewarding skills a student can develop. At Techbase Academy in Ibadan, students start with HTML to build structure, then add CSS to make their pages beautiful. This image floats left — text wraps to the right.&lt;/p&gt;
+      &lt;p&gt;Notice how the paragraph continues flowing beside the image, just like a newspaper or magazine article. This is the original use case for CSS floats!&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="article-section"&gt;
+      &lt;div class="pull-quote"&gt;"CSS floats were designed for wrapping text around images — just like newspapers have done for centuries."&lt;/div&gt;
+      &lt;h2&gt;Why Floats Still Matter&lt;/h2&gt;
+      &lt;p&gt;Even in the era of Flexbox and Grid, floats remain the correct tool when you want text to flow around an element — like this pull quote on the right. Each section uses &lt;code&gt;display: flow-root&lt;/code&gt; to contain its floats properly.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="article-section"&gt;
+      &lt;img class="img-right" src="https://via.placeholder.com/220x150/ea4f21/fff?text=Float+Right" alt="Website"&gt;
+      &lt;p&gt;Floated right, the image sits to the right with text wrapping to its left. Always add margin to push the text away: &lt;code&gt;margin: 0 0 12px 20px&lt;/code&gt; for right-floated images.&lt;/p&gt;
+      &lt;p&gt;Congratulations on completing CSS Batch 1 — 25 lessons! You now know selectors, box model, colours, typography, backgrounds, borders, positioning, overflow, and floats. On to Batch 2!&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  </div>
+  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
+    ⬇️ Download starter.html
+  </button>
+  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+    Show GitHub Steps →
+  </button>
+  <script>
+  const __code = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Float Layout Demo</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: Georgia, serif; background: #f0f9ff; padding: 30px; max-width: 820px; margin: 0 auto; color: #0f172a; }
+      h1 { font-family: Arial; color: #0284c7; font-size: 2rem; border-bottom: 3px solid #0284c7; padding-bottom: 10px; margin-bottom: 6px; }
+      .meta { color: #94a3b8; font-size: 13px; font-family: Arial; margin-bottom: 24px; }
+      p  { line-height: 1.85; color: #334155; margin-bottom: 14px; }
+      h2 { font-family: Arial; color: #0369a1; margin: 24px 0 12px; }
+      .article-section { display: flow-root; margin-bottom: 24px; }
+      .img-left  { float: left;  width: 220px; height: 150px; object-fit: cover; border-radius: 10px; margin: 0 20px 12px 0; }
+      .img-right { float: right; width: 220px; height: 150px; object-fit: cover; border-radius: 10px; margin: 0 0 12px 20px; }
+      .pull-quote { float: right; width: 230px; margin: 0 0 12px 24px; border-left: 4px solid #0284c7; padding: 12px 16px; background: #e0f2fe; font-style: italic; font-size: 1rem; color: #0369a1; border-radius: 0 8px 8px 0; }
+    </style>
+  </head>
+  <body>
+    <h1>The Art of Coding</h1>
+    <p class="meta">By [Your Name] · Techbase Academy · CSS Lesson 25</p>
+    <div class="article-section">
+      <img class="img-left" src="https://via.placeholder.com/220x150/0284c7/fff?text=Float+Left" alt="Coding">
+      <p>Learning to code is one of the most rewarding skills a student can develop. At Techbase Academy in Ibadan, students start with HTML to build structure, then add CSS to make their pages beautiful. This image floats left — text wraps to the right.</p>
+      <p>Notice how the paragraph continues flowing beside the image, just like a newspaper or magazine article. This is the original use case for CSS floats!</p>
+    </div>
+    <div class="article-section">
+      <div class="pull-quote">"CSS floats were designed for wrapping text around images — just like newspapers have done for centuries."</div>
+      <h2>Why Floats Still Matter</h2>
+      <p>Even in the era of Flexbox and Grid, floats remain the correct tool when you want text to flow around an element — like this pull quote on the right. Each section uses <code>display: flow-root</code> to contain its floats properly.</p>
+    </div>
+    <div class="article-section">
+      <img class="img-right" src="https://via.placeholder.com/220x150/ea4f21/fff?text=Float+Right" alt="Website">
+      <p>Floated right, the image sits to the right with text wrapping to its left. Always add margin to push the text away: <code>margin: 0 0 12px 20px</code> for right-floated images.</p>
+      <p>Congratulations on completing CSS Batch 1 — 25 lessons! You now know selectors, box model, colours, typography, backgrounds, borders, positioning, overflow, and floats. On to Batch 2!</p>
+    </div>
+  </body>
+</html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+<div class="capstone-box" id="capstone" style="display:none">
+  <div class="capstone-label">🏆 Capstone Project</div>
+  <div class="capstone-name">CSS Batch 1 Capstone: My Personal CSS Showcase</div>
+  <p class="capstone-desc">Congratulations on finishing CSS Lessons 1–25! Build a complete personal showcase page applying everything: selectors, colours, backgrounds, borders, typography, box model, positioning, overflow and float.</p>
+  <p style="font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:1rem">Covers: Lessons 01–25 — CSS Foundations</p>
+  <div class="code-wrap" style="margin-bottom:1rem">
+    <div class="code-bar">
+      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+      <span class="code-filename">capstone-starter.html</span>
+    </div>
+    <div class="code-body"><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;[Your Name] — CSS Batch 1 Capstone&lt;/title&gt;
+    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+    &lt;link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"&gt;
+    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"&gt;
+    &lt;style&gt;
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --primary: #0284c7; --primary-d: #0369a1; --primary-p: #e0f2fe;
+        --accent: #ea4f21; --dark: #0f172a; --text: #334155;
+        --muted: #64748b; --border: #e2e8f0; --bg: #f0f9ff;
+      }
+      html  { scroll-behavior: smooth; }
+      body  { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--dark); }
+      /* NAV */
+      .nav  { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 62px; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 28px; }
+      .nav-logo  { font-weight: 800; color: var(--primary); font-size: 1.05rem; }
+      .nav-links { margin-left: auto; display: flex; gap: 6px; }
+      .nav-links a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 14px; border-radius: 8px; }
+      .nav-links a:hover { color: var(--primary); background: var(--primary-p); }
+      /* HERO */
+      .hero { min-height: 100vh; padding-top: 62px; background: linear-gradient(135deg, var(--primary-p), var(--bg)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 24px 60px; }
+      .avatar { width: 96px; height: 96px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 42px; margin-bottom: 20px; box-shadow: 0 0 0 6px var(--primary-p), 0 0 0 12px rgba(2,132,199,.1); }
+      .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: 12px; }
+      .hero h1 span { color: var(--primary); }
+      .hero p  { color: var(--muted); font-size: 1.1rem; max-width: 480px; margin: 0 auto 28px; }
+      .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+      .btn-p { background: var(--primary); color: white; text-decoration: none; padding: 12px 26px; border-radius: 10px; font-weight: 700; font-size: 14px; }
+      .btn-o { border: 2px solid var(--primary); color: var(--primary); text-decoration: none; padding: 11px 24px; border-radius: 10px; font-weight: 700; font-size: 14px; }
+      /* SECTIONS */
+      section { padding: 64px 0; }
+      .container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+      .sec-tag { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--primary); margin-bottom: 8px; }
+      .sec-h { font-size: 1.8rem; font-weight: 800; margin-bottom: 28px; }
+      hr.div { border: none; border-top: 1px solid var(--border); }
+      /* CARDS */
+      .cards { display: flex; flex-wrap: wrap; gap: 18px; }
+      .card { flex: 1; min-width: 200px; background: white; border: 1.5px solid var(--border); border-radius: 14px; padding: 22px; position: relative; transition: .2s; }
+      .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(2,132,199,.12); }
+      .card h3 { color: var(--primary); margin: 0 0 8px; font-size: 15px; }
+      .card p  { color: var(--text); font-size: 13px; line-height: 1.7; margin: 0; }
+      .card .tag { position: absolute; top: -8px; right: -8px; background: var(--accent); color: white; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 100px; }
+      /* SWATCHES */
+      .swatches { display: flex; gap: 12px; flex-wrap: wrap; }
+      .swatch { width: 90px; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+      .swatch-top  { height: 60px; }
+      .swatch-info { background: white; padding: 6px 8px; font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--muted); }
+      /* TYPE SCALE */
+      .trow { display: flex; align-items: baseline; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+      .tlbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); min-width: 90px; }
+      /* TRUNCATE */
+      .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: white; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 14px; color: var(--text); }
+      /* FOOTER */
+      footer { background: var(--dark); color: rgba(255,255,255,.45); text-align: center; padding: 30px; font-size: 13px; }
+      @media (max-width: 640px) { .nav-links { display: none; } }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;nav class="nav"&gt;
+      &lt;span class="nav-logo"&gt;⚡ [Your Name]&lt;/span&gt;
+      &lt;div class="nav-links"&gt;
+        &lt;a href="#skills"&gt;Skills&lt;/a&gt;
+        &lt;a href="#colours"&gt;Colours&lt;/a&gt;
+        &lt;a href="#type"&gt;Typography&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class="hero"&gt;
+      &lt;div class="avatar"&gt;🧑‍💻&lt;/div&gt;
+      &lt;h1&gt;Hi, I'm &lt;span&gt;[Your Name]!&lt;/span&gt;&lt;/h1&gt;
+      &lt;p&gt;CSS learner · Batch 1 Complete · Techbase Academy, Ibadan 🇳🇬&lt;/p&gt;
+      &lt;div class="hero-btns"&gt;
+        &lt;a href="#skills" class="btn-p"&gt;View My Work →&lt;/a&gt;
+        &lt;a href="#colours" class="btn-o"&gt;Colour Palette&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;hr class="div"&gt;
+    &lt;section id="skills"&gt;
+      &lt;div class="container"&gt;
+        &lt;div class="sec-tag"&gt;Lessons 01–25&lt;/div&gt;
+        &lt;h2 class="sec-h"&gt;CSS Batch 1 Complete&lt;/h2&gt;
+        &lt;div class="cards"&gt;
+          &lt;div class="card"&gt;&lt;div class="tag"&gt;L01–03&lt;/div&gt;&lt;h3&gt;CSS Foundations&lt;/h3&gt;&lt;p&gt;Syntax, selectors, three ways to add CSS.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="card"&gt;&lt;div class="tag"&gt;L06–08&lt;/div&gt;&lt;h3&gt;Colours &amp;amp; Backgrounds&lt;/h3&gt;&lt;p&gt;Hex, RGB, HSL, gradients, background images.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="card"&gt;&lt;div class="tag"&gt;L09–12&lt;/div&gt;&lt;h3&gt;Box Model&lt;/h3&gt;&lt;p&gt;Margin, padding, border, border-box sizing.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="card"&gt;&lt;div class="tag"&gt;L14–15&lt;/div&gt;&lt;h3&gt;Typography&lt;/h3&gt;&lt;p&gt;Google Fonts, size scale, text shadow, transforms.&lt;/p&gt;&lt;/div&gt;
+          &lt;div class="card"&gt;&lt;div class="tag"&gt;L22–25&lt;/div&gt;&lt;h3&gt;Position &amp;amp; Float&lt;/h3&gt;&lt;p&gt;Fixed, sticky, absolute, overflow, float.&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;hr class="div"&gt;
+    &lt;section id="colours"&gt;
+      &lt;div class="container"&gt;
+        &lt;div class="sec-tag"&gt;CSS Lesson 06&lt;/div&gt;
+        &lt;h2 class="sec-h"&gt;My Colour Palette&lt;/h2&gt;
+        &lt;div class="swatches"&gt;
+          &lt;div class="swatch"&gt;&lt;div class="swatch-top" style="background:#0284c7"&gt;&lt;/div&gt;&lt;div class="swatch-info"&gt;#0284c7&lt;br&gt;Primary&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="swatch"&gt;&lt;div class="swatch-top" style="background:#0369a1"&gt;&lt;/div&gt;&lt;div class="swatch-info"&gt;#0369a1&lt;br&gt;Dark&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="swatch"&gt;&lt;div class="swatch-top" style="background:#e0f2fe"&gt;&lt;/div&gt;&lt;div class="swatch-info"&gt;#e0f2fe&lt;br&gt;Pale&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="swatch"&gt;&lt;div class="swatch-top" style="background:#ea4f21"&gt;&lt;/div&gt;&lt;div class="swatch-info"&gt;#ea4f21&lt;br&gt;Accent&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="swatch"&gt;&lt;div class="swatch-top" style="background:#10b981"&gt;&lt;/div&gt;&lt;div class="swatch-info"&gt;#10b981&lt;br&gt;Success&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="swatch"&gt;&lt;div class="swatch-top" style="background:#0f172a"&gt;&lt;/div&gt;&lt;div class="swatch-info"&gt;#0f172a&lt;br&gt;Dark bg&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;hr class="div"&gt;
+    &lt;section id="type"&gt;
+      &lt;div class="container"&gt;
+        &lt;div class="sec-tag"&gt;CSS Lessons 14–15&lt;/div&gt;
+        &lt;h2 class="sec-h"&gt;Type Scale&lt;/h2&gt;
+        &lt;div class="trow"&gt;&lt;span class="tlbl"&gt;0.75rem/12px&lt;/span&gt;&lt;span style="font-size:.75rem"&gt;Caption text&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="trow"&gt;&lt;span class="tlbl"&gt;1rem/16px&lt;/span&gt;&lt;span style="font-size:1rem"&gt;Body text base&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="trow"&gt;&lt;span class="tlbl"&gt;1.25rem/20px&lt;/span&gt;&lt;span style="font-size:1.25rem"&gt;Large body&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="trow"&gt;&lt;span class="tlbl"&gt;1.5rem/24px&lt;/span&gt;&lt;span style="font-size:1.5rem;font-weight:600"&gt;Heading 3&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="trow"&gt;&lt;span class="tlbl"&gt;2rem/32px&lt;/span&gt;&lt;span style="font-size:2rem;font-weight:700"&gt;Heading 2&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="trow"&gt;&lt;span class="tlbl"&gt;2.5rem/40px&lt;/span&gt;&lt;span style="font-size:2.5rem;font-weight:800"&gt;Heading 1&lt;/span&gt;&lt;/div&gt;
+        &lt;h2 class="sec-h" style="margin-top:32px"&gt;Text Truncation&lt;/h2&gt;
+        &lt;div class="truncate"&gt;This extremely long title is truncated with an ellipsis because it exceeds the container width — thanks to text-overflow: ellipsis; overflow: hidden; white-space: nowrap;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;footer&gt;
+      &lt;p&gt;© 2025 [Your Name] | Made with CSS at Techbase Academy, Ibadan&lt;/p&gt;
+      &lt;p style="margin-top:6px"&gt;CSS Batch 1 Capstone — Lessons 01–25 ✅ 🏆&lt;/p&gt;
+    &lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  </div>
+  <button class="next-btn" onclick="downloadCapstone()">⬇️ Download capstone-starter.html</button>
+  <script>
+  const __cap = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Your Name] — CSS Batch 1 Capstone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --primary: #0284c7; --primary-d: #0369a1; --primary-p: #e0f2fe;
+        --accent: #ea4f21; --dark: #0f172a; --text: #334155;
+        --muted: #64748b; --border: #e2e8f0; --bg: #f0f9ff;
+      }
+      html  { scroll-behavior: smooth; }
+      body  { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--dark); }
+      /* NAV */
+      .nav  { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 62px; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 28px; }
+      .nav-logo  { font-weight: 800; color: var(--primary); font-size: 1.05rem; }
+      .nav-links { margin-left: auto; display: flex; gap: 6px; }
+      .nav-links a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 14px; border-radius: 8px; }
+      .nav-links a:hover { color: var(--primary); background: var(--primary-p); }
+      /* HERO */
+      .hero { min-height: 100vh; padding-top: 62px; background: linear-gradient(135deg, var(--primary-p), var(--bg)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 24px 60px; }
+      .avatar { width: 96px; height: 96px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 42px; margin-bottom: 20px; box-shadow: 0 0 0 6px var(--primary-p), 0 0 0 12px rgba(2,132,199,.1); }
+      .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: 12px; }
+      .hero h1 span { color: var(--primary); }
+      .hero p  { color: var(--muted); font-size: 1.1rem; max-width: 480px; margin: 0 auto 28px; }
+      .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+      .btn-p { background: var(--primary); color: white; text-decoration: none; padding: 12px 26px; border-radius: 10px; font-weight: 700; font-size: 14px; }
+      .btn-o { border: 2px solid var(--primary); color: var(--primary); text-decoration: none; padding: 11px 24px; border-radius: 10px; font-weight: 700; font-size: 14px; }
+      /* SECTIONS */
+      section { padding: 64px 0; }
+      .container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+      .sec-tag { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--primary); margin-bottom: 8px; }
+      .sec-h { font-size: 1.8rem; font-weight: 800; margin-bottom: 28px; }
+      hr.div { border: none; border-top: 1px solid var(--border); }
+      /* CARDS */
+      .cards { display: flex; flex-wrap: wrap; gap: 18px; }
+      .card { flex: 1; min-width: 200px; background: white; border: 1.5px solid var(--border); border-radius: 14px; padding: 22px; position: relative; transition: .2s; }
+      .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(2,132,199,.12); }
+      .card h3 { color: var(--primary); margin: 0 0 8px; font-size: 15px; }
+      .card p  { color: var(--text); font-size: 13px; line-height: 1.7; margin: 0; }
+      .card .tag { position: absolute; top: -8px; right: -8px; background: var(--accent); color: white; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 100px; }
+      /* SWATCHES */
+      .swatches { display: flex; gap: 12px; flex-wrap: wrap; }
+      .swatch { width: 90px; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+      .swatch-top  { height: 60px; }
+      .swatch-info { background: white; padding: 6px 8px; font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--muted); }
+      /* TYPE SCALE */
+      .trow { display: flex; align-items: baseline; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+      .tlbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); min-width: 90px; }
+      /* TRUNCATE */
+      .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: white; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 14px; color: var(--text); }
+      /* FOOTER */
+      footer { background: var(--dark); color: rgba(255,255,255,.45); text-align: center; padding: 30px; font-size: 13px; }
+      @media (max-width: 640px) { .nav-links { display: none; } }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <span class="nav-logo">⚡ [Your Name]</span>
+      <div class="nav-links">
+        <a href="#skills">Skills</a>
+        <a href="#colours">Colours</a>
+        <a href="#type">Typography</a>
+      </div>
+    </nav>
+    <div class="hero">
+      <div class="avatar">🧑‍💻</div>
+      <h1>Hi, I'm <span>[Your Name]!</span></h1>
+      <p>CSS learner · Batch 1 Complete · Techbase Academy, Ibadan 🇳🇬</p>
+      <div class="hero-btns">
+        <a href="#skills" class="btn-p">View My Work →</a>
+        <a href="#colours" class="btn-o">Colour Palette</a>
+      </div>
+    </div>
+    <hr class="div">
+    <section id="skills">
+      <div class="container">
+        <div class="sec-tag">Lessons 01–25</div>
+        <h2 class="sec-h">CSS Batch 1 Complete</h2>
+        <div class="cards">
+          <div class="card"><div class="tag">L01–03</div><h3>CSS Foundations</h3><p>Syntax, selectors, three ways to add CSS.</p></div>
+          <div class="card"><div class="tag">L06–08</div><h3>Colours &amp; Backgrounds</h3><p>Hex, RGB, HSL, gradients, background images.</p></div>
+          <div class="card"><div class="tag">L09–12</div><h3>Box Model</h3><p>Margin, padding, border, border-box sizing.</p></div>
+          <div class="card"><div class="tag">L14–15</div><h3>Typography</h3><p>Google Fonts, size scale, text shadow, transforms.</p></div>
+          <div class="card"><div class="tag">L22–25</div><h3>Position &amp; Float</h3><p>Fixed, sticky, absolute, overflow, float.</p></div>
+        </div>
+      </div>
+    </section>
+    <hr class="div">
+    <section id="colours">
+      <div class="container">
+        <div class="sec-tag">CSS Lesson 06</div>
+        <h2 class="sec-h">My Colour Palette</h2>
+        <div class="swatches">
+          <div class="swatch"><div class="swatch-top" style="background:#0284c7"></div><div class="swatch-info">#0284c7<br>Primary</div></div>
+          <div class="swatch"><div class="swatch-top" style="background:#0369a1"></div><div class="swatch-info">#0369a1<br>Dark</div></div>
+          <div class="swatch"><div class="swatch-top" style="background:#e0f2fe"></div><div class="swatch-info">#e0f2fe<br>Pale</div></div>
+          <div class="swatch"><div class="swatch-top" style="background:#ea4f21"></div><div class="swatch-info">#ea4f21<br>Accent</div></div>
+          <div class="swatch"><div class="swatch-top" style="background:#10b981"></div><div class="swatch-info">#10b981<br>Success</div></div>
+          <div class="swatch"><div class="swatch-top" style="background:#0f172a"></div><div class="swatch-info">#0f172a<br>Dark bg</div></div>
+        </div>
+      </div>
+    </section>
+    <hr class="div">
+    <section id="type">
+      <div class="container">
+        <div class="sec-tag">CSS Lessons 14–15</div>
+        <h2 class="sec-h">Type Scale</h2>
+        <div class="trow"><span class="tlbl">0.75rem/12px</span><span style="font-size:.75rem">Caption text</span></div>
+        <div class="trow"><span class="tlbl">1rem/16px</span><span style="font-size:1rem">Body text base</span></div>
+        <div class="trow"><span class="tlbl">1.25rem/20px</span><span style="font-size:1.25rem">Large body</span></div>
+        <div class="trow"><span class="tlbl">1.5rem/24px</span><span style="font-size:1.5rem;font-weight:600">Heading 3</span></div>
+        <div class="trow"><span class="tlbl">2rem/32px</span><span style="font-size:2rem;font-weight:700">Heading 2</span></div>
+        <div class="trow"><span class="tlbl">2.5rem/40px</span><span style="font-size:2.5rem;font-weight:800">Heading 1</span></div>
+        <h2 class="sec-h" style="margin-top:32px">Text Truncation</h2>
+        <div class="truncate">This extremely long title is truncated with an ellipsis because it exceeds the container width — thanks to text-overflow: ellipsis; overflow: hidden; white-space: nowrap;</div>
+      </div>
+    </section>
+    <footer>
+      <p>© 2025 [Your Name] | Made with CSS at Techbase Academy, Ibadan</p>
+      <p style="margin-top:6px">CSS Batch 1 Capstone — Lessons 01–25 ✅ 🏆</p>
+    </footer>
+  </body>
+</html>`;
+  function downloadCapstone(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__cap);
+    a.download='capstone-starter.html'; a.click();
+  }
+  </script>
+</div>
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-25-css_float_and_clear</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 25 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-25-css_float_and_clear/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 25 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ Float Basics</li><li>✅ Clearfix and Containing Floats</li><li>✅ Completed the CSS Batch 1 Capstone: My Personal CSS Showcase capstone</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_24.html" class="ln-btn">← Lesson 24</a>
+    <a href="lesson_26.html" class="ln-btn primary">Lesson 26 →</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 25 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_html_25_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>

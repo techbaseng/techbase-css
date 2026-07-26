@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 43: CSS Variables (Custom Properties) — Techbase CSS Course</title>
+<meta name="description" content="Create reusable design tokens using CSS custom properties and the var() function">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+ }
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+/* HERO */
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+/* MAIN CONTENT */
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+/* CONCEPT BOX */
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+/* CODE BLOCK */
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.code-body pre .cm{color:#64748b} /* comment */
+.code-body pre .tg{color:#38bdf8} /* tag */
+.code-body pre .at{color:#c084fc} /* attribute */
+.code-body pre .vl{color:#86efac} /* value */
+.code-body pre .tx{color:#e2e8f0} /* text */
+/* TASK BOX */
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+/* NEXT BUTTON */
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+/* PROJECT BOX */
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+/* CAPSTONE BOX */
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+/* FILE TABS */
+.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
+.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
+.file-tab.active{background:#0f172a;color:#e2e8f0}
+.file-content{display:none}.file-content.active{display:block}
+/* GITHUB ACCORDION */
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+/* LESSON NAV */
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+/* UTILS */
+code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
+.emoji{font-style:normal}
+@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
+
+</style>
+</head>
+<body>
+<nav class="lesson-nav-bar">
+  <a href="../index.html" class="nav-back">← CSS Course</a>
+  <span class="nav-lesson">Lesson 43 of 73 &nbsp;·&nbsp; CSS Variables (Custom Properties)</span>
+  <div class="nav-actions"><a href="lesson_42.html" class="ln-btn">← Lesson 42</a><a href="lesson_44.html" class="ln-btn primary">Lesson 44 →</a></div>
+</nav>
+<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
+<section class="lesson-hero">
+  <div class="hero-inner">
+    <div class="lesson-num-badge">Lesson 43</div>
+    <h1>CSS Variables (Custom Properties)</h1>
+    <p class="lesson-tagline">Create reusable design tokens using CSS custom properties and the var() function</p>
+    <div class="lesson-meta">
+      <span>📚 2 phases</span>
+      <span>🏗️ Build: My Design Token System</span>
+      
+    </div>
+  </div>
+</section>
+<main class="lesson-main">
+<div class="welcome-box">
+  <div class="welcome-label">👋 Welcome to Lesson 43!</div>
+  <h2>CSS Variables (Custom Properties)</h2>
+  <p>Create reusable design tokens using CSS custom properties and the var() function. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
+  </p>
+</div>
+<div class="phase " id="phase1" data-phase="1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1</div><div class="phase-title">Defining and Using Variables</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>CSS variables (custom properties) store values for reuse. Define with two dashes: <code>--colour: #0284c7</code>. Use with <code>var(--colour)</code>. Define on <code>:root</code> for global access, or on a selector to scope them. Variables inherit down the DOM — a child can use its parent's variables. Fall-back value: <code>var(--colour, blue)</code> uses blue if the variable isn't defined.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>:root {
+  /* Colours */
+  --primary:   #0284c7;
+  --primary-d: #0369a1;
+  --primary-p: #e0f2fe;
+  --accent:    #ea4f21;
+  --success:   #10b981;
+  --danger:    #ef4444;
+
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.25rem;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 100px;
+}
+
+/* Usage */
+.btn {
+  background: var(--primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-6);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Create a <code>:root</code> block with at least 6 variables: 3 colours, 2 spacing values, and 1 border-radius. Use <code>var()</code> everywhere in your CSS instead of hard-coded values. Then change one variable — see how it updates everywhere instantly!</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(1)">
+      Next Phase → <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div><div class="phase locked" id="phase2" data-phase="2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2</div><div class="phase-title">Theming and JavaScript Integration</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>Variables make theming trivial. A dark mode theme is just redefining the same variable names inside a <code>[data-theme='dark']</code> selector. JavaScript can read and write CSS variables: <code>el.style.setProperty('--primary', '#ea4f21')</code>. This is how theme switchers work without reloading the page.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>:root { --bg: white; --text: #0f172a; --surface: #f8fafc; }
+
+/* Dark theme — same variable names, different values */
+[data-theme="dark"] {
+  --bg:      #0f172a;
+  --text:    #f1f5f9;
+  --surface: #1e293b;
+}
+
+/* Components automatically adapt */
+body    { background: var(--bg);      color: var(--text); }
+.card   { background: var(--surface); border-color: var(--border); }
+
+/* JS reads variables */
+/* const primary = getComputedStyle(root).getPropertyValue('--primary') */
+
+/* JS writes variables */
+/* root.style.setProperty('--primary', '#ea4f21') */
+
+/* Scoped variables — override in a component */
+.hero {
+  --text: white;           /* only white inside .hero */
+  color: var(--text);
+}</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Build a theme switcher: define light and dark variables on <code>:root</code> and <code>[data-theme='dark']</code>. Add a toggle button that uses <code>document.documentElement.setAttribute('data-theme', 'dark')</code>. Watch the whole page switch without any class changes on individual elements!</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(2)">
+      Build It! 🚀 <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It!</div>
+  <div class="project-name">My Design Token System</div>
+  <p class="project-desc">Build a complete design token system with a light/dark theme switcher using CSS variables.</p>
+  <div class="code-wrap">
+    <div class="code-bar">
+      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+      <span class="code-filename">starter.html — copy this into a new file!</span>
+    </div>
+    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en" data-theme="light"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;CSS Variables Demo&lt;/title&gt;
+    &lt;style&gt;
+      :root {
+        --primary:   #0284c7;
+        --primary-d: #0369a1;
+        --primary-p: #e0f2fe;
+        --accent:    #ea4f21;
+        --success:   #10b981;
+        --bg:        #f0f9ff;
+        --surface:   #ffffff;
+        --text:      #0f172a;
+        --muted:     #64748b;
+        --border:    #e2e8f0;
+        --radius:    12px;
+        --space:     16px;
+      }
+      [data-theme="dark"] {
+        --primary-p: rgba(2,132,199,.15);
+        --bg:        #0f172a;
+        --surface:   #1e293b;
+        --text:      #f1f5f9;
+        --muted:     #94a3b8;
+        --border:    #334155;
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; min-height: 100vh; }
+      /* Header */
+      .header { background: var(--primary); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; }
+      .header .logo { color: white; font-weight: 800; font-size: 1.05rem; }
+      .toggle-btn { background: rgba(255,255,255,.15); color: white; border: 1.5px solid rgba(255,255,255,.3); padding: 8px 16px; border-radius: var(--radius); font-size: 13px; font-weight: 700; cursor: pointer; transition: background .2s; }
+      .toggle-btn:hover { background: rgba(255,255,255,.25); }
+      /* Content */
+      .container { max-width: 880px; margin: 0 auto; padding: calc(var(--space) * 2) var(--space); }
+      h1 { color: var(--primary); font-size: 2rem; margin-bottom: 8px; }
+      p  { color: var(--muted); line-height: 1.8; margin-bottom: var(--space); }
+      h2 { color: var(--text); margin: calc(var(--space) * 2) 0 var(--space); }
+      /* Cards */
+      .cards { display: flex; gap: var(--space); flex-wrap: wrap; }
+      .card { flex: 1; min-width: 200px; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: calc(var(--space) * 1.5); transition: .3s; }
+      .card h3 { color: var(--primary); margin: 0 0 8px; font-size: 15px; }
+      .card p  { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 0; }
+      /* Buttons */
+      .btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: var(--space); }
+      .btn { display: inline-block; padding: 10px 20px; border-radius: var(--radius); font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: .2s; text-decoration: none; }
+      .btn-p  { background: var(--primary); color: white; }
+      .btn-p:hover { background: var(--primary-d); }
+      .btn-a  { background: var(--accent); color: white; }
+      .btn-s  { background: var(--success); color: white; }
+      .btn-o  { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+      /* Token showcase */
+      .tokens { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+      .token { background: var(--primary-p); color: var(--primary); padding: 6px 12px; border-radius: var(--radius); font-family: monospace; font-size: 12px; font-weight: bold; border: 1.5px solid var(--border); }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class="header"&gt;
+      &lt;span class="logo"&gt;⚡ Design Tokens&lt;/span&gt;
+      &lt;button class="toggle-btn" onclick="toggleTheme()"&gt;🌙 Dark Mode&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="container"&gt;
+      &lt;h1&gt;CSS Variables Demo&lt;/h1&gt;
+      &lt;p&gt;Every colour, spacing value and radius on this page comes from a CSS variable defined in &lt;code&gt;:root&lt;/code&gt;. Click the theme toggle above — the entire page switches instantly!&lt;/p&gt;
+
+      &lt;h2&gt;Token System&lt;/h2&gt;
+      &lt;div class="tokens"&gt;
+        &lt;span class="token"&gt;--primary: #0284c7&lt;/span&gt;
+        &lt;span class="token"&gt;--accent: #ea4f21&lt;/span&gt;
+        &lt;span class="token"&gt;--radius: 12px&lt;/span&gt;
+        &lt;span class="token"&gt;--space: 16px&lt;/span&gt;
+        &lt;span class="token"&gt;--bg: #f0f9ff&lt;/span&gt;
+        &lt;span class="token"&gt;--surface: #ffffff&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;h2&gt;Cards — Using var()&lt;/h2&gt;
+      &lt;div class="cards"&gt;
+        &lt;div class="card"&gt;&lt;h3&gt;Variables&lt;/h3&gt;&lt;p&gt;Defined once in :root, used everywhere. Change the variable — update the whole site.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class="card"&gt;&lt;h3&gt;Theming&lt;/h3&gt;&lt;p&gt;Redefine the same variable names in [data-theme="dark"] for instant theme switching.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class="card"&gt;&lt;h3&gt;Maintenance&lt;/h3&gt;&lt;p&gt;No more searching for a colour hex code. One place to update, zero risk of missing a spot.&lt;/p&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;h2&gt;Buttons — All Using Variables&lt;/h2&gt;
+      &lt;div class="btns"&gt;
+        &lt;button class="btn btn-p"&gt;var(--primary)&lt;/button&gt;
+        &lt;button class="btn btn-a"&gt;var(--accent)&lt;/button&gt;
+        &lt;button class="btn btn-s"&gt;var(--success)&lt;/button&gt;
+        &lt;button class="btn btn-o"&gt;Outline&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+      function toggleTheme() {
+        const root = document.documentElement;
+        const btn  = document.querySelector('.toggle-btn');
+        if (root.getAttribute('data-theme') === 'dark') {
+          root.setAttribute('data-theme', 'light');
+          btn.textContent = '🌙 Dark Mode';
+        } else {
+          root.setAttribute('data-theme', 'dark');
+          btn.textContent = '☀️ Light Mode';
+        }
+      }
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  </div>
+  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
+    ⬇️ Download starter.html
+  </button>
+  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+    Show GitHub Steps →
+  </button>
+  <script>
+  const __code = `<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Variables Demo</title>
+    <style>
+      :root {
+        --primary:   #0284c7;
+        --primary-d: #0369a1;
+        --primary-p: #e0f2fe;
+        --accent:    #ea4f21;
+        --success:   #10b981;
+        --bg:        #f0f9ff;
+        --surface:   #ffffff;
+        --text:      #0f172a;
+        --muted:     #64748b;
+        --border:    #e2e8f0;
+        --radius:    12px;
+        --space:     16px;
+      }
+      [data-theme="dark"] {
+        --primary-p: rgba(2,132,199,.15);
+        --bg:        #0f172a;
+        --surface:   #1e293b;
+        --text:      #f1f5f9;
+        --muted:     #94a3b8;
+        --border:    #334155;
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; min-height: 100vh; }
+      /* Header */
+      .header { background: var(--primary); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; }
+      .header .logo { color: white; font-weight: 800; font-size: 1.05rem; }
+      .toggle-btn { background: rgba(255,255,255,.15); color: white; border: 1.5px solid rgba(255,255,255,.3); padding: 8px 16px; border-radius: var(--radius); font-size: 13px; font-weight: 700; cursor: pointer; transition: background .2s; }
+      .toggle-btn:hover { background: rgba(255,255,255,.25); }
+      /* Content */
+      .container { max-width: 880px; margin: 0 auto; padding: calc(var(--space) * 2) var(--space); }
+      h1 { color: var(--primary); font-size: 2rem; margin-bottom: 8px; }
+      p  { color: var(--muted); line-height: 1.8; margin-bottom: var(--space); }
+      h2 { color: var(--text); margin: calc(var(--space) * 2) 0 var(--space); }
+      /* Cards */
+      .cards { display: flex; gap: var(--space); flex-wrap: wrap; }
+      .card { flex: 1; min-width: 200px; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: calc(var(--space) * 1.5); transition: .3s; }
+      .card h3 { color: var(--primary); margin: 0 0 8px; font-size: 15px; }
+      .card p  { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 0; }
+      /* Buttons */
+      .btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: var(--space); }
+      .btn { display: inline-block; padding: 10px 20px; border-radius: var(--radius); font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: .2s; text-decoration: none; }
+      .btn-p  { background: var(--primary); color: white; }
+      .btn-p:hover { background: var(--primary-d); }
+      .btn-a  { background: var(--accent); color: white; }
+      .btn-s  { background: var(--success); color: white; }
+      .btn-o  { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+      /* Token showcase */
+      .tokens { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+      .token { background: var(--primary-p); color: var(--primary); padding: 6px 12px; border-radius: var(--radius); font-family: monospace; font-size: 12px; font-weight: bold; border: 1.5px solid var(--border); }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <span class="logo">⚡ Design Tokens</span>
+      <button class="toggle-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
+    </div>
+    <div class="container">
+      <h1>CSS Variables Demo</h1>
+      <p>Every colour, spacing value and radius on this page comes from a CSS variable defined in <code>:root</code>. Click the theme toggle above — the entire page switches instantly!</p>
+
+      <h2>Token System</h2>
+      <div class="tokens">
+        <span class="token">--primary: #0284c7</span>
+        <span class="token">--accent: #ea4f21</span>
+        <span class="token">--radius: 12px</span>
+        <span class="token">--space: 16px</span>
+        <span class="token">--bg: #f0f9ff</span>
+        <span class="token">--surface: #ffffff</span>
+      </div>
+
+      <h2>Cards — Using var()</h2>
+      <div class="cards">
+        <div class="card"><h3>Variables</h3><p>Defined once in :root, used everywhere. Change the variable — update the whole site.</p></div>
+        <div class="card"><h3>Theming</h3><p>Redefine the same variable names in [data-theme="dark"] for instant theme switching.</p></div>
+        <div class="card"><h3>Maintenance</h3><p>No more searching for a colour hex code. One place to update, zero risk of missing a spot.</p></div>
+      </div>
+
+      <h2>Buttons — All Using Variables</h2>
+      <div class="btns">
+        <button class="btn btn-p">var(--primary)</button>
+        <button class="btn btn-a">var(--accent)</button>
+        <button class="btn btn-s">var(--success)</button>
+        <button class="btn btn-o">Outline</button>
+      </div>
+    </div>
+    <script>
+      function toggleTheme() {
+        const root = document.documentElement;
+        const btn  = document.querySelector('.toggle-btn');
+        if (root.getAttribute('data-theme') === 'dark') {
+          root.setAttribute('data-theme', 'light');
+          btn.textContent = '🌙 Dark Mode';
+        } else {
+          root.setAttribute('data-theme', 'dark');
+          btn.textContent = '☀️ Light Mode';
+        }
+      }
+    </script>
+  </body>
+</html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-43-css_variables_(custom_properti</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 43 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-43-css_variables_(custom_properti/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 43 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ Defining and Using Variables</li><li>✅ Theming and JavaScript Integration</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_42.html" class="ln-btn">← Lesson 42</a>
+    <a href="lesson_44.html" class="ln-btn primary">Lesson 44 →</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 43 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_html_43_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>

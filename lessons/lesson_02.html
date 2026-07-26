@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 02: CSS Syntax — Techbase CSS Course</title>
+<meta name="description" content="Learn the exact structure of a CSS rule — selector, property, value and declaration block">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+ }
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+/* HERO */
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+/* MAIN CONTENT */
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+/* CONCEPT BOX */
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+/* CODE BLOCK */
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.code-body pre .cm{color:#64748b} /* comment */
+.code-body pre .tg{color:#38bdf8} /* tag */
+.code-body pre .at{color:#c084fc} /* attribute */
+.code-body pre .vl{color:#86efac} /* value */
+.code-body pre .tx{color:#e2e8f0} /* text */
+/* TASK BOX */
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+/* NEXT BUTTON */
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+/* PROJECT BOX */
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+/* CAPSTONE BOX */
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+/* FILE TABS */
+.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
+.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
+.file-tab.active{background:#0f172a;color:#e2e8f0}
+.file-content{display:none}.file-content.active{display:block}
+/* GITHUB ACCORDION */
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+/* LESSON NAV */
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+/* UTILS */
+code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
+.emoji{font-style:normal}
+@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
+
+</style>
+</head>
+<body>
+<nav class="lesson-nav-bar">
+  <a href="../index.html" class="nav-back">← CSS Course</a>
+  <span class="nav-lesson">Lesson 02 of 73 &nbsp;·&nbsp; CSS Syntax</span>
+  <div class="nav-actions"><a href="lesson_01.html" class="ln-btn">← Lesson 01</a><a href="lesson_03.html" class="ln-btn primary">Lesson 03 →</a></div>
+</nav>
+<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
+<section class="lesson-hero">
+  <div class="hero-inner">
+    <div class="lesson-num-badge">Lesson 02</div>
+    <h1>CSS Syntax</h1>
+    <p class="lesson-tagline">Learn the exact structure of a CSS rule — selector, property, value and declaration block</p>
+    <div class="lesson-meta">
+      <span>📚 2 phases</span>
+      <span>🏗️ Build: My CSS Syntax Reference Card</span>
+      
+    </div>
+  </div>
+</section>
+<main class="lesson-main">
+<div class="welcome-box">
+  <div class="welcome-label">👋 Welcome to Lesson 02!</div>
+  <h2>CSS Syntax</h2>
+  <p>Learn the exact structure of a CSS rule — selector, property, value and declaration block. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
+  </p>
+</div>
+<div class="phase " id="phase1" data-phase="1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1</div><div class="phase-title">Selectors, Properties and Values</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>A CSS rule has three parts: the <strong>selector</strong> (which HTML element to target), the <strong>property</strong> (what to change), and the <strong>value</strong> (how to change it). They are written as: <code>selector { property: value; }</code>. The property and value together form a <strong>declaration</strong>. Multiple declarations go inside curly braces <code>{ }</code>, each ending with a semicolon <code>;</code>.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Full CSS rule anatomy:
+   selector { property: value; }  */
+
+/* Single declaration */
+h1 { color: #0284c7; }
+
+/* Multiple declarations (one per line is best practice) */
+p {
+  color: #334155;
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+/* Multiple selectors — same rules apply to both */
+h1, h2 {
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+}</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Write CSS rules for: the body element (background-color and font-family), an h1 (color and font-size), and a paragraph (line-height and color). Write each declaration on its own line and use semicolons after every value.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(1)">
+      Next Phase → <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div><div class="phase locked" id="phase2" data-phase="2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2</div><div class="phase-title">CSS Comments and White Space</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>CSS comments start with <code>/*</code> and end with <code>*/</code>. Everything between is ignored by the browser — great for notes! White space (spaces, tabs, line breaks) in CSS is ignored by the browser, so you can format your code however you like. Convention: one property per line, 2-space indent inside each rule, blank line between rules.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* ===========================
+   My Website Styles
+   Author: Tunde
+   =========================== */
+
+/* Navigation */
+nav {
+  background-color: #0284c7;
+  padding: 14px 24px;
+}
+
+/* The same rule condensed — works but hard to read */
+nav { background-color: #0284c7; padding: 14px 24px; }
+
+/* Good practice: one declaration per line */
+nav a {
+  color: white;           /* link colour */
+  text-decoration: none;  /* remove underline */
+  font-weight: bold;      /* bold text */
+  margin-right: 20px;     /* spacing between links */
+}</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Add section comments to your CSS file — one comment block for Global Styles, one for Navigation, one for Content. Then go through your existing rules and make sure each declaration is on its own line with consistent indentation.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(2)">
+      Build It! 🚀 <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It!</div>
+  <div class="project-name">My CSS Syntax Reference Card</div>
+  <p class="project-desc">Build a visual CSS syntax reference card page styled entirely with properly formatted CSS rules.</p>
+  <div class="code-wrap">
+    <div class="code-bar">
+      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+      <span class="code-filename">starter.html — copy this into a new file!</span>
+    </div>
+    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;CSS Syntax Reference&lt;/title&gt;
+    &lt;style&gt;
+      /* ===== GLOBAL ===== */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f9ff;
+        color: #0f172a;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+      }
+
+      /* ===== HEADINGS ===== */
+      h1 { color: #0284c7; font-size: 2rem; margin-bottom: 6px; }
+      h2 { color: #0369a1; margin-top: 32px; border-bottom: 2px solid #bae6fd;
+           padding-bottom: 6px; }
+
+      /* ===== RULE ANATOMY CARD ===== */
+      .anatomy {
+        background: white;
+        border: 2px solid #bae6fd;
+        border-radius: 14px;
+        padding: 28px;
+        margin: 24px 0;
+        font-family: 'Courier New', monospace;
+        font-size: 1.1rem;
+        line-height: 2;
+      }
+      .sel   { color: #0284c7; font-weight: bold; }
+      .prop  { color: #059669; }
+      .val   { color: #d97706; }
+      .punct { color: #94a3b8; }
+
+      /* ===== TERM GRID ===== */
+      .terms { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; }
+      .term  {
+        flex: 1; min-width: 180px;
+        background: white; border-radius: 12px;
+        padding: 18px; border: 1.5px solid #e2e8f0;
+      }
+      .term h3 { color: #0284c7; margin: 0 0 8px; font-size: 14px; }
+      .term p  { color: #475569; font-size: 13px; margin: 0; line-height: 1.6; }
+
+      /* ===== CODE EXAMPLE ===== */
+      .code-box {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-radius: 10px;
+        padding: 20px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        line-height: 1.8;
+        overflow-x: auto;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;CSS Syntax Reference Card 📋&lt;/h1&gt;
+    &lt;p&gt;A visual guide to how CSS rules are structured.&lt;/p&gt;
+
+    &lt;h2&gt;Anatomy of a CSS Rule&lt;/h2&gt;
+    &lt;div class="anatomy"&gt;
+      &lt;span class="sel"&gt;p&lt;/span&gt;
+      &lt;span class="punct"&gt; { &lt;/span&gt;&lt;br&gt;
+      &amp;nbsp;&amp;nbsp;&lt;span class="prop"&gt;color&lt;/span&gt;&lt;span class="punct"&gt;: &lt;/span&gt;
+        &lt;span class="val"&gt;#0284c7&lt;/span&gt;&lt;span class="punct"&gt;;&lt;/span&gt;
+        &amp;nbsp;&amp;nbsp;/* declaration 1 */&lt;br&gt;
+      &amp;nbsp;&amp;nbsp;&lt;span class="prop"&gt;font-size&lt;/span&gt;&lt;span class="punct"&gt;: &lt;/span&gt;
+        &lt;span class="val"&gt;18px&lt;/span&gt;&lt;span class="punct"&gt;;&lt;/span&gt;
+        &amp;nbsp;&amp;nbsp;&amp;nbsp;/* declaration 2 */&lt;br&gt;
+      &amp;nbsp;&amp;nbsp;&lt;span class="prop"&gt;line-height&lt;/span&gt;&lt;span class="punct"&gt;: &lt;/span&gt;
+        &lt;span class="val"&gt;1.8&lt;/span&gt;&lt;span class="punct"&gt;;&lt;/span&gt;
+        &amp;nbsp;&amp;nbsp;&amp;nbsp;/* declaration 3 */&lt;br&gt;
+      &lt;span class="punct"&gt;}&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class="terms"&gt;
+      &lt;div class="term"&gt;&lt;h3&gt;Selector&lt;/h3&gt;
+        &lt;p&gt;Targets which HTML element(s) to style. Examples: &lt;code&gt;p&lt;/code&gt;, &lt;code&gt;h1&lt;/code&gt;, &lt;code&gt;.card&lt;/code&gt;, &lt;code&gt;#header&lt;/code&gt;.&lt;/p&gt;&lt;/div&gt;
+      &lt;div class="term"&gt;&lt;h3&gt;Property&lt;/h3&gt;
+        &lt;p&gt;What aspect to change. Examples: &lt;code&gt;color&lt;/code&gt;, &lt;code&gt;font-size&lt;/code&gt;, &lt;code&gt;background-color&lt;/code&gt;.&lt;/p&gt;&lt;/div&gt;
+      &lt;div class="term"&gt;&lt;h3&gt;Value&lt;/h3&gt;
+        &lt;p&gt;How to change it. Examples: &lt;code&gt;#0284c7&lt;/code&gt;, &lt;code&gt;18px&lt;/code&gt;, &lt;code&gt;bold&lt;/code&gt;, &lt;code&gt;1.8&lt;/code&gt;.&lt;/p&gt;&lt;/div&gt;
+      &lt;div class="term"&gt;&lt;h3&gt;Declaration&lt;/h3&gt;
+        &lt;p&gt;One property + value pair. Always ends with a semicolon: &lt;code&gt;color: blue;&lt;/code&gt;&lt;/p&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;h2&gt;A Full Example&lt;/h2&gt;
+    &lt;div class="code-box"&gt;/* Global styles */&lt;br&gt;
+body {&lt;br&gt;
+&amp;nbsp;&amp;nbsp;background-color: #f0f9ff;&lt;br&gt;
+&amp;nbsp;&amp;nbsp;font-family: Arial, sans-serif;&lt;br&gt;
+&amp;nbsp;&amp;nbsp;color: #0f172a;&lt;br&gt;
+}&lt;br&gt;&lt;br&gt;
+/* Heading */&lt;br&gt;
+h1 { color: #0284c7; font-size: 2rem; }&lt;br&gt;&lt;br&gt;
+/* Multiple selectors */&lt;br&gt;
+h1, h2 { font-weight: 700; }&lt;/div&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  </div>
+  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
+    ⬇️ Download starter.html
+  </button>
+  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+    Show GitHub Steps →
+  </button>
+  <script>
+  const __code = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Syntax Reference</title>
+    <style>
+      /* ===== GLOBAL ===== */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f9ff;
+        color: #0f172a;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+      }
+
+      /* ===== HEADINGS ===== */
+      h1 { color: #0284c7; font-size: 2rem; margin-bottom: 6px; }
+      h2 { color: #0369a1; margin-top: 32px; border-bottom: 2px solid #bae6fd;
+           padding-bottom: 6px; }
+
+      /* ===== RULE ANATOMY CARD ===== */
+      .anatomy {
+        background: white;
+        border: 2px solid #bae6fd;
+        border-radius: 14px;
+        padding: 28px;
+        margin: 24px 0;
+        font-family: 'Courier New', monospace;
+        font-size: 1.1rem;
+        line-height: 2;
+      }
+      .sel   { color: #0284c7; font-weight: bold; }
+      .prop  { color: #059669; }
+      .val   { color: #d97706; }
+      .punct { color: #94a3b8; }
+
+      /* ===== TERM GRID ===== */
+      .terms { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; }
+      .term  {
+        flex: 1; min-width: 180px;
+        background: white; border-radius: 12px;
+        padding: 18px; border: 1.5px solid #e2e8f0;
+      }
+      .term h3 { color: #0284c7; margin: 0 0 8px; font-size: 14px; }
+      .term p  { color: #475569; font-size: 13px; margin: 0; line-height: 1.6; }
+
+      /* ===== CODE EXAMPLE ===== */
+      .code-box {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-radius: 10px;
+        padding: 20px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        line-height: 1.8;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>CSS Syntax Reference Card 📋</h1>
+    <p>A visual guide to how CSS rules are structured.</p>
+
+    <h2>Anatomy of a CSS Rule</h2>
+    <div class="anatomy">
+      <span class="sel">p</span>
+      <span class="punct"> { </span><br>
+      &nbsp;&nbsp;<span class="prop">color</span><span class="punct">: </span>
+        <span class="val">#0284c7</span><span class="punct">;</span>
+        &nbsp;&nbsp;/* declaration 1 */<br>
+      &nbsp;&nbsp;<span class="prop">font-size</span><span class="punct">: </span>
+        <span class="val">18px</span><span class="punct">;</span>
+        &nbsp;&nbsp;&nbsp;/* declaration 2 */<br>
+      &nbsp;&nbsp;<span class="prop">line-height</span><span class="punct">: </span>
+        <span class="val">1.8</span><span class="punct">;</span>
+        &nbsp;&nbsp;&nbsp;/* declaration 3 */<br>
+      <span class="punct">}</span>
+    </div>
+
+    <div class="terms">
+      <div class="term"><h3>Selector</h3>
+        <p>Targets which HTML element(s) to style. Examples: <code>p</code>, <code>h1</code>, <code>.card</code>, <code>#header</code>.</p></div>
+      <div class="term"><h3>Property</h3>
+        <p>What aspect to change. Examples: <code>color</code>, <code>font-size</code>, <code>background-color</code>.</p></div>
+      <div class="term"><h3>Value</h3>
+        <p>How to change it. Examples: <code>#0284c7</code>, <code>18px</code>, <code>bold</code>, <code>1.8</code>.</p></div>
+      <div class="term"><h3>Declaration</h3>
+        <p>One property + value pair. Always ends with a semicolon: <code>color: blue;</code></p></div>
+    </div>
+
+    <h2>A Full Example</h2>
+    <div class="code-box">/* Global styles */<br>
+body {<br>
+&nbsp;&nbsp;background-color: #f0f9ff;<br>
+&nbsp;&nbsp;font-family: Arial, sans-serif;<br>
+&nbsp;&nbsp;color: #0f172a;<br>
+}<br><br>
+/* Heading */<br>
+h1 { color: #0284c7; font-size: 2rem; }<br><br>
+/* Multiple selectors */<br>
+h1, h2 { font-weight: 700; }</div>
+
+  </body>
+</html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-02-css_syntax</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 02 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-02-css_syntax/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 02 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ Selectors, Properties and Values</li><li>✅ CSS Comments and White Space</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_01.html" class="ln-btn">← Lesson 01</a>
+    <a href="lesson_03.html" class="ln-btn primary">Lesson 03 →</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 02 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_html_02_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>

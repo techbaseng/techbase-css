@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 18: CSS Lists — Techbase CSS Course</title>
+<meta name="description" content="Style ordered and unordered lists with custom bullets, images and counter badges">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+ }
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+/* HERO */
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+/* MAIN CONTENT */
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+/* CONCEPT BOX */
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+/* CODE BLOCK */
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.code-body pre .cm{color:#64748b} /* comment */
+.code-body pre .tg{color:#38bdf8} /* tag */
+.code-body pre .at{color:#c084fc} /* attribute */
+.code-body pre .vl{color:#86efac} /* value */
+.code-body pre .tx{color:#e2e8f0} /* text */
+/* TASK BOX */
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+/* NEXT BUTTON */
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+/* PROJECT BOX */
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+/* CAPSTONE BOX */
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+/* FILE TABS */
+.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
+.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
+.file-tab.active{background:#0f172a;color:#e2e8f0}
+.file-content{display:none}.file-content.active{display:block}
+/* GITHUB ACCORDION */
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+/* LESSON NAV */
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+/* UTILS */
+code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
+.emoji{font-style:normal}
+@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
+
+</style>
+</head>
+<body>
+<nav class="lesson-nav-bar">
+  <a href="../index.html" class="nav-back">← CSS Course</a>
+  <span class="nav-lesson">Lesson 18 of 73 &nbsp;·&nbsp; CSS Lists</span>
+  <div class="nav-actions"><a href="lesson_17.html" class="ln-btn">← Lesson 17</a><a href="lesson_19.html" class="ln-btn primary">Lesson 19 →</a></div>
+</nav>
+<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
+<section class="lesson-hero">
+  <div class="hero-inner">
+    <div class="lesson-num-badge">Lesson 18</div>
+    <h1>CSS Lists</h1>
+    <p class="lesson-tagline">Style ordered and unordered lists with custom bullets, images and counter badges</p>
+    <div class="lesson-meta">
+      <span>📚 2 phases</span>
+      <span>🏗️ Build: My Styled List Page</span>
+      
+    </div>
+  </div>
+</section>
+<main class="lesson-main">
+<div class="welcome-box">
+  <div class="welcome-label">👋 Welcome to Lesson 18!</div>
+  <h2>CSS Lists</h2>
+  <p>Style ordered and unordered lists with custom bullets, images and counter badges. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
+  </p>
+</div>
+<div class="phase " id="phase1" data-phase="1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1</div><div class="phase-title">List Style Properties</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p><code>list-style-type</code>: unordered options: disc, circle, square, none. Ordered options: decimal, lower-alpha, upper-roman. <code>list-style-position: inside</code> moves the bullet inside the text block. <code>list-style: none; padding: 0;</code> resets a list completely — required when building navigation menus from lists.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Unordered types */
+.disc   { list-style-type: disc; }
+.circle { list-style-type: circle; }
+.square { list-style-type: square; }
+.none   { list-style-type: none; padding: 0; }
+
+/* Ordered types */
+.decimal { list-style-type: decimal; }
+.alpha   { list-style-type: lower-alpha; }
+.roman   { list-style-type: upper-roman; }
+
+/* Nav list reset */
+.nav-list { list-style: none; padding: 0; margin: 0; }
+.nav-list a { display: block; padding: 10px 16px;
+              color: #334155; text-decoration: none; }
+.nav-list a:hover { background: #f0f9ff; color: #0284c7; }</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Create four lists: circle bullets, square bullets, lower-alpha ordered, upper-roman ordered. Then reset a fifth list with <code>list-style: none; padding: 0;</code> and style it as a vertical navigation menu.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(1)">
+      Next Phase → <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div><div class="phase locked" id="phase2" data-phase="2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2</div><div class="phase-title">Custom Bullets with ::before and Counters</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>The best custom bullets use <code>li::before</code>. Remove the default with <code>list-style: none</code>, then inject any character or shape via <code>content</code>. CSS counters (<code>counter-reset</code> + <code>counter-increment</code>) let you create numbered badges with full styling control.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Emoji bullet */
+.emoji-list { list-style: none; padding: 0; }
+.emoji-list li::before { content: '🔷 '; }
+
+/* CSS dot bullet */
+.dot-list { list-style: none; padding: 0; }
+.dot-list li { padding: 8px 0 8px 24px; position: relative; }
+.dot-list li::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 8px; height: 8px;
+  background: #0284c7; border-radius: 50%;
+}
+
+/* Numbered badge list */
+.num-list { list-style: none; padding: 0; counter-reset: num; }
+.num-list li { padding: 12px 0 12px 46px; position: relative;
+               border-bottom: 1px solid #e2e8f0; }
+.num-list li::before {
+  counter-increment: num; content: counter(num);
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  width: 30px; height: 30px; background: #0284c7; color: white;
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 13px; font-weight: bold;
+}</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Create a numbered badge list using CSS counters. Each number should be in a filled blue circle. Add bottom borders between items. This is a very professional pattern used on tutorial and recipe sites.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(2)">
+      Build It! 🚀 <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It!</div>
+  <div class="project-name">My Styled List Page</div>
+  <p class="project-desc">Build a page with beautiful custom lists — emoji bullets, dot bullets, numbered badges, and a nav list.</p>
+  <div class="code-wrap">
+    <div class="code-bar">
+      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+      <span class="code-filename">starter.html — copy this into a new file!</span>
+    </div>
+    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;CSS Lists Showcase&lt;/title&gt;
+    &lt;style&gt;
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: Arial, sans-serif; background: #f0f9ff;
+             padding: 30px; max-width: 860px; margin: 0 auto; color: #0f172a; }
+      h1 { color: #0284c7; margin-bottom: 6px; }
+      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
+      .grid { display: flex; gap: 20px; flex-wrap: wrap; }
+      .panel { flex: 1; min-width: 180px; background: white; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px; }
+      .panel h3 { color: #0284c7; margin: 0 0 10px; font-size: 13px; }
+      .nav-list { list-style: none; padding: 0; margin: 0; background: #0284c7; border-radius: 10px; overflow: hidden; }
+      .nav-list li a { display: block; color: white; text-decoration: none; padding: 12px 20px; font-weight: 600; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,.1); transition: .15s; }
+      .nav-list li:last-child a { border-bottom: none; }
+      .nav-list li a:hover { background: rgba(255,255,255,.15); }
+      .dot-list { list-style: none; padding: 0; }
+      .dot-list li { padding: 9px 0 9px 24px; position: relative; border-bottom: 1px solid #e2e8f0; font-size: 14px; color: #334155; }
+      .dot-list li::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; background: #0284c7; border-radius: 50%; }
+      .num-list { list-style: none; padding: 0; counter-reset: num; }
+      .num-list li { padding: 14px 0 14px 46px; position: relative; border-bottom: 1px solid #e2e8f0; font-size: 14px; color: #334155; }
+      .num-list li::before { counter-increment: num; content: counter(num); position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; background: #0284c7; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; }
+      .emoji-list { list-style: none; padding: 0; }
+      .emoji-list li { padding: 8px 0; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+      .emoji-list li::before { content: '✅ '; }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;CSS Lists Showcase&lt;/h1&gt;
+    &lt;h2&gt;Standard Types&lt;/h2&gt;
+    &lt;div class="grid"&gt;
+      &lt;div class="panel"&gt;&lt;h3&gt;disc&lt;/h3&gt;&lt;ul style="list-style-type:disc;padding-left:20px;margin:0"&gt;&lt;li&gt;HTML&lt;/li&gt;&lt;li&gt;CSS&lt;/li&gt;&lt;li&gt;JS&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+      &lt;div class="panel"&gt;&lt;h3&gt;square&lt;/h3&gt;&lt;ul style="list-style-type:square;padding-left:20px;margin:0"&gt;&lt;li&gt;Python&lt;/li&gt;&lt;li&gt;Scratch&lt;/li&gt;&lt;li&gt;Blocks&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+      &lt;div class="panel"&gt;&lt;h3&gt;lower-alpha&lt;/h3&gt;&lt;ol style="list-style-type:lower-alpha;padding-left:20px;margin:0"&gt;&lt;li&gt;First&lt;/li&gt;&lt;li&gt;Second&lt;/li&gt;&lt;li&gt;Third&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;
+      &lt;div class="panel"&gt;&lt;h3&gt;upper-roman&lt;/h3&gt;&lt;ol style="list-style-type:upper-roman;padding-left:20px;margin:0"&gt;&lt;li&gt;First&lt;/li&gt;&lt;li&gt;Second&lt;/li&gt;&lt;li&gt;Third&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;h2&gt;Navigation Menu (list-style: none)&lt;/h2&gt;
+    &lt;ul class="nav-list"&gt;&lt;li&gt;&lt;a href="#"&gt;🏠 Home&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href="#"&gt;📚 Courses&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href="#"&gt;👤 About&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href="#"&gt;✉️ Contact&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+    &lt;h2&gt;Custom Bullets&lt;/h2&gt;
+    &lt;div class="grid"&gt;
+      &lt;div class="panel"&gt;&lt;h3&gt;CSS dot bullets&lt;/h3&gt;
+        &lt;ul class="dot-list"&gt;&lt;li&gt;Semantic HTML&lt;/li&gt;&lt;li&gt;CSS Flexbox&lt;/li&gt;&lt;li&gt;JavaScript DOM&lt;/li&gt;&lt;li&gt;GitHub Pages&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+      &lt;div class="panel"&gt;&lt;h3&gt;Numbered badges&lt;/h3&gt;
+        &lt;ol class="num-list"&gt;&lt;li&gt;Install VS Code&lt;/li&gt;&lt;li&gt;Create index.html&lt;/li&gt;&lt;li&gt;Write CSS&lt;/li&gt;&lt;li&gt;Deploy&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;
+      &lt;div class="panel"&gt;&lt;h3&gt;Emoji bullets&lt;/h3&gt;
+        &lt;ul class="emoji-list"&gt;&lt;li&gt;Write HTML&lt;/li&gt;&lt;li&gt;Add CSS&lt;/li&gt;&lt;li&gt;Add JS&lt;/li&gt;&lt;li&gt;Deploy&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  </div>
+  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
+    ⬇️ Download starter.html
+  </button>
+  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+    Show GitHub Steps →
+  </button>
+  <script>
+  const __code = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Lists Showcase</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: Arial, sans-serif; background: #f0f9ff;
+             padding: 30px; max-width: 860px; margin: 0 auto; color: #0f172a; }
+      h1 { color: #0284c7; margin-bottom: 6px; }
+      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
+      .grid { display: flex; gap: 20px; flex-wrap: wrap; }
+      .panel { flex: 1; min-width: 180px; background: white; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px; }
+      .panel h3 { color: #0284c7; margin: 0 0 10px; font-size: 13px; }
+      .nav-list { list-style: none; padding: 0; margin: 0; background: #0284c7; border-radius: 10px; overflow: hidden; }
+      .nav-list li a { display: block; color: white; text-decoration: none; padding: 12px 20px; font-weight: 600; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,.1); transition: .15s; }
+      .nav-list li:last-child a { border-bottom: none; }
+      .nav-list li a:hover { background: rgba(255,255,255,.15); }
+      .dot-list { list-style: none; padding: 0; }
+      .dot-list li { padding: 9px 0 9px 24px; position: relative; border-bottom: 1px solid #e2e8f0; font-size: 14px; color: #334155; }
+      .dot-list li::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; background: #0284c7; border-radius: 50%; }
+      .num-list { list-style: none; padding: 0; counter-reset: num; }
+      .num-list li { padding: 14px 0 14px 46px; position: relative; border-bottom: 1px solid #e2e8f0; font-size: 14px; color: #334155; }
+      .num-list li::before { counter-increment: num; content: counter(num); position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; background: #0284c7; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; }
+      .emoji-list { list-style: none; padding: 0; }
+      .emoji-list li { padding: 8px 0; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+      .emoji-list li::before { content: '✅ '; }
+    </style>
+  </head>
+  <body>
+    <h1>CSS Lists Showcase</h1>
+    <h2>Standard Types</h2>
+    <div class="grid">
+      <div class="panel"><h3>disc</h3><ul style="list-style-type:disc;padding-left:20px;margin:0"><li>HTML</li><li>CSS</li><li>JS</li></ul></div>
+      <div class="panel"><h3>square</h3><ul style="list-style-type:square;padding-left:20px;margin:0"><li>Python</li><li>Scratch</li><li>Blocks</li></ul></div>
+      <div class="panel"><h3>lower-alpha</h3><ol style="list-style-type:lower-alpha;padding-left:20px;margin:0"><li>First</li><li>Second</li><li>Third</li></ol></div>
+      <div class="panel"><h3>upper-roman</h3><ol style="list-style-type:upper-roman;padding-left:20px;margin:0"><li>First</li><li>Second</li><li>Third</li></ol></div>
+    </div>
+    <h2>Navigation Menu (list-style: none)</h2>
+    <ul class="nav-list"><li><a href="#">🏠 Home</a></li><li><a href="#">📚 Courses</a></li><li><a href="#">👤 About</a></li><li><a href="#">✉️ Contact</a></li></ul>
+    <h2>Custom Bullets</h2>
+    <div class="grid">
+      <div class="panel"><h3>CSS dot bullets</h3>
+        <ul class="dot-list"><li>Semantic HTML</li><li>CSS Flexbox</li><li>JavaScript DOM</li><li>GitHub Pages</li></ul></div>
+      <div class="panel"><h3>Numbered badges</h3>
+        <ol class="num-list"><li>Install VS Code</li><li>Create index.html</li><li>Write CSS</li><li>Deploy</li></ol></div>
+      <div class="panel"><h3>Emoji bullets</h3>
+        <ul class="emoji-list"><li>Write HTML</li><li>Add CSS</li><li>Add JS</li><li>Deploy</li></ul></div>
+    </div>
+  </body>
+</html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-18-css_lists</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 18 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-18-css_lists/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 18 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ List Style Properties</li><li>✅ Custom Bullets with ::before and Counters</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_17.html" class="ln-btn">← Lesson 17</a>
+    <a href="lesson_19.html" class="ln-btn primary">Lesson 19 →</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 18 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_html_18_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>

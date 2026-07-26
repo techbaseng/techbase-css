@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 38: CSS Website Layout — Techbase CSS Course</title>
+<meta name="description" content="Build a complete multi-section website layout combining all CSS techniques learned so far">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+ }
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+/* HERO */
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+/* MAIN CONTENT */
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+/* CONCEPT BOX */
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+/* CODE BLOCK */
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.code-body pre .cm{color:#64748b} /* comment */
+.code-body pre .tg{color:#38bdf8} /* tag */
+.code-body pre .at{color:#c084fc} /* attribute */
+.code-body pre .vl{color:#86efac} /* value */
+.code-body pre .tx{color:#e2e8f0} /* text */
+/* TASK BOX */
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+/* NEXT BUTTON */
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+/* PROJECT BOX */
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+/* CAPSTONE BOX */
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+/* FILE TABS */
+.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
+.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
+.file-tab.active{background:#0f172a;color:#e2e8f0}
+.file-content{display:none}.file-content.active{display:block}
+/* GITHUB ACCORDION */
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+/* LESSON NAV */
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+/* UTILS */
+code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
+.emoji{font-style:normal}
+@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
+
+</style>
+</head>
+<body>
+<nav class="lesson-nav-bar">
+  <a href="../index.html" class="nav-back">← CSS Course</a>
+  <span class="nav-lesson">Lesson 38 of 73 &nbsp;·&nbsp; CSS Website Layout</span>
+  <div class="nav-actions"><a href="lesson_37.html" class="ln-btn">← Lesson 37</a><a href="lesson_39.html" class="ln-btn primary">Lesson 39 →</a></div>
+</nav>
+<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
+<section class="lesson-hero">
+  <div class="hero-inner">
+    <div class="lesson-num-badge">Lesson 38</div>
+    <h1>CSS Website Layout</h1>
+    <p class="lesson-tagline">Build a complete multi-section website layout combining all CSS techniques learned so far</p>
+    <div class="lesson-meta">
+      <span>📚 2 phases</span>
+      <span>🏗️ Build: My Complete Website Layout</span>
+      
+    </div>
+  </div>
+</section>
+<main class="lesson-main">
+<div class="welcome-box">
+  <div class="welcome-label">👋 Welcome to Lesson 38!</div>
+  <h2>CSS Website Layout</h2>
+  <p>Build a complete multi-section website layout combining all CSS techniques learned so far. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
+  </p>
+</div>
+<div class="phase " id="phase1" data-phase="1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1</div><div class="phase-title">Header, Main and Footer Layout</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>A standard website layout: fixed <code>&lt;header&gt;</code> at top, <code>&lt;main&gt;</code> in the middle (taking remaining height with <code>min-height: 100vh</code>), sticky or fixed <code>&lt;footer&gt;</code> at the bottom. For multi-column layouts inside main: use Flexbox (for 1D rows/columns) or Grid (for 2D). The sidebar+content pattern uses <code>display: flex; gap: 24px;</code>.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Full-page layout */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header { position: sticky; top: 0; z-index: 100; }
+main   { flex: 1; }    /* grows to fill remaining space */
+footer { margin-top: auto; }
+
+/* Three-section inner layout */
+.page-body {
+  display: flex;
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.sidebar  { width: 240px; flex-shrink: 0; }
+.content  { flex: 1; min-width: 0; } /* min-width prevents overflow */
+.right-col { width: 200px; flex-shrink: 0; }</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Build a page with a sticky header, a three-column layout (sidebar + main content + aside), and a footer. The main content area should grow to fill available space. Use <code>min-width: 0</code> on flex children to prevent overflow with long content.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(1)">
+      Next Phase → <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div><div class="phase locked" id="phase2" data-phase="2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2</div><div class="phase-title">Section Patterns and Full-bleed</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>Common section patterns: <code>full-bleed</code> (background goes edge to edge), <code>boxed</code> (content constrained by max-width inside a full-width section). Hero sections often use <code>min-height: 100vh; display: flex; align-items: center;</code>. Alternating section backgrounds create visual rhythm. A card grid inside a section uses <code>display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));</code></p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Full-bleed with centred content */
+.section { padding: 72px 24px; }
+.section .inner { max-width: 1000px; margin: 0 auto; }
+
+/* Alternating backgrounds */
+.section:nth-child(even) { background: #f0f9ff; }
+.section:nth-child(odd)  { background: white; }
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  background: linear-gradient(135deg, #0f172a, #0369a1);
+  padding: 60px 24px;
+}
+
+/* Feature card grid */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Add three full-bleed sections to your page: a hero, a features section, and a call-to-action. Alternate background colours between sections. The hero should be full-viewport height with centred content. The features section should have a responsive card grid.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(2)">
+      Build It! 🚀 <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It!</div>
+  <div class="project-name">My Complete Website Layout</div>
+  <p class="project-desc">Build a complete multi-section website: sticky header, hero, features grid, sidebar, and footer.</p>
+  <div class="code-wrap">
+    <div class="code-bar">
+      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+      <span class="code-filename">starter.html — copy this into a new file!</span>
+    </div>
+    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Complete Website Layout&lt;/title&gt;
+    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+    &lt;link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"&gt;
+    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"&gt;
+    &lt;style&gt;
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #0f172a; display: flex; flex-direction: column; min-height: 100vh; }
+      /* HEADER */
+      header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; }
+      .nav { max-width: 1100px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; height: 62px; }
+      .brand { font-weight: 800; color: #0284c7; font-size: 1.05rem; margin-right: auto; }
+      .nav-links { display: flex; gap: 4px; }
+      .nav-links a { color: #64748b; text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 14px; border-radius: 8px; }
+      .nav-links a:hover { color: #0284c7; background: #f0f9ff; }
+      .nav-links .cta { background: #0284c7; color: white; border-radius: 8px; }
+      .nav-links .cta:hover { background: #0369a1; }
+      /* MAIN */
+      main { flex: 1; }
+      /* HERO */
+      .hero { min-height: 100vh; background: linear-gradient(135deg, #0f172a 0%, #0c4a6e 100%); display: flex; align-items: center; padding: 80px 28px; }
+      .hero-inner { max-width: 1100px; margin: 0 auto; }
+      .hero-tag { background: rgba(56,189,248,.15); color: #38bdf8; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; display: inline-block; margin-bottom: 20px; }
+      .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; color: white; letter-spacing: -.03em; margin-bottom: 16px; line-height: 1.1; }
+      .hero h1 span { color: #38bdf8; }
+      .hero p { color: rgba(255,255,255,.75); font-size: 1.1rem; max-width: 520px; margin-bottom: 28px; line-height: 1.7; }
+      .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+      .btn-p { background: #0284c7; color: white; text-decoration: none; padding: 13px 28px; border-radius: 11px; font-weight: 700; font-size: 15px; transition: .2s; }
+      .btn-p:hover { background: #0369a1; transform: translateY(-2px); }
+      .btn-o { border: 2px solid rgba(255,255,255,.3); color: white; text-decoration: none; padding: 12px 26px; border-radius: 11px; font-weight: 700; font-size: 15px; }
+      /* SECTIONS */
+      .section { padding: 72px 28px; }
+      .section.alt { background: #f0f9ff; }
+      .inner { max-width: 1100px; margin: 0 auto; }
+      .sec-tag { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #0284c7; margin-bottom: 8px; }
+      .sec-h { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+      .sec-p { color: #64748b; margin-bottom: 32px; font-size: 1rem; }
+      /* FEATURE GRID */
+      .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+      .feature-card { background: white; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 24px; transition: .2s; }
+      .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(2,132,199,.1); border-color: #bae6fd; }
+      .feature-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+      .feature-card h3 { color: #0f172a; margin: 0 0 8px; font-size: 15px; }
+      .feature-card p { color: #64748b; font-size: 13px; line-height: 1.7; margin: 0; }
+      /* SIDEBAR LAYOUT */
+      .page-body { display: flex; gap: 28px; }
+      .content-area { flex: 1; min-width: 0; }
+      .sidebar { width: 240px; flex-shrink: 0; }
+      .sidebar-card { background: white; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 20px; position: sticky; top: 78px; }
+      .sidebar-card h3 { color: #0284c7; margin: 0 0 12px; font-size: 14px; }
+      .sidebar-card ul { list-style: none; padding: 0; }
+      .sidebar-card li a { display: block; padding: 8px 0; font-size: 13px; color: #475569; text-decoration: none; border-bottom: 1px solid #f1f5f9; }
+      .sidebar-card li:last-child a { border: none; }
+      .sidebar-card li a:hover { color: #0284c7; }
+      /* CTA BANNER */
+      .cta-banner { background: linear-gradient(135deg, #0284c7, #0369a1); border-radius: 20px; padding: 48px; text-align: center; color: white; }
+      .cta-banner h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
+      .cta-banner p  { opacity: .85; margin-bottom: 24px; }
+      .cta-banner a  { background: white; color: #0284c7; font-weight: 800; padding: 13px 32px; border-radius: 11px; text-decoration: none; }
+      /* FOOTER */
+      footer { background: #0f172a; color: rgba(255,255,255,.5); padding: 32px 28px; font-size: 13px; }
+      .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+      footer a { color: rgba(255,255,255,.65); text-decoration: none; }
+      @media (max-width: 768px) { .page-body { flex-direction: column; } .sidebar { width: 100%; } .nav-links a:not(.cta) { display: none; } }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header&gt;
+      &lt;div class="nav"&gt;
+        &lt;span class="brand"&gt;⚡ Techbase Academy&lt;/span&gt;
+        &lt;div class="nav-links"&gt;
+          &lt;a href="#features"&gt;Courses&lt;/a&gt;
+          &lt;a href="#about"&gt;About&lt;/a&gt;
+          &lt;a href="#cta" class="cta"&gt;Get Started →&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+      &lt;!-- HERO --&gt;
+      &lt;div class="hero"&gt;
+        &lt;div class="hero-inner"&gt;
+          &lt;span class="hero-tag"&gt;🇳🇬 Ibadan, Nigeria&lt;/span&gt;
+          &lt;h1&gt;Learn to Code&lt;br&gt;&lt;span&gt;Build the Future&lt;/span&gt;&lt;/h1&gt;
+          &lt;p&gt;Techbase Academy offers hands-on STEM education — HTML, CSS, JavaScript, Python, Scratch and Robotics for students across Nigeria.&lt;/p&gt;
+          &lt;div class="hero-btns"&gt;
+            &lt;a href="#features" class="btn-p"&gt;Explore Courses →&lt;/a&gt;
+            &lt;a href="#cta" class="btn-o"&gt;Get Started Free&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- FEATURES --&gt;
+      &lt;div class="section" id="features"&gt;
+        &lt;div class="inner"&gt;
+          &lt;div class="sec-tag"&gt;What we teach&lt;/div&gt;
+          &lt;h2 class="sec-h"&gt;Our Courses&lt;/h2&gt;
+          &lt;p class="sec-p"&gt;Six complete courses for beginners to advanced learners.&lt;/p&gt;
+          &lt;div class="feature-grid"&gt;
+            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🌐&lt;/span&gt;&lt;h3&gt;HTML&lt;/h3&gt;&lt;p&gt;Structure the web with semantic HTML — 34 lessons, 3 capstone projects.&lt;/p&gt;&lt;/div&gt;
+            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🎨&lt;/span&gt;&lt;h3&gt;CSS&lt;/h3&gt;&lt;p&gt;Style everything beautifully — 73 lessons, Flexbox, Grid and animations.&lt;/p&gt;&lt;/div&gt;
+            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;⚡&lt;/span&gt;&lt;h3&gt;JavaScript&lt;/h3&gt;&lt;p&gt;Make pages interactive — 46 lessons from variables to DOM manipulation.&lt;/p&gt;&lt;/div&gt;
+            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🐍&lt;/span&gt;&lt;h3&gt;Python&lt;/h3&gt;&lt;p&gt;Data, automation and AI basics — 45 lessons from print() to machine learning.&lt;/p&gt;&lt;/div&gt;
+            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🐱&lt;/span&gt;&lt;h3&gt;Scratch&lt;/h3&gt;&lt;p&gt;Visual programming for beginners — 35 projects with sprites and animations.&lt;/p&gt;&lt;/div&gt;
+            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🤖&lt;/span&gt;&lt;h3&gt;Robotics&lt;/h3&gt;&lt;p&gt;Hands-on micro:bit projects — 123 lessons from beginner to advanced.&lt;/p&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- SIDEBAR LAYOUT --&gt;
+      &lt;div class="section alt" id="about"&gt;
+        &lt;div class="inner"&gt;
+          &lt;div class="page-body"&gt;
+            &lt;div class="content-area"&gt;
+              &lt;div class="sec-tag"&gt;About Techbase&lt;/div&gt;
+              &lt;h2 class="sec-h"&gt;Our Mission&lt;/h2&gt;
+              &lt;p style="color:#334155;line-height:1.8;margin-bottom:14px"&gt;Techbase Consultant Services was founded in Ibadan, Oyo State, Nigeria with the mission to make quality STEM education accessible to every student across the country.&lt;/p&gt;
+              &lt;p style="color:#334155;line-height:1.8"&gt;Our curriculum is built around project-based learning — students build real, deployable web projects at the end of every lesson and push their work to GitHub Pages.&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;aside class="sidebar"&gt;
+              &lt;div class="sidebar-card"&gt;
+                &lt;h3&gt;📌 Quick Links&lt;/h3&gt;
+                &lt;ul&gt;
+                  &lt;li&gt;&lt;a href="#"&gt;HTML Course&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href="#"&gt;CSS Course&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href="#"&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href="#"&gt;GitHub Portfolio&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href="#"&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/div&gt;
+            &lt;/aside&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- CTA --&gt;
+      &lt;div class="section" id="cta"&gt;
+        &lt;div class="inner"&gt;
+          &lt;div class="cta-banner"&gt;
+            &lt;h2&gt;Ready to Start Coding?&lt;/h2&gt;
+            &lt;p&gt;Join hundreds of students already building with Techbase Academy.&lt;/p&gt;
+            &lt;a href="#"&gt;Start Learning Free →&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;
+      &lt;div class="footer-inner"&gt;
+        &lt;span&gt;© 2025 Techbase Consultant Services · Ibadan, Nigeria&lt;/span&gt;
+        &lt;div style="display:flex;gap:16px"&gt;
+          &lt;a href="#"&gt;Privacy&lt;/a&gt;
+          &lt;a href="#"&gt;Terms&lt;/a&gt;
+          &lt;a href="#"&gt;Contact&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  </div>
+  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
+    ⬇️ Download starter.html
+  </button>
+  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+    Show GitHub Steps →
+  </button>
+  <script>
+  const __code = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Website Layout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #0f172a; display: flex; flex-direction: column; min-height: 100vh; }
+      /* HEADER */
+      header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; }
+      .nav { max-width: 1100px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; height: 62px; }
+      .brand { font-weight: 800; color: #0284c7; font-size: 1.05rem; margin-right: auto; }
+      .nav-links { display: flex; gap: 4px; }
+      .nav-links a { color: #64748b; text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 14px; border-radius: 8px; }
+      .nav-links a:hover { color: #0284c7; background: #f0f9ff; }
+      .nav-links .cta { background: #0284c7; color: white; border-radius: 8px; }
+      .nav-links .cta:hover { background: #0369a1; }
+      /* MAIN */
+      main { flex: 1; }
+      /* HERO */
+      .hero { min-height: 100vh; background: linear-gradient(135deg, #0f172a 0%, #0c4a6e 100%); display: flex; align-items: center; padding: 80px 28px; }
+      .hero-inner { max-width: 1100px; margin: 0 auto; }
+      .hero-tag { background: rgba(56,189,248,.15); color: #38bdf8; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; display: inline-block; margin-bottom: 20px; }
+      .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; color: white; letter-spacing: -.03em; margin-bottom: 16px; line-height: 1.1; }
+      .hero h1 span { color: #38bdf8; }
+      .hero p { color: rgba(255,255,255,.75); font-size: 1.1rem; max-width: 520px; margin-bottom: 28px; line-height: 1.7; }
+      .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+      .btn-p { background: #0284c7; color: white; text-decoration: none; padding: 13px 28px; border-radius: 11px; font-weight: 700; font-size: 15px; transition: .2s; }
+      .btn-p:hover { background: #0369a1; transform: translateY(-2px); }
+      .btn-o { border: 2px solid rgba(255,255,255,.3); color: white; text-decoration: none; padding: 12px 26px; border-radius: 11px; font-weight: 700; font-size: 15px; }
+      /* SECTIONS */
+      .section { padding: 72px 28px; }
+      .section.alt { background: #f0f9ff; }
+      .inner { max-width: 1100px; margin: 0 auto; }
+      .sec-tag { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #0284c7; margin-bottom: 8px; }
+      .sec-h { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+      .sec-p { color: #64748b; margin-bottom: 32px; font-size: 1rem; }
+      /* FEATURE GRID */
+      .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+      .feature-card { background: white; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 24px; transition: .2s; }
+      .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(2,132,199,.1); border-color: #bae6fd; }
+      .feature-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+      .feature-card h3 { color: #0f172a; margin: 0 0 8px; font-size: 15px; }
+      .feature-card p { color: #64748b; font-size: 13px; line-height: 1.7; margin: 0; }
+      /* SIDEBAR LAYOUT */
+      .page-body { display: flex; gap: 28px; }
+      .content-area { flex: 1; min-width: 0; }
+      .sidebar { width: 240px; flex-shrink: 0; }
+      .sidebar-card { background: white; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 20px; position: sticky; top: 78px; }
+      .sidebar-card h3 { color: #0284c7; margin: 0 0 12px; font-size: 14px; }
+      .sidebar-card ul { list-style: none; padding: 0; }
+      .sidebar-card li a { display: block; padding: 8px 0; font-size: 13px; color: #475569; text-decoration: none; border-bottom: 1px solid #f1f5f9; }
+      .sidebar-card li:last-child a { border: none; }
+      .sidebar-card li a:hover { color: #0284c7; }
+      /* CTA BANNER */
+      .cta-banner { background: linear-gradient(135deg, #0284c7, #0369a1); border-radius: 20px; padding: 48px; text-align: center; color: white; }
+      .cta-banner h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
+      .cta-banner p  { opacity: .85; margin-bottom: 24px; }
+      .cta-banner a  { background: white; color: #0284c7; font-weight: 800; padding: 13px 32px; border-radius: 11px; text-decoration: none; }
+      /* FOOTER */
+      footer { background: #0f172a; color: rgba(255,255,255,.5); padding: 32px 28px; font-size: 13px; }
+      .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+      footer a { color: rgba(255,255,255,.65); text-decoration: none; }
+      @media (max-width: 768px) { .page-body { flex-direction: column; } .sidebar { width: 100%; } .nav-links a:not(.cta) { display: none; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav">
+        <span class="brand">⚡ Techbase Academy</span>
+        <div class="nav-links">
+          <a href="#features">Courses</a>
+          <a href="#about">About</a>
+          <a href="#cta" class="cta">Get Started →</a>
+        </div>
+      </div>
+    </header>
+    <main>
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-inner">
+          <span class="hero-tag">🇳🇬 Ibadan, Nigeria</span>
+          <h1>Learn to Code<br><span>Build the Future</span></h1>
+          <p>Techbase Academy offers hands-on STEM education — HTML, CSS, JavaScript, Python, Scratch and Robotics for students across Nigeria.</p>
+          <div class="hero-btns">
+            <a href="#features" class="btn-p">Explore Courses →</a>
+            <a href="#cta" class="btn-o">Get Started Free</a>
+          </div>
+        </div>
+      </div>
+      <!-- FEATURES -->
+      <div class="section" id="features">
+        <div class="inner">
+          <div class="sec-tag">What we teach</div>
+          <h2 class="sec-h">Our Courses</h2>
+          <p class="sec-p">Six complete courses for beginners to advanced learners.</p>
+          <div class="feature-grid">
+            <div class="feature-card"><span class="feature-icon">🌐</span><h3>HTML</h3><p>Structure the web with semantic HTML — 34 lessons, 3 capstone projects.</p></div>
+            <div class="feature-card"><span class="feature-icon">🎨</span><h3>CSS</h3><p>Style everything beautifully — 73 lessons, Flexbox, Grid and animations.</p></div>
+            <div class="feature-card"><span class="feature-icon">⚡</span><h3>JavaScript</h3><p>Make pages interactive — 46 lessons from variables to DOM manipulation.</p></div>
+            <div class="feature-card"><span class="feature-icon">🐍</span><h3>Python</h3><p>Data, automation and AI basics — 45 lessons from print() to machine learning.</p></div>
+            <div class="feature-card"><span class="feature-icon">🐱</span><h3>Scratch</h3><p>Visual programming for beginners — 35 projects with sprites and animations.</p></div>
+            <div class="feature-card"><span class="feature-icon">🤖</span><h3>Robotics</h3><p>Hands-on micro:bit projects — 123 lessons from beginner to advanced.</p></div>
+          </div>
+        </div>
+      </div>
+      <!-- SIDEBAR LAYOUT -->
+      <div class="section alt" id="about">
+        <div class="inner">
+          <div class="page-body">
+            <div class="content-area">
+              <div class="sec-tag">About Techbase</div>
+              <h2 class="sec-h">Our Mission</h2>
+              <p style="color:#334155;line-height:1.8;margin-bottom:14px">Techbase Consultant Services was founded in Ibadan, Oyo State, Nigeria with the mission to make quality STEM education accessible to every student across the country.</p>
+              <p style="color:#334155;line-height:1.8">Our curriculum is built around project-based learning — students build real, deployable web projects at the end of every lesson and push their work to GitHub Pages.</p>
+            </div>
+            <aside class="sidebar">
+              <div class="sidebar-card">
+                <h3>📌 Quick Links</h3>
+                <ul>
+                  <li><a href="#">HTML Course</a></li>
+                  <li><a href="#">CSS Course</a></li>
+                  <li><a href="#">JavaScript</a></li>
+                  <li><a href="#">GitHub Portfolio</a></li>
+                  <li><a href="#">Contact Us</a></li>
+                </ul>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+      <!-- CTA -->
+      <div class="section" id="cta">
+        <div class="inner">
+          <div class="cta-banner">
+            <h2>Ready to Start Coding?</h2>
+            <p>Join hundreds of students already building with Techbase Academy.</p>
+            <a href="#">Start Learning Free →</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="footer-inner">
+        <span>© 2025 Techbase Consultant Services · Ibadan, Nigeria</span>
+        <div style="display:flex;gap:16px">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-38-css_website_layout</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 38 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-38-css_website_layout/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 38 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ Header, Main and Footer Layout</li><li>✅ Section Patterns and Full-bleed</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_37.html" class="ln-btn">← Lesson 37</a>
+    <a href="lesson_39.html" class="ln-btn primary">Lesson 39 →</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 38 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_html_38_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 46: CSS Media Query Examples — Techbase CSS Course</title>
+<meta name="description" content="See real-world responsive patterns: nav, sidebar, tables and images adapted for mobile">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+ }
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+/* HERO */
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+/* MAIN CONTENT */
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+/* CONCEPT BOX */
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+/* CODE BLOCK */
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.code-body pre .cm{color:#64748b} /* comment */
+.code-body pre .tg{color:#38bdf8} /* tag */
+.code-body pre .at{color:#c084fc} /* attribute */
+.code-body pre .vl{color:#86efac} /* value */
+.code-body pre .tx{color:#e2e8f0} /* text */
+/* TASK BOX */
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+/* NEXT BUTTON */
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+/* PROJECT BOX */
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+/* CAPSTONE BOX */
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+/* FILE TABS */
+.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
+.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
+.file-tab.active{background:#0f172a;color:#e2e8f0}
+.file-content{display:none}.file-content.active{display:block}
+/* GITHUB ACCORDION */
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+/* LESSON NAV */
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+/* UTILS */
+code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
+.emoji{font-style:normal}
+@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
+
+</style>
+</head>
+<body>
+<nav class="lesson-nav-bar">
+  <a href="../index.html" class="nav-back">← CSS Course</a>
+  <span class="nav-lesson">Lesson 46 of 73 &nbsp;·&nbsp; CSS Media Query Examples</span>
+  <div class="nav-actions"><a href="lesson_45.html" class="ln-btn">← Lesson 45</a><a href="lesson_47.html" class="ln-btn primary">Lesson 47 →</a></div>
+</nav>
+<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
+<section class="lesson-hero">
+  <div class="hero-inner">
+    <div class="lesson-num-badge">Lesson 46</div>
+    <h1>CSS Media Query Examples</h1>
+    <p class="lesson-tagline">See real-world responsive patterns: nav, sidebar, tables and images adapted for mobile</p>
+    <div class="lesson-meta">
+      <span>📚 2 phases</span>
+      <span>🏗️ Build: My Fully Responsive Site</span>
+      
+    </div>
+  </div>
+</section>
+<main class="lesson-main">
+<div class="welcome-box">
+  <div class="welcome-label">👋 Welcome to Lesson 46!</div>
+  <h2>CSS Media Query Examples</h2>
+  <p>See real-world responsive patterns: nav, sidebar, tables and images adapted for mobile. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
+  </p>
+</div>
+<div class="phase " id="phase1" data-phase="1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1</div><div class="phase-title">Responsive Navigation Patterns</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>Three mobile nav patterns: (1) <strong>Hide links, show hamburger</strong> — toggle with JavaScript. (2) <strong>Horizontal scroll</strong> — links stay in a row but scroll if they overflow. (3) <strong>Priority+</strong> — show important links, collapse the rest. The most common professional pattern uses a hamburger menu that reveals a full-screen or slide-in menu on mobile.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Mobile: hamburger menu */
+.nav-links { display: none; }
+.hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { height: 2px; width: 24px; background: white; border-radius: 2px; }
+
+/* Mobile nav open state */
+.nav-links.open {
+  display: flex; flex-direction: column;
+  position: fixed; inset: 0; background: #0f172a;
+  justify-content: center; align-items: center;
+  gap: 24px; z-index: 999; font-size: 1.5rem;
+}
+
+/* Tablet/desktop: horizontal nav */
+@media (min-width: 768px) {
+  .nav-links  { display: flex; gap: 4px; }
+  .hamburger  { display: none; }
+}
+
+/* Horizontal-scroll nav (alternative) */
+.scroll-nav { display: flex; overflow-x: auto;
+              scrollbar-width: none; gap: 4px; }
+.scroll-nav::-webkit-scrollbar { display: none; }</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Build a mobile hamburger menu that toggles visibility using JavaScript (<code>classList.toggle('open')</code>). Test on a small window. Then add a media query so the hamburger disappears and the horizontal nav appears at 768px and wider.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(1)">
+      Next Phase → <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div><div class="phase locked" id="phase2" data-phase="2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2</div><div class="phase-title">Responsive Tables and Images</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>Tables on mobile: wrap in <code>overflow-x: auto</code> for horizontal scroll, or use CSS to stack cells vertically with <code>display: block</code> and <code>data-label</code> attributes. Images: <code>max-width: 100%; height: auto;</code> prevents overflow. <code>object-fit: cover</code> fills containers without distortion. The <code>&lt;picture&gt;</code> element serves different image sizes per breakpoint.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Responsive table */
+.table-wrap { overflow-x: auto; }
+
+/* Stack table on mobile */
+@media (max-width: 600px) {
+  table, thead, tbody, th, td, tr { display: block; }
+  thead { display: none; }          /* hide column headers */
+  td {
+    padding: 8px 8px 8px 50%;
+    position: relative;
+    border: none; border-bottom: 1px solid #e2e8f0;
+  }
+  td::before {
+    content: attr(data-label); /* use the data-label attribute */
+    position: absolute; left: 8px; top: 8px;
+    font-weight: bold; color: #0284c7;
+  }
+}
+
+/* Responsive images */
+img { max-width: 100%; height: auto; }
+
+/* Figure with responsive image */
+figure { margin: 0; }
+figure img { width: 100%; height: 200px; object-fit: cover; }
+
+@media (min-width: 768px) { figure img { height: 350px; } }</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Add <code>data-label</code> attributes to every <code>&lt;td&gt;</code> in a table (e.g. <code>data-label="Student"</code>). Apply the mobile stacking CSS. Resize below 600px — the table should stack into a label+value list. This is used on real sites like banking and e-commerce.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(2)">
+      Build It! 🚀 <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It!</div>
+  <div class="project-name">My Fully Responsive Site</div>
+  <p class="project-desc">Build a fully responsive page with hamburger menu, responsive table, and adaptive images.</p>
+  <div class="code-wrap">
+    <div class="code-bar">
+      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+      <span class="code-filename">starter.html — copy this into a new file!</span>
+    </div>
+    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Responsive Examples&lt;/title&gt;
+    &lt;style&gt;
+      :root { --primary: #0284c7; --bg: #f0f9ff; --text: #0f172a; --border: #e2e8f0; }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); }
+      img  { max-width: 100%; height: auto; display: block; }
+      /* NAV */
+      .navbar { background: var(--primary); padding: 0 20px; display: flex; align-items: center; height: 60px; position: sticky; top: 0; z-index: 100; }
+      .brand  { color: white; font-weight: 800; font-size: 1rem; margin-right: auto; }
+      .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
+      .hamburger span { height: 2px; width: 22px; background: white; border-radius: 2px; display: block; transition: .3s; }
+      .nav-links { display: none; }
+      .nav-links.open { display: flex; flex-direction: column; position: fixed; inset: 0; background: rgba(15,23,42,.97); justify-content: center; align-items: center; gap: 24px; z-index: 999; }
+      .nav-links.open a { color: white; text-decoration: none; font-size: 1.4rem; font-weight: 700; }
+      .close-btn { position: absolute; top: 20px; right: 24px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
+      @media (min-width: 768px) { .hamburger { display: none; } .nav-links { display: flex!important; gap: 4px; } .nav-links a { color: rgba(255,255,255,.85); text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 14px; border-radius: 7px; } .nav-links a:hover { background: rgba(255,255,255,.15); color: white; } .close-btn { display: none; } }
+      /* CONTENT */
+      .container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+      h2 { color: var(--primary); margin: 28px 0 16px; }
+      /* HERO IMAGE */
+      .hero-img { width: 100%; height: 200px; object-fit: cover; border-radius: 14px; margin-bottom: 28px; }
+      @media (min-width: 768px) { .hero-img { height: 340px; } }
+      /* TABLE */
+      .table-wrap { overflow-x: auto; border-radius: 14px; box-shadow: 0 2px 8px rgba(2,132,199,.1); }
+      table { width: 100%; border-collapse: collapse; min-width: 500px; }
+      thead th { background: var(--primary); color: white; padding: 12px 16px; text-align: left; font-size: 13px; }
+      tbody td { padding: 11px 16px; font-size: 13px; color: #334155; border-bottom: 1px solid var(--border); }
+      tbody tr:nth-child(even) td { background: #f0f9ff; }
+      tbody tr:hover td { background: #dbeafe; }
+      /* CARD GRID */
+      .cards { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+      @media (min-width: 640px) { .cards { flex-direction: row; flex-wrap: wrap; } .card { flex: 1 1 calc(50% - 7px); } }
+      @media (min-width: 960px) { .card { flex: 1 1 calc(33.33% - 10px); } }
+      .card { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 20px; }
+      .card h3 { color: var(--primary); margin: 0 0 8px; font-size: 14px; }
+      .card p  { color: #475569; font-size: 13px; margin: 0; line-height: 1.6; }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;nav class="navbar"&gt;
+      &lt;span class="brand"&gt;⚡ Techbase&lt;/span&gt;
+      &lt;button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')"&gt;
+        &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;div class="nav-links"&gt;
+        &lt;button class="close-btn" onclick="document.querySelector('.nav-links').classList.remove('open')"&gt;✕&lt;/button&gt;
+        &lt;a href="#" onclick="document.querySelector('.nav-links').classList.remove('open')"&gt;Home&lt;/a&gt;
+        &lt;a href="#" onclick="document.querySelector('.nav-links').classList.remove('open')"&gt;Courses&lt;/a&gt;
+        &lt;a href="#" onclick="document.querySelector('.nav-links').classList.remove('open')"&gt;About&lt;/a&gt;
+        &lt;a href="#" onclick="document.querySelector('.nav-links').classList.remove('open')"&gt;Contact&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class="container"&gt;
+      &lt;img class="hero-img" src="https://via.placeholder.com/960x340/0284c7/dbeafe?text=Responsive+Hero+Image" alt="Hero"&gt;
+      &lt;h2&gt;Responsive Table&lt;/h2&gt;
+      &lt;div class="table-wrap"&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Student&lt;/th&gt;&lt;th&gt;Course&lt;/th&gt;&lt;th&gt;Progress&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;td data-label="Student"&gt;Amina Bello&lt;/td&gt;&lt;td data-label="Course"&gt;CSS Mastery&lt;/td&gt;&lt;td data-label="Progress"&gt;50 / 73&lt;/td&gt;&lt;td data-label="Score"&gt;94%&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td data-label="Student"&gt;Tunde Awoyemi&lt;/td&gt;&lt;td data-label="Course"&gt;HTML Basics&lt;/td&gt;&lt;td data-label="Progress"&gt;34 / 34&lt;/td&gt;&lt;td data-label="Score"&gt;98%&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;td data-label="Student"&gt;Chidi Okonkwo&lt;/td&gt;&lt;td data-label="Course"&gt;JavaScript&lt;/td&gt;&lt;td data-label="Progress"&gt;20 / 46&lt;/td&gt;&lt;td data-label="Score"&gt;87%&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      &lt;h2&gt;Responsive Card Grid&lt;/h2&gt;
+      &lt;div class="cards"&gt;
+        &lt;div class="card"&gt;&lt;h3&gt;📱 Mobile&lt;/h3&gt;&lt;p&gt;1 column — stacks vertically. Hamburger menu replaces nav links.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class="card"&gt;&lt;h3&gt;📟 Tablet 640px+&lt;/h3&gt;&lt;p&gt;2 columns — cards side by side. Table scrolls horizontally.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class="card"&gt;&lt;h3&gt;🖥️ Desktop 960px+&lt;/h3&gt;&lt;p&gt;3 columns — full nav shown. Hero image taller.&lt;/p&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  </div>
+  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
+    ⬇️ Download starter.html
+  </button>
+  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+    Show GitHub Steps →
+  </button>
+  <script>
+  const __code = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Examples</title>
+    <style>
+      :root { --primary: #0284c7; --bg: #f0f9ff; --text: #0f172a; --border: #e2e8f0; }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); }
+      img  { max-width: 100%; height: auto; display: block; }
+      /* NAV */
+      .navbar { background: var(--primary); padding: 0 20px; display: flex; align-items: center; height: 60px; position: sticky; top: 0; z-index: 100; }
+      .brand  { color: white; font-weight: 800; font-size: 1rem; margin-right: auto; }
+      .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
+      .hamburger span { height: 2px; width: 22px; background: white; border-radius: 2px; display: block; transition: .3s; }
+      .nav-links { display: none; }
+      .nav-links.open { display: flex; flex-direction: column; position: fixed; inset: 0; background: rgba(15,23,42,.97); justify-content: center; align-items: center; gap: 24px; z-index: 999; }
+      .nav-links.open a { color: white; text-decoration: none; font-size: 1.4rem; font-weight: 700; }
+      .close-btn { position: absolute; top: 20px; right: 24px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
+      @media (min-width: 768px) { .hamburger { display: none; } .nav-links { display: flex!important; gap: 4px; } .nav-links a { color: rgba(255,255,255,.85); text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 14px; border-radius: 7px; } .nav-links a:hover { background: rgba(255,255,255,.15); color: white; } .close-btn { display: none; } }
+      /* CONTENT */
+      .container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+      h2 { color: var(--primary); margin: 28px 0 16px; }
+      /* HERO IMAGE */
+      .hero-img { width: 100%; height: 200px; object-fit: cover; border-radius: 14px; margin-bottom: 28px; }
+      @media (min-width: 768px) { .hero-img { height: 340px; } }
+      /* TABLE */
+      .table-wrap { overflow-x: auto; border-radius: 14px; box-shadow: 0 2px 8px rgba(2,132,199,.1); }
+      table { width: 100%; border-collapse: collapse; min-width: 500px; }
+      thead th { background: var(--primary); color: white; padding: 12px 16px; text-align: left; font-size: 13px; }
+      tbody td { padding: 11px 16px; font-size: 13px; color: #334155; border-bottom: 1px solid var(--border); }
+      tbody tr:nth-child(even) td { background: #f0f9ff; }
+      tbody tr:hover td { background: #dbeafe; }
+      /* CARD GRID */
+      .cards { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+      @media (min-width: 640px) { .cards { flex-direction: row; flex-wrap: wrap; } .card { flex: 1 1 calc(50% - 7px); } }
+      @media (min-width: 960px) { .card { flex: 1 1 calc(33.33% - 10px); } }
+      .card { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 20px; }
+      .card h3 { color: var(--primary); margin: 0 0 8px; font-size: 14px; }
+      .card p  { color: #475569; font-size: 13px; margin: 0; line-height: 1.6; }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <span class="brand">⚡ Techbase</span>
+      <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <button class="close-btn" onclick="document.querySelector('.nav-links').classList.remove('open')">✕</button>
+        <a href="#" onclick="document.querySelector('.nav-links').classList.remove('open')">Home</a>
+        <a href="#" onclick="document.querySelector('.nav-links').classList.remove('open')">Courses</a>
+        <a href="#" onclick="document.querySelector('.nav-links').classList.remove('open')">About</a>
+        <a href="#" onclick="document.querySelector('.nav-links').classList.remove('open')">Contact</a>
+      </div>
+    </nav>
+    <div class="container">
+      <img class="hero-img" src="https://via.placeholder.com/960x340/0284c7/dbeafe?text=Responsive+Hero+Image" alt="Hero">
+      <h2>Responsive Table</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Course</th><th>Progress</th><th>Score</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Student">Amina Bello</td><td data-label="Course">CSS Mastery</td><td data-label="Progress">50 / 73</td><td data-label="Score">94%</td></tr>
+            <tr><td data-label="Student">Tunde Awoyemi</td><td data-label="Course">HTML Basics</td><td data-label="Progress">34 / 34</td><td data-label="Score">98%</td></tr>
+            <tr><td data-label="Student">Chidi Okonkwo</td><td data-label="Course">JavaScript</td><td data-label="Progress">20 / 46</td><td data-label="Score">87%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h2>Responsive Card Grid</h2>
+      <div class="cards">
+        <div class="card"><h3>📱 Mobile</h3><p>1 column — stacks vertically. Hamburger menu replaces nav links.</p></div>
+        <div class="card"><h3>📟 Tablet 640px+</h3><p>2 columns — cards side by side. Table scrolls horizontally.</p></div>
+        <div class="card"><h3>🖥️ Desktop 960px+</h3><p>3 columns — full nav shown. Hero image taller.</p></div>
+      </div>
+    </div>
+  </body>
+</html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-46-css_media_query_examples</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 46 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-46-css_media_query_examples/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 46 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ Responsive Navigation Patterns</li><li>✅ Responsive Tables and Images</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_45.html" class="ln-btn">← Lesson 45</a>
+    <a href="lesson_47.html" class="ln-btn primary">Lesson 47 →</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 46 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_html_46_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 08: CSS Borders — Techbase CSS Course</title>
+<meta name="description" content="Control element borders with width, style, colour, shorthand and border-radius">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+ }
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+/* HERO */
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+/* MAIN CONTENT */
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+/* CONCEPT BOX */
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+/* CODE BLOCK */
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.code-body pre .cm{color:#64748b} /* comment */
+.code-body pre .tg{color:#38bdf8} /* tag */
+.code-body pre .at{color:#c084fc} /* attribute */
+.code-body pre .vl{color:#86efac} /* value */
+.code-body pre .tx{color:#e2e8f0} /* text */
+/* TASK BOX */
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+/* NEXT BUTTON */
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+/* PROJECT BOX */
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+/* CAPSTONE BOX */
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+/* FILE TABS */
+.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
+.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
+.file-tab.active{background:#0f172a;color:#e2e8f0}
+.file-content{display:none}.file-content.active{display:block}
+/* GITHUB ACCORDION */
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+/* LESSON NAV */
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+/* UTILS */
+code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
+.emoji{font-style:normal}
+@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
+
+</style>
+</head>
+<body>
+<nav class="lesson-nav-bar">
+  <a href="../index.html" class="nav-back">← CSS Course</a>
+  <span class="nav-lesson">Lesson 08 of 73 &nbsp;·&nbsp; CSS Borders</span>
+  <div class="nav-actions"><a href="lesson_07.html" class="ln-btn">← Lesson 07</a><a href="lesson_09.html" class="ln-btn primary">Lesson 09 →</a></div>
+</nav>
+<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
+<section class="lesson-hero">
+  <div class="hero-inner">
+    <div class="lesson-num-badge">Lesson 08</div>
+    <h1>CSS Borders</h1>
+    <p class="lesson-tagline">Control element borders with width, style, colour, shorthand and border-radius</p>
+    <div class="lesson-meta">
+      <span>📚 2 phases</span>
+      <span>🏗️ Build: My Border Effects Gallery</span>
+      
+    </div>
+  </div>
+</section>
+<main class="lesson-main">
+<div class="welcome-box">
+  <div class="welcome-label">👋 Welcome to Lesson 08!</div>
+  <h2>CSS Borders</h2>
+  <p>Control element borders with width, style, colour, shorthand and border-radius. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
+  </p>
+</div>
+<div class="phase " id="phase1" data-phase="1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1</div><div class="phase-title">Border Style, Width and Colour</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p>The <code>border</code> property needs three values: <em>width</em> (thickness), <em>style</em> (how it looks), and <em>colour</em>. <code>border: 2px solid #0284c7</code>. Border styles include: <code>solid</code>, <code>dashed</code>, <code>dotted</code>, <code>double</code>, <code>groove</code>, <code>ridge</code>. You can also set individual sides: <code>border-top</code>, <code>border-right</code>, <code>border-bottom</code>, <code>border-left</code> — or mix and match. A popular pattern is <code>border-left</code> only for an accent stripe.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* Shorthand — width style color */
+.solid-box  { border: 2px solid #0284c7; }
+.dashed-box { border: 2px dashed #ea4f21; }
+.dotted-box { border: 3px dotted #10b981; }
+.double-box { border: 4px double #7c3aed; }
+
+/* Individual sides */
+.top-only    { border-top: 4px solid #0284c7; }
+.left-accent { border-left: 5px solid #0284c7; padding-left: 16px; }
+
+/* Mix sides — top and bottom but not sides */
+.tb-only {
+  border-top: 2px solid #e2e8f0;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* Long form — same as border: 2px solid blue */
+.long-form {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #0284c7;
+}
+
+/* Different widths per side */
+.thick-top {
+  border-width: 4px 1px 1px 1px;  /* top right bottom left */
+  border-style: solid;
+  border-color: #0284c7;
+}</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Create five boxes, each showing a different border style: solid, dashed, dotted, double, and a left-accent only. Give each a different colour. Add <code>padding: 16px</code> to each so the text doesn't touch the border.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(1)">
+      Next Phase → <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div><div class="phase locked" id="phase2" data-phase="2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2</div><div class="phase-title">Border Radius and Shorthand</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p><code>border-radius</code> rounds the corners of an element. <code>border-radius: 8px</code> rounds all 4 corners equally. Four values: <code>border-radius: 8px 0 8px 0</code> — top-left, top-right, bottom-right, bottom-left. A perfect circle: set <code>border-radius: 50%</code> on a square element. The <code>border</code> shorthand combines all three values: <code>border: 2px solid #0284c7;</code> is the most common pattern.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* All corners equally rounded */
+.rounded     { border: 2px solid #0284c7; border-radius: 8px; }
+.very-round  { border: 2px solid #0284c7; border-radius: 20px; }
+.pill        { border: 2px solid #0284c7; border-radius: 100px; }
+
+/* Perfect circle (on a square element) */
+.circle {
+  width: 100px;
+  height: 100px;
+  border: 3px solid #0284c7;
+  border-radius: 50%;
+}
+
+/* Different radii per corner */
+.custom-radius {
+  border: 2px solid #0284c7;
+  border-radius: 20px 0 20px 0; /* diagonal rounding */
+}
+
+/* Card with border-radius and shadow */
+.card {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(2,132,199,.12);
+  background: white;
+}</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Create: (1) A pill button shape (use <code>border-radius: 100px</code>). (2) A circle (100×100px square with <code>border-radius: 50%</code>). (3) A card (white background, light border, 14px radius, subtle shadow). Add padding to each so the content has breathing room.</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(2)">
+      Build It! 🚀 <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It!</div>
+  <div class="project-name">My Border Effects Gallery</div>
+  <p class="project-desc">Build a border effects gallery demonstrating every border style and border-radius trick.</p>
+  <div class="code-wrap">
+    <div class="code-bar">
+      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+      <span class="code-filename">starter.html — copy this into a new file!</span>
+    </div>
+    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;CSS Border Gallery&lt;/title&gt;
+    &lt;style&gt;
+      * { box-sizing: border-box; }
+      body { font-family: Arial, sans-serif; background: #f0f9ff;
+             padding: 30px; max-width: 860px; margin: 0 auto; }
+      h1 { color: #0284c7; text-align: center; margin-bottom: 6px; }
+      h2 { color: #0369a1; margin: 28px 0 16px;
+           border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
+      .grid { display: flex; flex-wrap: wrap; gap: 16px; }
+      .box {
+        flex: 1; min-width: 160px;
+        padding: 18px; text-align: center;
+        font-size: 13px; color: #0f172a;
+        background: white;
+      }
+
+      /* Border styles */
+      .b-solid  { border: 2px solid #0284c7; }
+      .b-dashed { border: 2px dashed #ea4f21; }
+      .b-dotted { border: 3px dotted #10b981; }
+      .b-double { border: 5px double #7c3aed; }
+      .b-left   { border-left: 5px solid #0284c7;
+                  border-radius: 0 8px 8px 0; padding-left: 16px; }
+
+      /* Border radius */
+      .br-none { border: 2px solid #0284c7; border-radius: 0; }
+      .br-sm   { border: 2px solid #0284c7; border-radius: 8px; }
+      .br-lg   { border: 2px solid #0284c7; border-radius: 20px; }
+      .br-pill { border: 2px solid #0284c7; border-radius: 100px; }
+      .br-diag { border: 2px solid #0284c7; border-radius: 20px 0 20px 0; }
+
+      /* Circle */
+      .circle {
+        width: 80px; height: 80px;
+        border: 3px solid #0284c7; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        background: #e0f2fe; font-weight: bold; font-size: 12px;
+      }
+
+      /* Accent card */
+      .accent-card {
+        border: 1.5px solid #e2e8f0;
+        border-left: 5px solid #0284c7;
+        border-radius: 0 12px 12px 0;
+        padding: 16px 20px;
+        background: white;
+        box-shadow: 0 2px 6px rgba(2,132,199,.1);
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;CSS Border Gallery&lt;/h1&gt;
+
+    &lt;h2&gt;Border Styles&lt;/h2&gt;
+    &lt;div class="grid"&gt;
+      &lt;div class="box b-solid"&gt;solid&lt;/div&gt;
+      &lt;div class="box b-dashed"&gt;dashed&lt;/div&gt;
+      &lt;div class="box b-dotted"&gt;dotted&lt;/div&gt;
+      &lt;div class="box b-double"&gt;double&lt;/div&gt;
+      &lt;div class="box b-left"&gt;left accent only&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;h2&gt;Border Radius&lt;/h2&gt;
+    &lt;div class="grid"&gt;
+      &lt;div class="box br-none"&gt;radius: 0&lt;/div&gt;
+      &lt;div class="box br-sm"&gt;radius: 8px&lt;/div&gt;
+      &lt;div class="box br-lg"&gt;radius: 20px&lt;/div&gt;
+      &lt;div class="box br-pill"&gt;radius: 100px (pill)&lt;/div&gt;
+      &lt;div class="box br-diag"&gt;diagonal: 20px 0&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;h2&gt;Circle and Accent Card&lt;/h2&gt;
+    &lt;div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:10px;"&gt;
+      &lt;div class="circle"&gt;50%&lt;/div&gt;
+      &lt;div class="accent-card" style="flex:1; min-width:200px;"&gt;
+        &lt;strong style="color:#0284c7;"&gt;Accent Card&lt;/strong&gt;
+        &lt;p style="color:#475569;font-size:13px;margin:4px 0 0;"&gt;
+          Left border only — a popular design pattern for callouts and quotes.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  </div>
+  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
+    ⬇️ Download starter.html
+  </button>
+  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+    Show GitHub Steps →
+  </button>
+  <script>
+  const __code = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Border Gallery</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { font-family: Arial, sans-serif; background: #f0f9ff;
+             padding: 30px; max-width: 860px; margin: 0 auto; }
+      h1 { color: #0284c7; text-align: center; margin-bottom: 6px; }
+      h2 { color: #0369a1; margin: 28px 0 16px;
+           border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
+      .grid { display: flex; flex-wrap: wrap; gap: 16px; }
+      .box {
+        flex: 1; min-width: 160px;
+        padding: 18px; text-align: center;
+        font-size: 13px; color: #0f172a;
+        background: white;
+      }
+
+      /* Border styles */
+      .b-solid  { border: 2px solid #0284c7; }
+      .b-dashed { border: 2px dashed #ea4f21; }
+      .b-dotted { border: 3px dotted #10b981; }
+      .b-double { border: 5px double #7c3aed; }
+      .b-left   { border-left: 5px solid #0284c7;
+                  border-radius: 0 8px 8px 0; padding-left: 16px; }
+
+      /* Border radius */
+      .br-none { border: 2px solid #0284c7; border-radius: 0; }
+      .br-sm   { border: 2px solid #0284c7; border-radius: 8px; }
+      .br-lg   { border: 2px solid #0284c7; border-radius: 20px; }
+      .br-pill { border: 2px solid #0284c7; border-radius: 100px; }
+      .br-diag { border: 2px solid #0284c7; border-radius: 20px 0 20px 0; }
+
+      /* Circle */
+      .circle {
+        width: 80px; height: 80px;
+        border: 3px solid #0284c7; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        background: #e0f2fe; font-weight: bold; font-size: 12px;
+      }
+
+      /* Accent card */
+      .accent-card {
+        border: 1.5px solid #e2e8f0;
+        border-left: 5px solid #0284c7;
+        border-radius: 0 12px 12px 0;
+        padding: 16px 20px;
+        background: white;
+        box-shadow: 0 2px 6px rgba(2,132,199,.1);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSS Border Gallery</h1>
+
+    <h2>Border Styles</h2>
+    <div class="grid">
+      <div class="box b-solid">solid</div>
+      <div class="box b-dashed">dashed</div>
+      <div class="box b-dotted">dotted</div>
+      <div class="box b-double">double</div>
+      <div class="box b-left">left accent only</div>
+    </div>
+
+    <h2>Border Radius</h2>
+    <div class="grid">
+      <div class="box br-none">radius: 0</div>
+      <div class="box br-sm">radius: 8px</div>
+      <div class="box br-lg">radius: 20px</div>
+      <div class="box br-pill">radius: 100px (pill)</div>
+      <div class="box br-diag">diagonal: 20px 0</div>
+    </div>
+
+    <h2>Circle and Accent Card</h2>
+    <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:10px;">
+      <div class="circle">50%</div>
+      <div class="accent-card" style="flex:1; min-width:200px;">
+        <strong style="color:#0284c7;">Accent Card</strong>
+        <p style="color:#475569;font-size:13px;margin:4px 0 0;">
+          Left border only — a popular design pattern for callouts and quotes.</p>
+      </div>
+    </div>
+  </body>
+</html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-08-css_borders</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 08 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-08-css_borders/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 08 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ Border Style, Width and Colour</li><li>✅ Border Radius and Shorthand</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_07.html" class="ln-btn">← Lesson 07</a>
+    <a href="lesson_09.html" class="ln-btn primary">Lesson 09 →</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 08 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_html_08_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>

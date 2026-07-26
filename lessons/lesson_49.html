@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 49: CSS Flex Items — Techbase CSS Course</title>
+<meta name="description" content="Control individual flex items with flex-grow, flex-shrink, flex-basis, order and align-self">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+ }
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+/* HERO */
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+/* MAIN CONTENT */
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+/* CONCEPT BOX */
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+/* CODE BLOCK */
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.code-body pre .cm{color:#64748b} /* comment */
+.code-body pre .tg{color:#38bdf8} /* tag */
+.code-body pre .at{color:#c084fc} /* attribute */
+.code-body pre .vl{color:#86efac} /* value */
+.code-body pre .tx{color:#e2e8f0} /* text */
+/* TASK BOX */
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+/* NEXT BUTTON */
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+/* PROJECT BOX */
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+/* CAPSTONE BOX */
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+/* FILE TABS */
+.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
+.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
+.file-tab.active{background:#0f172a;color:#e2e8f0}
+.file-content{display:none}.file-content.active{display:block}
+/* GITHUB ACCORDION */
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+/* LESSON NAV */
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+/* UTILS */
+code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
+.emoji{font-style:normal}
+@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
+
+</style>
+</head>
+<body>
+<nav class="lesson-nav-bar">
+  <a href="../index.html" class="nav-back">← CSS Course</a>
+  <span class="nav-lesson">Lesson 49 of 73 &nbsp;·&nbsp; CSS Flex Items</span>
+  <div class="nav-actions"><a href="lesson_48.html" class="ln-btn">← Lesson 48</a><a href="lesson_50.html" class="ln-btn primary">Lesson 50 →</a></div>
+</nav>
+<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
+<section class="lesson-hero">
+  <div class="hero-inner">
+    <div class="lesson-num-badge">Lesson 49</div>
+    <h1>CSS Flex Items</h1>
+    <p class="lesson-tagline">Control individual flex items with flex-grow, flex-shrink, flex-basis, order and align-self</p>
+    <div class="lesson-meta">
+      <span>📚 2 phases</span>
+      <span>🏗️ Build: My Flex Items Demo</span>
+      
+    </div>
+  </div>
+</section>
+<main class="lesson-main">
+<div class="welcome-box">
+  <div class="welcome-label">👋 Welcome to Lesson 49!</div>
+  <h2>CSS Flex Items</h2>
+  <p>Control individual flex items with flex-grow, flex-shrink, flex-basis, order and align-self. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
+  </p>
+</div>
+<div class="phase " id="phase1" data-phase="1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1</div><div class="phase-title">flex-grow, flex-shrink and flex-basis</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p><code>flex-grow</code> — how much an item grows to fill extra space (0 = no grow, 1 = grow proportionally). <code>flex-shrink</code> — how much an item shrinks when space is tight (0 = never shrink, 1 = shrink proportionally). <code>flex-basis</code> — the starting size before grow/shrink applies. Shorthand: <code>flex: grow shrink basis</code>. Common: <code>flex: 1</code> (grow to fill), <code>flex: 0 0 200px</code> (fixed 200px — no grow/shrink).</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* flex shorthand */
+.flex-1    { flex: 1; }          /* grow: 1, shrink: 1, basis: 0 */
+.flex-2    { flex: 2; }          /* grows 2× as fast as flex-1 */
+.flex-none { flex: none; }       /* don't grow or shrink */
+.flex-auto { flex: auto; }       /* size: auto, can grow/shrink */
+
+/* Individual properties */
+.item { flex-grow: 1; flex-shrink: 1; flex-basis: 200px; }
+
+/* Fixed width sidebar */
+.sidebar { flex: 0 0 240px; }  /* never grow, never shrink, always 240px */
+.content { flex: 1; }          /* fill remaining space */
+
+/* Three unequal columns */
+.col-1 { flex: 1; }   /* 1/6 of space */
+.col-2 { flex: 2; }   /* 2/6 of space */
+.col-3 { flex: 3; }   /* 3/6 of space */</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Create a flex row with three items. Give them <code>flex: 1</code>, <code>flex: 2</code>, and <code>flex: 3</code> respectively. The second should be twice the width of the first, and the third three times. This is much more elegant than calculating percentages!</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(1)">
+      Next Phase → <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div><div class="phase locked" id="phase2" data-phase="2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2</div><div class="phase-title">order and align-self</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box">
+      <div class="concept-label">💡 Concept</div>
+      <p><code>order</code> changes the visual order of an item without changing the HTML. Default is 0 — lower numbers appear first. <code>align-self</code> overrides <code>align-items</code> for a single item: <code>flex-start</code>, <code>flex-end</code>, <code>center</code>, <code>stretch</code>. Use <code>margin: auto</code> on a flex item to push other items away — this is how the 'push button to end of nav' trick works.</p>
+    </div>
+    <div class="code-wrap">
+  <div class="code-bar">
+    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+    <span class="code-filename">style.css</span>
+  </div>
+  <div class="code-body"><pre>/* order — visual reorder without changing HTML */
+.item-1 { order: 3; }  /* appears third */
+.item-2 { order: 1; }  /* appears first */
+.item-3 { order: 2; }  /* appears second */
+
+/* align-self — override for single item */
+.tall    { align-self: flex-start; }   /* sticks to top */
+.stretch { align-self: stretch; }      /* fills full height */
+.bottom  { align-self: flex-end; }     /* sticks to bottom */
+
+/* margin auto — push items apart */
+.nav { display: flex; align-items: center; }
+.nav .logo { margin-right: auto; }  /* logo left, rest right */
+.nav .cta  { margin-left: 12px; }   /* gap before CTA button */
+
+/* Card footer pushed to bottom */
+.card { display: flex; flex-direction: column; }
+.card-body { flex: 1; }        /* grows to fill space */
+.card-footer { margin-top: auto; } /* always at the bottom */</pre></div>
+</div>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <p>Create a card with <code>display: flex; flex-direction: column;</code>. Give the card body <code>flex: 1</code> so it stretches. Give the card footer <code>margin-top: auto</code> so it always sticks to the bottom, even if the card content is short. This makes cards in a grid always have aligned footers!</p>
+    </div>
+    <button class="next-btn" onclick="unlockNext(2)">
+      Build It! 🚀 <span>→</span>
+    </button>
+    <p class="next-tip">Try the task first, then click to continue!</p>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It!</div>
+  <div class="project-name">My Flex Items Demo</div>
+  <p class="project-desc">Build a layout demonstrating flex-grow, flex-shrink, flex-basis, order and align-self.</p>
+  <div class="code-wrap">
+    <div class="code-bar">
+      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+      <span class="code-filename">starter.html — copy this into a new file!</span>
+    </div>
+    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Flex Items&lt;/title&gt;
+    &lt;style&gt;
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: Arial, sans-serif; background: #f0f9ff; padding: 30px; max-width: 960px; margin: 0 auto; color: #0f172a; }
+      h1 { color: #0284c7; margin-bottom: 6px; }
+      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
+      code { background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; }
+      .demo { background: white; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+      /* Flex grow demo */
+      .grow-row { display: flex; gap: 8px; background: #e0f2fe; border-radius: 8px; padding: 8px; }
+      .gi { background: #0284c7; color: white; border-radius: 6px; padding: 12px 8px; text-align: center; font-size: 12px; font-weight: bold; }
+      .g1 { flex: 1; }
+      .g2 { flex: 2; }
+      .g3 { flex: 3; }
+      /* Fixed + fluid */
+      .fixed-row { display: flex; gap: 16px; }
+      .sidebar-fixed { flex: 0 0 160px; background: #0284c7; color: white; border-radius: 10px; padding: 16px; font-size: 13px; font-weight: bold; }
+      .main-fluid  { flex: 1; background: #dbeafe; border-radius: 10px; padding: 16px; font-size: 13px; color: #0369a1; }
+      /* order demo */
+      .order-row { display: flex; gap: 8px; background: #e0f2fe; border-radius: 8px; padding: 8px; }
+      .oi { border-radius: 6px; padding: 14px; text-align: center; font-size: 12px; font-weight: bold; color: white; flex: 1; }
+      .o1 { background: #0284c7; order: 3; }
+      .o2 { background: #ea4f21; order: 1; }
+      .o3 { background: #10b981; order: 2; }
+      /* align-self */
+      .as-row { display: flex; gap: 8px; background: #e0f2fe; border-radius: 8px; padding: 8px; height: 100px; }
+      .as { width: 60px; background: #0284c7; color: white; border-radius: 6px; font-size: 11px; text-align: center; display: flex; align-items: center; justify-content: center; }
+      /* Equal-height cards with footer pinned */
+      .equal-cards { display: flex; gap: 16px; align-items: stretch; }
+      .eq-card { flex: 1; background: white; border: 1.5px solid #bae6fd; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; }
+      .eq-card h3 { color: #0284c7; margin: 0 0 8px; font-size: 14px; }
+      .eq-card p  { color: #475569; font-size: 13px; line-height: 1.7; flex: 1; margin: 0; }
+      .eq-footer  { margin-top: 16px; padding-top: 12px; border-top: 1px solid #e2e8f0; }
+      .eq-footer a { color: #0284c7; font-size: 13px; font-weight: 700; text-decoration: none; }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Flex Items Properties&lt;/h1&gt;
+
+    &lt;h2&gt;flex-grow ratios (1 : 2 : 3)&lt;/h2&gt;
+    &lt;div class="demo"&gt;&lt;div class="grow-row"&gt;&lt;div class="gi g1"&gt;flex: 1&lt;/div&gt;&lt;div class="gi g2"&gt;flex: 2&lt;/div&gt;&lt;div class="gi g3"&gt;flex: 3&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+
+    &lt;h2&gt;Fixed sidebar + fluid content&lt;/h2&gt;
+    &lt;div class="demo"&gt;&lt;div class="fixed-row"&gt;&lt;div class="sidebar-fixed"&gt;flex: 0 0 160px&lt;br&gt;&lt;small&gt;(never grows or shrinks)&lt;/small&gt;&lt;/div&gt;&lt;div class="main-fluid"&gt;flex: 1 — takes all remaining space&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+
+    &lt;h2&gt;order — visual reorder (HTML order: blue, orange, green)&lt;/h2&gt;
+    &lt;div class="demo"&gt;
+      &lt;div class="order-row"&gt;
+        &lt;div class="oi o1"&gt;Blue (order:3)&lt;/div&gt;
+        &lt;div class="oi o2"&gt;Orange (order:1)&lt;/div&gt;
+        &lt;div class="oi o3"&gt;Green (order:2)&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;p style="font-size:12px;color:#64748b;margin-top:8px"&gt;HTML order is blue, orange, green. CSS order property reorders them to: orange, green, blue.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;h2&gt;align-self (each item individually positioned)&lt;/h2&gt;
+    &lt;div class="demo"&gt;&lt;div class="as-row"&gt;&lt;div class="as" style="align-self:flex-start"&gt;top&lt;/div&gt;&lt;div class="as" style="align-self:center"&gt;mid&lt;/div&gt;&lt;div class="as" style="align-self:flex-end"&gt;bot&lt;/div&gt;&lt;div class="as" style="align-self:stretch"&gt;stretch&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+
+    &lt;h2&gt;Equal-height cards with pinned footer (align-self: stretch + margin-top: auto)&lt;/h2&gt;
+    &lt;div class="demo"&gt;&lt;div class="equal-cards"&gt;
+      &lt;div class="eq-card"&gt;&lt;h3&gt;Short Card&lt;/h3&gt;&lt;p&gt;Brief content.&lt;/p&gt;&lt;div class="eq-footer"&gt;&lt;a href="#"&gt;Learn more →&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class="eq-card"&gt;&lt;h3&gt;Medium Card&lt;/h3&gt;&lt;p&gt;This card has more content so it's naturally taller. Both cards match height.&lt;/p&gt;&lt;div class="eq-footer"&gt;&lt;a href="#"&gt;Learn more →&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class="eq-card"&gt;&lt;h3&gt;Long Card&lt;/h3&gt;&lt;p&gt;This card has the most content. The short card and medium card stretch to match this height. All footers are at the same level!&lt;/p&gt;&lt;div class="eq-footer"&gt;&lt;a href="#"&gt;Learn more →&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  </div>
+  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
+    ⬇️ Download starter.html
+  </button>
+  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+    Show GitHub Steps →
+  </button>
+  <script>
+  const __code = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex Items</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: Arial, sans-serif; background: #f0f9ff; padding: 30px; max-width: 960px; margin: 0 auto; color: #0f172a; }
+      h1 { color: #0284c7; margin-bottom: 6px; }
+      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
+      code { background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; }
+      .demo { background: white; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+      /* Flex grow demo */
+      .grow-row { display: flex; gap: 8px; background: #e0f2fe; border-radius: 8px; padding: 8px; }
+      .gi { background: #0284c7; color: white; border-radius: 6px; padding: 12px 8px; text-align: center; font-size: 12px; font-weight: bold; }
+      .g1 { flex: 1; }
+      .g2 { flex: 2; }
+      .g3 { flex: 3; }
+      /* Fixed + fluid */
+      .fixed-row { display: flex; gap: 16px; }
+      .sidebar-fixed { flex: 0 0 160px; background: #0284c7; color: white; border-radius: 10px; padding: 16px; font-size: 13px; font-weight: bold; }
+      .main-fluid  { flex: 1; background: #dbeafe; border-radius: 10px; padding: 16px; font-size: 13px; color: #0369a1; }
+      /* order demo */
+      .order-row { display: flex; gap: 8px; background: #e0f2fe; border-radius: 8px; padding: 8px; }
+      .oi { border-radius: 6px; padding: 14px; text-align: center; font-size: 12px; font-weight: bold; color: white; flex: 1; }
+      .o1 { background: #0284c7; order: 3; }
+      .o2 { background: #ea4f21; order: 1; }
+      .o3 { background: #10b981; order: 2; }
+      /* align-self */
+      .as-row { display: flex; gap: 8px; background: #e0f2fe; border-radius: 8px; padding: 8px; height: 100px; }
+      .as { width: 60px; background: #0284c7; color: white; border-radius: 6px; font-size: 11px; text-align: center; display: flex; align-items: center; justify-content: center; }
+      /* Equal-height cards with footer pinned */
+      .equal-cards { display: flex; gap: 16px; align-items: stretch; }
+      .eq-card { flex: 1; background: white; border: 1.5px solid #bae6fd; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; }
+      .eq-card h3 { color: #0284c7; margin: 0 0 8px; font-size: 14px; }
+      .eq-card p  { color: #475569; font-size: 13px; line-height: 1.7; flex: 1; margin: 0; }
+      .eq-footer  { margin-top: 16px; padding-top: 12px; border-top: 1px solid #e2e8f0; }
+      .eq-footer a { color: #0284c7; font-size: 13px; font-weight: 700; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <h1>Flex Items Properties</h1>
+
+    <h2>flex-grow ratios (1 : 2 : 3)</h2>
+    <div class="demo"><div class="grow-row"><div class="gi g1">flex: 1</div><div class="gi g2">flex: 2</div><div class="gi g3">flex: 3</div></div></div>
+
+    <h2>Fixed sidebar + fluid content</h2>
+    <div class="demo"><div class="fixed-row"><div class="sidebar-fixed">flex: 0 0 160px<br><small>(never grows or shrinks)</small></div><div class="main-fluid">flex: 1 — takes all remaining space</div></div></div>
+
+    <h2>order — visual reorder (HTML order: blue, orange, green)</h2>
+    <div class="demo">
+      <div class="order-row">
+        <div class="oi o1">Blue (order:3)</div>
+        <div class="oi o2">Orange (order:1)</div>
+        <div class="oi o3">Green (order:2)</div>
+      </div>
+      <p style="font-size:12px;color:#64748b;margin-top:8px">HTML order is blue, orange, green. CSS order property reorders them to: orange, green, blue.</p>
+    </div>
+
+    <h2>align-self (each item individually positioned)</h2>
+    <div class="demo"><div class="as-row"><div class="as" style="align-self:flex-start">top</div><div class="as" style="align-self:center">mid</div><div class="as" style="align-self:flex-end">bot</div><div class="as" style="align-self:stretch">stretch</div></div></div>
+
+    <h2>Equal-height cards with pinned footer (align-self: stretch + margin-top: auto)</h2>
+    <div class="demo"><div class="equal-cards">
+      <div class="eq-card"><h3>Short Card</h3><p>Brief content.</p><div class="eq-footer"><a href="#">Learn more →</a></div></div>
+      <div class="eq-card"><h3>Medium Card</h3><p>This card has more content so it's naturally taller. Both cards match height.</p><div class="eq-footer"><a href="#">Learn more →</a></div></div>
+      <div class="eq-card"><h3>Long Card</h3><p>This card has the most content. The short card and medium card stretch to match this height. All footers are at the same level!</p><div class="eq-footer"><a href="#">Learn more →</a></div></div>
+    </div></div>
+  </body>
+</html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-49-css_flex_items</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 49 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-49-css_flex_items/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 49 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ flex-grow, flex-shrink and flex-basis</li><li>✅ order and align-self</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_48.html" class="ln-btn">← Lesson 48</a>
+    <a href="lesson_50.html" class="ln-btn primary">Lesson 50 →</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 49 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_html_49_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>
