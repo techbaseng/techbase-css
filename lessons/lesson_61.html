@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 61: CSS Multiple Columns — Techbase CSS Course</title>
+<meta name="description" content="Create newspaper-style layouts using CSS multi-column properties">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+}
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+</style>
+</head>
+<body>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
+  <span class="l-nav-lesson">Lesson 61 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
+</nav>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 61 </div>
+    <h1>CSS Multiple Columns</h1>
+    <div class="l-hero-tag">Create newspaper-style layouts using CSS multi-column properties</div>
+    <div class="l-hero-build"><strong>🏗️ Build:</strong> My Multi-column Article</div>
+  </div>
+</div>
+<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
+    <div class="welcome-box">
+  <h2>👋 Welcome to Lesson 61</h2>
+  <p>Create newspaper-style layouts using CSS multi-column properties</p>
+  <div class="welcome-meta">
+    <span>📚 2 phases</span>
+    <span>🏗️ Build: My Multi-column Article</span>
+    
+  </div>
+</div>
+  </div>
+</section>
+<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">column-count and column-width</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>column-count: 3</code> = exactly 3 cols. <code>column-width: 250px</code> = as many 250px cols as fit. <code>column-gap: 32px</code> sets the gutter. <code>column-rule: 1px solid #e2e8f0</code> adds a divider. <code>column-span: all</code> lets an element span all columns.</p></div>
+    <div class="code-wrap">
+<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
+<div class="code-body"><pre>.article { column-count: 3; column-gap: 32px; column-rule: 1px solid #e2e8f0; }
+.headline { column-span: all; }
+.card     { break-inside: avoid; }</pre></div>
+</div>
+    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Apply 3-column CSS to a long article. Add a <code>column-span:all</code> pull quote — it breaks out across the full width.</p></div>
+    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">break-inside and column-fill</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>break-inside: avoid</code> prevents cards/images splitting across columns. <code>break-before: column</code> starts a new column before the element. <code>column-fill: balance</code> (default) equalises heights.</p></div>
+    <div class="code-wrap">
+<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
+<div class="code-body"><pre>figure   { break-inside: avoid; }
+.callout { break-inside: avoid; background:#dbeafe; border-left:4px solid #0284c7; padding:12px; }
+@media(max-width:600px){ .article { column-count:1; } }</pre></div>
+</div>
+    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Add a callout box with <code>break-inside:avoid</code>. Without it, the box splits in half across columns. With it, the whole box stays in one column.</p></div>
+    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It</div>
+  <div class="project-name">Newspaper Article</div>
+  <div class="project-desc">3-column article with spanning headline, pull quote and callout box.</div>
+  <div class="code-wrap">
+<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
+<div class="code-body"><pre>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;Multi-column&lt;/title&gt;
+&lt;style&gt;*,*::before,*::after{box-sizing:border-box}body{font-family:Georgia,serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
+header{border-bottom:3px solid #0f172a;margin-bottom:6px}
+header h1{font-family:Arial;font-size:2rem;margin-bottom:4px}
+.meta{font-family:Arial;font-size:12px;color:#64748b;margin-bottom:8px}
+.article{column-count:3;column-gap:28px;column-rule:1px solid #e2e8f0;margin-top:20px;text-align:justify}
+.article p{font-size:14px;line-height:1.85;color:#334155;margin-bottom:12px}
+.article h2{font-family:Arial;color:#0284c7;font-size:1rem;margin:16px 0 8px;break-before:column}
+blockquote{column-span:all;border-top:3px solid #0284c7;border-bottom:3px solid #0284c7;margin:20px 0;padding:14px 0;text-align:center;font-size:1.1rem;font-style:italic;color:#0284c7;font-weight:700}
+.callout{break-inside:avoid;background:#dbeafe;border-left:4px solid #0284c7;padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0;font-size:12px;font-family:Arial;color:#0369a1}
+@media(max-width:600px){.article{column-count:1}}@media(max-width:900px){.article{column-count:2}}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;h1&gt;CSS Multi-column Layout&lt;/h1&gt;&lt;p class=&quot;meta&quot;&gt;Techbase Academy · Lesson 61&lt;/p&gt;&lt;/header&gt;
+&lt;div class=&quot;article&quot;&gt;
+&lt;p&gt;CSS Multi-column creates newspaper columns automatically. Add &lt;code&gt;column-count:3&lt;/code&gt; and content flows from one column to the next without any extra markup.&lt;/p&gt;
+&lt;p&gt;The gap between columns is set with &lt;code&gt;column-gap&lt;/code&gt;. A dividing rule uses &lt;code&gt;column-rule&lt;/code&gt; — it works just like the &lt;code&gt;border&lt;/code&gt; shorthand.&lt;/p&gt;
+&lt;blockquote&gt;&quot;CSS columns: content flows automatically like a real newspaper.&quot;&lt;/blockquote&gt;
+&lt;p&gt;Use &lt;code&gt;column-width&lt;/code&gt; for a fluid approach — the browser creates as many columns as fit the container, making this inherently responsive.&lt;/p&gt;
+&lt;h2&gt;Controlling Breaks&lt;/h2&gt;
+&lt;p&gt;Prevent elements splitting with &lt;code&gt;break-inside:avoid&lt;/code&gt;. Force a new column before an element with &lt;code&gt;break-before:column&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;callout&quot;&gt;💡 &lt;strong&gt;break-inside:avoid&lt;/strong&gt; keeps cards, images and callouts whole inside columns.&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;column-span:all&lt;/code&gt; lets an element span all columns — used above for the pull quote.&lt;/p&gt;
+&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre></div>
+</div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
+    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
+  </div>
+  <script>
+  const __code = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Multi-column</title>
+<style>*,*::before,*::after{box-sizing:border-box}body{font-family:Georgia,serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
+header{border-bottom:3px solid #0f172a;margin-bottom:6px}
+header h1{font-family:Arial;font-size:2rem;margin-bottom:4px}
+.meta{font-family:Arial;font-size:12px;color:#64748b;margin-bottom:8px}
+.article{column-count:3;column-gap:28px;column-rule:1px solid #e2e8f0;margin-top:20px;text-align:justify}
+.article p{font-size:14px;line-height:1.85;color:#334155;margin-bottom:12px}
+.article h2{font-family:Arial;color:#0284c7;font-size:1rem;margin:16px 0 8px;break-before:column}
+blockquote{column-span:all;border-top:3px solid #0284c7;border-bottom:3px solid #0284c7;margin:20px 0;padding:14px 0;text-align:center;font-size:1.1rem;font-style:italic;color:#0284c7;font-weight:700}
+.callout{break-inside:avoid;background:#dbeafe;border-left:4px solid #0284c7;padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0;font-size:12px;font-family:Arial;color:#0369a1}
+@media(max-width:600px){.article{column-count:1}}@media(max-width:900px){.article{column-count:2}}
+</style></head><body>
+<header><h1>CSS Multi-column Layout</h1><p class="meta">Techbase Academy · Lesson 61</p></header>
+<div class="article">
+<p>CSS Multi-column creates newspaper columns automatically. Add <code>column-count:3</code> and content flows from one column to the next without any extra markup.</p>
+<p>The gap between columns is set with <code>column-gap</code>. A dividing rule uses <code>column-rule</code> — it works just like the <code>border</code> shorthand.</p>
+<blockquote>"CSS columns: content flows automatically like a real newspaper."</blockquote>
+<p>Use <code>column-width</code> for a fluid approach — the browser creates as many columns as fit the container, making this inherently responsive.</p>
+<h2>Controlling Breaks</h2>
+<p>Prevent elements splitting with <code>break-inside:avoid</code>. Force a new column before an element with <code>break-before:column</code>.</p>
+<div class="callout">💡 <strong>break-inside:avoid</strong> keeps cards, images and callouts whole inside columns.</div>
+<p><code>column-span:all</code> lets an element span all columns — used above for the pull quote.</p>
+</div></body></html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-61-css_multiple_columns</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 61 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-61-css_multiple_columns/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 61 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ column-count and column-width</li><li>✅ break-inside and column-fill</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_60.html" class="ln-btn">← Lesson 60</a>
+    <a href="lesson_62.html" class="ln-btn primary">Lesson 62 →</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 61 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_css_61_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>

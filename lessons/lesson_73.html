@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 73: CSS Final Capstone — Techbase CSS Course</title>
+<meta name="description" content="Build a complete professional portfolio site combining all 73 CSS lessons">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
+  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
+  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
+  --s2:#f1f5f9;
+}
+:root{
+  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--t2:#334155;--muted:#64748b;
+  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
+.l-nav-logo em{font-style:normal}
+.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+.l-nav-back:hover{color:var(--accent)}
+.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
+.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:820px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
+.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
+.l-hero-build strong{color:var(--accent)}
+.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
+.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
+.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
+.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
+.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
+.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase-check.done{background:#10b981;color:#fff}
+.phase-body{padding:1.4rem}
+.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
+.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
+.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
+.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
+.code-dot{width:8px;height:8px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
+.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
+.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
+.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
+.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
+.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
+.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
+.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
+.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
+.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
+.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
+.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
+.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
+.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
+.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.github-acc-body.open{display:block}
+.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end.visible{display:block}
+.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ln-btn.primary:hover{opacity:.9}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+</style>
+</head>
+<body>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
+  <span class="l-nav-lesson">Lesson 73 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
+</nav>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 73 </div>
+    <h1>CSS Final Capstone</h1>
+    <div class="l-hero-tag">Build a complete professional portfolio site combining all 73 CSS lessons</div>
+    <div class="l-hero-build"><strong>🏗️ Build:</strong> My Complete CSS Portfolio</div>
+  </div>
+</div>
+<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
+    <div class="welcome-box">
+  <h2>👋 Welcome to Lesson 73</h2>
+  <p>Build a complete professional portfolio site combining all 73 CSS lessons</p>
+  <div class="welcome-meta">
+    <span>📚 2 phases</span>
+    <span>🏗️ Build: My Complete CSS Portfolio</span>
+    
+  </div>
+</div>
+  </div>
+</section>
+<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">Portfolio structure and theme</div></div>
+    <div class="phase-check" id="check1"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box"><div class="concept-label">📖 Concept</div><p>Your final CSS portfolio demonstrates mastery of all 73 lessons: custom variables, box-sizing reset, responsive layout, Flexbox, Grid, transitions, animations, 3D transforms, tooltips, buttons, web fonts, text effects, backdrop-filter and glassmorphism. Build section by section: sticky glassmorphism navbar, animated hero, grid project cards, skills bars, contact form, footer.</p></div>
+    <div class="code-wrap">
+<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
+<div class="code-body"><pre>:root { --primary:#0284c7; --accent:#ea4f21; --dark:#0f172a; --bg:#f0f9ff; --radius:14px; }
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+.navbar { backdrop-filter: blur(16px); position: sticky; top:0; z-index:100; }
+.cards  { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:20px; }
+.card   { transition: transform .25s ease, box-shadow .25s ease; }
+.card:hover { transform: translateY(-6px); }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+.hero h1 { animation: fadeUp .8s ease .1s both; }
+.grad { background: linear-gradient(135deg,#0284c7,#7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }</pre></div>
+</div>
+    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Build your portfolio page section by section: (1) sticky glassmorphism navbar, (2) animated gradient hero, (3) project card grid, (4) skills progress bars, (5) styled contact form, (6) footer. Use CSS variables for every colour.</p></div>
+    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase2">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">Polish, deploy and celebrate</div></div>
+    <div class="phase-check" id="check2"></div>
+  </div>
+  <div class="phase-body">
+    <div class="concept-box"><div class="concept-label">📖 Concept</div><p>Polish checklist: ✅ CSS variables. ✅ border-box reset. ✅ scroll-behavior:smooth. ✅ prefers-reduced-motion. ✅ dark mode. ✅ max-width:100% on images. ✅ focus-visible rings. ✅ Responsive at 320/768/1024px. Then push to GitHub Pages!</p></div>
+    <div class="code-wrap">
+<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
+<div class="code-body"><pre>@media(prefers-reduced-motion:reduce){ *,*::before,*::after { animation:none!important; transition:none!important; } }
+@media(prefers-color-scheme:dark) { :root { --bg:#0f172a; --surface:#1e293b; --text:#f1f5f9; } }
+:focus-visible { outline:3px solid var(--primary); outline-offset:3px; }
+img { max-width:100%; height:auto; }</pre></div>
+</div>
+    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Run your page through validator.w3.org for HTML errors. Test at 320px, 768px, 1024px in DevTools. Run Lighthouse for performance and accessibility. Aim for 90+!</p></div>
+    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+  </div>
+</div>
+<div class="project-box" id="build-it" style="display:none">
+  <div class="project-label">🏗️ Build It</div>
+  <div class="project-name">My Complete CSS Portfolio</div>
+  <div class="project-desc">Your complete CSS portfolio — the Batch 3 and final capstone combining all 73 CSS lessons.</div>
+  <div class="code-wrap">
+<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
+<div class="code-body"><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;CSS Portfolio — All 73 Lessons&lt;/title&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+:root{--primary:#0284c7;--primary-d:#0369a1;--primary-p:#e0f2fe;--accent:#ea4f21;--purple:#7c3aed;--dark:#0f172a;--bg:#f0f9ff;--surface:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--radius:14px}
+@media(prefers-color-scheme:dark){:root{--bg:#0f172a;--surface:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--border:#334155;--primary-p:rgba(2,132,199,.15)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes grad-move{to{background-position:200% center}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:68px;accent-color:var(--primary)}
+body{font-family:&#x27;Plus Jakarta Sans&#x27;,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+img{max-width:100%;height:auto;display:block}
+::selection{background:var(--primary-p);color:var(--primary)}
+:focus-visible{outline:3px solid var(--primary);outline-offset:3px;border-radius:4px}
+/* NAV */
+.navbar{position:sticky;top:0;z-index:100;background:rgba(240,249,255,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-in{max-width:1100px;margin:0 auto;padding:0 22px;display:flex;align-items:center;height:64px;gap:8px}
+.brand{font-weight:800;font-size:1rem;color:var(--primary);margin-right:auto;text-decoration:none}
+.hbg{background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:5px}
+.hbg span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px}
+.nav-links{display:none}
+.nav-links.open{display:flex;flex-direction:column;position:fixed;inset:0;top:64px;background:rgba(15,23,42,.97);align-items:center;justify-content:center;gap:22px;z-index:99}
+.nav-links.open a{color:white;font-size:1.4rem;font-weight:700;text-decoration:none}
+.close-n{position:absolute;top:16px;right:22px;background:none;border:none;color:white;font-size:2rem;cursor:pointer}
+@media(min-width:680px){.hbg{display:none}.nav-links{display:flex!important;flex-direction:row;gap:4px;position:static;background:none}.nav-links a{color:var(--muted);text-decoration:none;font-weight:600;font-size:13px;padding:7px 13px;border-radius:8px;transition:.15s}.nav-links a:hover{color:var(--primary);background:var(--primary-p)}.nav-links .cta{background:var(--primary);color:white!important}.close-n{display:none}}
+/* HERO */
+.hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(56px,12vw,100px) 22px;background:radial-gradient(ellipse at 60% 30%,rgba(2,132,199,.1),transparent 60%),var(--bg)}
+.hero-tag{background:var(--primary-p);color:var(--primary);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:18px;animation:fadeUp .6s ease both}
+.hero h1{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:14px;animation:fadeUp .8s ease .1s both}
+.grad{background:linear-gradient(135deg,var(--primary),var(--purple),var(--accent));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-move 4s linear infinite}
+.hero-sub{color:var(--muted);font-size:clamp(.95rem,2vw,1.1rem);max-width:500px;margin:0 auto 28px;animation:fadeUp .8s ease .3s both}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .8s ease .5s both}
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:white;padding:12px 26px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:.2s}
+.btn-p:hover{background:var(--primary-d);transform:translateY(-2px);box-shadow:0 8px 20px rgba(2,132,199,.3)}
+.btn-o{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--primary);padding:11px 24px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;border:2px solid var(--primary);transition:.2s}
+.btn-o:hover{background:var(--primary);color:white}
+/* SECTIONS */
+section{padding:clamp(44px,8vw,72px) 22px}
+.inner{max-width:1100px;margin:0 auto}
+.sec-tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:8px}
+.sec-h{font-size:clamp(1.5rem,3.5vw,2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.sec-p{color:var(--muted);font-size:.95rem;margin-bottom:28px;max-width:480px}
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s ease,box-shadow .25s ease,border-color .2s;cursor:pointer;animation:fadeUp .6s ease both}
+.card:nth-child(1){animation-delay:.1s}.card:nth-child(2){animation-delay:.2s}.card:nth-child(3){animation-delay:.3s}.card:nth-child(4){animation-delay:.4s}.card:nth-child(5){animation-delay:.5s}.card:nth-child(6){animation-delay:.6s}
+.card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(2,132,199,.14);border-color:var(--primary)}
+.ct{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:3rem}
+.cb{padding:18px;flex:1;display:flex;flex-direction:column}
+.cb h3{font-size:14px;font-weight:700;margin:0 0 6px}
+.cb p{font-size:13px;color:var(--muted);line-height:1.7;flex:1;margin:0 0 12px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
+.tag{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:var(--primary-p);color:var(--primary)}
+/* STATS */
+.stats{display:flex;flex-wrap:wrap;background:var(--primary);border-radius:var(--radius);overflow:hidden}
+.stat{flex:1 1 50%;padding:26px;text-align:center;border-bottom:1px solid rgba(255,255,255,.1);border-right:1px solid rgba(255,255,255,.1)}
+.stat:nth-child(even){border-right:none}.stat:last-child{border-bottom:none}
+@media(min-width:640px){.stat{flex:1 1 25%;border-bottom:none}.stat:nth-child(even){border-right:1px solid rgba(255,255,255,.1)}.stat:last-child{border-right:none}}
+.stat-n{font-size:2.2rem;font-weight:800;color:white;display:block}
+.stat-l{font-size:12px;color:rgba(255,255,255,.7)}
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.skill-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px}
+.skill-card h3{font-size:13px;font-weight:700;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.prog-bg{background:var(--border);border-radius:100px;height:8px;overflow:hidden}
+.prog{height:100%;border-radius:100px;background:var(--primary);transform-origin:left;transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
+/* GLASS SECTION */
+.glass-banner{background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:var(--radius);padding:clamp(24px,5vw,48px) 28px;margin-bottom:20px}
+.glass-inner{background:rgba(255,255,255,.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:22px;color:white;max-width:500px}
+.glass-inner h3{font-size:1.2rem;font-weight:800;margin:0 0 8px}
+.glass-inner p{opacity:.85;font-size:14px;line-height:1.75;margin:0}
+/* CONTACT */
+.contact-box{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:clamp(20px,5vw,40px);max-width:540px;margin:0 auto}
+.form-group{margin-bottom:14px}
+label{display:block;font-weight:700;font-size:13px;color:var(--muted);margin-bottom:6px}
+input[type=text],input[type=email],textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:inherit;color:var(--text);background:var(--bg);caret-color:var(--primary);transition:.15s;outline:none}
+input:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(2,132,199,.18)}
+textarea{resize:vertical;min-height:90px}
+/* FOOTER */
+footer{background:var(--dark);color:rgba(255,255,255,.4);padding:24px 22px;font-size:13px}
+.footer-in{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
+.footer-links{display:flex;gap:14px}
+.footer-links a{color:rgba(255,255,255,.6);text-decoration:none;transition:.15s}
+.footer-links a:hover{color:white}
+@media(min-width:640px){.footer-in{flex-direction:row;justify-content:space-between;text-align:left}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;nav class=&quot;navbar&quot;&gt;
+&lt;div class=&quot;nav-in&quot;&gt;
+&lt;a href=&quot;#&quot; class=&quot;brand&quot;&gt;⚡ Techbase Academy&lt;/a&gt;
+&lt;button class=&quot;hbg&quot; id=&quot;hbg&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;div class=&quot;nav-links&quot; id=&quot;nav&quot;&gt;
+&lt;button class=&quot;close-n&quot; id=&quot;cn&quot;&gt;✕&lt;/button&gt;
+&lt;a href=&quot;#projects&quot;&gt;Projects&lt;/a&gt;&lt;a href=&quot;#skills&quot;&gt;Skills&lt;/a&gt;&lt;a href=&quot;#about&quot;&gt;About&lt;/a&gt;
+&lt;a href=&quot;#contact&quot; class=&quot;cta&quot;&gt;Contact →&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;div class=&quot;hero&quot;&gt;
+&lt;span style=&quot;font-size:5rem;animation:fadeUp .6s ease both&quot;&gt;🎨&lt;/span&gt;
+&lt;span class=&quot;hero-tag&quot;&gt;🏆 CSS Final Capstone — All 73 Lessons Complete!&lt;/span&gt;
+&lt;h1&gt;CSS &lt;span class=&quot;grad&quot;&gt;Mastered&lt;/span&gt;&lt;/h1&gt;
+&lt;p class=&quot;hero-sub&quot;&gt;A complete portfolio site built with every concept from Lesson 1 to 73 — variables, Grid, Flex, animations, 3D, filters, glassmorphism and more.&lt;/p&gt;
+&lt;div class=&quot;hero-btns&quot;&gt;
+&lt;a href=&quot;#projects&quot; class=&quot;btn-p&quot;&gt;View Projects →&lt;/a&gt;
+&lt;a href=&quot;#contact&quot; class=&quot;btn-o&quot;&gt;Contact Me&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;inner&quot; style=&quot;padding:0 22px;transform:translateY(-1px)&quot;&gt;
+&lt;div class=&quot;stats&quot;&gt;
+&lt;div class=&quot;stat&quot;&gt;&lt;span class=&quot;stat-n&quot;&gt;73&lt;/span&gt;&lt;span class=&quot;stat-l&quot;&gt;CSS Lessons&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;stat&quot;&gt;&lt;span class=&quot;stat-n&quot;&gt;356&lt;/span&gt;&lt;span class=&quot;stat-l&quot;&gt;Total Lessons&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;stat&quot;&gt;&lt;span class=&quot;stat-n&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;stat-l&quot;&gt;Courses&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;stat&quot;&gt;&lt;span class=&quot;stat-n&quot;&gt;🏆&lt;/span&gt;&lt;span class=&quot;stat-l&quot;&gt;Capstone!&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;section id=&quot;projects&quot;&gt;
+&lt;div class=&quot;inner&quot;&gt;
+&lt;p class=&quot;sec-tag&quot;&gt;Portfolio&lt;/p&gt;
+&lt;h2 class=&quot;sec-h&quot;&gt;My CSS Projects&lt;/h2&gt;
+&lt;p class=&quot;sec-p&quot;&gt;Projects built across all 3 CSS batches — foundations to advanced.&lt;/p&gt;
+&lt;div class=&quot;cards&quot;&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;ct&quot; style=&quot;background:linear-gradient(135deg,#0284c7,#0369a1)&quot;&gt;🌐&lt;/div&gt;&lt;div class=&quot;cb&quot;&gt;&lt;h3&gt;Personal Showcase&lt;/h3&gt;&lt;p&gt;Batch 1: typography, colours, box model, backgrounds and borders (L01–25).&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag&quot;&gt;CSS&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;Box Model&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;ct&quot; style=&quot;background:linear-gradient(135deg,#ea4f21,#d97706)&quot;&gt;📐&lt;/div&gt;&lt;div class=&quot;cb&quot;&gt;&lt;h3&gt;Responsive Dashboard&lt;/h3&gt;&lt;p&gt;Batch 2: Flexbox, media queries, variables and nav (L26–50).&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag&quot;&gt;Flexbox&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;Responsive&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;ct&quot; style=&quot;background:linear-gradient(135deg,#7c3aed,#a855f7)&quot;&gt;✨&lt;/div&gt;&lt;div class=&quot;cb&quot;&gt;&lt;h3&gt;Animation Gallery&lt;/h3&gt;&lt;p&gt;Batch 3: Grid, transitions, animations, 3D and transforms (L51–73).&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag&quot;&gt;Grid&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;Animations&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;ct&quot; style=&quot;background:linear-gradient(135deg,#10b981,#059669)&quot;&gt;🔮&lt;/div&gt;&lt;div class=&quot;cb&quot;&gt;&lt;h3&gt;Glassmorphism UI&lt;/h3&gt;&lt;p&gt;backdrop-filter, CSS filters and modern visual effects (L72).&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag&quot;&gt;Glassmorphism&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;Filters&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;ct&quot; style=&quot;background:linear-gradient(135deg,#0f172a,#1e293b)&quot;&gt;🔘&lt;/div&gt;&lt;div class=&quot;cb&quot;&gt;&lt;h3&gt;Button Design System&lt;/h3&gt;&lt;p&gt;Complete button library with variants, sizes, states (L59).&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag&quot;&gt;Buttons&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;Design System&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;ct&quot; style=&quot;background:linear-gradient(135deg,#f59e0b,#d97706)&quot;&gt;📰&lt;/div&gt;&lt;div class=&quot;cb&quot;&gt;&lt;h3&gt;Multi-column Article&lt;/h3&gt;&lt;p&gt;Newspaper CSS columns, pull quotes and break-inside (L61).&lt;/p&gt;&lt;div class=&quot;tags&quot;&gt;&lt;span class=&quot;tag&quot;&gt;Multi-column&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;Typography&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section style=&quot;padding:0 22px 44px&quot;&gt;
+&lt;div class=&quot;inner&quot;&gt;
+&lt;div class=&quot;glass-banner&quot;&gt;
+&lt;div class=&quot;glass-inner&quot;&gt;
+&lt;h3&gt;🔮 backdrop-filter: blur(12px)&lt;/h3&gt;
+&lt;p&gt;This frosted glass card uses backdrop-filter from CSS Lesson 72. The gradient behind is blurred through the semi-transparent background — glassmorphism!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section id=&quot;skills&quot; style=&quot;background:var(--primary-p)&quot;&gt;
+&lt;div class=&quot;inner&quot;&gt;
+&lt;p class=&quot;sec-tag&quot;&gt;Skills&lt;/p&gt;
+&lt;h2 class=&quot;sec-h&quot;&gt;CSS Mastery Progress&lt;/h2&gt;
+&lt;p class=&quot;sec-p&quot;&gt;Progress across all 4 CSS batches.&lt;/p&gt;
+&lt;div class=&quot;skills-grid&quot;&gt;
+&lt;div class=&quot;skill-card&quot;&gt;&lt;h3&gt;🎨 CSS Foundations (L01–25)&lt;/h3&gt;&lt;div class=&quot;prog-bg&quot;&gt;&lt;div class=&quot;prog&quot; style=&quot;transform:scaleX(1)&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;skill-card&quot;&gt;&lt;h3&gt;📐 CSS Intermediate (L26–50)&lt;/h3&gt;&lt;div class=&quot;prog-bg&quot;&gt;&lt;div class=&quot;prog&quot; style=&quot;transform:scaleX(1)&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;skill-card&quot;&gt;&lt;h3&gt;🚀 CSS Advanced (L51–73)&lt;/h3&gt;&lt;div class=&quot;prog-bg&quot;&gt;&lt;div class=&quot;prog&quot; style=&quot;transform:scaleX(1);background:var(--accent)&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;skill-card&quot;&gt;&lt;h3&gt;⚡ JavaScript (coming next)&lt;/h3&gt;&lt;div class=&quot;prog-bg&quot;&gt;&lt;div class=&quot;prog&quot; style=&quot;transform:scaleX(0);background:var(--purple)&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section id=&quot;about&quot;&gt;
+&lt;div class=&quot;inner&quot; style=&quot;display:flex;flex-wrap:wrap;gap:36px;align-items:center&quot;&gt;
+&lt;div style=&quot;flex:1;min-width:240px&quot;&gt;
+&lt;p class=&quot;sec-tag&quot;&gt;About&lt;/p&gt;
+&lt;h2 class=&quot;sec-h&quot;&gt;Techbase Academy&lt;/h2&gt;
+&lt;p style=&quot;color:var(--muted);line-height:1.85;margin-bottom:12px&quot;&gt;Techbase Consultant Services, based in Ibadan, Oyo State, Nigeria. Our mission: make quality STEM education accessible to every student.&lt;/p&gt;
+&lt;p style=&quot;color:var(--muted);line-height:1.85&quot;&gt;This portfolio demonstrates all 73 CSS lessons — variables, layout, typography, animations, 3D, filters and glassmorphism.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div style=&quot;flex:1;min-width:240px;display:grid;grid-template-columns:1fr 1fr;gap:10px&quot;&gt;
+&lt;div style=&quot;background:var(--primary-p);border-radius:12px;padding:14px;text-align:center&quot;&gt;&lt;span style=&quot;font-size:1.8rem&quot;&gt;📍&lt;/span&gt;&lt;p style=&quot;font-size:12px;color:var(--primary);font-weight:700;margin-top:6px&quot;&gt;Ibadan, Nigeria&lt;/p&gt;&lt;/div&gt;
+&lt;div style=&quot;background:var(--primary-p);border-radius:12px;padding:14px;text-align:center&quot;&gt;&lt;span style=&quot;font-size:1.8rem&quot;&gt;📚&lt;/span&gt;&lt;p style=&quot;font-size:12px;color:var(--primary);font-weight:700;margin-top:6px&quot;&gt;STEM Education&lt;/p&gt;&lt;/div&gt;
+&lt;div style=&quot;background:var(--primary-p);border-radius:12px;padding:14px;text-align:center&quot;&gt;&lt;span style=&quot;font-size:1.8rem&quot;&gt;💻&lt;/span&gt;&lt;p style=&quot;font-size:12px;color:var(--primary);font-weight:700;margin-top:6px&quot;&gt;Web Dev&lt;/p&gt;&lt;/div&gt;
+&lt;div style=&quot;background:var(--primary-p);border-radius:12px;padding:14px;text-align:center&quot;&gt;&lt;span style=&quot;font-size:1.8rem&quot;&gt;🤖&lt;/span&gt;&lt;p style=&quot;font-size:12px;color:var(--primary);font-weight:700;margin-top:6px&quot;&gt;Robotics&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section id=&quot;contact&quot; style=&quot;background:var(--primary-p)&quot;&gt;
+&lt;div class=&quot;inner&quot;&gt;
+&lt;p class=&quot;sec-tag&quot;&gt;Contact&lt;/p&gt;
+&lt;h2 class=&quot;sec-h&quot; style=&quot;text-align:center&quot;&gt;Get in Touch&lt;/h2&gt;
+&lt;div class=&quot;contact-box&quot;&gt;
+&lt;div class=&quot;form-group&quot;&gt;&lt;label&gt;Name&lt;/label&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Amina Bello&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;form-group&quot;&gt;&lt;label&gt;Email&lt;/label&gt;&lt;input type=&quot;email&quot; placeholder=&quot;amina@example.com&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;form-group&quot;&gt;&lt;label&gt;Message&lt;/label&gt;&lt;textarea placeholder=&quot;I&#x27;d love to enrol in a CSS course!&quot;&gt;&lt;/textarea&gt;&lt;/div&gt;
+&lt;button class=&quot;btn-p&quot; style=&quot;width:100%;justify-content:center&quot; onclick=&quot;this.textContent=&#x27;Message Sent! ✅&#x27;;this.style.background=&#x27;#10b981&#x27;&quot;&gt;✉ Send Message&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+
+&lt;footer&gt;
+&lt;div class=&quot;footer-in&quot;&gt;
+&lt;span&gt;© 2025 Techbase Consultant Services · Ibadan, Nigeria 🇳🇬&lt;/span&gt;
+&lt;div class=&quot;footer-links&quot;&gt;
+&lt;a href=&quot;https://github.com/techbaseng&quot; target=&quot;_blank&quot;&gt;GitHub&lt;/a&gt;
+&lt;a href=&quot;#&quot;&gt;Privacy&lt;/a&gt;&lt;a href=&quot;#&quot;&gt;Terms&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/footer&gt;
+&lt;script&gt;
+const hbg=document.getElementById(&#x27;hbg&#x27;),nav=document.getElementById(&#x27;nav&#x27;),cn=document.getElementById(&#x27;cn&#x27;);
+hbg.addEventListener(&#x27;click&#x27;,()=&gt;nav.classList.toggle(&#x27;open&#x27;));
+if(cn)cn.addEventListener(&#x27;click&#x27;,()=&gt;nav.classList.remove(&#x27;open&#x27;));
+nav.querySelectorAll(&#x27;a&#x27;).forEach(a=&gt;a.addEventListener(&#x27;click&#x27;,()=&gt;nav.classList.remove(&#x27;open&#x27;)));
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
+    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
+  </div>
+  <script>
+  const __code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Portfolio — All 73 Lessons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#0284c7;--primary-d:#0369a1;--primary-p:#e0f2fe;--accent:#ea4f21;--purple:#7c3aed;--dark:#0f172a;--bg:#f0f9ff;--surface:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--radius:14px}
+@media(prefers-color-scheme:dark){:root{--bg:#0f172a;--surface:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--border:#334155;--primary-p:rgba(2,132,199,.15)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes grad-move{to{background-position:200% center}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:68px;accent-color:var(--primary)}
+body{font-family:'Plus Jakarta Sans',-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+img{max-width:100%;height:auto;display:block}
+::selection{background:var(--primary-p);color:var(--primary)}
+:focus-visible{outline:3px solid var(--primary);outline-offset:3px;border-radius:4px}
+/* NAV */
+.navbar{position:sticky;top:0;z-index:100;background:rgba(240,249,255,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-in{max-width:1100px;margin:0 auto;padding:0 22px;display:flex;align-items:center;height:64px;gap:8px}
+.brand{font-weight:800;font-size:1rem;color:var(--primary);margin-right:auto;text-decoration:none}
+.hbg{background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:5px}
+.hbg span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px}
+.nav-links{display:none}
+.nav-links.open{display:flex;flex-direction:column;position:fixed;inset:0;top:64px;background:rgba(15,23,42,.97);align-items:center;justify-content:center;gap:22px;z-index:99}
+.nav-links.open a{color:white;font-size:1.4rem;font-weight:700;text-decoration:none}
+.close-n{position:absolute;top:16px;right:22px;background:none;border:none;color:white;font-size:2rem;cursor:pointer}
+@media(min-width:680px){.hbg{display:none}.nav-links{display:flex!important;flex-direction:row;gap:4px;position:static;background:none}.nav-links a{color:var(--muted);text-decoration:none;font-weight:600;font-size:13px;padding:7px 13px;border-radius:8px;transition:.15s}.nav-links a:hover{color:var(--primary);background:var(--primary-p)}.nav-links .cta{background:var(--primary);color:white!important}.close-n{display:none}}
+/* HERO */
+.hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(56px,12vw,100px) 22px;background:radial-gradient(ellipse at 60% 30%,rgba(2,132,199,.1),transparent 60%),var(--bg)}
+.hero-tag{background:var(--primary-p);color:var(--primary);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:18px;animation:fadeUp .6s ease both}
+.hero h1{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:14px;animation:fadeUp .8s ease .1s both}
+.grad{background:linear-gradient(135deg,var(--primary),var(--purple),var(--accent));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-move 4s linear infinite}
+.hero-sub{color:var(--muted);font-size:clamp(.95rem,2vw,1.1rem);max-width:500px;margin:0 auto 28px;animation:fadeUp .8s ease .3s both}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .8s ease .5s both}
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:white;padding:12px 26px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:.2s}
+.btn-p:hover{background:var(--primary-d);transform:translateY(-2px);box-shadow:0 8px 20px rgba(2,132,199,.3)}
+.btn-o{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--primary);padding:11px 24px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;border:2px solid var(--primary);transition:.2s}
+.btn-o:hover{background:var(--primary);color:white}
+/* SECTIONS */
+section{padding:clamp(44px,8vw,72px) 22px}
+.inner{max-width:1100px;margin:0 auto}
+.sec-tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:8px}
+.sec-h{font-size:clamp(1.5rem,3.5vw,2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.sec-p{color:var(--muted);font-size:.95rem;margin-bottom:28px;max-width:480px}
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s ease,box-shadow .25s ease,border-color .2s;cursor:pointer;animation:fadeUp .6s ease both}
+.card:nth-child(1){animation-delay:.1s}.card:nth-child(2){animation-delay:.2s}.card:nth-child(3){animation-delay:.3s}.card:nth-child(4){animation-delay:.4s}.card:nth-child(5){animation-delay:.5s}.card:nth-child(6){animation-delay:.6s}
+.card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(2,132,199,.14);border-color:var(--primary)}
+.ct{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:3rem}
+.cb{padding:18px;flex:1;display:flex;flex-direction:column}
+.cb h3{font-size:14px;font-weight:700;margin:0 0 6px}
+.cb p{font-size:13px;color:var(--muted);line-height:1.7;flex:1;margin:0 0 12px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
+.tag{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:var(--primary-p);color:var(--primary)}
+/* STATS */
+.stats{display:flex;flex-wrap:wrap;background:var(--primary);border-radius:var(--radius);overflow:hidden}
+.stat{flex:1 1 50%;padding:26px;text-align:center;border-bottom:1px solid rgba(255,255,255,.1);border-right:1px solid rgba(255,255,255,.1)}
+.stat:nth-child(even){border-right:none}.stat:last-child{border-bottom:none}
+@media(min-width:640px){.stat{flex:1 1 25%;border-bottom:none}.stat:nth-child(even){border-right:1px solid rgba(255,255,255,.1)}.stat:last-child{border-right:none}}
+.stat-n{font-size:2.2rem;font-weight:800;color:white;display:block}
+.stat-l{font-size:12px;color:rgba(255,255,255,.7)}
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.skill-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px}
+.skill-card h3{font-size:13px;font-weight:700;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.prog-bg{background:var(--border);border-radius:100px;height:8px;overflow:hidden}
+.prog{height:100%;border-radius:100px;background:var(--primary);transform-origin:left;transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
+/* GLASS SECTION */
+.glass-banner{background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:var(--radius);padding:clamp(24px,5vw,48px) 28px;margin-bottom:20px}
+.glass-inner{background:rgba(255,255,255,.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:22px;color:white;max-width:500px}
+.glass-inner h3{font-size:1.2rem;font-weight:800;margin:0 0 8px}
+.glass-inner p{opacity:.85;font-size:14px;line-height:1.75;margin:0}
+/* CONTACT */
+.contact-box{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:clamp(20px,5vw,40px);max-width:540px;margin:0 auto}
+.form-group{margin-bottom:14px}
+label{display:block;font-weight:700;font-size:13px;color:var(--muted);margin-bottom:6px}
+input[type=text],input[type=email],textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:inherit;color:var(--text);background:var(--bg);caret-color:var(--primary);transition:.15s;outline:none}
+input:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(2,132,199,.18)}
+textarea{resize:vertical;min-height:90px}
+/* FOOTER */
+footer{background:var(--dark);color:rgba(255,255,255,.4);padding:24px 22px;font-size:13px}
+.footer-in{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
+.footer-links{display:flex;gap:14px}
+.footer-links a{color:rgba(255,255,255,.6);text-decoration:none;transition:.15s}
+.footer-links a:hover{color:white}
+@media(min-width:640px){.footer-in{flex-direction:row;justify-content:space-between;text-align:left}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+<div class="nav-in">
+<a href="#" class="brand">⚡ Techbase Academy</a>
+<button class="hbg" id="hbg"><span></span><span></span><span></span></button>
+<div class="nav-links" id="nav">
+<button class="close-n" id="cn">✕</button>
+<a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#about">About</a>
+<a href="#contact" class="cta">Contact →</a>
+</div>
+</div>
+</nav>
+
+<div class="hero">
+<span style="font-size:5rem;animation:fadeUp .6s ease both">🎨</span>
+<span class="hero-tag">🏆 CSS Final Capstone — All 73 Lessons Complete!</span>
+<h1>CSS <span class="grad">Mastered</span></h1>
+<p class="hero-sub">A complete portfolio site built with every concept from Lesson 1 to 73 — variables, Grid, Flex, animations, 3D, filters, glassmorphism and more.</p>
+<div class="hero-btns">
+<a href="#projects" class="btn-p">View Projects →</a>
+<a href="#contact" class="btn-o">Contact Me</a>
+</div>
+</div>
+
+<div class="inner" style="padding:0 22px;transform:translateY(-1px)">
+<div class="stats">
+<div class="stat"><span class="stat-n">73</span><span class="stat-l">CSS Lessons</span></div>
+<div class="stat"><span class="stat-n">356</span><span class="stat-l">Total Lessons</span></div>
+<div class="stat"><span class="stat-n">6</span><span class="stat-l">Courses</span></div>
+<div class="stat"><span class="stat-n">🏆</span><span class="stat-l">Capstone!</span></div>
+</div>
+</div>
+
+<section id="projects">
+<div class="inner">
+<p class="sec-tag">Portfolio</p>
+<h2 class="sec-h">My CSS Projects</h2>
+<p class="sec-p">Projects built across all 3 CSS batches — foundations to advanced.</p>
+<div class="cards">
+<div class="card"><div class="ct" style="background:linear-gradient(135deg,#0284c7,#0369a1)">🌐</div><div class="cb"><h3>Personal Showcase</h3><p>Batch 1: typography, colours, box model, backgrounds and borders (L01–25).</p><div class="tags"><span class="tag">CSS</span><span class="tag">Box Model</span></div></div></div>
+<div class="card"><div class="ct" style="background:linear-gradient(135deg,#ea4f21,#d97706)">📐</div><div class="cb"><h3>Responsive Dashboard</h3><p>Batch 2: Flexbox, media queries, variables and nav (L26–50).</p><div class="tags"><span class="tag">Flexbox</span><span class="tag">Responsive</span></div></div></div>
+<div class="card"><div class="ct" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">✨</div><div class="cb"><h3>Animation Gallery</h3><p>Batch 3: Grid, transitions, animations, 3D and transforms (L51–73).</p><div class="tags"><span class="tag">Grid</span><span class="tag">Animations</span></div></div></div>
+<div class="card"><div class="ct" style="background:linear-gradient(135deg,#10b981,#059669)">🔮</div><div class="cb"><h3>Glassmorphism UI</h3><p>backdrop-filter, CSS filters and modern visual effects (L72).</p><div class="tags"><span class="tag">Glassmorphism</span><span class="tag">Filters</span></div></div></div>
+<div class="card"><div class="ct" style="background:linear-gradient(135deg,#0f172a,#1e293b)">🔘</div><div class="cb"><h3>Button Design System</h3><p>Complete button library with variants, sizes, states (L59).</p><div class="tags"><span class="tag">Buttons</span><span class="tag">Design System</span></div></div></div>
+<div class="card"><div class="ct" style="background:linear-gradient(135deg,#f59e0b,#d97706)">📰</div><div class="cb"><h3>Multi-column Article</h3><p>Newspaper CSS columns, pull quotes and break-inside (L61).</p><div class="tags"><span class="tag">Multi-column</span><span class="tag">Typography</span></div></div></div>
+</div>
+</div>
+</section>
+
+<section style="padding:0 22px 44px">
+<div class="inner">
+<div class="glass-banner">
+<div class="glass-inner">
+<h3>🔮 backdrop-filter: blur(12px)</h3>
+<p>This frosted glass card uses backdrop-filter from CSS Lesson 72. The gradient behind is blurred through the semi-transparent background — glassmorphism!</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="skills" style="background:var(--primary-p)">
+<div class="inner">
+<p class="sec-tag">Skills</p>
+<h2 class="sec-h">CSS Mastery Progress</h2>
+<p class="sec-p">Progress across all 4 CSS batches.</p>
+<div class="skills-grid">
+<div class="skill-card"><h3>🎨 CSS Foundations (L01–25)</h3><div class="prog-bg"><div class="prog" style="transform:scaleX(1)"></div></div></div>
+<div class="skill-card"><h3>📐 CSS Intermediate (L26–50)</h3><div class="prog-bg"><div class="prog" style="transform:scaleX(1)"></div></div></div>
+<div class="skill-card"><h3>🚀 CSS Advanced (L51–73)</h3><div class="prog-bg"><div class="prog" style="transform:scaleX(1);background:var(--accent)"></div></div></div>
+<div class="skill-card"><h3>⚡ JavaScript (coming next)</h3><div class="prog-bg"><div class="prog" style="transform:scaleX(0);background:var(--purple)"></div></div></div>
+</div>
+</div>
+</section>
+
+<section id="about">
+<div class="inner" style="display:flex;flex-wrap:wrap;gap:36px;align-items:center">
+<div style="flex:1;min-width:240px">
+<p class="sec-tag">About</p>
+<h2 class="sec-h">Techbase Academy</h2>
+<p style="color:var(--muted);line-height:1.85;margin-bottom:12px">Techbase Consultant Services, based in Ibadan, Oyo State, Nigeria. Our mission: make quality STEM education accessible to every student.</p>
+<p style="color:var(--muted);line-height:1.85">This portfolio demonstrates all 73 CSS lessons — variables, layout, typography, animations, 3D, filters and glassmorphism.</p>
+</div>
+<div style="flex:1;min-width:240px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div style="background:var(--primary-p);border-radius:12px;padding:14px;text-align:center"><span style="font-size:1.8rem">📍</span><p style="font-size:12px;color:var(--primary);font-weight:700;margin-top:6px">Ibadan, Nigeria</p></div>
+<div style="background:var(--primary-p);border-radius:12px;padding:14px;text-align:center"><span style="font-size:1.8rem">📚</span><p style="font-size:12px;color:var(--primary);font-weight:700;margin-top:6px">STEM Education</p></div>
+<div style="background:var(--primary-p);border-radius:12px;padding:14px;text-align:center"><span style="font-size:1.8rem">💻</span><p style="font-size:12px;color:var(--primary);font-weight:700;margin-top:6px">Web Dev</p></div>
+<div style="background:var(--primary-p);border-radius:12px;padding:14px;text-align:center"><span style="font-size:1.8rem">🤖</span><p style="font-size:12px;color:var(--primary);font-weight:700;margin-top:6px">Robotics</p></div>
+</div>
+</div>
+</section>
+
+<section id="contact" style="background:var(--primary-p)">
+<div class="inner">
+<p class="sec-tag">Contact</p>
+<h2 class="sec-h" style="text-align:center">Get in Touch</h2>
+<div class="contact-box">
+<div class="form-group"><label>Name</label><input type="text" placeholder="Amina Bello"></div>
+<div class="form-group"><label>Email</label><input type="email" placeholder="amina@example.com"></div>
+<div class="form-group"><label>Message</label><textarea placeholder="I'd love to enrol in a CSS course!"></textarea></div>
+<button class="btn-p" style="width:100%;justify-content:center" onclick="this.textContent='Message Sent! ✅';this.style.background='#10b981'">✉ Send Message</button>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="footer-in">
+<span>© 2025 Techbase Consultant Services · Ibadan, Nigeria 🇳🇬</span>
+<div class="footer-links">
+<a href="https://github.com/techbaseng" target="_blank">GitHub</a>
+<a href="#">Privacy</a><a href="#">Terms</a>
+</div>
+</div>
+</footer>
+<script>
+const hbg=document.getElementById('hbg'),nav=document.getElementById('nav'),cn=document.getElementById('cn');
+hbg.addEventListener('click',()=>nav.classList.toggle('open'));
+if(cn)cn.addEventListener('click',()=>nav.classList.remove('open'));
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+</script>
+</body>
+</html>`;
+  function downloadStarter(){
+    const a=document.createElement('a');
+    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
+    a.download='starter.html'; a.click();
+  }
+  </script>
+</div>
+
+<div class="github-acc" id="github-steps" style="display:none">
+  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
+    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  </div>
+  <div class="github-acc-body">
+    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-73-css_final_capstone</code>.</p></div>
+    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
+    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 73 project"</em> and click <strong>Commit changes</strong>.</p></div>
+    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-73-css_final_capstone/</code> in ~1 minute! 🎉</p></div>
+    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  </div>
+</div>
+<div class="session-end" id="session-end">
+  <h2>🎉 Great work! Lesson 73 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
+  <ul><li>✅ Portfolio structure and theme</li><li>✅ Polish, deploy and celebrate</li></ul>
+  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
+    <a href="lesson_72.html" class="ln-btn">← Lesson 72</a>
+    <a href="../index.html" class="ln-btn primary">🎉 Course Complete!</a>
+  </div>
+</div>
+</main>
+<footer class="lesson-footer">
+  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 73 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+</footer>
+<script>
+const TOTAL=2, KEY='techbase_css_73_phase';
+let current=parseInt(localStorage.getItem(KEY)||'1');
+
+function init(){
+  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  updateBar();
+}
+
+function unlockNext(n){
+  document.getElementById('check'+n).classList.add('done');
+  document.getElementById('check'+n).textContent='✓';
+  localStorage.setItem(KEY,n+1);
+  current=n+1;
+  if(n===TOTAL){
+    document.getElementById('build-it').style.display='block';
+    const cap=document.getElementById('capstone');
+    if(cap) cap.style.display='block';
+    updateBar(100);
+    setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
+  } else {
+    unlockPhase(n+1,true);
+    updateBar();
+  }
+}
+
+function unlockPhase(n,scroll){
+  const el=document.getElementById('phase'+n);
+  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+}
+
+function updateBar(pct){
+  const p=pct||Math.round((current-1)/TOTAL*95);
+  document.getElementById('pbar').style.width=p+'%';
+}
+
+function showGithub(){
+  const g=document.getElementById('github-steps');
+  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+function showEnd(){
+  const e=document.getElementById('session-end');
+  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+}
+
+init();
+</script>
+</body>
+</html>
