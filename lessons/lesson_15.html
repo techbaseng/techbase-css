@@ -2,441 +2,1198 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 15: CSS Fonts — Techbase CSS Course</title>
-<meta name="description" content="Choose, load and style fonts using font-family stacks, Google Fonts and font properties">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 15: CSS Icons – Font Awesome, Bootstrap, and Google Material Icons — Techbase CSS</title>
+<meta name="description" content="CSS Icons – Font Awesome, Bootstrap, and Google Material Icons">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 15 of 73 &nbsp;·&nbsp; CSS Fonts</span>
-  <div class="nav-actions"><a href="lesson_14.html" class="ln-btn">← Lesson 14</a><a href="lesson_16.html" class="ln-btn primary">Lesson 16 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 15 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 15</div>
-    <h1>CSS Fonts</h1>
-    <p class="lesson-tagline">Choose, load and style fonts using font-family stacks, Google Fonts and font properties</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My Font Specimen Page</span>
-      
-    </div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 15</div>
+    <h1>CSS Icons – Font Awesome, Bootstrap, and Google Material Icons</h1>
+    <div class="l-hero-sub">9 phases · Build: Project Goal</div>
   </div>
+</div>
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 15</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever visited a website and noticed small pictures next to menu items — a magnifying glass for search, a shopping cart for checkout, a little bell for notifications? Those small pictures are called <strong>icons</strong>, and they are one of the most powerful and widely used tools in web design.</p>
+<p class="v2-p">In this lesson, you will learn:</p>
+<ul class="v2-ul"><li>What icons are and why they matter in web design</li><li>The three most popular icon libraries: <strong>Font Awesome</strong>, <strong>Bootstrap Icons</strong>, and <strong>Google Material Icons</strong></li><li>How to add any of these icon libraries to your HTML page with a single line of code</li><li>How to display icons using simple <code>&lt;i&gt;</code> or <code>&lt;span&gt;</code> tags with special class names</li><li>How to style icons using CSS — change their size, colour, and appearance</li><li>How to build real-world projects using icons</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to add professional-looking icons to any web page confidently and style them exactly the way you want.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>No prior knowledge of icons is needed.</strong> All you need is a basic understanding of HTML tags and CSS properties (like <code>color</code> and <code>font-size</code>). If you have completed the earlier lessons in this series, you are fully ready.</p></blockquote>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 9 phases</span>
+    <span>🏗️ Project Goal</span>
+  </div>
+</div></div>
 </section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 15!</div>
-  <h2>CSS Fonts</h2>
-  <p>Choose, load and style fonts using font-family stacks, Google Fonts and font properties. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
-</div>
-<div class="phase " id="phase1" data-phase="1">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">Font Family Stacks and Google Fonts</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 9</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p><code>font-family</code> takes a comma-separated <strong>font stack</strong> — the browser uses the first available, falling back to the next. End with a generic: <code>serif</code>, <code>sans-serif</code>, <code>monospace</code>. <strong>Google Fonts</strong> is free and has 1,500+ fonts. Add the link tag from fonts.google.com in the head, then use the font name in CSS.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">index.html</span>
-  </div>
-  <div class="code-body"><pre>&lt;!-- Link Google Fonts in &lt;head&gt; --&gt;
-&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
-&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Merriweather:ital,wght@0,400;0,700;1,400&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"&gt;
-
-&lt;style&gt;
-  body    { font-family: 'Inter', Arial, sans-serif; }
-  article { font-family: 'Merriweather', Georgia, serif; }
-  code    { font-family: 'JetBrains Mono', 'Courier New', monospace; }
-
-  /* System font stack — no download, looks native */
-  .system { font-family: -apple-system, BlinkMacSystemFont,
-                         'Segoe UI', Roboto, Arial, sans-serif; }
-&lt;/style&gt;</pre></div>
-</div>
+    <p class="v2-p">Have you ever visited a website and noticed small pictures next to menu items — a magnifying glass for search, a shopping cart for checkout, a little bell for notifications? Those small pictures are called <strong>icons</strong>, and they are one of the most powerful and widely used tools in web design.</p>
+<p class="v2-p">In this lesson, you will learn:</p>
+<ul class="v2-ul"><li>What icons are and why they matter in web design</li><li>The three most popular icon libraries: <strong>Font Awesome</strong>, <strong>Bootstrap Icons</strong>, and <strong>Google Material Icons</strong></li><li>How to add any of these icon libraries to your HTML page with a single line of code</li><li>How to display icons using simple <code>&lt;i&gt;</code> or <code>&lt;span&gt;</code> tags with special class names</li><li>How to style icons using CSS — change their size, colour, and appearance</li><li>How to build real-world projects using icons</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to add professional-looking icons to any web page confidently and style them exactly the way you want.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>No prior knowledge of icons is needed.</strong> All you need is a basic understanding of HTML tags and CSS properties (like <code>color</code> and <code>font-size</code>). If you have completed the earlier lessons in this series, you are fully ready.</p></blockquote>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Go to fonts.google.com. Choose one heading font (try Poppins or Raleway) and one body font (try Lato or Nunito). Copy the link tag and paste into your HTML head. Apply each with <code>font-family</code> in CSS.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
+</div>
+<div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">Size, Weight, Style and the Shorthand</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 9</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p><code>font-size</code>: use <code>rem</code> for accessible scaling (1rem = 16px). <code>font-weight</code>: 100–900 (or <code>normal</code>=400, <code>bold</code>=700). <code>font-style: italic</code>. The shorthand: <code>font: italic 700 1.2rem/1.6 Arial, sans-serif</code> (style weight size/line-height family).</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Font sizes with rem */
-.xs  { font-size: 0.75rem; }  /* 12px */
-.sm  { font-size: 0.875rem; } /* 14px */
-.md  { font-size: 1rem; }     /* 16px */
-.lg  { font-size: 1.25rem; }  /* 20px */
-.xl  { font-size: 1.5rem; }   /* 24px */
-.xxl { font-size: 2rem; }     /* 32px */
-
-/* Weights */
-.light    { font-weight: 300; }
-.regular  { font-weight: 400; }
-.semibold { font-weight: 600; }
-.bold     { font-weight: 700; }
-.black    { font-weight: 900; }
-
-/* Shorthand: style weight size/line-height family */
-.shorthand { font: italic 700 1.2rem/1.6 'Inter', sans-serif; }</pre></div>
-</div>
+    <p class="v2-p">Before we begin, let's briefly review the ideas you already know that we will build on in this lesson.</p>
+<h3 class="v2-h3">What Is an HTML Tag?</h3>
+<p class="v2-p">An HTML tag is a label that tells the browser how to display content. For example:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;p&gt;This is a paragraph.&lt;/p&gt;
+&lt;h1&gt;This is a heading.&lt;/h1&gt;</code></pre></div></div>
+<h3 class="v2-h3">What Is a CSS Class?</h3>
+<p class="v2-p">A CSS class is a name you give to an HTML element so you can style it. You add it with the <code>class</code> attribute:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;p class=&quot;intro-text&quot;&gt;Welcome to my page.&lt;/p&gt;</code></pre></div></div>
+<p class="v2-p">Then in your CSS:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.intro-text {
+  color: blue;
+  font-size: 18px;
+}</code></pre></div></div>
+<p class="v2-p">The dot (<code>.</code>) before <code>intro-text</code> tells CSS: "find every element with this class name."</p>
+<h3 class="v2-h3">What Is a <code>&lt;link&gt;</code> Tag?</h3>
+<p class="v2-p">The <code>&lt;link&gt;</code> tag connects your HTML page to an external file — usually a CSS stylesheet:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;</code></pre></div></div>
+<p class="v2-p">You put this inside the <code>&lt;head&gt;</code> section of your HTML. We will use this exact same idea to connect icon libraries to our pages.</p>
+<h3 class="v2-h3">What Is a CDN?</h3>
+<p class="v2-p"><strong>CDN</strong> stands for <strong>Content Delivery Network</strong>. It is simply a collection of servers spread around the world that store files (like stylesheets and fonts). When you link to a CDN, the user's browser downloads the icon library directly from the internet — you do not need to download or store any files on your computer.</p>
+<p class="v2-p">Think of a CDN like a library. Instead of buying every book yourself, you go to the library and borrow what you need. The CDN provides the icon fonts/stylesheets for free, so your page can use them.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Create a type scale showing sizes 0.75rem to 2.5rem with the pixel equivalent beside each. Then show the same sentence at weights 300, 400, 600, 700 and 900.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My Font Specimen Page</div>
-  <p class="project-desc">Build a font specimen page showing Google Fonts at all weights, sizes and styles.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
-    </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;Font Specimen&lt;/title&gt;
-    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
-    &lt;link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&amp;family=Merriweather:ital,wght@0,400;0,700;1,400&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
-    &lt;style&gt;
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f0f9ff;
-             padding: 30px; max-width: 860px; margin: 0 auto; color: #0f172a; }
-      h1 { color: #0284c7; font-size: 2rem; margin-bottom: 6px; }
-      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
-      .specimen { background: white; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-      .row { display: flex; align-items: baseline; gap: 16px; padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
-      .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #94a3b8; min-width: 90px; }
-      .serif { font-family: 'Merriweather', Georgia, serif; }
-      .mono  { font-family: 'JetBrains Mono', monospace; }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Font Specimen Page&lt;/h1&gt;
-    &lt;h2&gt;Plus Jakarta Sans — Weights&lt;/h2&gt;
-    &lt;div class="specimen"&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;300 Light&lt;/span&gt;&lt;span style="font-weight:300;font-size:1.2rem"&gt;The quick brown fox jumps over the lazy dog&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;400 Regular&lt;/span&gt;&lt;span style="font-weight:400;font-size:1.2rem"&gt;The quick brown fox jumps over the lazy dog&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;600 Semibold&lt;/span&gt;&lt;span style="font-weight:600;font-size:1.2rem"&gt;The quick brown fox jumps over the lazy dog&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;700 Bold&lt;/span&gt;&lt;span style="font-weight:700;font-size:1.2rem"&gt;The quick brown fox jumps over the lazy dog&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;800 ExtraBold&lt;/span&gt;&lt;span style="font-weight:800;font-size:1.2rem"&gt;The quick brown fox jumps over the lazy dog&lt;/span&gt;&lt;/div&gt;
-    &lt;/div&gt;
-    &lt;h2&gt;Type Scale&lt;/h2&gt;
-    &lt;div class="specimen"&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;0.75rem/12px&lt;/span&gt;&lt;span style="font-size:.75rem"&gt;Caption text&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;1rem/16px&lt;/span&gt;&lt;span style="font-size:1rem"&gt;Body text&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;1.25rem/20px&lt;/span&gt;&lt;span style="font-size:1.25rem"&gt;Large body&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;1.5rem/24px&lt;/span&gt;&lt;span style="font-size:1.5rem;font-weight:600"&gt;Heading 3&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;2rem/32px&lt;/span&gt;&lt;span style="font-size:2rem;font-weight:700"&gt;Heading 2&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="row"&gt;&lt;span class="lbl"&gt;2.5rem/40px&lt;/span&gt;&lt;span style="font-size:2.5rem;font-weight:800"&gt;Heading 1&lt;/span&gt;&lt;/div&gt;
-    &lt;/div&gt;
-    &lt;h2&gt;Serif Body Text&lt;/h2&gt;
-    &lt;div class="specimen serif" style="line-height:1.9"&gt;
-      &lt;p style="margin:0;color:#334155"&gt;The browser reads your HTML first, then reads your CSS. A well-chosen serif font makes long articles comfortable to read — the serifs guide the eye along each line. &lt;em&gt;Merriweather&lt;/em&gt; is a popular choice for editorial content.&lt;/p&gt;
-    &lt;/div&gt;
-    &lt;h2&gt;Monospace Code Font&lt;/h2&gt;
-    &lt;div class="specimen mono" style="background:#0f172a;color:#e2e8f0;"&gt;
-      &lt;p style="margin:0;font-size:14px;line-height:1.8"&gt;
-        const sky = document.querySelector('.hero');&lt;br&gt;
-        sky.style.background = 'linear-gradient(135deg, #0284c7, #0369a1)';&lt;br&gt;
-        console.log('CSS lesson 15 complete ✓');
-      &lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 9</div>
+    <div class="phase-title">Part 1: What Are CSS Icons?</div>
+    <div class="phase-check" id="chk3"></div>
   </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Big Picture</h3>
+<p class="v2-p">An <strong>icon</strong> is a small image or symbol used to represent an idea, action, or object visually. You see icons everywhere:</p>
+<ul class="v2-ul"><li>🔍 Search bar → magnifying glass icon</li><li>🛒 Online shop → shopping cart icon</li><li>✉️ Email apps → envelope icon</li><li>☰ Mobile menus → hamburger (three lines) icon</li><li>♥ Social media → heart icon</li><li>⭐ Reviews → star icon</li></ul>
+<p class="v2-p">Icons communicate meaning instantly, without words. They also make websites look modern, clean, and professional.</p>
+<h3 class="v2-h3">Why Use Icon Libraries Instead of Regular Images?</h3>
+<p class="v2-p">You might wonder: "Can't I just use an <code>&lt;img&gt;</code> tag and show a picture of a shopping cart?" Yes, you technically could — but icon libraries are far better for several reasons:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Feature</th><th>Regular image (<code>&lt;img&gt;</code>)</th><th>Icon library</th></tr></thead><tbody><tr><td>Resizing quality</td><td>Gets blurry when enlarged</td><td>Always sharp at any size</td></tr><tr><td>Changing colour</td><td>Must edit the image file</td><td>Change with one CSS line</td></tr><tr><td>File size</td><td>Larger, slows page down</td><td>Very small and fast</td></tr><tr><td>Adding to page</td><td>Need separate image files</td><td>Just add a class name</td></tr><tr><td>Hundreds of choices</td><td>Need hundreds of files</td><td>One library = thousands of icons</td></tr></tbody></table></div>
+<p class="v2-p">Icon libraries work by loading a special <strong>icon font</strong>. Just like a regular font (like Arial or Times New Roman) has letters stored as shapes, an icon font has little pictures stored as shapes. Because they are fonts, they are:</p>
+<ul class="v2-ul"><li><strong>Scalable</strong> — they look sharp at any size</li><li><strong>Styleable</strong> — you can colour them with CSS just like text</li><li><strong>Tiny</strong> — they load very quickly</li></ul>
+<h3 class="v2-h3">The Three Icon Libraries We Will Learn</h3>
+<ol class="v2-ol"><li><strong>Font Awesome</strong> — The most popular icon library in the world. Has thousands of icons. Used on millions of websites.</li><li><strong>Bootstrap Icons</strong> — Made by the Bootstrap team. Works perfectly with Bootstrap-based projects. Clean and modern.</li><li><strong>Google Material Icons</strong> — Made by Google. Follows Google's "Material Design" style. Very clean and widely used in apps.</li></ol>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> Think of your favourite website. Can you spot any icons it uses? What do those icons communicate without any words?</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: What Are CSS Icons?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 9</div>
+    <div class="phase-title">Part 2: Font Awesome Icons</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is Font Awesome?</h3>
+<p class="v2-p">Font Awesome is a free icon library that gives you access to hundreds (and in its paid version, thousands) of icons for your web pages. It is the most widely used icon library in the world. The free version alone has over 1,000 icons.</p>
+<p class="v2-p">Font Awesome icons look like this when used on a page: a small, crisp, scalable image that you can colour and resize with CSS.</p>
+<h3 class="v2-h3">Step 1 — How to Add Font Awesome to Your Page</h3>
+<p class="v2-p">You only need to add <strong>one line</strong> inside the <code>&lt;head&gt;</code> section of your HTML file. This line connects your page to Font Awesome's CDN:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;head&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+&lt;/head&gt;</code></pre></div></div>
+<p class="v2-p">Let's break down every part of this line:</p>
+<ul class="v2-ul"><li><code>&lt;link&gt;</code> — This is an HTML tag that connects your page to an external resource.</li><li><code>rel="stylesheet"</code> — Tells the browser: "The thing I am linking to is a CSS stylesheet."</li><li><code>href="..."</code> — The web address (URL) of the Font Awesome stylesheet, hosted on the CloudFlare CDN.</li></ul>
+<p class="v2-p">That is all you need! Once this line is added, you can use any Font Awesome icon on your entire page.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Important:</strong> You must be connected to the internet for CDN links to work. If you are offline, the icons will not load.</p></blockquote>
+<h3 class="v2-h3">Step 2 — How to Display a Font Awesome Icon</h3>
+<p class="v2-p">To show an icon, you use an <code>&lt;i&gt;</code> tag with specific class names:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;i class=&quot;fas fa-cloud&quot;&gt;&lt;/i&gt;</code></pre></div></div>
+<p class="v2-p">Let's understand every part:</p>
+<ul class="v2-ul"><li><code>&lt;i&gt;</code> — This is the HTML element used to display icons. Traditionally <code>&lt;i&gt;</code> meant "italic text", but the web community adopted it for icons because it is short and easy to type. You could also use <code>&lt;span&gt;</code> — both work.</li><li><code>class="fas fa-cloud"</code> — These are the two class names that Font Awesome uses to identify the icon:</li></ul>
+<p class="v2-p">- <code>fas</code> — stands for <strong>Font Awesome Solid</strong>. This tells Font Awesome: "Show a solid (filled-in) version of this icon."   - <code>fa-cloud</code> — this is the <strong>specific icon name</strong>. It tells Font Awesome: "Show the cloud icon."</p>
+<p class="v2-p"><strong>Output:</strong> A small filled cloud symbol will appear on your page.</p>
+<h3 class="v2-h3">Understanding Font Awesome Class Prefixes</h3>
+<p class="v2-p">Font Awesome uses different class prefixes for different icon styles:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Class Prefix</th><th>Meaning</th><th>Example</th></tr></thead><tbody><tr><td><code>fas</code></td><td>Font Awesome Solid (filled icons)</td><td><code>fas fa-home</code></td></tr><tr><td><code>far</code></td><td>Font Awesome Regular (outlined icons)</td><td><code>far fa-heart</code></td></tr><tr><td><code>fab</code></td><td>Font Awesome Brands (logos like Facebook, Twitter)</td><td><code>fab fa-twitter</code></td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Analogy:</strong> Think of the prefix like a clothing category, and the icon name like the specific item. <code>fas</code> is "solid clothes", <code>far</code> is "outlined clothes", <code>fab</code> is "brand-logo clothes". The icon name is the specific item you want from that category.</p></blockquote>
+<h3 class="v2-h3">Complete Beginner Example — Your First Font Awesome Icons</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;My First Font Awesome Icons&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h1&gt;Font Awesome Icons&lt;/h1&gt;
+
+  &lt;i class=&quot;fas fa-cloud&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-heart&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-car&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-file&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-bars&quot;&gt;&lt;/i&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> A heading "Font Awesome Icons" followed by five small icons displayed in a row: a cloud, a heart, a car, a file, and three horizontal bars (hamburger menu icon).</p>
+<h3 class="v2-h3">Sizing Icons with CSS</h3>
+<p class="v2-p">Because icons are treated as fonts, you resize them using <code>font-size</code> — the same property you use for text.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Icon Sizes&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+  &lt;style&gt;
+    .small-icon  { font-size: 16px; }
+    .medium-icon { font-size: 32px; }
+    .large-icon  { font-size: 64px; }
+    .huge-icon   { font-size: 96px; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;i class=&quot;fas fa-star small-icon&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-star medium-icon&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-star large-icon&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-star huge-icon&quot;&gt;&lt;/i&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Four star icons in a row — each one noticeably larger than the previous. They all remain perfectly sharp (no blurring) regardless of size.</p>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<ul class="v2-ul"><li><code>.small-icon { font-size: 16px; }</code> — Sets the icon to 16 pixels (very small).</li><li><code>.medium-icon { font-size: 32px; }</code> — Sets the icon to 32 pixels (normal size).</li><li><code>.large-icon { font-size: 64px; }</code> — Sets the icon to 64 pixels (large).</li><li><code>.huge-icon { font-size: 96px; }</code> — Sets the icon to 96 pixels (very large).</li><li>Each <code>&lt;i&gt;</code> element has two classes: one from Font Awesome (<code>fas fa-star</code>) and one from our own CSS (<code>.small-icon</code> etc.). An element can have as many classes as needed.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Why does <code>font-size</code> work on icons?</strong> Because icon libraries load as <strong>fonts</strong>. The icons are literally characters in a font file, just like how "A" or "B" are characters in Arial. Since they are font characters, all font-related CSS properties work on them — including <code>font-size</code> and <code>color</code>.</p></blockquote>
+<h3 class="v2-h3">Colouring Icons with CSS</h3>
+<p class="v2-p">To change an icon's colour, use the <code>color</code> property — exactly the same as colouring text:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Coloured Icons&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+  &lt;style&gt;
+    .red-icon    { color: red;    font-size: 40px; }
+    .green-icon  { color: green;  font-size: 40px; }
+    .blue-icon   { color: blue;   font-size: 40px; }
+    .orange-icon { color: orange; font-size: 40px; }
+    .purple-icon { color: purple; font-size: 40px; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;i class=&quot;fas fa-heart red-icon&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-leaf green-icon&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-water blue-icon&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-fire orange-icon&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-star purple-icon&quot;&gt;&lt;/i&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Five icons in a row, each 40 pixels tall:</p>
+<ul class="v2-ul"><li>A red heart</li><li>A green leaf</li><li>A blue water drop</li><li>An orange fire flame</li><li>A purple star</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What happens if you remove the <code>color</code> property from one of the icons? It inherits the colour from its parent element — likely black (the browser default). Try it!</p></blockquote>
+<h3 class="v2-h3">Using Icons Inline with Text</h3>
+<p class="v2-p">Icons shine brightest when used alongside text, making the content more visually clear:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Icons with Text&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+  &lt;style&gt;
+    p {
+      font-size: 20px;
+    }
+    i {
+      color: steelblue;
+      margin-right: 8px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;p&gt;&lt;i class=&quot;fas fa-phone&quot;&gt;&lt;/i&gt; Call us: +1 800 555 0100&lt;/p&gt;
+  &lt;p&gt;&lt;i class=&quot;fas fa-envelope&quot;&gt;&lt;/i&gt; Email: hello@example.com&lt;/p&gt;
+  &lt;p&gt;&lt;i class=&quot;fas fa-map-marker-alt&quot;&gt;&lt;/i&gt; Address: 123 Main Street&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Three lines of text, each preceded by a blue icon:</p>
+<ul class="v2-ul"><li>A phone icon followed by a phone number</li><li>An envelope icon followed by an email address</li><li>A map pin icon followed by an address</li></ul>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<ul class="v2-ul"><li><code>margin-right: 8px;</code> — Adds 8 pixels of space between the icon and the text next to it. Without this, the icon and text would touch each other directly.</li><li><code>color: steelblue;</code> — Colours all <code>&lt;i&gt;</code> elements with a nice steel blue colour.</li><li>The text sits naturally to the right of each icon because <code>&lt;i&gt;</code> is an <strong>inline element</strong> — it flows naturally with text on the same line.</li></ul>
+<h3 class="v2-h3">Brand Icons with Font Awesome</h3>
+<p class="v2-p">Font Awesome also includes logos of popular brands and social media platforms. These use the <code>fab</code> (Font Awesome Brands) prefix:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Brand Icons&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+  &lt;style&gt;
+    i {
+      font-size: 40px;
+      margin: 10px;
+    }
+    .twitter  { color: #1DA1F2; }
+    .facebook { color: #1877F2; }
+    .youtube  { color: #FF0000; }
+    .github   { color: #333; }
+    .instagram { color: #E4405F; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;i class=&quot;fab fa-twitter twitter&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fab fa-facebook facebook&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fab fa-youtube youtube&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fab fa-github github&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fab fa-instagram instagram&quot;&gt;&lt;/i&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Five brand logos — Twitter (blue bird), Facebook (blue F), YouTube (red play button), GitHub (black cat), and Instagram (pink camera) — displayed in a row, each 40 pixels tall in their official brand colours.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> Social media icon strips like these appear on virtually every business website in the footer or contact section.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Font Awesome Icons</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 9</div>
+    <div class="phase-title">Part 3: Bootstrap Icons</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Are Bootstrap Icons?</h3>
+<p class="v2-p"><strong>Bootstrap Icons</strong> is an icon library created by the same team that makes Bootstrap (the popular CSS framework). Bootstrap Icons is completely free, open-source, and works on any web project — you do NOT need to use the Bootstrap framework to use Bootstrap Icons.</p>
+<p class="v2-p">Bootstrap Icons currently has over 1,800 icons. They have a clean, geometric, modern style.</p>
+<h3 class="v2-h3">How to Add Bootstrap Icons to Your Page</h3>
+<p class="v2-p">Just like Font Awesome, you add one <code>&lt;link&gt;</code> line in your <code>&lt;head&gt;</code>:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;head&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css&quot;&gt;
+&lt;/head&gt;</code></pre></div></div>
+<p class="v2-p"><strong>What this line does:</strong></p>
+<ul class="v2-ul"><li>Connects your HTML page to the Bootstrap Icons stylesheet hosted on the jsDelivr CDN.</li><li>Once added, you can use every Bootstrap icon on your page instantly.</li></ul>
+<h3 class="v2-h3">How to Display a Bootstrap Icon</h3>
+<p class="v2-p">Bootstrap Icons uses <code>&lt;i&gt;</code> tags with class names that start with <code>bi-</code>:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;i class=&quot;bi bi-cloud&quot;&gt;&lt;/i&gt;</code></pre></div></div>
+<ul class="v2-ul"><li><code>bi</code> — The main Bootstrap Icons class (must always be included).</li><li><code>bi-cloud</code> — The specific icon name, always starting with <code>bi-</code>.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Pattern to remember:</strong> Bootstrap Icons = <code>bi bi-iconname</code>. The first <code>bi</code> is the library class, and <code>bi-iconname</code> is the icon.</p></blockquote>
+<h3 class="v2-h3">Complete Beginner Example — Bootstrap Icons</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Bootstrap Icons&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h1&gt;Bootstrap Icons&lt;/h1&gt;
+
+  &lt;i class=&quot;bi bi-house&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-person&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-envelope&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-camera&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-search&quot;&gt;&lt;/i&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> A heading "Bootstrap Icons" followed by five icons: a house, a person silhouette, an envelope, a camera, and a magnifying glass.</p>
+<h3 class="v2-h3">Sizing and Colouring Bootstrap Icons</h3>
+<p class="v2-p">Bootstrap Icons behave exactly like Font Awesome — use <code>font-size</code> and <code>color</code>:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Styled Bootstrap Icons&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css&quot;&gt;
+  &lt;style&gt;
+    .icon-styled {
+      font-size: 48px;
+      color: #0d6efd;   /* Bootstrap&#x27;s primary blue colour */
+      margin: 10px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;i class=&quot;bi bi-house icon-styled&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-cart icon-styled&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-heart icon-styled&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-bell icon-styled&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-gear icon-styled&quot;&gt;&lt;/i&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Five large (48px), Bootstrap-blue icons in a row: a house, shopping cart, heart, bell, and gear/settings icon.</p>
+<h3 class="v2-h3">A Practical Bootstrap Example — Navigation Bar with Icons</h3>
+<p class="v2-p">Icons in navigation bars make it immediately clear what each link does:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Icon Navigation Bar&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css&quot;&gt;
+  &lt;style&gt;
+    nav {
+      background-color: #212529;
+      padding: 15px 30px;
+      display: flex;
+      gap: 25px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    nav a:hover {
+      color: #0d6efd;
+    }
+    nav i {
+      font-size: 20px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;nav&gt;
+    &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-house&quot;&gt;&lt;/i&gt; Home&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-person&quot;&gt;&lt;/i&gt; Profile&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-cart&quot;&gt;&lt;/i&gt; Shop&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-envelope&quot;&gt;&lt;/i&gt; Messages&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;&lt;i class=&quot;bi bi-gear&quot;&gt;&lt;/i&gt; Settings&lt;/a&gt;
+  &lt;/nav&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> A dark navigation bar with five white links. Each link has an icon followed by its label text. When hovered, each link turns blue.</p>
+<p class="v2-p"><strong>Line-by-line explanation of key CSS:</strong></p>
+<ul class="v2-ul"><li><code>display: flex; gap: 25px;</code> on <code>nav</code> — Makes all nav links sit side by side with 25 pixels of space between them.</li><li><code>display: flex; align-items: center; gap: 6px;</code> on <code>nav a</code> — Makes the icon and text inside each link sit on the same horizontal line, perfectly centred, with 6px space between them.</li><li><code>nav a:hover { color: #0d6efd; }</code> — When the user moves their mouse over a link, its colour changes to Bootstrap blue. The colour change applies to both the text and the icon because <code>color</code> is inherited by child elements.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What happens if you remove <code>align-items: center</code>? The icon and text would no longer be vertically centred with each other — they would misalign depending on their sizes.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Bootstrap Icons</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 9</div>
+    <div class="phase-title">Part 4: Google Material Icons</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Are Google Material Icons?</h3>
+<p class="v2-p"><strong>Google Material Icons</strong> is an icon library created by Google, following its "Material Design" system — a design language used across all Google products (Gmail, Google Drive, YouTube, Android, etc.).</p>
+<p class="v2-p">Google Material Icons have a clean, simple, geometric style. There are hundreds of icons available, all completely free.</p>
+<h3 class="v2-h3">How to Add Google Material Icons</h3>
+<p class="v2-p">Google Material Icons are loaded from Google Fonts using a <code>&lt;link&gt;</code> tag:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;head&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Notice:</strong> This URL uses <code>fonts.googleapis.com</code> — this is Google's own font and icon CDN. The <code>?family=Material+Icons</code> part is a query parameter telling Google: "I want the Material Icons font family."</p></blockquote>
+<h3 class="v2-h3">How to Display Google Material Icons — The Key Difference</h3>
+<p class="v2-p">This is where Google Material Icons differ from Font Awesome and Bootstrap Icons. Instead of using CSS class names to identify icons, you <strong>write the icon's name as text content</strong> inside a <code>&lt;span&gt;</code> element:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;span class=&quot;material-icons&quot;&gt;cloud&lt;/span&gt;</code></pre></div></div>
+<ul class="v2-ul"><li><code>&lt;span&gt;</code> — An inline HTML element. You could also use <code>&lt;i&gt;</code>.</li><li><code>class="material-icons"</code> — This class activates the Material Icons font, turning the text inside into an icon.</li><li><code>cloud</code> — The icon name, written as plain text between the tags. This is the <strong>text content</strong> of the element, not a class name.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Analogy:</strong> Imagine you have a magic translator. You write a word in English (like "cloud"), and the translator automatically converts it into a beautiful symbol. That is exactly what the <code>material-icons</code> class does — it replaces the text with the corresponding icon symbol.</p></blockquote>
+<h3 class="v2-h3">Important: Icon Names Are the Actual Text Content</h3>
+<p class="v2-p">This is the most important thing to understand about Google Material Icons. The icon name goes <strong>between the opening and closing tags</strong>, not inside the <code>class</code> attribute:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- CORRECT - icon name is text content --&gt;
+&lt;span class=&quot;material-icons&quot;&gt;home&lt;/span&gt;
+
+&lt;!-- WRONG - this shows an empty box, not an icon --&gt;
+&lt;span class=&quot;material-icons mi-home&quot;&gt;&lt;/span&gt;</code></pre></div></div>
+<p class="v2-p">The text you write between the tags must exactly match the icon's name in the Google Material Icons library.</p>
+<h3 class="v2-h3">Complete Beginner Example — Google Material Icons</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Google Material Icons&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h1&gt;Google Material Icons&lt;/h1&gt;
+
+  &lt;span class=&quot;material-icons&quot;&gt;home&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;search&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;favorite&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;star&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;settings&lt;/span&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> A heading "Google Material Icons" followed by five icons in a row: a house, a magnifying glass, a heart/favourite, a star, and a gear/settings icon. They appear in the clean Material Design style.</p>
+<h3 class="v2-h3">Sizing and Colouring Google Material Icons</h3>
+<p class="v2-p">Exactly the same as the other libraries — use <code>font-size</code> and <code>color</code>:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Styled Material Icons&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;style&gt;
+    .icon-sm  { font-size: 18px; }
+    .icon-md  { font-size: 36px; }
+    .icon-lg  { font-size: 72px; }
+
+    .colour-red    { color: #e53935; }
+    .colour-blue   { color: #1e88e5; }
+    .colour-green  { color: #43a047; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- Different sizes --&gt;
+  &lt;span class=&quot;material-icons icon-sm&quot;&gt;star&lt;/span&gt;
+  &lt;span class=&quot;material-icons icon-md&quot;&gt;star&lt;/span&gt;
+  &lt;span class=&quot;material-icons icon-lg&quot;&gt;star&lt;/span&gt;
+
+  &lt;br&gt;&lt;br&gt;
+
+  &lt;!-- Different colours --&gt;
+  &lt;span class=&quot;material-icons icon-md colour-red&quot;&gt;favorite&lt;/span&gt;
+  &lt;span class=&quot;material-icons icon-md colour-blue&quot;&gt;info&lt;/span&gt;
+  &lt;span class=&quot;material-icons icon-md colour-green&quot;&gt;check_circle&lt;/span&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>First row: three star icons in increasing sizes (small, medium, large).</li><li>Second row: a red heart, a blue info circle, and a green checkmark circle.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Note about icon names:</strong> Google Material Icon names sometimes use underscores for multi-word names, like <code>check_circle</code>, <code>arrow_back</code>, <code>thumb_up</code>. Write these exactly as shown — with underscores, in all lowercase.</p></blockquote>
+<h3 class="v2-h3">Google Material Icon Examples with Useful Names</h3>
+<p class="v2-p">Here are some commonly used Material Icons with their text-content names:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Common Material Icons&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;style&gt;
+    .material-icons {
+      font-size: 32px;
+      margin: 8px;
+      color: #555;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;span class=&quot;material-icons&quot;&gt;menu&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;close&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;add&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;delete&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;edit&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;save&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;share&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;person&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;phone&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;email&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;location_on&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;shopping_cart&lt;/span&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Twelve grey icons in a row: hamburger menu, X (close), plus sign, trash bin, pencil (edit), floppy disk (save), share arrows, person silhouette, phone, envelope, map pin, and shopping cart.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Google Material Icons</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 9</div>
+    <div class="phase-title">Part 5: Comparing All Three Libraries</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Now that you have learned all three icon libraries, let us compare them clearly:</p>
+<h3 class="v2-h3">Side-by-Side Comparison</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Feature</th><th>Font Awesome</th><th>Bootstrap Icons</th><th>Google Material Icons</th></tr></thead><tbody><tr><td><strong>Link tag</strong></td><td><code>&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/..."&gt;</code></td><td><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/..."&gt;</code></td><td><code>&lt;link href="https://fonts.googleapis.com/..."&gt;</code></td></tr><tr><td><strong>Icon element</strong></td><td><code>&lt;i&gt;</code></td><td><code>&lt;i&gt;</code></td><td><code>&lt;span&gt;</code></td></tr><tr><td><strong>How to specify icon</strong></td><td>CSS class name (<code>fa-cloud</code>)</td><td>CSS class name (<code>bi-cloud</code>)</td><td>Text content (<code>cloud</code>)</td></tr><tr><td><strong>Example</strong></td><td><code>&lt;i class="fas fa-cloud"&gt;&lt;/i&gt;</code></td><td><code>&lt;i class="bi bi-cloud"&gt;&lt;/i&gt;</code></td><td><code>&lt;span class="material-icons"&gt;cloud&lt;/span&gt;</code></td></tr><tr><td><strong>Icon count (free)</strong></td><td>1,000+</td><td>1,800+</td><td>900+</td></tr><tr><td><strong>Style</strong></td><td>Varied (solid, regular, thin)</td><td>Clean geometric</td><td>Material Design</td></tr><tr><td><strong>Brand icons</strong></td><td>✅ Yes (<code>fab</code> prefix)</td><td>✅ Some</td><td>❌ Limited</td></tr><tr><td><strong>Resize with</strong></td><td><code>font-size</code> CSS</td><td><code>font-size</code> CSS</td><td><code>font-size</code> CSS</td></tr><tr><td><strong>Colour with</strong></td><td><code>color</code> CSS</td><td><code>color</code> CSS</td><td><code>color</code> CSS</td></tr></tbody></table></div>
+<h3 class="v2-h3">All Three Libraries in One Page</h3>
+<p class="v2-p">Here is a demonstration showing the same idea (a home icon, an envelope, and a star) using all three libraries side by side:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Three Libraries Compared&lt;/title&gt;
+
+  &lt;!-- All three libraries loaded at once --&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css&quot;&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot; rel=&quot;stylesheet&quot;&gt;
+
+  &lt;style&gt;
+    h3 { margin-top: 20px; }
+    i, span.material-icons {
+      font-size: 36px;
+      margin: 8px;
+      color: #444;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h3&gt;Font Awesome&lt;/h3&gt;
+  &lt;i class=&quot;fas fa-home&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-envelope&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;fas fa-star&quot;&gt;&lt;/i&gt;
+
+  &lt;h3&gt;Bootstrap Icons&lt;/h3&gt;
+  &lt;i class=&quot;bi bi-house&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-envelope&quot;&gt;&lt;/i&gt;
+  &lt;i class=&quot;bi bi-star&quot;&gt;&lt;/i&gt;
+
+  &lt;h3&gt;Google Material Icons&lt;/h3&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;home&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;email&lt;/span&gt;
+  &lt;span class=&quot;material-icons&quot;&gt;star&lt;/span&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Three groups of three icons, each labelled by its library name. Each group shows a home icon, an envelope icon, and a star icon — but each in the distinct visual style of its library.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Observation:</strong> All three icons represent the same ideas, but they look slightly different depending on the library. Font Awesome tends to be more detailed, Bootstrap Icons are clean and geometric, and Material Icons follow Google's flat Material Design style. Choosing which to use depends on your project's visual style.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Comparing All Three Libraries</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 9</div>
+    <div class="phase-title">Part 6: Guided Practice Exercises</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — Contact Card with Font Awesome Icons</h3>
+<p class="v2-p"><strong>Objective:</strong> Build a simple contact information card using Font Awesome icons.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a contact section for a small business website. Each piece of contact information (phone, email, address, website) should have an appropriate icon.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a new HTML file called <code>contact-card.html</code>.</li><li>Add the Font Awesome CDN link in the <code>&lt;head&gt;</code>.</li><li>Create a <code>&lt;div&gt;</code> with a class of <code>contact-card</code>.</li><li>Inside, add four <code>&lt;p&gt;</code> elements — one each for phone, email, address, and website.</li><li>Inside each <code>&lt;p&gt;</code>, add an appropriate Font Awesome icon before the text.</li><li>Style the card with CSS: white background, border, rounded corners, padding.</li></ol>
+<p class="v2-p"><strong>Hints:</strong></p>
+<ul class="v2-ul"><li>Phone icon: <code>fas fa-phone</code></li><li>Email icon: <code>fas fa-envelope</code></li><li>Address icon: <code>fas fa-map-marker-alt</code></li><li>Website icon: <code>fas fa-globe</code></li></ul>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Contact Card&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+  &lt;style&gt;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .contact-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 30px 40px;
+      max-width: 350px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .contact-card h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .contact-card p {
+      font-size: 16px;
+      color: #555;
+      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contact-card i {
+      color: #4a90d9;
+      font-size: 18px;
+      width: 20px;
+      text-align: center;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;contact-card&quot;&gt;
+    &lt;h2&gt;Contact Us&lt;/h2&gt;
+    &lt;p&gt;&lt;i class=&quot;fas fa-phone&quot;&gt;&lt;/i&gt; +1 800 555 0100&lt;/p&gt;
+    &lt;p&gt;&lt;i class=&quot;fas fa-envelope&quot;&gt;&lt;/i&gt; hello@mybusiness.com&lt;/p&gt;
+    &lt;p&gt;&lt;i class=&quot;fas fa-map-marker-alt&quot;&gt;&lt;/i&gt; 123 Main Street, Lagos&lt;/p&gt;
+    &lt;p&gt;&lt;i class=&quot;fas fa-globe&quot;&gt;&lt;/i&gt; www.mybusiness.com&lt;/p&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> A centred white card with a subtle shadow. Inside: the heading "Contact Us" and four lines below it — each line has a blue icon on the left and contact information on the right. The icons are perfectly aligned with the text.</p>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ul class="v2-ul"><li>Why did we use <code>width: 20px; text-align: center;</code> on the icons?</li></ul>
+<p class="v2-p">- <em>Answer: To keep all icons the same width so the text to the right of them aligns neatly in a column.</em></p>
+<ul class="v2-ul"><li>What happens if you change <code>color: #4a90d9</code> to <code>color: #e74c3c</code>?</li></ul>
+<p class="v2-p">- <em>Answer: All icons turn red.</em></p>
+<ul class="v2-ul"><li>How would you add a fifth line for a social media handle?</li></ul>
+<p class="v2-p">- <em>Hint: Use <code>fab fa-twitter</code> or <code>fab fa-instagram</code>.</em></p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Rating Stars with Bootstrap Icons</h3>
+<p class="v2-p"><strong>Objective:</strong> Display a product rating using Bootstrap Icons stars.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a product review widget. You need to show a 4-out-of-5 star rating using a mix of filled stars and an empty star.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a new HTML file called <code>rating.html</code>.</li><li>Add the Bootstrap Icons CDN link.</li><li>Use <code>bi bi-star-fill</code> for filled stars and <code>bi bi-star</code> for an empty star.</li><li>Colour the filled stars gold/yellow and make them a comfortable reading size.</li></ol>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Product Rating&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css&quot;&gt;
+  &lt;style&gt;
+    .rating {
+      font-size: 28px;
+    }
+    .star-filled {
+      color: #ffc107;   /* Amber/gold colour */
+    }
+    .star-empty {
+      color: #ccc;      /* Light grey for unfilled star */
+    }
+    .rating-text {
+      font-size: 16px;
+      color: #555;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h3&gt;Customer Rating&lt;/h3&gt;
+
+  &lt;div class=&quot;rating&quot;&gt;
+    &lt;i class=&quot;bi bi-star-fill star-filled&quot;&gt;&lt;/i&gt;
+    &lt;i class=&quot;bi bi-star-fill star-filled&quot;&gt;&lt;/i&gt;
+    &lt;i class=&quot;bi bi-star-fill star-filled&quot;&gt;&lt;/i&gt;
+    &lt;i class=&quot;bi bi-star-fill star-filled&quot;&gt;&lt;/i&gt;
+    &lt;i class=&quot;bi bi-star star-empty&quot;&gt;&lt;/i&gt;
+    &lt;span class=&quot;rating-text&quot;&gt;4 out of 5 (128 reviews)&lt;/span&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Four solid gold stars followed by one grey empty star, then the text "4 out of 5 (128 reviews)" next to them.</p>
+<p class="v2-p"><strong>What-if challenges:</strong></p>
+<ul class="v2-ul"><li>How would you show a 3.5-star rating? Try using <code>bi bi-star-half</code> for the half-star.</li><li>How would you make the stars slightly larger or smaller? Change the <code>font-size</code> value.</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Feature Cards with Google Material Icons</h3>
+<p class="v2-p"><strong>Objective:</strong> Build a row of three "feature" cards, each with a large Material icon, a heading, and a short description.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a "Why Choose Us?" section for a company landing page.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Feature Cards&lt;/title&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot; rel=&quot;stylesheet&quot;&gt;
+  &lt;style&gt;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 40px;
+    }
+
+    .features {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 30px 20px;
+      text-align: center;
+      width: 220px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .card .material-icons {
+      font-size: 56px;
+      color: #4caf50;
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+      font-size: 18px;
+    }
+
+    .card p {
+      color: #777;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;features&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;span class=&quot;material-icons&quot;&gt;speed&lt;/span&gt;
+      &lt;h3&gt;Fast Delivery&lt;/h3&gt;
+      &lt;p&gt;We deliver your orders within 24 hours, every day of the week.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;span class=&quot;material-icons&quot;&gt;security&lt;/span&gt;
+      &lt;h3&gt;Secure Payments&lt;/h3&gt;
+      &lt;p&gt;All transactions are encrypted and fully protected.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;span class=&quot;material-icons&quot;&gt;support_agent&lt;/span&gt;
+      &lt;h3&gt;24/7 Support&lt;/h3&gt;
+      &lt;p&gt;Our team is always here to help you, any time of day.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Three white cards side by side on a light grey background. Each card has a large green icon at the top (a speedometer, a shield, and a headset), a bold heading, and a short description below.</p>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ul class="v2-ul"><li>How would you change all icons from green to orange? Change <code>color: #4caf50</code> to <code>color: #ff9800</code>.</li><li>How would you add a fourth card for "Free Returns" with the <code>assignment_return</code> icon?</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 9</div>
+    <div class="phase-title">Part 8: Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 — Forgetting to Add the CDN Link</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- WRONG: No CDN link. Icons will not appear at all. --&gt;
+&lt;body&gt;
+  &lt;i class=&quot;fas fa-home&quot;&gt;&lt;/i&gt;
+&lt;/body&gt;
+
+&lt;!-- CORRECT: CDN link must be in the &lt;head&gt; section. --&gt;
+&lt;head&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;i class=&quot;fas fa-home&quot;&gt;&lt;/i&gt;
+&lt;/body&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Result of the mistake:</strong> The icon element renders as empty — you see nothing or a broken-looking square box.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Mixing Up Prefixes for Font Awesome</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- WRONG: Using &#x27;fa&#x27; instead of &#x27;fas&#x27; or &#x27;fab&#x27; --&gt;
+&lt;i class=&quot;fa fa-twitter&quot;&gt;&lt;/i&gt;
+
+&lt;!-- CORRECT: Use &#x27;fas&#x27; for solid icons, &#x27;fab&#x27; for brand icons --&gt;
+&lt;i class=&quot;fab fa-twitter&quot;&gt;&lt;/i&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Result of the mistake:</strong> The icon may not appear at all, or it shows an incorrect version of the icon.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Using CSS Class Names Instead of Text Content for Material Icons</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- WRONG: Trying to use a class name like Font Awesome --&gt;
+&lt;span class=&quot;material-icons mi-home&quot;&gt;&lt;/span&gt;
+
+&lt;!-- CORRECT: The icon name is the text content between the tags --&gt;
+&lt;span class=&quot;material-icons&quot;&gt;home&lt;/span&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Result of the mistake:</strong> A box with no icon inside appears, because Material Icons needs text content, not an extra class name.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Forgetting Both Classes for Bootstrap Icons</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- WRONG: Missing the first &#x27;bi&#x27; class --&gt;
+&lt;i class=&quot;bi-house&quot;&gt;&lt;/i&gt;
+
+&lt;!-- CORRECT: Both &#x27;bi&#x27; and &#x27;bi-house&#x27; are required --&gt;
+&lt;i class=&quot;bi bi-house&quot;&gt;&lt;/i&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Result of the mistake:</strong> The icon does not appear. Bootstrap Icons requires BOTH <code>bi</code> (the library activator class) AND <code>bi-iconname</code> (the specific icon class).</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Trying to Resize Icons with <code>width</code> and <code>height</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG: Using width/height on icon fonts */
+.my-icon {
+  width: 50px;
+  height: 50px;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT: Use font-size for icon fonts */
+.my-icon {
+  font-size: 50px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Result of the mistake:</strong> The icon stays its default size because <code>width</code> and <code>height</code> do not control font characters.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6 — Offline Pages Cannot Load CDN Icons</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Situation: You built a page with icons on your laptop.
+You showed it to a friend whose laptop has no internet.
+The icons are invisible!</code></pre></div></div>
+<p class="v2-p"><strong>Why this happens:</strong> CDN links require internet access. The browser downloads the icon fonts from the internet every time the page loads. Without internet, the fonts cannot be downloaded.</p>
+<p class="v2-p"><strong>Solution for offline use:</strong> Download the icon library files and serve them locally from your own computer or server:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Using locally hosted Font Awesome instead of CDN --&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;css/all.min.css&quot;&gt;</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Goal</div>
+  <div class="build-desc">Build a complete personal profile card that uses icons from all three libraries together. This is a component you might actually use on a real portfolio website.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Profile Card&lt;/title&gt;
+
+  &lt;!-- Font Awesome for brand/social icons --&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+
+  &lt;!-- Bootstrap Icons for general UI icons --&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css&quot;&gt;
+
+  &lt;!-- Google Material Icons for info section --&gt;
+  &lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Card structure goes here --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Font Specimen</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f0f9ff;
-             padding: 30px; max-width: 860px; margin: 0 auto; color: #0f172a; }
-      h1 { color: #0284c7; font-size: 2rem; margin-bottom: 6px; }
-      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
-      .specimen { background: white; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-      .row { display: flex; align-items: baseline; gap: 16px; padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
-      .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #94a3b8; min-width: 90px; }
-      .serif { font-family: 'Merriweather', Georgia, serif; }
-      .mono  { font-family: 'JetBrains Mono', monospace; }
-    </style>
-  </head>
-  <body>
-    <h1>Font Specimen Page</h1>
-    <h2>Plus Jakarta Sans — Weights</h2>
-    <div class="specimen">
-      <div class="row"><span class="lbl">300 Light</span><span style="font-weight:300;font-size:1.2rem">The quick brown fox jumps over the lazy dog</span></div>
-      <div class="row"><span class="lbl">400 Regular</span><span style="font-weight:400;font-size:1.2rem">The quick brown fox jumps over the lazy dog</span></div>
-      <div class="row"><span class="lbl">600 Semibold</span><span style="font-weight:600;font-size:1.2rem">The quick brown fox jumps over the lazy dog</span></div>
-      <div class="row"><span class="lbl">700 Bold</span><span style="font-weight:700;font-size:1.2rem">The quick brown fox jumps over the lazy dog</span></div>
-      <div class="row"><span class="lbl">800 ExtraBold</span><span style="font-weight:800;font-size:1.2rem">The quick brown fox jumps over the lazy dog</span></div>
-    </div>
-    <h2>Type Scale</h2>
-    <div class="specimen">
-      <div class="row"><span class="lbl">0.75rem/12px</span><span style="font-size:.75rem">Caption text</span></div>
-      <div class="row"><span class="lbl">1rem/16px</span><span style="font-size:1rem">Body text</span></div>
-      <div class="row"><span class="lbl">1.25rem/20px</span><span style="font-size:1.25rem">Large body</span></div>
-      <div class="row"><span class="lbl">1.5rem/24px</span><span style="font-size:1.5rem;font-weight:600">Heading 3</span></div>
-      <div class="row"><span class="lbl">2rem/32px</span><span style="font-size:2rem;font-weight:700">Heading 2</span></div>
-      <div class="row"><span class="lbl">2.5rem/40px</span><span style="font-size:2.5rem;font-weight:800">Heading 1</span></div>
-    </div>
-    <h2>Serif Body Text</h2>
-    <div class="specimen serif" style="line-height:1.9">
-      <p style="margin:0;color:#334155">The browser reads your HTML first, then reads your CSS. A well-chosen serif font makes long articles comfortable to read — the serifs guide the eye along each line. <em>Merriweather</em> is a popular choice for editorial content.</p>
-    </div>
-    <h2>Monospace Code Font</h2>
-    <div class="specimen mono" style="background:#0f172a;color:#e2e8f0;">
-      <p style="margin:0;font-size:14px;line-height:1.8">
-        const sky = document.querySelector('.hero');<br>
-        sky.style.background = 'linear-gradient(135deg, #0284c7, #0369a1)';<br>
-        console.log('CSS lesson 15 complete ✓');
-      </p>
-    </div>
-  </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
+<head>
+  <meta charset="UTF-8">
+  <title>Profile Card</title>
 
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  <!-- Font Awesome for brand/social icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Bootstrap Icons for general UI icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <!-- Google Material Icons for info section -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <!-- Card structure goes here -->
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-15-css_fonts</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 15 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-15-css_fonts/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-15-project-goal</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 15 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-15-project-goal/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 15 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Font Family Stacks and Google Fonts</li><li>✅ Size, Weight, Style and the Shorthand</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_14.html" class="ln-btn">← Lesson 14</a>
-    <a href="lesson_16.html" class="ln-btn primary">Lesson 16 →</a>
-  </div>
+  <h2>🎉 Lesson 15 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1: What Are CSS Icons?</li><li>✅ Part 2: Font Awesome Icons</li><li>✅ Part 3: Bootstrap Icons</li><li>✅ Part 4: Google Material Icons</li><li>✅ Part 5: Comparing All Three Libraries</li><li>✅ Part 6: Guided Practice Exercises</li></ul>
+  <div class="lesson-nav"><a href="lesson_14.html" class="ln-btn">← Lesson 14</a><a href="lesson_16.html" class="ln-btn primary">Lesson 16 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 15 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 15 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_15_phase';
+const TOTAL=9,KEY='techbase_css_l15';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

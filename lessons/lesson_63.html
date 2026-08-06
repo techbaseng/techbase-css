@@ -2,324 +2,1237 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 63: CSS Box Shadow — Techbase CSS Course</title>
-<meta name="description" content="Add depth with single, layered and coloured box shadows">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 63: CSS Multiple Columns — Building Newspaper-Style Layouts from Scratch — Techbase CSS</title>
+<meta name="description" content="CSS Multiple Columns — Building Newspaper-Style Layouts from Scratch">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
-}
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
+/* HERO */
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
+/* TASK BOX */
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
+/* GITHUB ACCORDION */
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
-  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
-  <span class="l-nav-lesson">Lesson 63 of 73</span>
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 63 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
 <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
 <div class="l-hero">
   <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 63 </div>
-    <h1>CSS Box Shadow</h1>
-    <div class="l-hero-tag">Add depth with single, layered and coloured box shadows</div>
-    <div class="l-hero-build"><strong>🏗️ Build:</strong> My Shadow Design System</div>
+    <div class="l-badge">CSS · Lesson 63</div>
+    <h1>CSS Multiple Columns — Building Newspaper-Style Layouts from Scratch</h1>
+    <div class="l-hero-sub">13 phases · Build: Project Goal</div>
   </div>
 </div>
-<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
-    <div class="welcome-box">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
   <h2>👋 Welcome to Lesson 63</h2>
-  <p>Add depth with single, layered and coloured box shadows</p>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever opened a newspaper, a printed magazine, or a Wikipedia article and noticed the text flows in neat side-by-side vertical strips — like this?</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌──────────────────────────────────────────────────────┐
+│           ARTICLE HEADING ACROSS THE TOP             │
+├─────────────────┬──────────────┬─────────────────────┤
+│ Lorem ipsum     │ sed diam     │ Ut wisi enim ad     │
+│ dolor sit amet, │ nonummy nibh │ minim veniam, quis  │
+│ consectetuer    │ euismod      │ nostrud exerci...   │
+│ adipiscing...   │ tincidunt... │                     │
+└─────────────────┴──────────────┴─────────────────────┘</code></pre></div></div>
+<p class="v2-p">That is called a <strong>multi-column layout</strong>. Before CSS had a built-in way to do this, web developers had to use complicated tricks with floats and tables to fake it. Today, CSS gives us a dedicated set of <strong>column properties</strong> that make this effortless.</p>
+<p class="v2-p">In this lesson you will learn:</p>
+<ul class="v2-ul"><li>What multi-column layout is and why it exists</li><li>How to split content into columns with just one CSS property</li><li>How to control the gap (space) between columns</li><li>How to draw decorative lines (called "rules") between columns</li><li>How to control rule style, width, and colour individually and with a shorthand</li><li>How to make a heading or element span across ALL columns</li><li>How to set column width instead of column count</li><li>How to use the <code>columns</code> shorthand property</li><li>Real-world use cases for multi-column layout</li><li>How to build a full magazine-style article page as a mini-project</li></ul>
+<hr class="v2-hr"></div>
   <div class="welcome-meta">
-    <span>📚 2 phases</span>
-    <span>🏗️ Build: My Shadow Design System</span>
-    
+    <span>📚 13 phases</span>
+    <span>🏗️ Project Goal</span>
   </div>
-</div>
-  </div>
+</div></div>
 </section>
-<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
 <div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">Shadow syntax</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 13</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>box-shadow: x y blur spread colour</code>. <code>inset</code> = inner shadow. Multiple: comma-separated. Spread expands/shrinks. Hard shadow: no blur + offset. Glow: no x/y, just blur.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.shadow  { box-shadow: 4px 4px 12px rgba(0,0,0,.1); }
-.glow    { box-shadow: 0 0 20px rgba(2,132,199,.4); }
-.inset   { box-shadow: inset 0 2px 6px rgba(0,0,0,.15); }
-.retro   { box-shadow: 5px 5px 0 0 #0f172a; }
-.layered { box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 8px rgba(0,0,0,.07), 0 16px 32px rgba(0,0,0,.07); }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Create 5 cards with different shadows: subtle, glow, inset, retro hard, layered. Add hover that raises the elevation.</p></div>
-    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+    <p class="v2-p">Have you ever opened a newspaper, a printed magazine, or a Wikipedia article and noticed the text flows in neat side-by-side vertical strips — like this?</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌──────────────────────────────────────────────────────┐
+│           ARTICLE HEADING ACROSS THE TOP             │
+├─────────────────┬──────────────┬─────────────────────┤
+│ Lorem ipsum     │ sed diam     │ Ut wisi enim ad     │
+│ dolor sit amet, │ nonummy nibh │ minim veniam, quis  │
+│ consectetuer    │ euismod      │ nostrud exerci...   │
+│ adipiscing...   │ tincidunt... │                     │
+└─────────────────┴──────────────┴─────────────────────┘</code></pre></div></div>
+<p class="v2-p">That is called a <strong>multi-column layout</strong>. Before CSS had a built-in way to do this, web developers had to use complicated tricks with floats and tables to fake it. Today, CSS gives us a dedicated set of <strong>column properties</strong> that make this effortless.</p>
+<p class="v2-p">In this lesson you will learn:</p>
+<ul class="v2-ul"><li>What multi-column layout is and why it exists</li><li>How to split content into columns with just one CSS property</li><li>How to control the gap (space) between columns</li><li>How to draw decorative lines (called "rules") between columns</li><li>How to control rule style, width, and colour individually and with a shorthand</li><li>How to make a heading or element span across ALL columns</li><li>How to set column width instead of column count</li><li>How to use the <code>columns</code> shorthand property</li><li>Real-world use cases for multi-column layout</li><li>How to build a full magazine-style article page as a mini-project</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
 </div>
 <div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">Elevation system and coloured shadows</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 13</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p>Define shadow levels as CSS variables. Coloured shadows match the background for vivid modern depth. On hover, advance one level + translate up.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>:root { --sh-xs:0 1px 2px rgba(0,0,0,.05); --sh-sm:0 2px 6px rgba(0,0,0,.08); --sh-md:0 4px 12px rgba(0,0,0,.1); --sh-lg:0 8px 24px rgba(0,0,0,.12); }
-.el-1 { box-shadow: var(--sh-xs); } .el-1:hover { box-shadow: var(--sh-md); transform: translateY(-3px); }
-.vivid-blue { box-shadow: 0 8px 20px rgba(2,132,199,.5); }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Build 4 elevation cards with CSS variable shadows. On hover each card jumps one level. Add coloured shadow cards.</p></div>
-    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+    <p class="v2-p">Before we start, let's make sure you understand the building blocks this lesson depends on.</p>
+<h3 class="v2-h3">What Is a Block-Level Container?</h3>
+<p class="v2-p">A <strong>block-level element</strong> is an element that takes up the full width of its parent and starts on a new line. The most common one is <code>&lt;div&gt;</code>. When we apply column properties, we apply them to a container like <code>&lt;div&gt;</code> and the content inside automatically flows into columns.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;article&quot;&gt;
+  &lt;p&gt;This is a paragraph of text.&lt;/p&gt;
+  &lt;p&gt;This is another paragraph.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p">The <code>&lt;div class="article"&gt;</code> is our <strong>multi-column container</strong>. Everything inside it — paragraphs, headings, lists — flows through the columns.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">What Is the CSS <code>border</code> Property?</h3>
+<p class="v2-p">The <code>column-rule</code> property (which we will learn in detail) works almost identically to <code>border</code>. If you know how to write <code>border: 2px solid red</code>, you already know the pattern for <code>column-rule</code>.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* border shorthand: width style color */
+border: 2px solid red;
+
+/* column-rule shorthand: width style color (same pattern!) */
+column-rule: 2px solid red;</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">What Is <code>px</code> vs <code>em</code>?</h3>
+<p class="v2-p">Throughout this lesson we use two length units:</p>
+<ul class="v2-ul"><li><code>px</code> (pixels) — a fixed, absolute size. <code>40px</code> is always 40 pixels, regardless of font size.</li><li><code>em</code> — a relative size. <code>1em</code> equals the current font size of the element. If the font is <code>16px</code>, then <code>1em = 16px</code>.</li></ul>
+<p class="v2-p">The default gap between columns is <code>1em</code> (roughly equal to the font size).</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It</div>
-  <div class="project-name">Shadow Design System</div>
-  <div class="project-desc">Elevation levels, coloured shadows, inset, retro and glow effects.</div>
-  <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
-<div class="code-body"><pre>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;Box Shadows&lt;/title&gt;
-&lt;style&gt;:root{--sh-xs:0 1px 2px rgba(0,0,0,.05);--sh-sm:0 2px 6px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);--sh-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.05);--sh-lg:0 8px 24px rgba(0,0,0,.1),0 4px 8px rgba(0,0,0,.06);--sh-xl:0 20px 50px rgba(0,0,0,.12),0 8px 20px rgba(0,0,0,.07)}
-*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.el-grid{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
-.el-card{flex:1;min-width:130px;background:white;border-radius:14px;padding:18px;text-align:center;cursor:pointer;transition:box-shadow .2s,transform .2s}
-.el-card h3{color:#0284c7;margin:0 0 4px;font-size:13px}.el-card p{color:#64748b;font-size:11px;margin:0}
-.el-1{box-shadow:var(--sh-xs)}.el-1:hover{box-shadow:var(--sh-sm);transform:translateY(-2px)}
-.el-2{box-shadow:var(--sh-sm)}.el-2:hover{box-shadow:var(--sh-md);transform:translateY(-3px)}
-.el-3{box-shadow:var(--sh-md)}.el-3:hover{box-shadow:var(--sh-lg);transform:translateY(-4px)}
-.el-4{box-shadow:var(--sh-lg)}.el-4:hover{box-shadow:var(--sh-xl);transform:translateY(-6px)}
-.col-grid{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.col-card{flex:1;min-width:120px;border-radius:12px;padding:16px;text-align:center;color:white;font-weight:700;font-size:14px;transition:.2s;cursor:pointer}
-.col-card:hover{transform:translateY(-4px)}
-.ef-grid{display:flex;gap:12px;flex-wrap:wrap}
-.ef{flex:1;min-width:140px;background:white;border-radius:12px;padding:18px;text-align:center;font-size:13px;font-weight:600;color:#334155}
-.ef-retro{box-shadow:5px 5px 0 0 #0f172a}.ef-glow{box-shadow:0 0 20px rgba(2,132,199,.5);color:#0284c7}.ef-inset{box-shadow:inset 0 2px 8px rgba(0,0,0,.15);background:#dbeafe}.ef-multi{box-shadow:var(--sh-lg)}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;h1 style=&quot;color:#0284c7;margin-bottom:4px&quot;&gt;CSS Box Shadow System&lt;/h1&gt;
-&lt;h2&gt;Elevation Levels (hover to rise)&lt;/h2&gt;
-&lt;div class=&quot;el-grid&quot;&gt;&lt;div class=&quot;el-card el-1&quot;&gt;&lt;h3&gt;Level 1&lt;/h3&gt;&lt;p&gt;--sh-xs&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;el-card el-2&quot;&gt;&lt;h3&gt;Level 2&lt;/h3&gt;&lt;p&gt;--sh-sm&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;el-card el-3&quot;&gt;&lt;h3&gt;Level 3&lt;/h3&gt;&lt;p&gt;--sh-md&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;el-card el-4&quot;&gt;&lt;h3&gt;Level 4&lt;/h3&gt;&lt;p&gt;--sh-lg&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h2&gt;Coloured Shadows (hover to lift)&lt;/h2&gt;
-&lt;div class=&quot;col-grid&quot;&gt;
-&lt;div class=&quot;col-card&quot; style=&quot;background:#0284c7;box-shadow:0 8px 20px rgba(2,132,199,.45)&quot;&gt;Blue&lt;/div&gt;
-&lt;div class=&quot;col-card&quot; style=&quot;background:#7c3aed;box-shadow:0 8px 20px rgba(124,58,237,.45)&quot;&gt;Purple&lt;/div&gt;
-&lt;div class=&quot;col-card&quot; style=&quot;background:#ea4f21;box-shadow:0 8px 20px rgba(234,79,33,.45)&quot;&gt;Orange&lt;/div&gt;
-&lt;div class=&quot;col-card&quot; style=&quot;background:#10b981;box-shadow:0 8px 20px rgba(16,185,129,.45)&quot;&gt;Green&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2&gt;Special Effects&lt;/h2&gt;
-&lt;div class=&quot;ef-grid&quot;&gt;&lt;div class=&quot;ef ef-retro&quot;&gt;Hard retro&lt;br&gt;&lt;small&gt;5px 5px 0 0&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;ef ef-glow&quot;&gt;Glow&lt;br&gt;&lt;small&gt;0 0 20px rgba(blue)&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;ef ef-inset&quot;&gt;Inset&lt;br&gt;&lt;small&gt;inset 0 2px 8px&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;ef ef-multi&quot;&gt;Layered&lt;br&gt;&lt;small&gt;3× shadows&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 13</div>
+    <div class="phase-title">Part 1 — What Is CSS Multi-Column Layout?</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Problem It Solves</h3>
+<p class="v2-p">A normal webpage shows text in one long column that fills the entire width of the page. This works fine for short content, but for long articles on a wide screen, reading becomes tiring — your eyes have to travel the full width of the screen and then jump back to the left to find the next line.</p>
+<p class="v2-p">Newspapers discovered centuries ago that <strong>narrower columns are easier to read</strong> because your eyes don't have to travel as far. The CSS Multi-column Layout Module brings this same principle to the web.</p>
+<h3 class="v2-h3">Real-World Uses</h3>
+<ul class="v2-ul"><li><strong>News websites</strong> — articles split into 2 or 3 columns</li><li><strong>Wikipedia</strong> — reference lists displayed in multiple columns</li><li><strong>Online magazines</strong> — editorial feature articles</li><li><strong>Product documentation</strong> — side-by-side comparison of options</li><li><strong>Dictionary / glossary pages</strong> — two columns of terms</li></ul>
+<h3 class="v2-h3">The Key Properties at a Glance</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>What It Does</th></tr></thead><tbody><tr><td><code>column-count</code></td><td>Sets how many columns</td></tr><tr><td><code>column-gap</code></td><td>Sets the space between columns</td></tr><tr><td><code>column-rule-style</code></td><td>Sets the style of the line between columns</td></tr><tr><td><code>column-rule-width</code></td><td>Sets the thickness of the line</td></tr><tr><td><code>column-rule-color</code></td><td>Sets the colour of the line</td></tr><tr><td><code>column-rule</code></td><td>Shorthand for all three rule properties</td></tr><tr><td><code>column-span</code></td><td>Makes an element stretch across all columns</td></tr><tr><td><code>column-width</code></td><td>Sets a suggested optimal width per column</td></tr><tr><td><code>columns</code></td><td>Shorthand for <code>column-width</code> and <code>column-count</code></td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>What Is CSS Multi-Column Layout?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
 </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
-    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 13</div>
+    <div class="phase-title">Part 2 — `column-count`: Splitting Content into Columns</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What It Is</h3>
+<p class="v2-p"><code>column-count</code> is the most fundamental multi-column property. It tells the browser: "Take the content inside this element and split it into <strong>N</strong> equal columns."</p>
+<p class="v2-p">The browser then automatically:</p>
+<ol class="v2-ol"><li>Calculates how wide each column should be (based on the container width)</li><li>Distributes the text evenly across all columns</li><li>Balances the columns so they are roughly the same height</li></ol>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  column-count: 3;
+}</code></pre></div></div>
+<ul class="v2-ul"><li><code>3</code> — the number of columns. You can use any whole number.</li><li><code>auto</code> — the default value, which means "no columns" (just the normal single-column layout).</li></ul>
+<h3 class="v2-h3">Simple Isolated Example — 2 Columns</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .two-col {
+      column-count: 2;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;two-col&quot;&gt;
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+      Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+      molestie consequat, vel illum dolore eu feugiat nulla facilisis at
+      vero eros et accumsan et iusto odio dignissim qui blandit praesent.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌──────────────────────────────────────────────┐
+│  Lorem ipsum dolor sit  │  aliquip ex ea     │
+│  amet, consectetuer     │  commodo consequat.│
+│  adipiscing elit, sed   │  Duis autem vel    │
+│  diam nonummy nibh...   │  eum iriure...     │
+└──────────────────────────────────────────────┘</code></pre></div></div>
+<p class="v2-p">The paragraph flows through two equal-width columns side by side. The browser automatically decided where each column ends and the next begins.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking Prompt:</strong> What do you think happens if you have very short text — only one sentence — and you set <code>column-count: 4</code>? Try it! Does the browser still create 4 columns?</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example — 3 Columns (Classic Newspaper Style)</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .three-col {
+      column-count: 3;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;three-col&quot;&gt;
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+      Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+      molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌────────────────────────────────────────────────────────┐
+│  Lorem ipsum   │  Ut wisi enim  │  Duis autem vel     │
+│  dolor sit     │  ad minim      │  eum iriure dolor   │
+│  amet...       │  veniam...     │  in hendrerit...    │
+└────────────────────────────────────────────────────────┘</code></pre></div></div>
+<p class="v2-p">Three equal columns. The content flows: left column fills first, then middle, then right.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Analogy:</strong> Think of <code>column-count</code> like pouring water into a tray with dividers. The water fills the first section, spills over to the second, then the third. The text works the same way — it fills the first column, then overflows into the second, and so on.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>column-count</code>: Splitting Content into Columns</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 13</div>
+    <div class="phase-title">Part 3 — `column-gap`: Space Between Columns</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What It Is</h3>
+<p class="v2-p"><code>column-gap</code> controls the <strong>white space between adjacent columns</strong>. Without enough gap, columns look cramped and text from neighbouring columns blurs together visually.</p>
+<h3 class="v2-h3">Default Value</h3>
+<p class="v2-p">The default gap is <code>normal</code>, which the browser interprets as <code>1em</code> (roughly the size of one character). This is a sensible default, but you can increase or decrease it.</p>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  column-count: 3;
+  column-gap: 40px;   /* 40 pixels of space between each column */
+}</code></pre></div></div>
+<h3 class="v2-h3">Micro Demo — Comparing No Gap vs Large Gap</h3>
+<p class="v2-p"><strong>No gap (tight):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.tight {
+  column-count: 3;
+  column-gap: 0;
+}</code></pre></div></div>
+<p class="v2-p">Result: Columns are jammed together — hard to read.</p>
+<p class="v2-p"><strong>Comfortable gap:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.comfortable {
+  column-count: 3;
+  column-gap: 40px;
+}</code></pre></div></div>
+<p class="v2-p">Result: Clear visual separation between columns.</p>
+<h3 class="v2-h3">Full Example with column-count and column-gap:</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .article {
+      column-count: 3;
+      column-gap: 40px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;article&quot;&gt;
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+      Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+      molestie consequat, vel illum dolore eu feugiat nulla facilisis at
+      vero eros et accumsan et iusto odio dignissim qui blandit praesent.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌───────────────────────────────────────────────────────────┐
+│  Lorem ipsum   ←40px→  Ut wisi enim   ←40px→  Duis autem │
+│  dolor sit...          ad minim...             vel eum... │
+└───────────────────────────────────────────────────────────┘</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking Prompt:</strong> What would happen if you set <code>column-gap</code> to <code>0</code>? What about <code>200px</code>? Is there a point where the gap becomes too large and makes reading harder?</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>column-gap</code>: Space Between Columns</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 13</div>
+    <div class="phase-title">Part 4 — Column Rules: Drawing Lines Between Columns</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is a Column Rule?</h3>
+<p class="v2-p">A <strong>column rule</strong> is a vertical line drawn between adjacent columns — similar to the dividing lines you see between columns in a printed newspaper. It is a purely decorative element that helps readers visually separate one column from another.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Important:</strong> The column rule lives <strong>inside</strong> the column gap and takes up no extra space. If the rule is wider than the gap, the rule extends underneath the adjacent columns rather than pushing them apart.</p></blockquote>
+<p class="v2-p">The column rule is controlled by three individual properties or one shorthand:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>column-rule-style    ← what kind of line? (solid, dashed, dotted...)
+column-rule-width    ← how thick? (in pixels)
+column-rule-color    ← what colour?
+column-rule          ← shorthand for all three at once</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Property 1 — <code>column-rule-style</code></h3>
+<p class="v2-p">This sets the <strong>style (appearance) of the line</strong>. It accepts the exact same values as the CSS <code>border-style</code> property.</p>
+<p class="v2-p"><strong>Possible values:</strong></p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>What it looks like</th></tr></thead><tbody><tr><td><code>none</code></td><td>No line (default)</td></tr><tr><td><code>solid</code></td><td>──────── (a plain continuous line)</td></tr><tr><td><code>dashed</code></td><td>- - - - - (broken dashes)</td></tr><tr><td><code>dotted</code></td><td>· · · · · (small dots)</td></tr><tr><td><code>double</code></td><td>════════ (two parallel lines)</td></tr><tr><td><code>groove</code></td><td>A 3D grooved effect (appears sunken)</td></tr><tr><td><code>ridge</code></td><td>A 3D ridged effect (appears raised)</td></tr><tr><td><code>inset</code></td><td>Top-left sides darker (appears pressed in)</td></tr><tr><td><code>outset</code></td><td>Bottom-right sides darker (appears popped out)</td></tr><tr><td><code>hidden</code></td><td>Invisible (same as none for columns)</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Simple Example:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  column-count: 3;
+  column-rule-style: solid;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A thin solid black line appears between each column. The browser sets the default width and colour automatically (usually 1px and the text colour).</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Property 2 — <code>column-rule-width</code></h3>
+<p class="v2-p">This sets the <strong>thickness of the line</strong>. You can use pixel values or the keyword values <code>thin</code>, <code>medium</code>, and <code>thick</code>.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  column-count: 3;
+  column-rule-style: dotted;
+  column-rule-width: 5px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A 5-pixel-wide dotted line between each column.</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>Approximate thickness</th></tr></thead><tbody><tr><td><code>thin</code></td><td>1px</td></tr><tr><td><code>medium</code></td><td>3px</td></tr><tr><td><code>thick</code></td><td>5px</td></tr><tr><td><code>5px</code></td><td>Exactly 5 pixels</td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Note:</strong> <code>column-rule-width</code> on its own does <strong>nothing</strong> if <code>column-rule-style</code> is not set or is <code>none</code>. The style must be set first for the line to appear.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Property 3 — <code>column-rule-color</code></h3>
+<p class="v2-p">This sets the <strong>colour of the line</strong>. It accepts any valid CSS colour — colour names, hex codes, RGB, HSL.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  column-count: 3;
+  column-rule-style: solid;
+  column-rule-width: 3px;
+  column-rule-color: lightblue;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A 3-pixel-wide solid light-blue line between each column.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Default:</strong> If you set <code>column-rule-style</code> and <code>column-rule-width</code> but leave out <code>column-rule-color</code>, the line colour automatically matches the text colour of the container.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">The Three Properties Together — Full Example:</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .ruled {
+      column-count: 3;
+      column-gap: 40px;
+      column-rule-style: solid;
+      column-rule-width: 3px;
+      column-rule-color: lightblue;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;ruled&quot;&gt;
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+      Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+      molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌────────────────────────────────────────────────────────┐
+│  Lorem ipsum   ┊   Ut wisi enim  ┊   Duis autem vel   │
+│  dolor sit...  ┊   ad minim...   ┊   eum iriure...    │
+└────────────────────────────────────────────────────────┘
+       ↑ light-blue solid 3px rule between each column</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking Prompt:</strong> What if <code>column-rule-width</code> is set to <code>60px</code> but <code>column-gap</code> is only <code>40px</code>? Try it — the rule will extend under the text of adjacent columns because the rule does not push the columns apart.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Column Rules: Drawing Lines Between Columns</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 13</div>
+    <div class="phase-title">Part 5 — `column-rule`: The Shorthand</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Why Use a Shorthand?</h3>
+<p class="v2-p">Writing three separate properties every time you want a column rule is verbose. The <code>column-rule</code> shorthand lets you set all three values in a single line — just like <code>border</code>.</p>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  column-rule: width style color;
+}</code></pre></div></div>
+<p class="v2-p">The order is the same as <code>border</code>: <strong>width → style → color</strong>.</p>
+<h3 class="v2-h3">Examples</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* 1px wide, solid style, light-blue colour */
+div {
+  column-rule: 1px solid lightblue;
+}
+
+/* 4px wide, dashed style, red colour */
+div {
+  column-rule: 4px dashed red;
+}
+
+/* 2px wide, dotted style, dark-grey colour */
+div {
+  column-rule: 2px dotted #333;
+}</code></pre></div></div>
+<h3 class="v2-h3">Full Shorthand Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .shorthand-rule {
+      column-count: 3;
+      column-gap: 30px;
+      column-rule: 1px solid lightblue;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;shorthand-rule&quot;&gt;
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> Three columns with a thin solid light-blue vertical line between them.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Memory Trick:</strong> Both <code>border</code> and <code>column-rule</code> follow the same pattern: <strong>width style color</strong>. Learn it once, use it for both!</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Comparing Individual Properties vs Shorthand</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* LONG WAY — three separate declarations */
+div {
+  column-rule-style: dashed;
+  column-rule-width: 3px;
+  column-rule-color: tomato;
+}
+
+/* SHORT WAY — one declaration, same result */
+div {
+  column-rule: 3px dashed tomato;
+}</code></pre></div></div>
+<p class="v2-p">Both produce identical results. The shorthand is preferred for clean, concise CSS.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>column-rule</code>: The Shorthand</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 13</div>
+    <div class="phase-title">Part 6 — `column-span`: Making Elements Stretch Across All Columns</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What It Is</h3>
+<p class="v2-p">By default, every element inside a multi-column container — including headings — flows through the columns just like text. So an <code>&lt;h2&gt;</code> would only appear inside one narrow column, not across the full width.</p>
+<p class="v2-p"><code>column-span</code> lets you pull an element <strong>out of the column flow</strong> so it stretches across all columns — perfect for article titles, section headings, or images that should be full-width.</p>
+<h3 class="v2-h3">Values</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h2 {
+  column-span: all;   /* span across ALL columns */
+}
+
+h2 {
+  column-span: none;  /* default — stay inside one column */
+}</code></pre></div></div>
+<ul class="v2-ul"><li><code>all</code> — The element expands to fill the full width of the multi-column container.</li><li><code>none</code> — The default. The element stays confined to its current column.</li></ul>
+<h3 class="v2-h3">Why This Matters</h3>
+<p class="v2-p">Imagine a newspaper where the main headline at the top spans the full page width, but the article text below is in three columns. That's exactly what <code>column-span: all</code> lets you recreate on a webpage.</p>
+<h3 class="v2-h3">Example — Heading Spans All Columns</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .article {
+      column-count: 3;
+      column-gap: 30px;
+      column-rule: 1px solid #ccc;
+    }
+    /* The heading spans the full width of all columns */
+    .article h2 {
+      column-span: all;
+      background-color: #f0f0f0;
+      padding: 8px;
+      text-align: center;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;article&quot;&gt;
+    &lt;h2&gt;Breaking News: CSS Layout Gets Even Better&lt;/h2&gt;
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+      Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+      molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌──────────────────────────────────────────────────────────┐
+│       Breaking News: CSS Layout Gets Even Better         │
+│              ← heading spans ALL 3 columns →             │
+├──────────────┬───────────────┬──────────────────────────┤
+│  Lorem ipsum │  Ut wisi enim │  Duis autem vel eum      │
+│  dolor sit   │  ad minim     │  iriure dolor in         │
+│  amet...     │  veniam...    │  hendrerit...            │
+└──────────────┴───────────────┴──────────────────────────┘</code></pre></div></div>
+<p class="v2-p">The heading appears above all three columns, full-width. The article text flows beneath it in three columns.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking Prompt:</strong> What happens to the column rules when a spanning element is present? The rules are drawn only between columns in the same row — they stop before the spanning element and start again after it.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example — <code>column-span: none</code> (Default Behaviour)</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  .article {
+    column-count: 3;
+    column-rule: 1px solid gray;
+  }
+  .article h2 {
+    column-span: none; /* stays confined to one column — DEFAULT */
+  }
+&lt;/style&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> The <code>&lt;h2&gt;</code> appears only inside the first column, taking up only its narrow column width. The text continues in the same column after it.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>column-span</code>: Making Elements Stretch Across All Columns</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 13</div>
+    <div class="phase-title">Part 7 — `column-width`: Setting a Suggested Column Width</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What It Is</h3>
+<p class="v2-p">Instead of telling the browser "I want exactly 3 columns", <code>column-width</code> says: "I want columns that are approximately this wide — create as many as will fit in the container."</p>
+<p class="v2-p">This is especially powerful for <strong>responsive design</strong> — on a wide desktop screen you get many columns, on a narrow mobile screen you might get just one.</p>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  column-width: 150px;
+}</code></pre></div></div>
+<ul class="v2-ul"><li><code>150px</code> — The browser will try to make columns approximately 150px wide.</li><li><code>auto</code> — Default. The browser decides the width based on <code>column-count</code>.</li></ul>
+<h3 class="v2-h3">How the Browser Decides the Column Count</h3>
+<p class="v2-p">If the container is <code>600px</code> wide and <code>column-width: 150px</code>, the browser calculates: <code>600 ÷ 150 = 4 columns</code>. It creates as many 150px-ish columns as will fit.</p>
+<p class="v2-p">If the container is <code>900px</code> wide, it creates 6 columns. If it's <code>300px</code> wide, it creates 2 columns. The layout adapts automatically!</p>
+<h3 class="v2-h3">Example — Responsive Column Width</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .flexible {
+      column-width: 150px;
+      column-gap: 20px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;flexible&quot;&gt;
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output (on a wide screen):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>│ ~150px col │ ~150px col │ ~150px col │ ~150px col │</code></pre></div></div>
+<p class="v2-p"><strong>Expected output (on a narrow screen):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>│ ~150px col │ ~150px col │</code></pre></div></div>
+<p class="v2-p">The number of columns automatically adjusts to the screen width.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Analogy:</strong> <code>column-width</code> is like telling workers: "Set up tables that are about 150cm wide each." On a huge ballroom floor, you'd fit many tables. In a small room, only two or three. The size of each table stays roughly constant — only the count changes.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>column-width</code>: Setting a Suggested Column Width</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase10">
+  <div class="phase-header">
+    <div class="phase-num">Phase 10 of 13</div>
+    <div class="phase-title">Part 8 — `columns`: The Shorthand for Width and Count</div>
+    <div class="phase-check" id="chk10"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What It Is</h3>
+<p class="v2-p">The <code>columns</code> shorthand combines <code>column-width</code> and <code>column-count</code> into a single declaration.</p>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  columns: column-width column-count;
+}</code></pre></div></div>
+<p class="v2-p">Or just one value if you only need to set one of them:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Just set the count */
+div {
+  columns: 3;
+}
+
+/* Just set the width */
+div {
+  columns: 200px;
+}
+
+/* Set both: suggested width of 200px, maximum of 3 columns */
+div {
+  columns: 200px 3;
+}</code></pre></div></div>
+<h3 class="v2-h3">How the Two Values Work Together</h3>
+<p class="v2-p">When you write <code>columns: 200px 3</code>:</p>
+<ul class="v2-ul"><li><code>column-width: 200px</code> — Each column should be approximately 200px wide.</li><li><code>column-count: 3</code> — Never create more than 3 columns.</li></ul>
+<p class="v2-p">This means: "Create columns of about 200px each, but cap it at 3 maximum."</p>
+<ul class="v2-ul"><li>On a wide screen (800px): the browser would create 4 columns at 200px, BUT because of the count limit, it stops at 3. Each column becomes <code>800px ÷ 3 ≈ 267px</code>.</li><li>On a narrow screen (300px): the browser creates only 1 column at ~300px (since 200px fits only 1.5 times).</li></ul>
+<p class="v2-p">The layout <strong>automatically breaks down to a single column at narrow widths</strong> — no media queries needed!</p>
+<h3 class="v2-h3">Full <code>columns</code> Shorthand Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .news-article {
+      columns: 200px 3;        /* ~200px wide, max 3 columns */
+      column-gap: 40px;
+      column-rule: 1px solid lightblue;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;news-article&quot;&gt;
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+      Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+      molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output (wide screen):</strong> 3 columns of ~200px each, with a light-blue rule between them.</p>
+<p class="v2-p"><strong>Expected output (mobile phone):</strong> 1 or 2 columns, no media queries needed.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>columns</code>: The Shorthand for Width and Count</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase11">
+  <div class="phase-header">
+    <div class="phase-num">Phase 11 of 13</div>
+    <div class="phase-title">Part 9 — All Column Properties Reference Table</div>
+    <div class="phase-check" id="chk11"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Here is a complete summary of every multi-column property covered in this lesson:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>Values</th><th>What It Does</th></tr></thead><tbody><tr><td><code>column-count</code></td><td>number, <code>auto</code></td><td>Sets the exact number of columns</td></tr><tr><td><code>column-gap</code></td><td>length (px, em), <code>normal</code></td><td>Sets the space between columns</td></tr><tr><td><code>column-rule-style</code></td><td><code>none</code>, <code>solid</code>, <code>dashed</code>, <code>dotted</code>, <code>double</code>, <code>groove</code>, <code>ridge</code>, <code>inset</code>, <code>outset</code>, <code>hidden</code></td><td>Sets the line style between columns</td></tr><tr><td><code>column-rule-width</code></td><td>length (px), <code>thin</code>, <code>medium</code>, <code>thick</code></td><td>Sets the line thickness</td></tr><tr><td><code>column-rule-color</code></td><td>any CSS colour</td><td>Sets the line colour</td></tr><tr><td><code>column-rule</code></td><td><code>width style color</code></td><td>Shorthand for all three rule properties</td></tr><tr><td><code>column-span</code></td><td><code>none</code>, <code>all</code></td><td>Makes an element span across all columns</td></tr><tr><td><code>column-width</code></td><td>length (px, em), <code>auto</code></td><td>Sets the suggested optimal column width</td></tr><tr><td><code>columns</code></td><td><code>column-width column-count</code></td><td>Shorthand for width and count together</td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>All Column Properties Reference Table</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase12">
+  <div class="phase-header">
+    <div class="phase-num">Phase 12 of 13</div>
+    <div class="phase-title">Guided Practice Exercises</div>
+    <div class="phase-check" id="chk12"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — Simple 3-Column Article</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a 3-column text layout using <code>column-count</code>.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a news website. A long article needs to be split into 3 columns for readability.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create <code>exercise1.html</code>.</li><li>Add a <code>&lt;div class="news"&gt;</code> containing at least 3 paragraphs of text.</li><li>Apply <code>column-count: 3</code> to <code>.news</code>.</li><li>Add <code>column-gap: 30px</code> for comfortable spacing.</li></ol>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌──────────────────────────────────────────────────┐
+│  Paragraph   │  text cont-  │  text cont-        │
+│  text...     │  inues...    │  inues here...     │
+└──────────────────────────────────────────────────┘</code></pre></div></div>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>Does the text flow across all 3 columns?</li><li>Is there visible spacing between columns?</li><li>Do all 3 columns appear to be roughly equal in height?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Column Rules Practice</h3>
+<p class="v2-p"><strong>Objective:</strong> Add decorative rules between columns using individual rule properties.</p>
+<p class="v2-p"><strong>Scenario:</strong> A magazine wants a visible dividing line between its columns.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Start with your Exercise 1 layout.</li><li>Add <code>column-rule-style: dashed</code>.</li><li>Add <code>column-rule-width: 2px</code>.</li><li>Add <code>column-rule-color: tomato</code>.</li><li>Then refactor those 3 lines into a single <code>column-rule</code> shorthand.</li></ol>
+<p class="v2-p"><strong>Hint:</strong> The shorthand order is: <code>width style color</code>.</p>
+<p class="v2-p"><strong>Expected output:</strong> Dashed red lines separating the three columns.</p>
+<p class="v2-p"><strong>What-if challenge:</strong> Change the rule style to <code>double</code> with a width of <code>6px</code> and a colour of <code>steelblue</code>. What does a double rule look like?</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Spanning Heading</h3>
+<p class="v2-p"><strong>Objective:</strong> Add a full-width heading that spans all three columns.</p>
+<p class="v2-p"><strong>Scenario:</strong> The news article needs a headline above the columns.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Start with your Exercise 2 layout.</li><li>Add an <code>&lt;h2&gt;</code> inside the <code>&lt;div&gt;</code> as the <strong>very first element</strong> (before the paragraphs).</li><li>Apply <code>column-span: all</code> to the <code>h2</code>.</li><li>Style it with a background colour and centred text to make it stand out.</li></ol>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌──────────────────────────────────────────────────────┐
+│        Full-Width Headline Across All Columns        │
+├────────────────┬─────────────────┬───────────────────┤
+│  Article text  │  continues in   │  three columns    │
+│  here...       │  the middle...  │  here...          │
+└────────────────┴─────────────────┴───────────────────┘</code></pre></div></div>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>Does the heading stretch the full width of the container?</li><li>Does the text continue in 3 columns beneath the heading?</li><li>Do the column rules stop at the heading and restart after it?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 4 — Flexible Columns with <code>column-width</code></h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>column-width</code> for a responsive multi-column layout.</p>
+<p class="v2-p"><strong>Scenario:</strong> A blog needs to look good on both desktop and mobile without writing media queries.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a new <code>&lt;div class="blog-post"&gt;</code> with 2–3 paragraphs of text.</li><li>Apply <code>column-width: 200px</code>.</li><li>Add <code>column-gap: 25px</code> and <code>column-rule: 1px solid #ddd</code>.</li><li>Resize your browser window and watch the column count change automatically.</li></ol>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>On a wide window, how many columns do you see?</li><li>On a very narrow window, how many columns appear?</li><li>Did you write any media queries? (You shouldn't need to!)</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 5 — Full Columns Shorthand</h3>
+<p class="v2-p"><strong>Objective:</strong> Rewrite a multi-column layout using the <code>columns</code> shorthand.</p>
+<p class="v2-p"><strong>Starting code (long way):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.article {
+  column-width: 150px;
+  column-count: 4;
+  column-gap: 20px;
+  column-rule-style: solid;
+  column-rule-width: 1px;
+  column-rule-color: gray;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Your task:</strong> Refactor this into the shortest possible CSS using the <code>columns</code> shorthand and <code>column-rule</code> shorthand. The output must look identical.</p>
+<p class="v2-p"><strong>Expected result:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.article {
+  columns: 150px 4;
+  column-gap: 20px;
+  column-rule: 1px solid gray;
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Expected result:
+`css
+.article {
+  columns: 150px 4;
+  column-gap: 20px;
+  column-rule: 1px solid gray;
+}
+`
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(12)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase13">
+  <div class="phase-header">
+    <div class="phase-num">Phase 13 of 13</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk13"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 — Applying Column Properties to the Wrong Element</h3>
+<p class="v2-p">Column properties go on the <strong>container</strong> (<code>&lt;div&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>) — NOT on individual paragraphs or headings.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — applied to each paragraph */
+p {
+  column-count: 3;
+}
+
+/* CORRECT — applied to the container holding the paragraphs */
+.article {
+  column-count: 3;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — <code>column-rule-width</code> Without <code>column-rule-style</code></h3>
+<p class="v2-p">Setting only <code>column-rule-width</code> produces no visible line. The rule only appears when <code>column-rule-style</code> is set to something other than <code>none</code>.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — rule is invisible */
+.article {
+  column-count: 3;
+  column-rule-width: 4px;
+  column-rule-color: red;
+}
+
+/* CORRECT — rule is now visible */
+.article {
+  column-count: 3;
+  column-rule-style: solid;  /* This must be set! */
+  column-rule-width: 4px;
+  column-rule-color: red;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Confusing <code>column-gap</code> and <code>column-rule</code></h3>
+<p class="v2-p">Beginners sometimes think column-rule adds extra width. It does NOT. The rule lives <strong>inside</strong> the gap. If your rule is wider than the gap, it overlaps under the text — it doesn't push the columns apart.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Potential issue: rule is 60px but gap is only 20px */
+.article {
+  column-count: 3;
+  column-gap: 20px;
+  column-rule: 60px solid red;   /* rule wider than gap — overlaps text */
+}
+
+/* CORRECT: rule width should be smaller than gap */
+.article {
+  column-count: 3;
+  column-gap: 40px;
+  column-rule: 2px solid red;    /* rule much thinner than gap */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Putting <code>column-span</code> on the Container</h3>
+<p class="v2-p"><code>column-span</code> should be applied to an <strong>element inside</strong> the multi-column container — such as a heading <code>&lt;h2&gt;</code> or a <code>&lt;blockquote&gt;</code> — not to the container itself.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — column-span on the container itself */
+.article {
+  column-count: 3;
+  column-span: all;   /* meaningless here */
+}
+
+/* CORRECT — column-span on a child element inside the container */
+.article h2 {
+  column-span: all;   /* makes the h2 span all columns */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Expecting <code>column-width</code> to Set an Exact Width</h3>
+<p class="v2-p"><code>column-width</code> is a <strong>suggestion</strong>, not a strict rule. The browser uses it as a guide to calculate how many columns to create, but the actual column width may differ.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* This means &quot;try for ~150px columns&quot; — not &quot;make every column exactly 150px&quot; */
+.article {
+  column-width: 150px;
+}</code></pre></div></div>
+<p class="v2-p">If you need exact column widths, use CSS Grid instead.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6 — Short Text with Many Columns</h3>
+<p class="v2-p">If there isn't enough text to fill all the specified columns, you get empty columns at the end. This looks awkward.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* PROBLEM: only 1 sentence of text split into 5 columns looks strange */
+.article {
+  column-count: 5;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Tip:</strong> Only use as many columns as your content comfortably fills. 2–3 columns work well for most text content.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(13)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Goal</div>
+  <div class="build-desc">Build a fully styled magazine-style article page that demonstrates every multi-column property from this lesson.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;The Daily Reader&lt;/title&gt;
+  &lt;style&gt;
+    /* CSS goes here */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- Page Header --&gt;
+  &lt;header&gt;
+    &lt;h1&gt;The Daily Reader&lt;/h1&gt;
+    &lt;p&gt;Technology · Science · Culture&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;!-- Multi-column Article --&gt;
+  &lt;div class=&quot;article&quot;&gt;
+
+    &lt;!-- Spanning headline --&gt;
+    &lt;h2&gt;The Future of Web Layout: CSS Multi-Column Explained&lt;/h2&gt;
+
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    &lt;/p&gt;
+
+    &lt;p&gt;
+      Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+      molestie consequat, vel illum dolore eu feugiat nulla facilisis at
+      vero eros et accumsan et iusto odio dignissim qui blandit praesent
+      luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+    &lt;/p&gt;
+
+    &lt;!-- Pull-quote spanning all columns --&gt;
+    &lt;blockquote class=&quot;pull-quote&quot;&gt;
+      &quot;CSS Multi-Column Layout brings the elegance of print directly to the web.&quot;
+    &lt;/blockquote&gt;
+
+    &lt;p&gt;
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    &lt;/p&gt;
+
+    &lt;p&gt;
+      Nam liber tempor cum soluta nobis eligend optio congue nihil quod doming
+      id quod mazim placerat facer possim assum. Typi non habent claritatem
+      insitam, est usus legentis in iis qui facit eorum claritatem.
+    &lt;/p&gt;
+
+  &lt;/div&gt;
+
+  &lt;!-- Footer --&gt;
+  &lt;footer&gt;
+    &lt;p&gt;© 2026 The Daily Reader. All rights reserved.&lt;/p&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Daily Reader</title>
+  <style>
+    /* CSS goes here */
+  </style>
+</head>
+<body>
+
+  <!-- Page Header -->
+  <header>
+    <h1>The Daily Reader</h1>
+    <p>Technology · Science · Culture</p>
+  </header>
+
+  <!-- Multi-column Article -->
+  <div class="article">
+
+    <!-- Spanning headline -->
+    <h2>The Future of Web Layout: CSS Multi-Column Explained</h2>
+
+    <p>
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    </p>
+
+    <p>
+      Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+      molestie consequat, vel illum dolore eu feugiat nulla facilisis at
+      vero eros et accumsan et iusto odio dignissim qui blandit praesent
+      luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+    </p>
+
+    <!-- Pull-quote spanning all columns -->
+    <blockquote class="pull-quote">
+      "CSS Multi-Column Layout brings the elegance of print directly to the web."
+    </blockquote>
+
+    <p>
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+      nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+      volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+      ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    </p>
+
+    <p>
+      Nam liber tempor cum soluta nobis eligend optio congue nihil quod doming
+      id quod mazim placerat facer possim assum. Typi non habent claritatem
+      insitam, est usus legentis in iis qui facit eorum claritatem.
+    </p>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 The Daily Reader. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
       ⬇ Download starter.html
     </button>
-    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
       🐙 Push to GitHub →
     </button>
   </div>
-  <script>
-  const __code = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Box Shadows</title>
-<style>:root{--sh-xs:0 1px 2px rgba(0,0,0,.05);--sh-sm:0 2px 6px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);--sh-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.05);--sh-lg:0 8px 24px rgba(0,0,0,.1),0 4px 8px rgba(0,0,0,.06);--sh-xl:0 20px 50px rgba(0,0,0,.12),0 8px 20px rgba(0,0,0,.07)}
-*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.el-grid{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
-.el-card{flex:1;min-width:130px;background:white;border-radius:14px;padding:18px;text-align:center;cursor:pointer;transition:box-shadow .2s,transform .2s}
-.el-card h3{color:#0284c7;margin:0 0 4px;font-size:13px}.el-card p{color:#64748b;font-size:11px;margin:0}
-.el-1{box-shadow:var(--sh-xs)}.el-1:hover{box-shadow:var(--sh-sm);transform:translateY(-2px)}
-.el-2{box-shadow:var(--sh-sm)}.el-2:hover{box-shadow:var(--sh-md);transform:translateY(-3px)}
-.el-3{box-shadow:var(--sh-md)}.el-3:hover{box-shadow:var(--sh-lg);transform:translateY(-4px)}
-.el-4{box-shadow:var(--sh-lg)}.el-4:hover{box-shadow:var(--sh-xl);transform:translateY(-6px)}
-.col-grid{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.col-card{flex:1;min-width:120px;border-radius:12px;padding:16px;text-align:center;color:white;font-weight:700;font-size:14px;transition:.2s;cursor:pointer}
-.col-card:hover{transform:translateY(-4px)}
-.ef-grid{display:flex;gap:12px;flex-wrap:wrap}
-.ef{flex:1;min-width:140px;background:white;border-radius:12px;padding:18px;text-align:center;font-size:13px;font-weight:600;color:#334155}
-.ef-retro{box-shadow:5px 5px 0 0 #0f172a}.ef-glow{box-shadow:0 0 20px rgba(2,132,199,.5);color:#0284c7}.ef-inset{box-shadow:inset 0 2px 8px rgba(0,0,0,.15);background:#dbeafe}.ef-multi{box-shadow:var(--sh-lg)}
-</style></head><body>
-<h1 style="color:#0284c7;margin-bottom:4px">CSS Box Shadow System</h1>
-<h2>Elevation Levels (hover to rise)</h2>
-<div class="el-grid"><div class="el-card el-1"><h3>Level 1</h3><p>--sh-xs</p></div><div class="el-card el-2"><h3>Level 2</h3><p>--sh-sm</p></div><div class="el-card el-3"><h3>Level 3</h3><p>--sh-md</p></div><div class="el-card el-4"><h3>Level 4</h3><p>--sh-lg</p></div></div>
-<h2>Coloured Shadows (hover to lift)</h2>
-<div class="col-grid">
-<div class="col-card" style="background:#0284c7;box-shadow:0 8px 20px rgba(2,132,199,.45)">Blue</div>
-<div class="col-card" style="background:#7c3aed;box-shadow:0 8px 20px rgba(124,58,237,.45)">Purple</div>
-<div class="col-card" style="background:#ea4f21;box-shadow:0 8px 20px rgba(234,79,33,.45)">Orange</div>
-<div class="col-card" style="background:#10b981;box-shadow:0 8px 20px rgba(16,185,129,.45)">Green</div>
 </div>
-<h2>Special Effects</h2>
-<div class="ef-grid"><div class="ef ef-retro">Hard retro<br><small>5px 5px 0 0</small></div><div class="ef ef-glow">Glow<br><small>0 0 20px rgba(blue)</small></div><div class="ef ef-inset">Inset<br><small>inset 0 2px 8px</small></div><div class="ef ef-multi">Layered<br><small>3× shadows</small></div></div>
-</body></html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-63-css_box_shadow</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 63 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-63-css_box_shadow/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-63-project-goal</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 63 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-63-project-goal/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 63 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Shadow syntax</li><li>✅ Elevation system and coloured shadows</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_62.html" class="ln-btn">← Lesson 62</a>
-    <a href="lesson_64.html" class="ln-btn primary">Lesson 64 →</a>
-  </div>
+  <h2>🎉 Lesson 63 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — What Is CSS Multi-Column Layout?</li><li>✅ Part 2 — `column-count`: Splitting Content into Columns</li><li>✅ Part 3 — `column-gap`: Space Between Columns</li><li>✅ Part 4 — Column Rules: Drawing Lines Between Columns</li><li>✅ Part 5 — `column-rule`: The Shorthand</li><li>✅ Part 6 — `column-span`: Making Elements Stretch Across All Columns</li></ul>
+  <div class="lesson-nav"><a href="lesson_62.html" class="ln-btn">← Lesson 62</a><a href="lesson_64.html" class="ln-btn primary">Lesson 64 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 63 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 63 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_css_63_phase';
+const TOTAL=13,KEY='techbase_css_l63';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

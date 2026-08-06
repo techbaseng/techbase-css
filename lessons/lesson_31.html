@@ -2,502 +2,1013 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 31: CSS Opacity — Techbase CSS Course</title>
-<meta name="description" content="Control element transparency using opacity and rgba — and understand the difference">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 31: CSS Opacity and Transparency — Techbase CSS</title>
+<meta name="description" content="CSS Opacity and Transparency">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 31 of 73 &nbsp;·&nbsp; CSS Opacity</span>
-  <div class="nav-actions"><a href="lesson_30.html" class="ln-btn">← Lesson 30</a><a href="lesson_32.html" class="ln-btn primary">Lesson 32 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 31 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 31</div>
-    <h1>CSS Opacity</h1>
-    <p class="lesson-tagline">Control element transparency using opacity and rgba — and understand the difference</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My Transparency Effects Page</span>
-      
-    </div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 31</div>
+    <h1>CSS Opacity and Transparency</h1>
+    <div class="l-hero-sub">11 phases · Build: Project: Social Media Profile Card</div>
   </div>
+</div>
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 31</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever noticed on a website how an image looks slightly faded until you hover your mouse over it — and then it suddenly becomes sharp and vivid? Or how a pop-up box has a semi-transparent dark background that lets you still see the page behind it? Or how some text overlays an image, sitting on a partially see-through coloured panel?</p>
+<p class="v2-p">All of these effects are created using CSS <strong>opacity</strong> and <strong>transparency</strong> techniques.</p>
+<p class="v2-p">In this lesson, you will learn:</p>
+<ul class="v2-ul"><li>What opacity and transparency mean in CSS</li><li>How to use the <code>opacity</code> property to make elements see-through</li><li>The difference between opacity values (0.0 to 1.0) and what each means visually</li><li>How to use opacity with the <code>:hover</code> selector for interactive image effects</li><li>A very important problem with <code>opacity</code> — and how to solve it using <strong>RGBA colour values</strong></li><li>How to create a transparent background box with text overlaid on an image</li><li>Real-world uses of opacity in modern web design</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to confidently apply transparency effects to images, backgrounds, boxes, and text on any web page.</p>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 11 phases</span>
+    <span>🏗️ Project: Social Media Profile Card</span>
+  </div>
+</div></div>
 </section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 31!</div>
-  <h2>CSS Opacity</h2>
-  <p>Control element transparency using opacity and rgba — and understand the difference. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
-</div>
-<div class="phase " id="phase1" data-phase="1">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">opacity vs rgba</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 11</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p><code>opacity: 0.5</code> makes an element (and ALL its children) 50% transparent. <code>rgba(r,g,b,0.5)</code> makes only the background colour transparent — the text inside stays fully opaque. This is a critical difference! Also: <code>opacity: 0</code> hides but keeps space; <code>visibility: hidden</code> also keeps space; <code>display: none</code> removes entirely. CSS also has <code>transparent</code> as a colour keyword.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* opacity affects the WHOLE element including text */
-.fade-50 { opacity: 0.5; }
-.fade-25 { opacity: 0.25; }
-
-/* rgba — only the background is transparent; text stays opaque */
-.bg-rgba {
-  background: rgba(2, 132, 199, 0.2);
-  color: #0f172a; /* stays fully visible */
-}
-
-/* Hover reveal effect */
-.card-img { opacity: 0.7; transition: opacity .3s; }
-.card-img:hover { opacity: 1; }
-
-/* Overlay with rgba */
-.hero-overlay {
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0),
-    rgba(0,0,0,0.7)
-  );
-}
-
-/* Transparent keyword */
-.ghost-btn {
-  background: transparent;
-  border: 2px solid #0284c7;
-}</pre></div>
-</div>
+    <p class="v2-p">Have you ever noticed on a website how an image looks slightly faded until you hover your mouse over it — and then it suddenly becomes sharp and vivid? Or how a pop-up box has a semi-transparent dark background that lets you still see the page behind it? Or how some text overlays an image, sitting on a partially see-through coloured panel?</p>
+<p class="v2-p">All of these effects are created using CSS <strong>opacity</strong> and <strong>transparency</strong> techniques.</p>
+<p class="v2-p">In this lesson, you will learn:</p>
+<ul class="v2-ul"><li>What opacity and transparency mean in CSS</li><li>How to use the <code>opacity</code> property to make elements see-through</li><li>The difference between opacity values (0.0 to 1.0) and what each means visually</li><li>How to use opacity with the <code>:hover</code> selector for interactive image effects</li><li>A very important problem with <code>opacity</code> — and how to solve it using <strong>RGBA colour values</strong></li><li>How to create a transparent background box with text overlaid on an image</li><li>Real-world uses of opacity in modern web design</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to confidently apply transparency effects to images, backgrounds, boxes, and text on any web page.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Create two side-by-side boxes with the same blue background. On one use <code>opacity: 0.4</code> and on the other use <code>rgba(2,132,199,0.4)</code> as the background. Put white text inside each. Notice: opacity fades the text too; rgba keeps the text sharp!</p>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
+</div>
+<div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">Opacity Transitions and Overlays</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 11</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>Opacity + CSS transitions create elegant hover and reveal effects. An overlay is a common pattern: an absolutely positioned div with semi-transparent background that appears on hover to reveal text over an image. Opacity can also be animated with <code>@keyframes</code> for fade-in effects. <code>pointer-events: none</code> on an invisible element prevents it from blocking clicks.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Hover image overlay */
-.image-card { position: relative; overflow: hidden; border-radius: 12px; }
-.image-card img { width: 100%; display: block; transition: transform .3s; }
-.image-card:hover img { transform: scale(1.05); }
-.image-card .overlay {
-  position: absolute; inset: 0;
-  background: rgba(2,132,199,0.85);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; transition: opacity .3s;
-}
-.image-card:hover .overlay { opacity: 1; }
-.image-card .overlay p { color: white; font-weight: bold; text-align: center; }
-
-/* Fade-in animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.fade-in { animation: fadeIn .6s ease forwards; }</pre></div>
-</div>
+    <p class="v2-p">Before learning opacity, let's quickly review two things that will help you understand this lesson better.</p>
+<h3 class="v2-h3">What Is a CSS Property?</h3>
+<p class="v2-p">A CSS property is an instruction you give to the browser about how an element should look. For example:</p>
+<ul class="v2-ul"><li><code>color: red;</code> tells the browser to make the text red</li><li><code>font-size: 20px;</code> tells the browser to make the text 20 pixels tall</li><li><code>opacity: 0.5;</code> tells the browser to make the element 50% transparent</li></ul>
+<h3 class="v2-h3">What Are RGB and RGBA Colours?</h3>
+<p class="v2-p">You may already know that colours on screens are made from three light channels: <strong>Red</strong>, <strong>Green</strong>, and <strong>Blue</strong> (RGB).</p>
+<p class="v2-p">In CSS, you can write colours like this:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgb(255, 0, 0);   /* Pure red */
+color: rgb(0, 128, 0);   /* Green */
+color: rgb(0, 0, 255);   /* Pure blue */</code></pre></div></div>
+<p class="v2-p"><strong>RGBA</strong> is the same thing, but with a fourth channel: <strong>Alpha</strong>. The alpha channel controls transparency:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgba(255, 0, 0, 1.0);   /* Pure red, fully opaque */
+color: rgba(255, 0, 0, 0.5);   /* Pure red, 50% transparent */
+color: rgba(255, 0, 0, 0.0);   /* Pure red, fully invisible */</code></pre></div></div>
+<p class="v2-p">Understanding RGBA is crucial for this lesson, because it is the key to solving a major opacity problem we will explore.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Create an image card with an overlay that appears on hover: the overlay should be semi-transparent blue with centred white text. Set <code>opacity: 0</code> by default and <code>opacity: 1</code> on <code>.card:hover .overlay</code>. Add <code>transition: opacity .3s</code> for a smooth reveal.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My Transparency Effects Page</div>
-  <p class="project-desc">Build an image gallery with hover overlays, fade-in animations and rgba backgrounds.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
-    </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;CSS Opacity Effects&lt;/title&gt;
-    &lt;style&gt;
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #0f172a;
-             padding: 30px; max-width: 900px; margin: 0 auto; color: #f1f5f9; }
-      h1 { color: #38bdf8; margin-bottom: 6px; }
-      h2 { color: #7dd3fc; margin: 28px 0 14px;
-           border-bottom: 1px solid #1e3a5f; padding-bottom: 6px; }
-      /* Opacity comparison */
-      .compare { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-      .cbox { flex: 1; min-width: 160px; padding: 20px; border-radius: 12px;
-              text-align: center; font-weight: bold; font-size: 14px; }
-      .op-full { background: #0284c7; color: white; }
-      .op-50   { background: #0284c7; color: white; opacity: .5; }
-      .op-rgba { background: rgba(2,132,199,.5); color: white; }
-      .op-note { font-size: 11px; opacity: .7; margin-top: 6px; font-weight: normal; }
-      /* Image cards with overlay */
-      .grid { display: flex; gap: 16px; flex-wrap: wrap; }
-      .img-card { flex: 1; min-width: 220px; position: relative; overflow: hidden;
-                  border-radius: 14px; cursor: pointer; }
-      .img-card img { width: 100%; height: 160px; object-fit: cover; display: block;
-                      transition: transform .4s; }
-      .img-card:hover img { transform: scale(1.08); }
-      .overlay { position: absolute; inset: 0; background: rgba(2,132,199,.85);
-                 display: flex; flex-direction: column; align-items: center;
-                 justify-content: center; opacity: 0; transition: opacity .3s; }
-      .img-card:hover .overlay { opacity: 1; }
-      .overlay h3 { color: white; margin: 0 0 6px; }
-      .overlay p  { color: rgba(255,255,255,.85); font-size: 13px; margin: 0; text-align: center; padding: 0 16px; }
-      /* RGBA tint cards */
-      .tints { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-      .tint  { flex: 1; min-width: 80px; padding: 16px; border-radius: 10px;
-               text-align: center; font-size: 12px; font-weight: bold; }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;CSS Opacity Effects&lt;/h1&gt;
-
-    &lt;h2&gt;opacity vs rgba&lt;/h2&gt;
-    &lt;div class="compare"&gt;
-      &lt;div class="cbox op-full"&gt;opacity: 1&lt;br&gt;&lt;span class="op-note"&gt;Full opacity&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="cbox op-50"&gt;opacity: 0.5&lt;br&gt;&lt;span class="op-note"&gt;Text fades too!&lt;/span&gt;&lt;/div&gt;
-      &lt;div class="cbox op-rgba"&gt;rgba background&lt;br&gt;&lt;span class="op-note"&gt;Text stays sharp ✓&lt;/span&gt;&lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;h2&gt;rgba Colour Tints&lt;/h2&gt;
-    &lt;div class="tints"&gt;
-      &lt;div class="tint" style="background:rgba(2,132,199,.1);color:#38bdf8"&gt;10%&lt;/div&gt;
-      &lt;div class="tint" style="background:rgba(2,132,199,.25);color:#38bdf8"&gt;25%&lt;/div&gt;
-      &lt;div class="tint" style="background:rgba(2,132,199,.5);color:#0f172a"&gt;50%&lt;/div&gt;
-      &lt;div class="tint" style="background:rgba(2,132,199,.75);color:white"&gt;75%&lt;/div&gt;
-      &lt;div class="tint" style="background:rgba(2,132,199,1);color:white"&gt;100%&lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;h2&gt;Hover Overlays (hover each card!)&lt;/h2&gt;
-    &lt;div class="grid"&gt;
-      &lt;div class="img-card"&gt;
-        &lt;img src="https://via.placeholder.com/400x160/0284c7/dbeafe?text=CSS" alt="CSS"&gt;
-        &lt;div class="overlay"&gt;&lt;h3&gt;CSS Basics&lt;/h3&gt;&lt;p&gt;Selectors, Box Model, Typography&lt;/p&gt;&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class="img-card"&gt;
-        &lt;img src="https://via.placeholder.com/400x160/0369a1/dbeafe?text=Flexbox" alt="Flexbox"&gt;
-        &lt;div class="overlay"&gt;&lt;h3&gt;CSS Flexbox&lt;/h3&gt;&lt;p&gt;Rows, columns, alignment&lt;/p&gt;&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class="img-card"&gt;
-        &lt;img src="https://via.placeholder.com/400x160/075985/dbeafe?text=Grid" alt="Grid"&gt;
-        &lt;div class="overlay"&gt;&lt;h3&gt;CSS Grid&lt;/h3&gt;&lt;p&gt;Two-dimensional layouts&lt;/p&gt;&lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 11</div>
+    <div class="phase-title">Section 1: What Is Opacity? What Is Transparency?</div>
+    <div class="phase-check" id="chk3"></div>
   </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Simple Explanation</h3>
+<p class="v2-p"><strong>Opacity</strong> describes how solid or how see-through something is.</p>
+<ul class="v2-ul"><li><strong>High opacity</strong> = more solid, less see-through (like a thick wall)</li><li><strong>Low opacity</strong> = more see-through, less solid (like a glass window)</li></ul>
+<p class="v2-p"><strong>Transparency</strong> is the opposite of opacity:</p>
+<ul class="v2-ul"><li>A <strong>fully opaque</strong> element is completely solid — you cannot see through it at all</li><li>A <strong>fully transparent</strong> element is completely invisible — like thin air</li><li>A <strong>semi-transparent</strong> element is somewhere in between — like frosted glass or tinted sunglasses</li></ul>
+<p class="v2-p"><strong>Real-world analogy:</strong> Think of a sticker on a glass window. A plain white sticker is fully opaque — you cannot see through it. A frosted decorative sticker is semi-transparent — you can vaguely see through it. Clean, clear glass is fully transparent — you see right through it perfectly.</p>
+<h3 class="v2-h3">How CSS Opacity Works</h3>
+<p class="v2-p">In CSS, the <code>opacity</code> property accepts a number from <code>0.0</code> to <code>1.0</code>:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>Meaning</th><th>Visual Effect</th></tr></thead><tbody><tr><td><code>1</code> or <code>1.0</code></td><td>Fully opaque</td><td>Normal — nothing see-through</td></tr><tr><td><code>0.75</code></td><td>75% opaque</td><td>Slightly transparent</td></tr><tr><td><code>0.5</code></td><td>50% opaque</td><td>Half transparent (semi-transparent)</td></tr><tr><td><code>0.25</code></td><td>25% opaque</td><td>Very transparent</td></tr><tr><td><code>0</code> or <code>0.0</code></td><td>Fully transparent</td><td>Completely invisible</td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Key rule to remember:</strong> The <strong>lower</strong> the opacity value, the <strong>more transparent</strong> the element becomes. Think of it as a percentage: <code>0.5</code> = 50% opaque = 50% see-through.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: What Is Opacity? What Is Transparency?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 11</div>
+    <div class="phase-title">Section 2: Basic Opacity on Images</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>selector {
+  opacity: value;  /* A number from 0.0 to 1.0 */
+}</code></pre></div></div>
+<p class="v2-p">That's it. One line. Let's see it in action.</p>
+<h3 class="v2-h3">Example 1: Four Images at Different Opacity Levels</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;img src=&quot;forest.jpg&quot; alt=&quot;Forest&quot; class=&quot;op-100&quot;&gt;
+&lt;img src=&quot;forest.jpg&quot; alt=&quot;Forest&quot; class=&quot;op-60&quot;&gt;
+&lt;img src=&quot;forest.jpg&quot; alt=&quot;Forest&quot; class=&quot;op-30&quot;&gt;
+&lt;img src=&quot;forest.jpg&quot; alt=&quot;Forest&quot; class=&quot;op-10&quot;&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+img {
+  width: 200px;
+  height: 150px;
+}
+
+.op-100 { opacity: 1;    }   /* Fully opaque  — normal image */
+.op-60  { opacity: 0.6;  }   /* 60% opaque    — slightly faded */
+.op-30  { opacity: 0.3;  }   /* 30% opaque    — very faded */
+.op-10  { opacity: 0.1;  }   /* 10% opaque    — almost invisible */</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visual description):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Normal image ]  [ Slightly faded ]  [ Very faded ]  [ Almost invisible ]
+   opacity: 1        opacity: 0.6      opacity: 0.3      opacity: 0.1</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<ul class="v2-ul"><li><code>opacity: 1;</code> — The image looks completely normal. No transparency at all.</li><li><code>opacity: 0.6;</code> — The image is 60% solid. You can still see it clearly, just slightly faded.</li><li><code>opacity: 0.3;</code> — The image is 30% solid. It looks quite washed out and the white background shows through.</li><li><code>opacity: 0.1;</code> — The image is only 10% solid. It barely appears at all — almost completely transparent.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What value would give you 80% opacity? What about 5% opacity? Try writing those values before checking: <code>opacity: 0.8;</code> and <code>opacity: 0.05;</code></p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 2: A Single Image with Reduced Opacity</h3>
+<p class="v2-p">Let's see a concrete, simple example — making a single image 40% transparent:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;img src=&quot;mountain.jpg&quot; alt=&quot;Mountain&quot; class=&quot;faded-img&quot;&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+.faded-img {
+  opacity: 0.4;    /* Image is 40% opaque (60% transparent) */
+  width: 300px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> The mountain image appears washed out and faded — you can see the white page background showing through the image itself.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> Faded images are often used for "coming soon" sections, disabled items in a shop, background watermarks, or decorative elements that should not distract from the main content.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Basic Opacity on Images</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 11</div>
+    <div class="phase-title">Section 3: Opacity with Hover — Interactive Image Effects</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">One of the most popular uses of opacity is combining it with the CSS <code>:hover</code> selector. This lets you change the transparency of an image when the user moves their mouse over it — creating a smooth visual feedback effect.</p>
+<h3 class="v2-h3">What Is <code>:hover</code>?</h3>
+<p class="v2-p">The <code>:hover</code> pseudo-class applies styles to an element <strong>only when the user's mouse is positioned over it</strong>. The moment the mouse moves away, the styles go back to their normal state.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Normal state */
+img {
+  opacity: 0.5;
+}
+
+/* State when mouse is hovering over the image */
+img:hover {
+  opacity: 1.0;
+}</code></pre></div></div>
+<p class="v2-p">This reads as: "Normally the image is 50% transparent. When the user hovers over it, make it fully opaque."</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 3: Image Becomes Fully Visible on Hover (Reverse Transparent Effect)</h3>
+<p class="v2-p">This is the most common hover effect — the image starts semi-transparent and becomes fully visible when hovered.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;img src=&quot;product.jpg&quot; alt=&quot;Product&quot; class=&quot;hover-reveal&quot;&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+.hover-reveal {
+  opacity: 0.5;          /* Start at 50% opacity — looks faded */
+  width: 200px;
+  height: 150px;
+}
+
+.hover-reveal:hover {
+  opacity: 1.0;          /* On hover — become fully opaque (normal) */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li><strong>Before hover:</strong> The image looks faded, semi-transparent</li><li><strong>On hover:</strong> The image snaps to full, clear visibility</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> Online shops often use this to indicate that an item is "available" — it starts faded and becomes sharp when you hover, as if it's "coming to life" for you to select.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 4: Image Becomes Transparent on Hover (Transparent Hover Effect)</h3>
+<p class="v2-p">This is the reverse — the image starts fully opaque and becomes transparent when hovered.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;img src=&quot;photo.jpg&quot; alt=&quot;Photo&quot; class=&quot;hover-fade&quot;&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+.hover-fade {
+  opacity: 1.0;          /* Start fully opaque — normal image */
+  width: 200px;
+  height: 150px;
+}
+
+.hover-fade:hover {
+  opacity: 0.4;          /* On hover — become 40% opacity (faded) */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li><strong>Before hover:</strong> Normal, fully visible image</li><li><strong>On hover:</strong> Image fades out to 40% opacity — the page background shows through</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> Why might a designer choose to fade an image <em>down</em> on hover rather than fade it <em>up</em>? One reason: to draw attention to a caption or overlay text that appears on top of the image when hovered!</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Combining Both Examples — Multiple Images Side by Side</h3>
+<p class="v2-p">Here is a more realistic scenario: a row of photos where each one starts faded and becomes clear on hover.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;div class=&quot;photo-row&quot;&gt;
+  &lt;img src=&quot;photo1.jpg&quot; alt=&quot;City&quot;&gt;
+  &lt;img src=&quot;photo2.jpg&quot; alt=&quot;Nature&quot;&gt;
+  &lt;img src=&quot;photo3.jpg&quot; alt=&quot;People&quot;&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+.photo-row img {
+  opacity: 0.5;           /* All images start at 50% opacity */
+  width: 200px;
+  height: 150px;
+  margin: 5px;
+  border: 2px solid #ccc;
+}
+
+.photo-row img:hover {
+  opacity: 1.0;           /* Each image becomes fully opaque when hovered */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visual):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Faded City ] [ Faded Nature ] [ Faded People ]
+       ↑ When you hover over any one image, only THAT image becomes fully visible.
+         The others remain faded.</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What would happen if you wrote <code>opacity: 1.0</code> on the normal state and <code>opacity: 0.5</code> on the <code>:hover</code> state? The images would start fully visible and fade when hovered — the exact opposite effect!</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Opacity with Hover — Interactive Image Effects</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 11</div>
+    <div class="phase-title">Section 4: The Big Problem — Opacity Affects Child Elements!</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">This is one of the most important things to understand about the CSS <code>opacity</code> property, and it trips up beginners constantly.</p>
+<h3 class="v2-h3">The Problem Explained</h3>
+<p class="v2-p">When you apply <code>opacity</code> to an element, <strong>every child element inside it also becomes transparent</strong> — at the exact same opacity level. You cannot make just the background transparent while keeping the text inside fully opaque.</p>
+<p class="v2-p"><strong>Why does this happen?</strong> Because <code>opacity</code> affects the entire element as a single unit — like painting it with a see-through film. Everything inside the box gets the same film applied to it.</p>
+<p class="v2-p"><strong>Example of the problem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;div class=&quot;transparent-box&quot;&gt;
+  &lt;p&gt;This text is supposed to be fully readable!&lt;/p&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS — THE PROBLEM */
+.transparent-box {
+  background-color: green;
+  opacity: 0.3;            /* Makes BOTH the green background AND the text transparent! */
+  padding: 20px;
+  width: 300px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (problem):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[  Very faint green box with barely readable text  ]
+   &quot;This text is supposed to be fully readable!&quot;
+   (But the text is also 30% opaque — very hard to read!)</code></pre></div></div>
+<p class="v2-p">Both the green background and the paragraph text inside become 30% transparent. This is almost certainly NOT what the designer wanted. They wanted the green background to be see-through, but the text to remain fully solid and readable.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>This is the #1 opacity mistake that beginners make.</strong> Always ask yourself: "Do I want the text/children inside to also be transparent?" If NO — do NOT use <code>opacity</code>. Use RGBA instead.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: The Big Problem — Opacity Affects Child Elements!</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 11</div>
+    <div class="phase-title">Section 5: The Solution — RGBA Colour Values</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is RGBA?</h3>
+<p class="v2-p">RGBA stands for <strong>Red, Green, Blue, Alpha</strong>. It is a way to specify a colour that includes its transparency level, all in one value.</p>
+<p class="v2-p">The syntax is:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>background-color: rgba(red, green, blue, alpha);</code></pre></div></div>
+<p class="v2-p">Where:</p>
+<ul class="v2-ul"><li><code>red</code>, <code>green</code>, <code>blue</code> = colour channel values from <code>0</code> to <code>255</code></li><li><code>alpha</code> = transparency from <code>0.0</code> (fully transparent) to <code>1.0</code> (fully opaque)</li></ul>
+<p class="v2-p"><strong>The crucial difference from <code>opacity</code>:</strong> RGBA only makes the <strong>background colour</strong> transparent. The <strong>text and child elements inside remain fully opaque</strong>. It is like painting the wall of a glass house — the wall is see-through, but the people inside are not!</p>
+<h3 class="v2-h3">Side-by-Side Comparison</h3>
+<p class="v2-p"><strong>Version 1 — Using <code>opacity</code> (WRONG for this use case):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.box-opacity {
+  background-color: green;
+  opacity: 0.3;     /* BOTH background AND text become 30% transparent — text is hard to read */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Version 2 — Using <code>rgba</code> (CORRECT):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.box-rgba {
+  background-color: rgba(0, 128, 0, 0.3);  /* Only the BACKGROUND is 30% transparent */
+                                            /* Text inside remains 100% opaque and readable */
+}</code></pre></div></div>
+<p class="v2-p">The second version is what you almost always want when you have text on a transparent background.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 5: RGBA Background — Text Stays Readable</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;div class=&quot;card-rgba&quot;&gt;
+  &lt;h3&gt;Mountain Retreat&lt;/h3&gt;
+  &lt;p&gt;Escape to the mountains for a peaceful weekend. Fresh air,
+     stunning views, and complete relaxation await you.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+.card-rgba {
+  background-color: rgba(0, 0, 128, 0.4);   /* Blue background at 40% opacity */
+                                              /* Text inside remains FULLY opaque */
+  color: white;
+  padding: 25px;
+  width: 350px;
+  border-radius: 8px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌─────────────────────────────────────┐
+│  Mountain Retreat                   │  ← Text is FULLY WHITE and SHARP
+│  Escape to the mountains for a      │  ← Blue background is semi-transparent
+│  peaceful weekend. Fresh air...     │  ← You can see THROUGH the blue box
+└─────────────────────────────────────┘</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Notice:</strong> The text <code>Mountain Retreat</code> is crystal clear white. The blue background is semi-transparent. This is because <code>rgba()</code> only applies transparency to the colour value — NOT to the child elements inside.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 6: Comparing <code>opacity</code> vs <code>rgba</code> Side by Side</h3>
+<p class="v2-p">This is the most instructive example in the whole lesson. Study it carefully.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML: Two identical boxes, two different approaches --&gt;
+&lt;h3&gt;Method 1: Using opacity (text gets transparent too)&lt;/h3&gt;
+&lt;div class=&quot;box-with-opacity&quot;&gt;
+  &lt;p&gt;This text is hard to read because opacity affects EVERYTHING inside.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;Method 2: Using rgba (only background is transparent)&lt;/h3&gt;
+&lt;div class=&quot;box-with-rgba&quot;&gt;
+  &lt;p&gt;This text is perfectly readable because rgba only affects the background colour.&lt;/p&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+.box-with-opacity {
+  background-color: rgb(4, 170, 109);   /* A green colour */
+  opacity: 0.3;                          /* Makes BOTH background AND text 30% opaque */
+  padding: 20px;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.box-with-rgba {
+  background-color: rgba(4, 170, 109, 0.3);  /* Same green, but ONLY the background is 30% transparent */
+  padding: 20px;
+  color: black;                               /* Text remains fully opaque */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Method 1 (opacity):
+[ Very faint green box — text is barely legible ]
+  &quot;This text is hard to read...&quot;  ← faint and hard to see
+
+Method 2 (rgba):
+[ Semi-transparent green box — text is sharp and clear ]
+  &quot;This text is perfectly readable...&quot;  ← fully solid and readable</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>The takeaway:</strong> Use <code>opacity</code> when you want the ENTIRE element (including text and all children) to be transparent. Use <code>rgba()</code> when you only want the background colour to be transparent while keeping the text inside fully readable.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: The Solution — RGBA Colour Values</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 11</div>
+    <div class="phase-title">Section 6: Text Over an Image Using a Transparent Box</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">One of the most beautiful and practical uses of transparency is placing readable text over an image. The trick is to layer a semi-transparent box on top of the image and put the text inside that box.</p>
+<h3 class="v2-h3">How to Layer Elements</h3>
+<p class="v2-p">To place one element visually on top of another, we use CSS <code>position</code>:</p>
+<ul class="v2-ul"><li>The container gets <code>position: relative;</code> — it becomes the reference point</li><li>The inner transparent box gets <code>position: absolute;</code> — it is placed relative to the container</li></ul>
+<p class="v2-p">This technique is used everywhere in professional web design — hero banners, product cards, image captions, and more.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 7: Text Overlay Box on an Image (The Classic Design Pattern)</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;div class=&quot;image-container&quot;&gt;
+  &lt;!-- The background image is set via CSS below --&gt;
+  &lt;div class=&quot;overlay-box&quot;&gt;
+    &lt;p&gt;Welcome to the Jungle&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+.image-container {
+  position: relative;               /* Reference point for the absolute box */
+  width: 400px;
+  height: 250px;
+  background-image: url(&quot;jungle.jpg&quot;);
+  background-size: cover;           /* Image fills the entire container */
+  background-position: center;
+  border: 3px solid #333;
+}
+
+.overlay-box {
+  position: absolute;               /* Positioned relative to .image-container */
+  bottom: 20px;                     /* 20px from the bottom of the container */
+  left: 20px;                       /* 20px from the left edge */
+  right: 20px;                      /* 20px from the right edge */
+  background-color: rgba(0, 0, 0, 0.6);  /* Semi-transparent BLACK background */
+  color: white;                     /* White text — fully opaque */
+  padding: 15px;
+  text-align: center;
+  font-size: 1.2em;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visual):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌──────────────────────────────────────────┐
+│                                          │
+│          [ Jungle photograph ]           │
+│                                          │
+│  ┌────────────────────────────────────┐  │
+│  │     Welcome to the Jungle          │  │  ← text is white &amp; clear
+│  └────────────────────────────────────┘  │  ← box is semi-transparent black
+└──────────────────────────────────────────┘</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line breakdown:</strong></p>
+<ul class="v2-ul"><li><code>.image-container</code> — This outer div holds the background image. <code>position: relative</code> makes it the anchor for the overlay box.</li><li><code>background-image: url(...)</code> — Sets the jungle photo as the background.</li><li><code>background-size: cover</code> — Stretches the image to fill the container without distortion.</li><li><code>.overlay-box</code> — This is the transparent text panel layered over the image.</li><li><code>position: absolute</code> — Places this box relative to its parent (<code>.image-container</code>).</li><li><code>bottom: 20px; left: 20px; right: 20px;</code> — Positions the box near the bottom, with 20px gaps on three sides.</li><li><code>background-color: rgba(0, 0, 0, 0.6)</code> — Black background at 60% opacity. The image shows through slightly.</li><li><code>color: white</code> — The text is fully white and fully opaque. It stands out clearly.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> This exact pattern is used on virtually every modern website for hero sections, feature banners, blog article thumbnails, product cards, and event announcements. If you master this pattern, you can build professional-looking web components right now!</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 8: The Same Pattern with a Coloured Overlay</h3>
+<p class="v2-p">Instead of a black semi-transparent overlay, you can use any colour for different visual moods:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Blue overlay — calm, professional */
+.overlay-blue {
+  background-color: rgba(0, 60, 180, 0.7);
+  color: white;
+}
+
+/* Red overlay — urgent, exciting */
+.overlay-red {
+  background-color: rgba(200, 0, 0, 0.6);
+  color: white;
+}
+
+/* Green overlay — nature, eco, health */
+.overlay-green {
+  background-color: rgba(0, 128, 0, 0.5);
+  color: white;
+}
+
+/* White overlay — clean, minimal */
+.overlay-white {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;    /* Dark text on white overlay */
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Design tip:</strong> The alpha value in your <code>rgba()</code> matters for readability. If the image is very busy/complex, use a higher alpha (like <code>0.7</code> or <code>0.8</code>) to ensure text stands out. If the image is simple with few colours, a lower alpha (like <code>0.4</code>) can look elegant and still be readable.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Text Over an Image Using a Transparent Box</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 11</div>
+    <div class="phase-title">Section 7: The CSS `opacity` Property Reference Summary</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Here is a complete reference table for the <code>opacity</code> property:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th><code>opacity</code></th></tr></thead><tbody><tr><td><strong>What it does</strong></td><td>Controls how transparent/see-through an element is</td></tr><tr><td><strong>Applies to</strong></td><td>Any HTML element (images, divs, text, buttons, etc.)</td></tr><tr><td><strong>Value range</strong></td><td><code>0.0</code> (fully transparent) to <code>1.0</code> (fully opaque)</td></tr><tr><td><strong>Default value</strong></td><td><code>1</code> (fully opaque)</td></tr><tr><td><strong>Affects children?</strong></td><td>YES — all child elements inherit the same transparency</td></tr><tr><td><strong>Alternative</strong></td><td><code>rgba()</code> for background-only transparency</td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: The CSS <code>opacity</code> Property Reference Summary</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase10">
+  <div class="phase-header">
+    <div class="phase-num">Phase 10 of 11</div>
+    <div class="phase-title">Section 8: Guided Practice Exercises</div>
+    <div class="phase-check" id="chk10"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1: Warm-Up — Basic Opacity Scale</h3>
+<p class="v2-p"><strong>Objective:</strong> Apply different opacity levels to a single image.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a photography portfolio page. You want to show a decorative row of the same image at five different fade levels.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an HTML file with five <code>&lt;img&gt;</code> tags, all with the same <code>src</code></li><li>Give them classes: <code>op-1</code>, <code>op-2</code>, <code>op-3</code>, <code>op-4</code>, <code>op-5</code></li><li>Apply the following opacity values in your CSS:</li></ol>
+<p class="v2-p">- <code>.op-1</code> → <code>opacity: 1.0</code>    - <code>.op-2</code> → <code>opacity: 0.8</code>    - <code>.op-3</code> → <code>opacity: 0.6</code>    - <code>.op-4</code> → <code>opacity: 0.4</code>    - <code>.op-5</code> → <code>opacity: 0.2</code></p>
+<p class="v2-p"><strong>Starter code:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    img { width: 120px; height: 90px; margin: 5px; }
+    /* Add your opacity classes here */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;img src=&quot;landscape.jpg&quot; alt=&quot;Landscape&quot; class=&quot;op-1&quot;&gt;
+  &lt;img src=&quot;landscape.jpg&quot; alt=&quot;Landscape&quot; class=&quot;op-2&quot;&gt;
+  &lt;img src=&quot;landscape.jpg&quot; alt=&quot;Landscape&quot; class=&quot;op-3&quot;&gt;
+  &lt;img src=&quot;landscape.jpg&quot; alt=&quot;Landscape&quot; class=&quot;op-4&quot;&gt;
+  &lt;img src=&quot;landscape.jpg&quot; alt=&quot;Landscape&quot; class=&quot;op-5&quot;&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visual):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Full ] [ Slightly faded ] [ Half ] [ Very faded ] [ Almost invisible ]</code></pre></div></div>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ul class="v2-ul"><li>Can you see the white page background showing through the more transparent images?</li><li>Which image looks completely normal?</li><li>Which image is almost invisible?</li><li>What value would give you exactly 50% opacity?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2: Hover Reveal Effect</h3>
+<p class="v2-p"><strong>Objective:</strong> Make images go from semi-transparent to fully opaque on hover.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are creating a team members gallery. Each team member photo starts faded. When the user hovers over a photo, it becomes fully visible — as if the person is "stepping forward".</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a <code>&lt;div class="team-gallery"&gt;</code> with three <code>&lt;img&gt;</code> elements inside</li><li>Style all images with <code>opacity: 0.4</code>, a fixed width and height, and a margin</li><li>Add an <code>img:hover</code> rule that sets <code>opacity: 1.0</code></li></ol>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Faded ] [ Faded ] [ Faded ]
+   ↑ Hover over any image → it becomes fully clear</code></pre></div></div>
+<p class="v2-p"><strong>What-If Challenge:</strong> What if you added a <code>transition: opacity 0.3s ease;</code> to the <code>img</code> rule? Try it! Instead of the opacity snapping instantly, it would smoothly fade over 0.3 seconds — a much more polished effect!</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  opacity: 0.4;
+  transition: opacity 0.3s ease;  /* Smooth fade transition */
+  width: 200px;
+  height: 150px;
+}
+
+img:hover {
+  opacity: 1.0;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3: The Opacity vs RGBA Comparison</h3>
+<p class="v2-p"><strong>Objective:</strong> Personally see the difference between <code>opacity</code> and <code>rgba()</code>.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are testing two different approaches to creating a semi-transparent card with a heading and paragraph inside.</p>
+<p class="v2-p"><strong>Step 1 — Create the first card using <code>opacity</code>:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;card-opacity&quot;&gt;
+  &lt;h3&gt;Card with opacity&lt;/h3&gt;
+  &lt;p&gt;Can you read this text easily?&lt;/p&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card-opacity {
+  background-color: darkblue;
+  color: white;
+  opacity: 0.4;
+  padding: 20px;
+  width: 300px;
+  margin-bottom: 20px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Step 2 — Create the second card using <code>rgba()</code>:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;card-rgba&quot;&gt;
+  &lt;h3&gt;Card with rgba&lt;/h3&gt;
+  &lt;p&gt;Can you read this text easily?&lt;/p&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card-rgba {
+  background-color: rgba(0, 0, 139, 0.4);  /* Dark blue at 40% opacity */
+  color: white;                              /* Text is FULLY opaque */
+  padding: 20px;
+  width: 300px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Observation:</strong></p>
+<ul class="v2-ul"><li>Card 1: Both the dark blue background and the white text are 40% transparent — the text is hard to read</li><li>Card 2: Only the dark blue background is 40% transparent — the text is fully white and clearly readable</li></ul>
+<p class="v2-p"><strong>Self-check Question:</strong> Which card would you use if you wanted readable text? Why?</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 4: Build a Text-Over-Image Banner</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a hero banner: an image with a semi-transparent overlay and large text.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a travel website header. It needs a scenic photo with a dark, semi-transparent banner at the bottom containing the destination name.</p>
+<p class="v2-p"><strong>Starter HTML:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;hero-banner&quot;&gt;
+  &lt;div class=&quot;hero-text&quot;&gt;
+    &lt;h1&gt;Discover Lagos&lt;/h1&gt;
+    &lt;p&gt;The heartbeat of West Africa awaits&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Your Task:</strong> Write the CSS to:</p>
+<ol class="v2-ol"><li>Give <code>.hero-banner</code> a background image, a height of <code>350px</code>, and <code>position: relative</code></li><li>Give <code>.hero-text</code> a <code>position: absolute</code>, place it at the bottom with <code>15px</code> of padding on all sides</li><li>Use <code>rgba(0, 0, 0, 0.65)</code> as the background colour of <code>.hero-text</code></li><li>Make the text white</li></ol>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌─────────────────────────────────────────────┐
+│                                             │
+│         [ Scenic Lagos photo ]              │
+│                                             │
+│  ┌─────────────────────────────────────┐    │
+│  │  Discover Lagos                     │    │
+│  │  The heartbeat of West Africa...    │    │
+│  └─────────────────────────────────────┘    │
+└─────────────────────────────────────────────┘</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">`css
+img {
+  opacity: 0.4;
+  transition: opacity 0.3s ease;  /* Smooth fade transition */
+  width: 200px;
+  height: 150px;
+}
+
+img:hover {
+  opacity: 1.0;
+}
+`
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase11">
+  <div class="phase-header">
+    <div class="phase-num">Phase 11 of 11</div>
+    <div class="phase-title">Section 10: Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk11"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1: Using <code>opacity</code> When You Want Only the Background to Be Transparent</h3>
+<p class="v2-p"><strong>The Problem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — text will also become faded */
+.info-box {
+  background-color: blue;
+  opacity: 0.3;    /* Text inside is also 30% opaque! */
+  color: white;
+}</code></pre></div></div>
+<p class="v2-p"><strong>The Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — only the background is transparent, text stays fully opaque */
+.info-box {
+  background-color: rgba(0, 0, 255, 0.3);   /* Blue at 30% opacity */
+  color: white;                              /* Fully opaque white text */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2: Using Opacity Values Greater Than 1</h3>
+<p class="v2-p"><strong>The Problem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — opacity: 1.5 is invalid! Maximum is 1.0 */
+img {
+  opacity: 1.5;   /* Browser ignores this or treats it as 1.0 */
+}</code></pre></div></div>
+<p class="v2-p"><strong>The Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — always use values between 0.0 and 1.0 */
+img {
+  opacity: 1.0;   /* Fully opaque */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3: Forgetting <code>position: relative</code> on the Container</h3>
+<p class="v2-p">When placing a transparent overlay box over an image, the container <strong>must</strong> have <code>position: relative</code>. Without it, the absolute-positioned overlay will be placed relative to the entire page, not just the image container.</p>
+<p class="v2-p"><strong>The Problem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — no position set on container */
+.image-container {
+  width: 400px;
+  height: 250px;
+  background-image: url(&quot;photo.jpg&quot;);
+  /* No position: relative! The overlay will escape to the page! */
+}
+
+.overlay {
+  position: absolute;   /* This will position relative to the PAGE, not the container */
+  bottom: 0;
+}</code></pre></div></div>
+<p class="v2-p"><strong>The Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT */
+.image-container {
+  position: relative;    /* REQUIRED for the overlay to work correctly */
+  width: 400px;
+  height: 250px;
+  background-image: url(&quot;photo.jpg&quot;);
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;             /* Now positions relative to .image-container */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4: Setting <code>opacity: 0</code> to Hide an Element When You Mean <code>display: none</code></h3>
+<p class="v2-p"><strong>The difference:</strong></p>
+<ul class="v2-ul"><li><code>opacity: 0</code> makes the element invisible BUT it still takes up space on the page. It is there — just see-through.</li><li><code>display: none</code> removes the element from the page completely — no space is reserved.</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* opacity: 0 — element is invisible but STILL TAKES UP SPACE */
+.invisible-but-there {
+  opacity: 0;
+}
+
+/* display: none — element is completely GONE from layout */
+.actually-hidden {
+  display: none;
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">Use <code>opacity: 0</code> when you want to animate an element fading in/out. Use <code>display: none</code> when you want the element to truly disappear from the layout.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5: Confusing the Alpha in rgba() with the <code>opacity</code> Property</h3>
+<p class="v2-p">Both control transparency, but they work differently:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Feature</th><th><code>opacity</code> property</th><th><code>rgba()</code> alpha channel</th></tr></thead><tbody><tr><td>What becomes transparent</td><td>The ENTIRE element + all children</td><td>ONLY the colour value applied</td></tr><tr><td>Can children stay opaque?</td><td>No — they inherit opacity</td><td>Yes — only the background is affected</td></tr><tr><td>Where it is written</td><td>As a separate property</td><td>Inside the colour value</td></tr><tr><td>Example</td><td><code>opacity: 0.5;</code></td><td><code>background: rgba(255, 0, 0, 0.5);</code></td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project: Social Media Profile Card</div>
+  <div class="build-desc"><strong>What you will build:</strong></div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Profile Card&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;profile.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;profile-card&quot;&gt;
+
+    &lt;!-- The cover photo is set as CSS background on .profile-card --&gt;
+
+    &lt;!-- Semi-transparent info bar at the bottom --&gt;
+    &lt;div class=&quot;profile-info&quot;&gt;
+      &lt;h2 class=&quot;profile-name&quot;&gt;Adaeze Okonkwo&lt;/h2&gt;
+      &lt;p class=&quot;profile-role&quot;&gt;Senior Frontend Developer&lt;/p&gt;
+      &lt;p class=&quot;profile-location&quot;&gt;Lagos, Nigeria&lt;/p&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Opacity Effects</title>
-    <style>
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #0f172a;
-             padding: 30px; max-width: 900px; margin: 0 auto; color: #f1f5f9; }
-      h1 { color: #38bdf8; margin-bottom: 6px; }
-      h2 { color: #7dd3fc; margin: 28px 0 14px;
-           border-bottom: 1px solid #1e3a5f; padding-bottom: 6px; }
-      /* Opacity comparison */
-      .compare { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-      .cbox { flex: 1; min-width: 160px; padding: 20px; border-radius: 12px;
-              text-align: center; font-weight: bold; font-size: 14px; }
-      .op-full { background: #0284c7; color: white; }
-      .op-50   { background: #0284c7; color: white; opacity: .5; }
-      .op-rgba { background: rgba(2,132,199,.5); color: white; }
-      .op-note { font-size: 11px; opacity: .7; margin-top: 6px; font-weight: normal; }
-      /* Image cards with overlay */
-      .grid { display: flex; gap: 16px; flex-wrap: wrap; }
-      .img-card { flex: 1; min-width: 220px; position: relative; overflow: hidden;
-                  border-radius: 14px; cursor: pointer; }
-      .img-card img { width: 100%; height: 160px; object-fit: cover; display: block;
-                      transition: transform .4s; }
-      .img-card:hover img { transform: scale(1.08); }
-      .overlay { position: absolute; inset: 0; background: rgba(2,132,199,.85);
-                 display: flex; flex-direction: column; align-items: center;
-                 justify-content: center; opacity: 0; transition: opacity .3s; }
-      .img-card:hover .overlay { opacity: 1; }
-      .overlay h3 { color: white; margin: 0 0 6px; }
-      .overlay p  { color: rgba(255,255,255,.85); font-size: 13px; margin: 0; text-align: center; padding: 0 16px; }
-      /* RGBA tint cards */
-      .tints { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-      .tint  { flex: 1; min-width: 80px; padding: 16px; border-radius: 10px;
-               text-align: center; font-size: 12px; font-weight: bold; }
-    </style>
-  </head>
-  <body>
-    <h1>CSS Opacity Effects</h1>
+<head>
+  <meta charset="UTF-8">
+  <title>Profile Card</title>
+  <link rel="stylesheet" href="profile.css">
+</head>
+<body>
 
-    <h2>opacity vs rgba</h2>
-    <div class="compare">
-      <div class="cbox op-full">opacity: 1<br><span class="op-note">Full opacity</span></div>
-      <div class="cbox op-50">opacity: 0.5<br><span class="op-note">Text fades too!</span></div>
-      <div class="cbox op-rgba">rgba background<br><span class="op-note">Text stays sharp ✓</span></div>
+  <div class="profile-card">
+
+    <!-- The cover photo is set as CSS background on .profile-card -->
+
+    <!-- Semi-transparent info bar at the bottom -->
+    <div class="profile-info">
+      <h2 class="profile-name">Adaeze Okonkwo</h2>
+      <p class="profile-role">Senior Frontend Developer</p>
+      <p class="profile-location">Lagos, Nigeria</p>
     </div>
 
-    <h2>rgba Colour Tints</h2>
-    <div class="tints">
-      <div class="tint" style="background:rgba(2,132,199,.1);color:#38bdf8">10%</div>
-      <div class="tint" style="background:rgba(2,132,199,.25);color:#38bdf8">25%</div>
-      <div class="tint" style="background:rgba(2,132,199,.5);color:#0f172a">50%</div>
-      <div class="tint" style="background:rgba(2,132,199,.75);color:white">75%</div>
-      <div class="tint" style="background:rgba(2,132,199,1);color:white">100%</div>
-    </div>
-
-    <h2>Hover Overlays (hover each card!)</h2>
-    <div class="grid">
-      <div class="img-card">
-        <img src="https://via.placeholder.com/400x160/0284c7/dbeafe?text=CSS" alt="CSS">
-        <div class="overlay"><h3>CSS Basics</h3><p>Selectors, Box Model, Typography</p></div>
-      </div>
-      <div class="img-card">
-        <img src="https://via.placeholder.com/400x160/0369a1/dbeafe?text=Flexbox" alt="Flexbox">
-        <div class="overlay"><h3>CSS Flexbox</h3><p>Rows, columns, alignment</p></div>
-      </div>
-      <div class="img-card">
-        <img src="https://via.placeholder.com/400x160/075985/dbeafe?text=Grid" alt="Grid">
-        <div class="overlay"><h3>CSS Grid</h3><p>Two-dimensional layouts</p></div>
-      </div>
-    </div>
-  </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-31-css_opacity</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 31 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-31-css_opacity/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
+  </div>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-31-project-social-media-profile-card</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 31 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-31-project-social-media-profile-card/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 31 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ opacity vs rgba</li><li>✅ Opacity Transitions and Overlays</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_30.html" class="ln-btn">← Lesson 30</a>
-    <a href="lesson_32.html" class="ln-btn primary">Lesson 32 →</a>
-  </div>
+  <h2>🎉 Lesson 31 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Section 1: What Is Opacity? What Is Transparency?</li><li>✅ Section 2: Basic Opacity on Images</li><li>✅ Section 3: Opacity with Hover — Interactive Image Effects</li><li>✅ Section 4: The Big Problem — Opacity Affects Child Elements!</li><li>✅ Section 5: The Solution — RGBA Colour Values</li><li>✅ Section 6: Text Over an Image Using a Transparent Box</li></ul>
+  <div class="lesson-nav"><a href="lesson_30.html" class="ln-btn">← Lesson 30</a><a href="lesson_32.html" class="ln-btn primary">Lesson 32 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 31 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 31 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_31_phase';
+const TOTAL=11,KEY='techbase_css_l31';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

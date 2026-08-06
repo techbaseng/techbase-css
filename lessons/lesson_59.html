@@ -2,337 +2,1398 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 59: CSS Buttons — Techbase CSS Course</title>
-<meta name="description" content="Design professional button systems with variants, sizes and loading states">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 59: CSS object-fit and object-position — Techbase CSS</title>
+<meta name="description" content="CSS object-fit and object-position">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
-}
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
+/* HERO */
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
+/* TASK BOX */
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
+/* GITHUB ACCORDION */
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
-  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
-  <span class="l-nav-lesson">Lesson 59 of 73</span>
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 59 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
 <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
 <div class="l-hero">
   <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 59 </div>
-    <h1>CSS Buttons</h1>
-    <div class="l-hero-tag">Design professional button systems with variants, sizes and loading states</div>
-    <div class="l-hero-build"><strong>🏗️ Build:</strong> My Button Design System</div>
+    <div class="l-badge">CSS · Lesson 59</div>
+    <h1>CSS object-fit and object-position</h1>
+    <div class="l-hero-sub">17 phases · Build: Project Overview</div>
   </div>
 </div>
-<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
-    <div class="welcome-box">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
   <h2>👋 Welcome to Lesson 59</h2>
-  <p>Design professional button systems with variants, sizes and loading states</p>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever visited a website where product images look squashed or stretched — a round face turned into an oval, or a portrait photo cropped in a weird way? These are image-fitting problems, and they are extremely common in real web development.</p>
+<p class="v2-p">In this lesson, you will learn two powerful CSS properties — <strong><code>object-fit</code></strong> and <strong><code>object-position</code></strong> — that give you full, professional control over how images (and videos) display inside fixed-size containers. These are the exact tools used by Nigerian e-commerce sites like Jumia, Konga, and Flutterwave's blog to display product and team photos cleanly, regardless of what shape the original image is.</p>
+<h3 class="v2-h3">What You Will Learn</h3>
+<p class="v2-p">By the end of this lesson, you will be able to:</p>
+<ul class="v2-ul"><li>Understand why images distort and how to fix it</li><li>Use all five values of <code>object-fit</code> confidently</li><li>Understand the difference between <code>contain</code> and <code>cover</code></li><li>Use <code>object-position</code> to control which part of an image is shown</li><li>Combine <code>object-fit</code> and <code>object-position</code> for pixel-perfect image presentation</li><li>Apply these properties to real-world card grids, galleries, and profile pages</li></ul>
+<hr class="v2-hr"></div>
   <div class="welcome-meta">
-    <span>📚 2 phases</span>
-    <span>🏗️ Build: My Button Design System</span>
-    
+    <span>📚 17 phases</span>
+    <span>🏗️ Project Overview</span>
   </div>
-</div>
-  </div>
+</div></div>
 </section>
-<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
 <div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">Variants and sizes</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 17</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p>Base: <code>display:inline-flex; align-items:center; gap:8px; border:none; cursor:pointer; font-family:inherit;</code>. Variants: primary, secondary, outline, ghost, danger. Sizes: xs, sm, md, lg, xl. State: <code>:active{transform:translateY(1px)}</code>.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:9px; font-weight:700; font-size:14px; font-family:inherit; border:none; cursor:pointer; transition:background .15s,transform .15s,box-shadow .15s; }
-.btn:active { transform: translateY(1px); }
-.btn:disabled { opacity:.45; cursor:not-allowed; pointer-events:none; }
-.btn-primary { background:#0284c7; color:white; }
-.btn-primary:hover { background:#0369a1; box-shadow:0 4px 12px rgba(2,132,199,.3); }
-.btn-outline { background:transparent; color:#0284c7; border:2px solid #0284c7; }
-.btn-outline:hover { background:#0284c7; color:white; }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Build 5 variants (primary, secondary, outline, ghost, danger) and 4 sizes. Add :focus-visible outline for keyboard accessibility.</p></div>
-    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+    <p class="v2-p">Have you ever visited a website where product images look squashed or stretched — a round face turned into an oval, or a portrait photo cropped in a weird way? These are image-fitting problems, and they are extremely common in real web development.</p>
+<p class="v2-p">In this lesson, you will learn two powerful CSS properties — <strong><code>object-fit</code></strong> and <strong><code>object-position</code></strong> — that give you full, professional control over how images (and videos) display inside fixed-size containers. These are the exact tools used by Nigerian e-commerce sites like Jumia, Konga, and Flutterwave's blog to display product and team photos cleanly, regardless of what shape the original image is.</p>
+<h3 class="v2-h3">What You Will Learn</h3>
+<p class="v2-p">By the end of this lesson, you will be able to:</p>
+<ul class="v2-ul"><li>Understand why images distort and how to fix it</li><li>Use all five values of <code>object-fit</code> confidently</li><li>Understand the difference between <code>contain</code> and <code>cover</code></li><li>Use <code>object-position</code> to control which part of an image is shown</li><li>Combine <code>object-fit</code> and <code>object-position</code> for pixel-perfect image presentation</li><li>Apply these properties to real-world card grids, galleries, and profile pages</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
 </div>
 <div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">Loading, icon and pill buttons</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 17</div>
+    <div class="phase-title">Prerequisite Concepts Recap</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p>Loading: <code>::after</code> spinner + <code>pointer-events:none</code>. Icon button: <code>aspect-ratio:1; width:40px</code>. Pill: <code>border-radius:100px</code>. Group: remove middle border-radius, add divider.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.btn-loading::after { content:&#x27;&#x27;; width:14px; height:14px; border:2px solid rgba(255,255,255,.4); border-top-color:white; border-radius:50%; animation:btn-spin .7s linear infinite; }
-@keyframes btn-spin { to { transform:rotate(360deg); } }
-.btn-icon { aspect-ratio:1; padding:0; width:40px; }
-.btn-pill  { border-radius:100px; }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Add a loading state: on click, add .btn-loading class. After 2s, remove it. This is how real async buttons work.</p></div>
-    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+    <p class="v2-p">Before we start, let's confirm you are comfortable with these ideas from earlier lessons:</p>
+<ul class="v2-ul"><li><strong>CSS <code>width</code> and <code>height</code></strong> — you know how to set fixed sizes on elements</li><li><strong>CSS <code>overflow</code></strong> — you know that <code>overflow: hidden</code> hides content that goes beyond a container's bounds</li><li><strong>The <code>&lt;img&gt;</code> element</strong> — you know that images have their own natural dimensions from the image file itself</li><li><strong>CSS <code>background-size</code></strong> (optional review) — <code>object-fit</code> works similarly to <code>background-size</code> but applies to <code>&lt;img&gt;</code> and <code>&lt;video&gt;</code> elements directly</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts Recap</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It</div>
-  <div class="project-name">Button Design System</div>
-  <div class="project-desc">Variants, sizes, icons, pills, groups and loading state.</div>
-  <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
-<div class="code-body"><pre>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;Button System&lt;/title&gt;
-&lt;style&gt;*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:9px;font-weight:700;font-size:14px;font-family:inherit;border:none;cursor:pointer;transition:background .15s,transform .15s,box-shadow .15s;white-space:nowrap}
-.btn:active{transform:translateY(1px)}.btn:disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
-:focus-visible{outline:3px solid #0284c7;outline-offset:3px}
-.bp{background:#0284c7;color:white}.bp:hover{background:#0369a1;box-shadow:0 4px 12px rgba(2,132,199,.3)}
-.bs{background:#f1f5f9;color:#0f172a}.bs:hover{background:#e2e8f0}
-.bo{background:transparent;color:#0284c7;border:2px solid #0284c7}.bo:hover{background:#0284c7;color:white}
-.bg{background:transparent;color:#0284c7}.bg:hover{background:#f0f9ff}
-.bd{background:#ef4444;color:white}.bd:hover{background:#dc2626}
-.bsuc{background:#10b981;color:white}.bsuc:hover{background:#059669}
-.btn-xs{padding:4px 10px;font-size:11px;border-radius:6px}.btn-sm{padding:7px 14px;font-size:12px;border-radius:7px}
-.btn-lg{padding:13px 26px;font-size:15px;border-radius:10px}.btn-xl{padding:16px 36px;font-size:18px;border-radius:12px}
-.btn-pill{border-radius:100px}.btn-icon{aspect-ratio:1;padding:0;width:40px}
-.btn-block{width:100%}
-.btn-group{display:inline-flex}.btn-group .btn{border-radius:0;border-right:1px solid rgba(255,255,255,.25)}
-.btn-group .btn:first-child{border-radius:9px 0 0 9px}.btn-group .btn:last-child{border-radius:0 9px 9px 0;border-right:none}
-.btn-loading{pointer-events:none;opacity:.8}
-@keyframes btn-spin{to{transform:rotate(360deg)}}
-.btn-loading::after{content:&#x27;&#x27;;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:btn-spin .7s linear infinite;flex-shrink:0}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;h1 style=&quot;color:#0284c7;margin-bottom:4px&quot;&gt;Button Design System&lt;/h1&gt;
-&lt;h2&gt;Variants&lt;/h2&gt;
-&lt;div class=&quot;row&quot;&gt;&lt;button class=&quot;btn bp&quot;&gt;Primary&lt;/button&gt;&lt;button class=&quot;btn bs&quot;&gt;Secondary&lt;/button&gt;&lt;button class=&quot;btn bo&quot;&gt;Outline&lt;/button&gt;&lt;button class=&quot;btn bg&quot;&gt;Ghost&lt;/button&gt;&lt;button class=&quot;btn bd&quot;&gt;Danger&lt;/button&gt;&lt;button class=&quot;btn bsuc&quot;&gt;Success&lt;/button&gt;&lt;button class=&quot;btn bp&quot; disabled&gt;Disabled&lt;/button&gt;&lt;/div&gt;
-&lt;h2&gt;Sizes&lt;/h2&gt;
-&lt;div class=&quot;row&quot;&gt;&lt;button class=&quot;btn bp btn-xs&quot;&gt;XSmall&lt;/button&gt;&lt;button class=&quot;btn bp btn-sm&quot;&gt;Small&lt;/button&gt;&lt;button class=&quot;btn bp&quot;&gt;Medium&lt;/button&gt;&lt;button class=&quot;btn bp btn-lg&quot;&gt;Large&lt;/button&gt;&lt;button class=&quot;btn bp btn-xl&quot;&gt;XLarge&lt;/button&gt;&lt;/div&gt;
-&lt;h2&gt;Pill + Icon&lt;/h2&gt;
-&lt;div class=&quot;row&quot;&gt;&lt;button class=&quot;btn bp btn-icon&quot;&gt;★&lt;/button&gt;&lt;button class=&quot;btn bp btn-icon btn-lg&quot;&gt;⚡&lt;/button&gt;&lt;button class=&quot;btn bp btn-pill&quot;&gt;★ Favourite&lt;/button&gt;&lt;button class=&quot;btn bo btn-pill&quot;&gt;Follow&lt;/button&gt;&lt;/div&gt;
-&lt;h2&gt;Group&lt;/h2&gt;
-&lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;btn-group&quot;&gt;&lt;button class=&quot;btn bp&quot;&gt;All&lt;/button&gt;&lt;button class=&quot;btn bp&quot;&gt;HTML&lt;/button&gt;&lt;button class=&quot;btn bp&quot;&gt;CSS&lt;/button&gt;&lt;button class=&quot;btn bp&quot;&gt;JS&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h2&gt;Loading (click to trigger)&lt;/h2&gt;
-&lt;div class=&quot;row&quot;&gt;&lt;button class=&quot;btn bp&quot; id=&quot;lb&quot; onclick=&quot;this.classList.add(&#x27;btn-loading&#x27;);this.textContent=&#x27;&#x27;;setTimeout(()=&gt;{this.classList.remove(&#x27;btn-loading&#x27;);this.textContent=&#x27;Submit&#x27;},2000)&quot;&gt;Submit&lt;/button&gt;&lt;span style=&quot;font-size:13px;color:#64748b&quot;&gt;Click — spinner for 2s&lt;/span&gt;&lt;/div&gt;
-&lt;h2&gt;Full-width&lt;/h2&gt;&lt;button class=&quot;btn bp btn-block btn-lg&quot; style=&quot;max-width:360px&quot;&gt;✉ Send Message&lt;/button&gt;
-&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 17</div>
+    <div class="phase-title">Section 1 — The Problem: Why Do Images Distort?</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Understanding Natural Image Dimensions</h3>
+<p class="v2-p">Every image file has its own natural width and height — these are called its <strong>intrinsic dimensions</strong>. A photo taken on an Infinix phone might be 3000px × 4000px (portrait). A landscape banner might be 1920px × 400px (very wide). These dimensions are fixed inside the file itself.</p>
+<p class="v2-p">When you put an image inside a fixed-size container in HTML, the browser has to decide: <em>"This container is 200px × 200px square, but the image is 3000px × 4000px tall — what do I do?"</em></p>
+<p class="v2-p">By default, the browser stretches or squashes the image to fit the container exactly. The result? Distortion.</p>
+<h3 class="v2-h3">Analogy — The Photograph in a Frame</h3>
+<p class="v2-p">Imagine you buy a square photo frame from Computer Village in Lagos, but the photo you want to put inside is tall and narrow (portrait). You have a few options:</p>
+<ol class="v2-ol"><li><strong>Squash the photo</strong> to fit the square — it looks distorted</li><li><strong>Shrink the entire photo</strong> until both sides fit inside the frame — there's empty space on the sides</li><li><strong>Zoom in and crop</strong> the photo so it fills the frame — you lose some of the image edges</li><li><strong>Leave the photo at its natural size</strong> — it overflows the frame</li></ol>
+<p class="v2-p">CSS <code>object-fit</code> maps directly to these real-world decisions.</p>
+<h3 class="v2-h3">Seeing the Problem in Code</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;img class=&quot;product-photo&quot; src=&quot;tall-portrait.jpg&quot; alt=&quot;Product&quot;&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.product-photo {
+  width: 200px;
+  height: 200px;
+  /* No object-fit — browser stretches the tall image into a square */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> The tall portrait image is squashed horizontally to fit the 200px × 200px square, making everything look wide and distorted.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>The Problem: Why Do Images Distort?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
 </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
-    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 17</div>
+    <div class="phase-title">Section 2 — Introducing `object-fit`</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is <code>object-fit</code>?</h3>
+<p class="v2-p"><code>object-fit</code> is a CSS property that controls <strong>how the content of a replaced element</strong> (an <code>&lt;img&gt;</code> or <code>&lt;video&gt;</code>) is resized to fit its container. It does not change the container's size — it only controls how the image fills that container.</p>
+<p class="v2-p">Think of it as instructions you give to the image: <em>"Here is the frame. This is how I want you to sit inside it."</em></p>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  width: 200px;
+  height: 200px;
+  object-fit: fill; /* or contain | cover | none | scale-down */
+}</code></pre></div></div>
+<h3 class="v2-h3">The Five Values</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>What It Does</th></tr></thead><tbody><tr><td><code>fill</code></td><td>Stretches the image to fill the container exactly — may distort (default)</td></tr><tr><td><code>contain</code></td><td>Shrinks the image to fit entirely inside the container — no cropping, may show empty space</td></tr><tr><td><code>cover</code></td><td>Zooms the image to cover the container completely — maintains ratio, may crop edges</td></tr><tr><td><code>none</code></td><td>Displays the image at its natural size — may overflow or show empty space</td></tr><tr><td><code>scale-down</code></td><td>Picks the smaller result of either <code>none</code> or <code>contain</code></td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Introducing <code>object-fit</code></strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 17</div>
+    <div class="phase-title">Section 3 — `object-fit: fill` (The Default)</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is It?</h3>
+<p class="v2-p"><code>fill</code> is the <strong>default behaviour</strong>. The image is stretched (or squashed) in both directions until it fills the container exactly. It <strong>ignores</strong> the image's natural proportions, which is why it causes distortion.</p>
+<h3 class="v2-h3">When Would You Use It?</h3>
+<p class="v2-p">Almost never intentionally. It is the default you are trying to <em>escape from</em> by using the other values. You rarely set <code>object-fit: fill</code> explicitly unless you want to override a more specific rule.</p>
+<h3 class="v2-h3">Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.fill-demo {
+  width: 250px;
+  height: 150px;
+  object-fit: fill;   /* Default behaviour — stretches to fill exactly */
+  border: 3px solid red;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;img class=&quot;fill-demo&quot; src=&quot;nigerian-food.jpg&quot; alt=&quot;Nigerian food&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> The food image is stretched to exactly 250×150px regardless of its original shape. If the original was square, the result will look wide and squashed.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> What do you think would happen if the image's natural size was already 250×150px? Would <code>fill</code> cause any distortion in that case?</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>object-fit: fill</code> (The Default)</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 17</div>
+    <div class="phase-title">Section 4 — `object-fit: contain`</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is It?</h3>
+<p class="v2-p"><code>contain</code> shrinks (or grows) the image while <strong>preserving its natural proportions</strong> (aspect ratio), so that the entire image fits inside the container. No part of the image is ever cropped. However, if the image's shape doesn't match the container, you will see empty space on two sides — these empty areas show the container's background colour.</p>
+<h3 class="v2-h3">Real-World Analogy</h3>
+<p class="v2-p">Imagine placing a tall portrait photo inside a wide landscape frame. The photo shrinks until its full height fits, leaving empty space on the left and right. You see the complete photo — but the frame is not fully filled.</p>
+<h3 class="v2-h3">Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.contain-demo {
+  width: 300px;
+  height: 200px;
+  background-color: #f0f0f0;   /* Shows as letterbox bars */
+  object-fit: contain;
+  border: 3px solid #009900;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;img class=&quot;contain-demo&quot; src=&quot;adire-fabric.jpg&quot; alt=&quot;Adire fabric&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> The fabric image shrinks proportionally until it fits entirely within the 300×200 container. Grey bars appear on either the left/right or top/bottom (depending on the image's natural shape). The full image is always visible.</p>
+<h3 class="v2-h3">When to Use <code>contain</code></h3>
+<ul class="v2-ul"><li>Product images where you must show the <strong>entire item</strong> (shoes, fabric, electronics) without cropping anything off</li><li>Logos and icons that must always appear complete</li><li>Situations where showing the full image is more important than filling the container</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>object-fit: contain</code></strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 17</div>
+    <div class="phase-title">Section 5 — `object-fit: cover`</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is It?</h3>
+<p class="v2-p"><code>cover</code> is the <strong>most commonly used value</strong> in real web development. It zooms the image until it fully covers the container from edge to edge, while still <strong>preserving its natural proportions</strong>. Any parts of the image that overflow the container are simply clipped (hidden). The container is always perfectly filled with no empty space.</p>
+<h3 class="v2-h3">Real-World Analogy</h3>
+<p class="v2-p">Imagine printing a tall portrait photo large enough that its width exactly matches your wide frame. The full width is covered, but the top and bottom of the photo are hidden behind the frame edges. The frame looks completely filled — but some of the photo is cropped.</p>
+<h3 class="v2-h3">Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.cover-demo {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border: 3px solid #006400;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;img class=&quot;cover-demo&quot; src=&quot;lagos-skyline.jpg&quot; alt=&quot;Lagos skyline&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> The skyline image fills the container perfectly with no empty space and no distortion. The image is cropped on the sides or top/bottom (wherever the overflow is), but the visible portion looks natural and undistorted.</p>
+<h3 class="v2-h3">When to Use <code>cover</code></h3>
+<ul class="v2-ul"><li>Profile photos in circular or square containers (the most popular use case)</li><li>Hero banners and section backgrounds</li><li>Product card images in a grid layout — they all appear the same size without distortion</li><li>Blog post thumbnails</li></ul>
+<blockquote class="v2-bq"><p class="v2-p">⚠️ <strong>Important:</strong> With <code>cover</code>, you are accepting that some parts of the image may be hidden (cropped). Use <code>object-position</code> (Section 8) to control which part is kept visible.</p></blockquote>
+<h3 class="v2-h3">Comparing <code>contain</code> vs <code>cover</code> Side by Side</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;demo-row&quot;&gt;
+  &lt;div&gt;
+    &lt;p&gt;contain&lt;/p&gt;
+    &lt;img class=&quot;contain&quot; src=&quot;ankara-pattern.jpg&quot; alt=&quot;Ankara&quot;&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;p&gt;cover&lt;/p&gt;
+    &lt;img class=&quot;cover&quot; src=&quot;ankara-pattern.jpg&quot; alt=&quot;Ankara&quot;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.contain, .cover {
+  width: 200px;
+  height: 200px;
+  border: 3px solid #333;
+}
+
+.contain {
+  object-fit: contain;
+  background-color: #eee;  /* Visible in the empty spaces */
+}
+
+.cover {
+  object-fit: cover;
+  /* No background needed — image always fills the container */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> The <code>contain</code> image shows the full pattern but with grey bars. The <code>cover</code> image fills the square completely with the pattern — no bars, but edges may be cropped.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>object-fit: cover</code></strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 17</div>
+    <div class="phase-title">Section 6 — `object-fit: none`</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is It?</h3>
+<p class="v2-p"><code>none</code> displays the image at its <strong>natural (intrinsic) size</strong> — completely ignoring the <code>width</code> and <code>height</code> set on the <code>&lt;img&gt;</code> element. If the image is larger than the container, it overflows. If it is smaller, empty space shows.</p>
+<h3 class="v2-h3">When Would You Use It?</h3>
+<p class="v2-p">Rarely — mainly when you intentionally want the image displayed at its natural pixel size, and you are controlling overflow yourself. It is mostly useful as a comparison tool to see what the original image size looks like.</p>
+<h3 class="v2-h3">Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.none-demo {
+  width: 200px;
+  height: 150px;
+  object-fit: none;
+  overflow: hidden;   /* Clip the overflow */
+  border: 3px solid orange;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;img class=&quot;none-demo&quot; src=&quot;large-map-of-nigeria.jpg&quot; alt=&quot;Nigeria map&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> The image appears at its natural size (e.g., 800×600px). Only the portion that fits within the 200×150 container is visible — the rest is clipped by <code>overflow: hidden</code>. The visible portion is the top-left corner by default.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>object-fit: none</code></strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 17</div>
+    <div class="phase-title">Section 7 — `object-fit: scale-down`</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is It?</h3>
+<p class="v2-p"><code>scale-down</code> compares two options — <code>none</code> and <code>contain</code> — and picks whichever results in the <strong>smaller displayed size</strong>.</p>
+<ul class="v2-ul"><li>If the image's natural size is <strong>larger</strong> than the container → behaves like <code>contain</code> (shrinks to fit)</li><li>If the image's natural size is <strong>smaller</strong> than the container → behaves like <code>none</code> (stays at natural size, not stretched)</li></ul>
+<h3 class="v2-h3">Why Is This Useful?</h3>
+<p class="v2-p">It prevents small images from being blown up (stretched larger than their natural size), while still ensuring large images are shrunk to fit. This is ideal for situations where images come from different sources with unpredictable sizes.</p>
+<h3 class="v2-h3">Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.scale-down-demo {
+  width: 300px;
+  height: 200px;
+  object-fit: scale-down;
+  background-color: #f5f5f5;
+  border: 2px dashed #999;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Small image: stays at natural size (no stretching) --&gt;
+&lt;img class=&quot;scale-down-demo&quot; src=&quot;small-logo-50px.png&quot; alt=&quot;Small logo&quot;&gt;
+
+&lt;!-- Large image: shrinks to fit (same as contain) --&gt;
+&lt;img class=&quot;scale-down-demo&quot; src=&quot;large-banner-1200px.jpg&quot; alt=&quot;Large banner&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser (first image):</strong> The 50px logo stays at 50px — it is not stretched to fill the 300×200 container. <strong>Expected output in browser (second image):</strong> The 1200px banner shrinks proportionally to fit inside the 300×200 container, same as <code>contain</code>.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>object-fit: scale-down</code></strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase10">
+  <div class="phase-header">
+    <div class="phase-num">Phase 10 of 17</div>
+    <div class="phase-title">Section 8 — Introducing `object-position`</div>
+    <div class="phase-check" id="chk10"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is It?</h3>
+<p class="v2-p"><code>object-position</code> controls <strong>which part of the image is visible</strong> within the container after <code>object-fit</code> is applied.</p>
+<p class="v2-p">When you use <code>object-fit: cover</code> or <code>object-fit: none</code>, part of the image is clipped. By default, the browser shows the <strong>centre</strong> of the image. But what if the important subject of the photo is at the top, or the left side, or 30% from the right? That is exactly what <code>object-position</code> lets you control.</p>
+<h3 class="v2-h3">Why It Matters</h3>
+<p class="v2-p">Imagine a team photo where everyone's face is at the top of the image. With <code>object-fit: cover</code> in a square container, the browser shows the centre — which might be their chests, not their faces. <code>object-position: top</code> fixes this immediately.</p>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  object-fit: cover;
+  object-position: center;          /* Default */
+  object-position: top;             /* Show the top of the image */
+  object-position: bottom;          /* Show the bottom */
+  object-position: left;            /* Show the left side */
+  object-position: right;           /* Show the right side */
+  object-position: top left;        /* Show the top-left corner */
+  object-position: 30% 70%;         /* 30% from left, 70% from top */
+  object-position: 50px 20px;       /* 50px from left, 20px from top */
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">💡 The two values in <code>object-position</code> represent <strong>horizontal</strong> position first, then <strong>vertical</strong> position. This matches how <code>background-position</code> works.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Introducing <code>object-position</code></strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase11">
+  <div class="phase-header">
+    <div class="phase-num">Phase 11 of 17</div>
+    <div class="phase-title">Section 9 — `object-position` with Keyword Values</div>
+    <div class="phase-check" id="chk11"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Keyword Values</h3>
+<p class="v2-p">You can use any combination of these keywords:</p>
+<ul class="v2-ul"><li><strong>Horizontal:</strong> <code>left</code>, <code>center</code>, <code>right</code></li><li><strong>Vertical:</strong> <code>top</code>, <code>center</code>, <code>bottom</code></li></ul>
+<p class="v2-p">When you write just one keyword, the other axis defaults to <code>center</code>.</p>
+<h3 class="v2-h3">Example — Controlling Which Part of an Image Shows</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.portrait-card {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;   /* Make it circular */
+  border: 4px solid #006400;
+}
+
+.show-top    { object-position: top; }
+.show-center { object-position: center; }   /* Default */
+.show-bottom { object-position: bottom; }
+.show-left   { object-position: left; }
+.show-right  { object-position: right; }</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Imagine each uses the same tall portrait of &quot;Adaeze&quot; --&gt;
+&lt;img class=&quot;portrait-card show-top&quot;    src=&quot;adaeze.jpg&quot; alt=&quot;Adaeze&quot;&gt;
+&lt;img class=&quot;portrait-card show-center&quot; src=&quot;adaeze.jpg&quot; alt=&quot;Adaeze&quot;&gt;
+&lt;img class=&quot;portrait-card show-bottom&quot; src=&quot;adaeze.jpg&quot; alt=&quot;Adaeze&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong></p>
+<ul class="v2-ul"><li><code>show-top</code> → Adaeze's face and shoulders are visible (best for most portrait photos)</li><li><code>show-center</code> → the middle portion of the image is visible</li><li><code>show-bottom</code> → Adaeze's lower body is visible</li></ul>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> If you had a group photo of all four Wizkid dancers, and only the right two are important, which <code>object-position</code> value would you use?</p></blockquote>
+<h3 class="v2-h3">Two-Keyword Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.corner-photo {
+  width: 250px;
+  height: 150px;
+  object-fit: cover;
+  object-position: top left;   /* Show the top-left corner of the image */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> When the image is cropped to fit the container, the top-left corner of the original image is what you see.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>object-position</code> with Keyword Values</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase12">
+  <div class="phase-header">
+    <div class="phase-num">Phase 12 of 17</div>
+    <div class="phase-title">Section 10 — `object-position` with Length and Percentage Values</div>
+    <div class="phase-check" id="chk12"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Using Percentages</h3>
+<p class="v2-p">Percentage values give you very precise control. The format is:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>object-position: horizontal% vertical%;</code></pre></div></div>
+<ul class="v2-ul"><li><code>0% 0%</code> = top-left corner</li><li><code>50% 50%</code> = centre (same as <code>center center</code>)</li><li><code>100% 100%</code> = bottom-right corner</li><li><code>30% 20%</code> = 30% across from left, 20% down from top</li></ul>
+<h3 class="v2-h3">Example — Precise Face Positioning</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.staff-photo {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
+  object-position: 40% 15%;  /* Face is slightly left of centre, near the top */
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;img class=&quot;staff-photo&quot; src=&quot;chukwuemeka-profile.jpg&quot; alt=&quot;Chukwuemeka&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> The circular crop shows Chukwuemeka's face exactly where you positioned it — 40% across and 15% down from the top. No more cropped-out foreheads!</p>
+<h3 class="v2-h3">Using Pixel Values</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>object-position: 50px 30px;
+/* Shows the part of the image starting 50px from the left and 30px from the top */</code></pre></div></div>
+<h3 class="v2-h3">Using Negative Values</h3>
+<p class="v2-p">You can even use negative values to push the image in the opposite direction:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>object-position: -20px 0;
+/* Shifts the image 20px to the left, showing content that starts 20px into the image */</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>object-position</code> with Length and Percentage Values</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(12)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase13">
+  <div class="phase-header">
+    <div class="phase-num">Phase 13 of 17</div>
+    <div class="phase-title">Section 11 — Combining `object-fit` and `object-position`</div>
+    <div class="phase-check" id="chk13"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Power Pair</h3>
+<p class="v2-p"><code>object-fit</code> decides <strong>how</strong> the image fills the container. <code>object-position</code> decides <strong>which part</strong> of the image is shown. Used together, they give you complete, professional image control.</p>
+<h3 class="v2-h3">Example — A Product Card Grid</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* The card container */
+.product-card {
+  width: 220px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Fixed-size image area */
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;         /* Fill without distortion */
+  object-position: center;   /* Show the centre (adjust per image if needed) */
+  display: block;
+}
+
+/* Card text */
+.product-card .info {
+  padding: 12px;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;product-card&quot;&gt;
+  &lt;img src=&quot;ankara-dress.jpg&quot; alt=&quot;Ankara dress&quot;&gt;
+  &lt;div class=&quot;info&quot;&gt;
+    &lt;h3&gt;Ankara Wrap Dress&lt;/h3&gt;
+    &lt;p&gt;₦8,500&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;product-card&quot;&gt;
+  &lt;img src=&quot;leather-bag.jpg&quot; alt=&quot;Leather bag&quot;&gt;
+  &lt;div class=&quot;info&quot;&gt;
+    &lt;h3&gt;Aba Leather Handbag&lt;/h3&gt;
+    &lt;p&gt;₦12,000&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> Both product cards are the exact same size. Both images fill their 220px × 200px area perfectly with no distortion and no empty space, regardless of each image's original dimensions. The page looks professional and consistent.</p>
+<h3 class="v2-h3">Example — A Team Page with Circular Avatars</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.team-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;   /* Show faces, not chests */
+  border: 4px solid #006400;
+  display: block;
+  margin: 0 auto 10px;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;figure&gt;
+  &lt;img class=&quot;team-avatar&quot; src=&quot;bola-portrait.jpg&quot; alt=&quot;Bola Adeyemi&quot;&gt;
+  &lt;figcaption&gt;Bola Adeyemi — Lead Developer&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;figure&gt;
+  &lt;img class=&quot;team-avatar&quot; src=&quot;funke-portrait.jpg&quot; alt=&quot;Funke Okafor&quot;&gt;
+  &lt;figcaption&gt;Funke Okafor — Product Designer&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> Each team member's photo appears in a perfectly circular frame, showing their face and shoulders. All circles are the same size regardless of the original photo dimensions.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Combining <code>object-fit</code> and <code>object-position</code></strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(13)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase14">
+  <div class="phase-header">
+    <div class="phase-num">Phase 14 of 17</div>
+    <div class="phase-title">Guided Exercises</div>
+    <div class="phase-check" id="chk14"></div>
+  </div>
+  <div class="phase-body">
+    <hr class="v2-hr">
+<h3 class="v2-h3">Exercise 1 — The Jumia-Style Product Grid (Beginner)</h3>
+<p class="v2-p"><strong>Scenario:</strong> You are building the product listing page for an online Nigerian market called "Oja Online." You have four product images of different shapes, but all cards must look identical.</p>
+<p class="v2-p"><strong>Objective:</strong> Create four image cards, each 180px × 180px, that display images without distortion.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an HTML file with four <code>&lt;div class="card"&gt;</code> elements, each containing an <code>&lt;img&gt;</code> and a product name in a <code>&lt;p&gt;</code> tag</li><li>Use real image names or placeholder image services like <code>https://via.placeholder.com/300x400</code> (tall), <code>https://via.placeholder.com/400x200</code> (wide)</li><li>Style the <code>.card</code> to have a fixed width, border, and padding</li><li>Style the <code>img</code> with <code>width: 100%</code>, <code>height: 180px</code>, and <code>object-fit: cover</code></li></ol>
+<p class="v2-p"><strong>Hints:</strong></p>
+<ul class="v2-ul"><li>Set <code>display: block</code> on the <code>img</code> to remove the small gap below it</li><li>Don't forget <code>overflow: hidden</code> on the card to keep things tidy</li></ul>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 180px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.card p {
+  padding: 8px;
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;card-grid&quot;&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;img src=&quot;https://via.placeholder.com/300x500&quot; alt=&quot;Tall product&quot;&gt;
+    &lt;p&gt;Ankara Blouse&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;img src=&quot;https://via.placeholder.com/600x200&quot; alt=&quot;Wide product&quot;&gt;
+    &lt;p&gt;Gele Head Wrap&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;img src=&quot;https://via.placeholder.com/300x300&quot; alt=&quot;Square product&quot;&gt;
+    &lt;p&gt;Beaded Necklace&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;img src=&quot;https://via.placeholder.com/400x350&quot; alt=&quot;Near-square product&quot;&gt;
+    &lt;p&gt;Leather Sandal&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> All four cards are identical in size. All four images fill their 180px height without distortion. No empty bars appear.</p>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ul class="v2-ul"><li>What would happen if you changed <code>cover</code> to <code>contain</code>?</li><li>What would you change if you wanted to ensure no image content is ever cropped?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Team Profile Circles (Intermediate)</h3>
+<p class="v2-p"><strong>Scenario:</strong> You are building the "About Us" page for a Lagos tech startup called "Abuja Stack Ltd." The design team has given you portraits of five staff members — but the photos come in different shapes (some landscape, some portrait, some square).</p>
+<p class="v2-p"><strong>Objective:</strong> Create circular profile avatars that all show faces correctly.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create five <code>&lt;figure&gt;</code> elements, each with an <code>&lt;img&gt;</code> and a <code>&lt;figcaption&gt;</code></li><li>Style the image as a circle: <code>border-radius: 50%</code>, <code>width: 120px</code>, <code>height: 120px</code></li><li>Apply <code>object-fit: cover</code> to fill the circle</li><li>Apply <code>object-position: top center</code> so faces show</li><li>Add a green border to each avatar</li></ol>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.profile-grid {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+figure {
+  text-align: center;
+  margin: 0;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  border: 4px solid #006400;
+  display: block;
+}
+
+figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #333;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;profile-grid&quot;&gt;
+  &lt;figure&gt;
+    &lt;img class=&quot;avatar&quot; src=&quot;https://via.placeholder.com/300x400&quot; alt=&quot;Ngozi&quot;&gt;
+    &lt;figcaption&gt;Ngozi Eze&lt;br&gt;CEO&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;figure&gt;
+    &lt;img class=&quot;avatar&quot; src=&quot;https://via.placeholder.com/600x300&quot; alt=&quot;Emeka&quot;&gt;
+    &lt;figcaption&gt;Emeka Obi&lt;br&gt;CTO&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;figure&gt;
+    &lt;img class=&quot;avatar&quot; src=&quot;https://via.placeholder.com/250x250&quot; alt=&quot;Amina&quot;&gt;
+    &lt;figcaption&gt;Amina Sule&lt;br&gt;Designer&lt;/figcaption&gt;
+  &lt;/figure&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> Three perfectly circular green-bordered avatars, all 120×120px, each showing the top portion (face area) of the photo regardless of the original image's shape.</p>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ul class="v2-ul"><li>If a staff member's photo had their face at the very bottom of the image, what <code>object-position</code> value would you use?</li><li>What would happen if you removed <code>border-radius: 50%</code> but kept <code>object-fit: cover</code>?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — The Hero Banner Showcase (Advanced)</h3>
+<p class="v2-p"><strong>Scenario:</strong> You are building a homepage for a Nigerian cultural event website called "Afrobeats Festival Ibadan." You need a full-width hero banner image that always looks great no matter the screen size, and a logo that never stretches.</p>
+<p class="v2-p"><strong>Objective:</strong> Use <code>object-fit: cover</code> for the hero banner and <code>object-fit: contain</code> for the logo, with appropriate positioning.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a <code>.hero</code> section with <code>width: 100%</code>, <code>height: 400px</code></li><li>Place an <code>&lt;img&gt;</code> inside it with <code>width: 100%</code>, <code>height: 100%</code>, <code>object-fit: cover</code></li><li>Position the image to show the top portion: <code>object-position: top center</code></li><li>Create a <code>.logo-box</code> div with <code>width: 150px</code>, <code>height: 80px</code></li><li>Place a logo <code>&lt;img&gt;</code> inside with <code>object-fit: contain</code> and no background distortion</li></ol>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Hero banner */
+.hero {
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 30px;
+  left: 40px;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+}
+
+.hero-overlay h1 { font-size: 36px; margin: 0; }
+.hero-overlay p  { font-size: 18px; margin: 5px 0 0; }
+
+/* Logo */
+.logo-box {
+  width: 150px;
+  height: 80px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+.logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;section class=&quot;hero&quot;&gt;
+  &lt;img src=&quot;https://via.placeholder.com/1920x600&quot; alt=&quot;Afrobeats festival crowd&quot;&gt;
+  &lt;div class=&quot;hero-overlay&quot;&gt;
+    &lt;h1&gt;Afrobeats Festival Ibadan&lt;/h1&gt;
+    &lt;p&gt;December 2025 · Mapo Hill&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;div class=&quot;logo-box&quot;&gt;
+  &lt;img src=&quot;https://via.placeholder.com/300x100&quot; alt=&quot;Festival Logo&quot;&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A full-width 400px-tall hero image fills the section without distortion, showing the top portion. Overlaid text sits at the bottom-left. Below it, the logo fits cleanly in its box without stretching, with padding space around it if the proportions differ.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(14)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase15">
+  <div class="phase-header">
+    <div class="phase-num">Phase 15 of 17</div>
+    <div class="phase-title">Code Challenges</div>
+    <div class="phase-check" id="chk15"></div>
+  </div>
+  <div class="phase-body">
+    <hr class="v2-hr">
+<h3 class="v2-h3">Challenge 1 — Fix the Broken Product Page</h3>
+<p class="v2-p"><strong>Task:</strong> The code below produces stretched, distorted images. Add the correct <code>object-fit</code> property to fix it so images fill their containers cleanly without distortion. Do not change any other rule.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;item&quot;&gt;&lt;img src=&quot;jollof-rice.jpg&quot; alt=&quot;Jollof Rice&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;item&quot;&gt;&lt;img src=&quot;egusi-soup.jpg&quot; alt=&quot;Egusi Soup&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;item&quot;&gt;&lt;img src=&quot;pounded-yam.jpg&quot; alt=&quot;Pounded Yam&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item {
+  width: 200px;
+  height: 150px;
+  border: 2px solid #009900;
+  overflow: hidden;
+}
+
+.item img {
+  width: 100%;
+  height: 100%;
+  /* Your fix goes here */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge 2 — The Face-Cropping Problem</h3>
+<p class="v2-p"><strong>Task:</strong> A news website shows author profile pictures, but faces are being cut off at the top (the browser is showing the centre of tall portrait photos). Fix this using <code>object-position</code> without changing the existing <code>object-fit: cover</code> rule.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.author-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* Your fix goes here */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.author-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge 3 — Show a Specific Part of an Image</h3>
+<p class="v2-p"><strong>Task:</strong> You have a wide landscape photo of the Lagos Island skyline (3000px × 800px). You are displaying it in a <code>400px × 300px</code> container. You want to show the <strong>right side</strong> of the skyline — where the tallest buildings are. Use <code>object-position</code> to achieve this.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.skyline {
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
+  object-position: right center;
+}</code></pre></div></div>
+<p class="v2-p">Or for more precise control:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.skyline {
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
+  object-position: 80% 50%;  /* 80% from the left shows the right portion */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge 4 — Logo Display Without Stretching</h3>
+<p class="v2-p"><strong>Task:</strong> You are placing various partner logos into a uniform 160×60px container. Some logos are wide, some are square, some are tall. You want every logo to appear complete (no cropping) and centred, even if there is empty space around it. No logo should ever be stretched beyond its natural size.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.partner-logo-box {
+  width: 160px;
+  height: 60px;
+  background-color: #fafafa;
+  border: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partner-logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;    /* Shrinks large logos; doesn&#x27;t stretch small ones */
+  object-position: center;
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">`css
+.author-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* Your fix goes here */
+}
+`
+
+Solution:
+
+`css
+.author-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+}
+`
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(15)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase16">
+  <div class="phase-header">
+    <div class="phase-num">Phase 16 of 17</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk16"></div>
+  </div>
+  <div class="phase-body">
+    <hr class="v2-hr">
+<h3 class="v2-h3">Mistake 1 — Applying <code>object-fit</code> to a <code>&lt;div&gt;</code> Instead of <code>&lt;img&gt;</code></h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+  object-fit: cover;   /* This does NOTHING on a div */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> <code>object-fit</code> only works on <strong>replaced elements</strong> — elements that display external content like <code>&lt;img&gt;</code>, <code>&lt;video&gt;</code>, and <code>&lt;iframe&gt;</code>. It has no effect on <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, or other container elements.</p>
+<p class="v2-p"><strong>Correct:</strong> Apply <code>object-fit</code> to the <code>&lt;img&gt;</code> directly:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card img {
+  object-fit: cover;   /* Correct — on the img element */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Forgetting to Set Both <code>width</code> and <code>height</code> on the Image</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  object-fit: cover;
+  /* No width or height set */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> <code>object-fit</code> only does something when the image is constrained to a specific size. Without <code>width</code> and <code>height</code>, the image displays at its natural dimensions — and <code>object-fit</code> has nothing to act on.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  width: 100%;      /* or a fixed px value */
+  height: 200px;    /* Must have a fixed height */
+  object-fit: cover;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Confusing <code>contain</code> and <code>cover</code></h3>
+<p class="v2-p"><strong>Wrong mental model:</strong> "I want the image to cover my container, so I should use <code>contain</code>."</p>
+<p class="v2-p"><strong>Problem:</strong> The names are the opposite of what many beginners expect.</p>
+<ul class="v2-ul"><li><code>contain</code> = <strong>contains</strong> the image <em>inside</em> the box → may show empty space</li><li><code>cover</code> = <strong>covers</strong> the box completely → may crop the image</li></ul>
+<p class="v2-p"><strong>Memory tip:</strong> <code>cover</code> = like a book cover — it fills the whole space. <code>contain</code> = the image is <em>contained</em> within borders — nothing spills out.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Using <code>object-position</code> Without <code>object-fit</code></h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  width: 200px;
+  height: 150px;
+  object-position: top;
+  /* No object-fit! */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> Without <code>object-fit: cover</code> or <code>object-fit: none</code>, the image is stretched to fill the container (<code>fill</code> is the default), and <code>object-position</code> has nothing meaningful to shift.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;       /* First define how the image fills the space */
+  object-position: top;    /* Then control which part is visible */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Swapping <code>object-position</code> Value Order</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>object-position: 50px top;   /* Invalid — mixing px and keyword incorrectly */</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> When mixing lengths and keywords, the <strong>horizontal</strong> value must come first, then the <strong>vertical</strong> value.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>object-position: left 50px;     /* horizontal: left; vertical: 50px */
+object-position: 30% top;       /* horizontal: 30%; vertical: top */
+object-position: 50px 30px;     /* horizontal: 50px; vertical: 30px */</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6 — Expecting <code>scale-down</code> to Always Behave Like <code>contain</code></h3>
+<p class="v2-p"><strong>Wrong thinking:</strong> "<code>scale-down</code> and <code>contain</code> do the same thing."</p>
+<p class="v2-p"><strong>Problem:</strong> They only look the same when the image is <em>larger</em> than the container. When the image is <em>smaller</em> than the container:</p>
+<ul class="v2-ul"><li><code>contain</code> <strong>scales up</strong> the small image to fill the container (without cropping)</li><li><code>scale-down</code> <strong>keeps the image at its natural size</strong> (does not scale up)</li></ul>
+<p class="v2-p"><strong>When to use which:</strong></p>
+<ul class="v2-ul"><li>Use <code>contain</code> when you want the image to always fill the container proportionally (allows upscaling)</li><li>Use <code>scale-down</code> when you never want an image to appear larger than its natural size</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(16)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase17">
+  <div class="phase-header">
+    <div class="phase-num">Phase 17 of 17</div>
+    <div class="phase-title">Quick-Reference Card</div>
+    <div class="phase-check" id="chk17"></div>
+  </div>
+  <div class="phase-body">
+    <div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ── object-fit ── */
+img {
+  width: 200px;
+  height: 200px;
+
+  object-fit: fill;        /* Stretches to fit — may distort (default) */
+  object-fit: contain;     /* Shrinks to fit fully — may show empty space */
+  object-fit: cover;       /* Zooms to fill — may crop edges */
+  object-fit: none;        /* Natural size — may overflow */
+  object-fit: scale-down;  /* Smaller of &#x27;none&#x27; or &#x27;contain&#x27; — never upscales */
+}
+
+/* ── object-position ── */
+img {
+  object-fit: cover;
+
+  object-position: center;          /* Default — shows centre of image */
+  object-position: top;             /* Shows top portion */
+  object-position: bottom;          /* Shows bottom portion */
+  object-position: left;            /* Shows left portion */
+  object-position: right;           /* Shows right portion */
+  object-position: top right;       /* Shows top-right corner */
+  object-position: 30% 60%;         /* 30% from left, 60% from top */
+  object-position: 50px 20px;       /* 50px from left, 20px from top */
+}
+
+/* ── Most Common Pattern: Product Card ── */
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ── Most Common Pattern: Circular Avatar ── */
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* ── Most Common Pattern: Logo Box ── */
+.logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+  object-position: center;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<p class="v2-p"><em>End of Lesson 59 — CSS <code>object-fit</code> and <code>object-position</code></em></p>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Quick-Reference Card</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(17)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Overview</div>
+  <div class="build-desc">You will build a complete, professionally styled Nigerian online market gallery page for "Oja Digital." It will include a hero banner, a product image grid, and a team section — all using <code>object-fit</code> and <code>object-position</code> to ensure every image displays perfectly.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Oja Digital — Nigerian Online Market&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;oja-market.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- Hero Banner --&gt;
+  &lt;section class=&quot;hero&quot;&gt;
+    &lt;img src=&quot;https://via.placeholder.com/1920x700/006400/ffffff?text=Oja+Digital+Market&quot;
+         alt=&quot;Oja Digital Market banner&quot;&gt;
+    &lt;div class=&quot;hero-text&quot;&gt;
+      &lt;h1&gt;Oja Digital&lt;/h1&gt;
+      &lt;p&gt;Authentic Nigerian Goods — From Every State&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Product Grid --&gt;
+  &lt;main class=&quot;products&quot;&gt;
+    &lt;h2&gt;Featured Products&lt;/h2&gt;
+    &lt;div class=&quot;product-grid&quot;&gt;
+      &lt;div class=&quot;product-card&quot;&gt;
+        &lt;img src=&quot;https://via.placeholder.com/300x500/cc6600/ffffff?text=Ankara&quot; alt=&quot;Ankara fabric&quot;&gt;
+        &lt;div class=&quot;card-info&quot;&gt;
+          &lt;h3&gt;Ankara Fabric (6 yards)&lt;/h3&gt;
+          &lt;p&gt;₦4,500&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;product-card&quot;&gt;
+        &lt;img src=&quot;https://via.placeholder.com/600x250/006400/ffffff?text=Gele&quot; alt=&quot;Gele head wrap&quot;&gt;
+        &lt;div class=&quot;card-info&quot;&gt;
+          &lt;h3&gt;Premium Gele&lt;/h3&gt;
+          &lt;p&gt;₦6,200&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;product-card&quot;&gt;
+        &lt;img src=&quot;https://via.placeholder.com/400x400/330099/ffffff?text=Bag&quot; alt=&quot;Leather bag&quot;&gt;
+        &lt;div class=&quot;card-info&quot;&gt;
+          &lt;h3&gt;Aba Leather Bag&lt;/h3&gt;
+          &lt;p&gt;₦15,000&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;product-card&quot;&gt;
+        &lt;img src=&quot;https://via.placeholder.com/350x600/cc0000/ffffff?text=Sandal&quot; alt=&quot;Leather sandal&quot;&gt;
+        &lt;div class=&quot;card-info&quot;&gt;
+          &lt;h3&gt;Handmade Sandal&lt;/h3&gt;
+          &lt;p&gt;₦5,800&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;!-- Team Section --&gt;
+  &lt;section class=&quot;team&quot;&gt;
+    &lt;h2&gt;Meet Our Team&lt;/h2&gt;
+    &lt;div class=&quot;team-grid&quot;&gt;
+      &lt;figure&gt;
+        &lt;img class=&quot;avatar&quot; src=&quot;https://via.placeholder.com/300x450/006400/ffffff?text=CEO&quot;
+             alt=&quot;Olumide Adeyemi&quot;&gt;
+        &lt;figcaption&gt;Olumide Adeyemi&lt;br&gt;&lt;small&gt;Founder &amp; CEO&lt;/small&gt;&lt;/figcaption&gt;
+      &lt;/figure&gt;
+      &lt;figure&gt;
+        &lt;img class=&quot;avatar&quot; src=&quot;https://via.placeholder.com/450x300/cc6600/ffffff?text=CTO&quot;
+             alt=&quot;Ngozi Okonkwo&quot;&gt;
+        &lt;figcaption&gt;Ngozi Okonkwo&lt;br&gt;&lt;small&gt;Chief Technology Officer&lt;/small&gt;&lt;/figcaption&gt;
+      &lt;/figure&gt;
+      &lt;figure&gt;
+        &lt;img class=&quot;avatar&quot; src=&quot;https://via.placeholder.com/300x300/330099/ffffff?text=CMO&quot;
+             alt=&quot;Amina Bello&quot;&gt;
+        &lt;figcaption&gt;Amina Bello&lt;br&gt;&lt;small&gt;Head of Marketing&lt;/small&gt;&lt;/figcaption&gt;
+      &lt;/figure&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Partner Logos --&gt;
+  &lt;section class=&quot;partners&quot;&gt;
+    &lt;h2&gt;Our Partners&lt;/h2&gt;
+    &lt;div class=&quot;logo-strip&quot;&gt;
+      &lt;div class=&quot;logo-box&quot;&gt;
+        &lt;img src=&quot;https://via.placeholder.com/300x80/333333/ffffff?text=Partner+A&quot; alt=&quot;Partner A&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;logo-box&quot;&gt;
+        &lt;img src=&quot;https://via.placeholder.com/80x80/666666/ffffff?text=P+B&quot; alt=&quot;Partner B&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;logo-box&quot;&gt;
+        &lt;img src=&quot;https://via.placeholder.com/250x120/999999/ffffff?text=Partner+C&quot; alt=&quot;Partner C&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oja Digital — Nigerian Online Market</title>
+  <link rel="stylesheet" href="oja-market.css">
+</head>
+<body>
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <img src="https://via.placeholder.com/1920x700/006400/ffffff?text=Oja+Digital+Market"
+         alt="Oja Digital Market banner">
+    <div class="hero-text">
+      <h1>Oja Digital</h1>
+      <p>Authentic Nigerian Goods — From Every State</p>
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <main class="products">
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="https://via.placeholder.com/300x500/cc6600/ffffff?text=Ankara" alt="Ankara fabric">
+        <div class="card-info">
+          <h3>Ankara Fabric (6 yards)</h3>
+          <p>₦4,500</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://via.placeholder.com/600x250/006400/ffffff?text=Gele" alt="Gele head wrap">
+        <div class="card-info">
+          <h3>Premium Gele</h3>
+          <p>₦6,200</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://via.placeholder.com/400x400/330099/ffffff?text=Bag" alt="Leather bag">
+        <div class="card-info">
+          <h3>Aba Leather Bag</h3>
+          <p>₦15,000</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://via.placeholder.com/350x600/cc0000/ffffff?text=Sandal" alt="Leather sandal">
+        <div class="card-info">
+          <h3>Handmade Sandal</h3>
+          <p>₦5,800</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Team Section -->
+  <section class="team">
+    <h2>Meet Our Team</h2>
+    <div class="team-grid">
+      <figure>
+        <img class="avatar" src="https://via.placeholder.com/300x450/006400/ffffff?text=CEO"
+             alt="Olumide Adeyemi">
+        <figcaption>Olumide Adeyemi<br><small>Founder & CEO</small></figcaption>
+      </figure>
+      <figure>
+        <img class="avatar" src="https://via.placeholder.com/450x300/cc6600/ffffff?text=CTO"
+             alt="Ngozi Okonkwo">
+        <figcaption>Ngozi Okonkwo<br><small>Chief Technology Officer</small></figcaption>
+      </figure>
+      <figure>
+        <img class="avatar" src="https://via.placeholder.com/300x300/330099/ffffff?text=CMO"
+             alt="Amina Bello">
+        <figcaption>Amina Bello<br><small>Head of Marketing</small></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Partner Logos -->
+  <section class="partners">
+    <h2>Our Partners</h2>
+    <div class="logo-strip">
+      <div class="logo-box">
+        <img src="https://via.placeholder.com/300x80/333333/ffffff?text=Partner+A" alt="Partner A">
+      </div>
+      <div class="logo-box">
+        <img src="https://via.placeholder.com/80x80/666666/ffffff?text=P+B" alt="Partner B">
+      </div>
+      <div class="logo-box">
+        <img src="https://via.placeholder.com/250x120/999999/ffffff?text=Partner+C" alt="Partner C">
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
       ⬇ Download starter.html
     </button>
-    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
       🐙 Push to GitHub →
     </button>
   </div>
-  <script>
-  const __code = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Button System</title>
-<style>*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:9px;font-weight:700;font-size:14px;font-family:inherit;border:none;cursor:pointer;transition:background .15s,transform .15s,box-shadow .15s;white-space:nowrap}
-.btn:active{transform:translateY(1px)}.btn:disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
-:focus-visible{outline:3px solid #0284c7;outline-offset:3px}
-.bp{background:#0284c7;color:white}.bp:hover{background:#0369a1;box-shadow:0 4px 12px rgba(2,132,199,.3)}
-.bs{background:#f1f5f9;color:#0f172a}.bs:hover{background:#e2e8f0}
-.bo{background:transparent;color:#0284c7;border:2px solid #0284c7}.bo:hover{background:#0284c7;color:white}
-.bg{background:transparent;color:#0284c7}.bg:hover{background:#f0f9ff}
-.bd{background:#ef4444;color:white}.bd:hover{background:#dc2626}
-.bsuc{background:#10b981;color:white}.bsuc:hover{background:#059669}
-.btn-xs{padding:4px 10px;font-size:11px;border-radius:6px}.btn-sm{padding:7px 14px;font-size:12px;border-radius:7px}
-.btn-lg{padding:13px 26px;font-size:15px;border-radius:10px}.btn-xl{padding:16px 36px;font-size:18px;border-radius:12px}
-.btn-pill{border-radius:100px}.btn-icon{aspect-ratio:1;padding:0;width:40px}
-.btn-block{width:100%}
-.btn-group{display:inline-flex}.btn-group .btn{border-radius:0;border-right:1px solid rgba(255,255,255,.25)}
-.btn-group .btn:first-child{border-radius:9px 0 0 9px}.btn-group .btn:last-child{border-radius:0 9px 9px 0;border-right:none}
-.btn-loading{pointer-events:none;opacity:.8}
-@keyframes btn-spin{to{transform:rotate(360deg)}}
-.btn-loading::after{content:'';width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:btn-spin .7s linear infinite;flex-shrink:0}
-</style></head><body>
-<h1 style="color:#0284c7;margin-bottom:4px">Button Design System</h1>
-<h2>Variants</h2>
-<div class="row"><button class="btn bp">Primary</button><button class="btn bs">Secondary</button><button class="btn bo">Outline</button><button class="btn bg">Ghost</button><button class="btn bd">Danger</button><button class="btn bsuc">Success</button><button class="btn bp" disabled>Disabled</button></div>
-<h2>Sizes</h2>
-<div class="row"><button class="btn bp btn-xs">XSmall</button><button class="btn bp btn-sm">Small</button><button class="btn bp">Medium</button><button class="btn bp btn-lg">Large</button><button class="btn bp btn-xl">XLarge</button></div>
-<h2>Pill + Icon</h2>
-<div class="row"><button class="btn bp btn-icon">★</button><button class="btn bp btn-icon btn-lg">⚡</button><button class="btn bp btn-pill">★ Favourite</button><button class="btn bo btn-pill">Follow</button></div>
-<h2>Group</h2>
-<div class="row"><div class="btn-group"><button class="btn bp">All</button><button class="btn bp">HTML</button><button class="btn bp">CSS</button><button class="btn bp">JS</button></div></div>
-<h2>Loading (click to trigger)</h2>
-<div class="row"><button class="btn bp" id="lb" onclick="this.classList.add('btn-loading');this.textContent='';setTimeout(()=>{this.classList.remove('btn-loading');this.textContent='Submit'},2000)">Submit</button><span style="font-size:13px;color:#64748b">Click — spinner for 2s</span></div>
-<h2>Full-width</h2><button class="btn bp btn-block btn-lg" style="max-width:360px">✉ Send Message</button>
-</body></html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
 </div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-59-css_buttons</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 59 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-59-css_buttons/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-59-project-overview</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 59 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-59-project-overview/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 59 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Variants and sizes</li><li>✅ Loading, icon and pill buttons</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_58.html" class="ln-btn">← Lesson 58</a>
-    <a href="lesson_60.html" class="ln-btn primary">Lesson 60 →</a>
-  </div>
+  <h2>🎉 Lesson 59 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts Recap</li><li>✅ Section 1 — The Problem: Why Do Images Distort?</li><li>✅ Section 2 — Introducing `object-fit`</li><li>✅ Section 3 — `object-fit: fill` (The Default)</li><li>✅ Section 4 — `object-fit: contain`</li><li>✅ Section 5 — `object-fit: cover`</li><li>✅ Section 6 — `object-fit: none`</li></ul>
+  <div class="lesson-nav"><a href="lesson_58.html" class="ln-btn">← Lesson 58</a><a href="lesson_60.html" class="ln-btn primary">Lesson 60 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 59 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 59 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_css_59_phase';
+const TOTAL=17,KEY='techbase_css_l59';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

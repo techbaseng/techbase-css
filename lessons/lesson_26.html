@@ -2,518 +2,907 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 26: CSS Inline-block — Techbase CSS Course</title>
-<meta name="description" content="Use inline-block to build horizontal layouts without Flexbox or Grid">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 26: CSS display: inline-block — The Best of Both Worlds — Techbase CSS</title>
+<meta name="description" content="CSS display: inline-block — The Best of Both Worlds">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 26 of 73 &nbsp;·&nbsp; CSS Inline-block</span>
-  <div class="nav-actions"><a href="lesson_25.html" class="ln-btn">← Lesson 25</a><a href="lesson_27.html" class="ln-btn primary">Lesson 27 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 26 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 26</div>
-    <h1>CSS Inline-block</h1>
-    <p class="lesson-tagline">Use inline-block to build horizontal layouts without Flexbox or Grid</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My Inline-block Grid</span>
-      
-    </div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 26</div>
+    <h1>CSS display: inline-block — The Best of Both Worlds</h1>
+    <div class="l-hero-sub">7 phases · Build: Project Overview</div>
   </div>
-</section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 26!</div>
-  <h2>CSS Inline-block</h2>
-  <p>Use inline-block to build horizontal layouts without Flexbox or Grid. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
 </div>
-<div class="phase " id="phase1" data-phase="1">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 26</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever wanted an element to sit <strong>side by side</strong> with other elements (like text or buttons), but also be able to control its <strong>exact width, height, and spacing</strong>? That sounds like a contradiction — and for a long time, web developers had to choose one or the other. Then came <code>display: inline-block</code>, which gives you <strong>both superpowers at once</strong>.</p>
+<p class="v2-p">In this lesson you will learn:</p>
+<ul class="v2-ul"><li>What <code>inline</code>, <code>block</code>, and <code>inline-block</code> mean, from scratch</li><li>Exactly how <code>display: inline-block</code> combines the best features of both</li><li>How to compare all three display types with working code examples</li><li>How to build a real horizontal navigation menu using <code>inline-block</code></li><li>How to avoid the most common beginner mistakes</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to confidently lay out elements side by side while still controlling their size and spacing — a skill used in almost every real-world website.</p>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 7 phases</span>
+    <span>🏗️ Project Overview</span>
+  </div>
+</div></div>
+</section>
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">Inline-block for Horizontal Layouts</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 7</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p><code>display: inline-block</code> lets elements sit side by side (like inline) while accepting width, height, and padding (like block). You can build horizontal card rows, button groups, and icon grids without Flexbox. One gotcha: whitespace in your HTML creates tiny gaps between inline-block elements — fix with <code>font-size: 0</code> on the parent, or use comments <code>&lt;!-- --&gt;</code> between elements.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Basic inline-block row */
-.card {
-  display: inline-block;
-  width: 200px;
-  padding: 20px;
-  background: white;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  vertical-align: top; /* align tops, not baselines */
-}
-
-/* Fix the whitespace gap */
-.card-row { font-size: 0; }        /* parent gets 0 */
-.card-row .card { font-size: 1rem; } /* restore in child */
-
-/* Percentage widths */
-.col-33 {
-  display: inline-block;
-  width: 33.33%;
-  padding: 16px;
-  vertical-align: top;
-  box-sizing: border-box;
-}</pre></div>
-</div>
+    <p class="v2-p">Have you ever wanted an element to sit <strong>side by side</strong> with other elements (like text or buttons), but also be able to control its <strong>exact width, height, and spacing</strong>? That sounds like a contradiction — and for a long time, web developers had to choose one or the other. Then came <code>display: inline-block</code>, which gives you <strong>both superpowers at once</strong>.</p>
+<p class="v2-p">In this lesson you will learn:</p>
+<ul class="v2-ul"><li>What <code>inline</code>, <code>block</code>, and <code>inline-block</code> mean, from scratch</li><li>Exactly how <code>display: inline-block</code> combines the best features of both</li><li>How to compare all three display types with working code examples</li><li>How to build a real horizontal navigation menu using <code>inline-block</code></li><li>How to avoid the most common beginner mistakes</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to confidently lay out elements side by side while still controlling their size and spacing — a skill used in almost every real-world website.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Create three cards with <code>display: inline-block; width: 30%; margin: 1%;</code>. They should sit in a row. Notice the gap between them — fix it with <code>font-size: 0</code> on the parent and restore font size inside each card. Try <code>vertical-align: top</code> when card heights differ.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
+</div>
+<div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">Inline-block vs Flexbox</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 7</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>Inline-block works for simple horizontal layouts but has quirks: whitespace gaps, vertical alignment headaches, and no easy equal-height columns. Flexbox and Grid solve all these. Use inline-block today for: button groups, icon rows, navigation pills, or anywhere you need a quick inline layout without the full power of Flex/Grid (which come in lessons 48–50).</p>
+    <p class="v2-p">Before diving into <code>inline-block</code>, let's make sure you understand three simpler ideas it builds on. Think of these as the building blocks you need before assembling something more powerful.</p>
+<h3 class="v2-h3">1. What is the CSS <code>display</code> Property?</h3>
+<p class="v2-p">Every HTML element is a <strong>box</strong> on the screen. The <code>display</code> property in CSS controls <strong>how that box behaves</strong> — specifically, whether it sits alone on its own line, or shares a line with other elements.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* General pattern */
+selector {
+  display: value;
+}</code></pre></div></div>
+<p class="v2-p">The most common display values you will encounter are:</p>
+<ul class="v2-ul"><li><code>inline</code></li><li><code>block</code></li><li><code>inline-block</code></li></ul>
+<h3 class="v2-h3">2. What is a Block Element?</h3>
+<p class="v2-p">A <strong>block element</strong> acts like a large box that takes up the <strong>full width</strong> of its container. It always starts on a <strong>new line</strong> and pushes everything else above and below it.</p>
+<p class="v2-p"><strong>Common block elements:</strong> <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code></p>
+<p class="v2-p"><strong>Analogy:</strong> Think of a block element like a paragraph in a book. Each paragraph begins on a new line and stretches across the full width of the page.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    div {
+      background-color: lightblue;
+      border: 2px solid blue;
+      padding: 10px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div&gt;I am Block Box 1&lt;/div&gt;
+  &lt;div&gt;I am Block Box 2&lt;/div&gt;
+  &lt;div&gt;I am Block Box 3&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visually):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ I am Block Box 1 ————————————————————————— ]
+[ I am Block Box 2 ————————————————————————— ]
+[ I am Block Box 3 ————————————————————————— ]</code></pre></div></div>
+<p class="v2-p">Each box is on its own line and stretches to full width.</p>
+<p class="v2-p"><strong>Key rules for block elements:</strong></p>
+<ul class="v2-ul"><li>Start on a new line ✅</li><li>Stretch to full width ✅</li><li>You can set <code>width</code>, <code>height</code>, <code>margin-top</code>, <code>margin-bottom</code> ✅</li></ul>
+<h3 class="v2-h3">3. What is an Inline Element?</h3>
+<p class="v2-p">An <strong>inline element</strong> flows <strong>inside text</strong> — it sits on the same line as surrounding content, and its size is determined only by the content inside it.</p>
+<p class="v2-p"><strong>Common inline elements:</strong> <code>&lt;span&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;img&gt;</code></p>
+<p class="v2-p"><strong>Analogy:</strong> Think of an inline element like a single word highlighted in a sentence. It doesn't break the flow of the paragraph; it just highlights part of it.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    span {
+      background-color: yellow;
+      border: 2px solid orange;
+      padding: 5px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;p&gt;I love &lt;span&gt;CSS&lt;/span&gt; and &lt;span&gt;web design&lt;/span&gt; a lot.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visually):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>I love [CSS] and [web design] a lot.</code></pre></div></div>
+<p class="v2-p">Both spans sit inside the sentence on the same line.</p>
+<p class="v2-p"><strong>Key rules for inline elements:</strong></p>
+<ul class="v2-ul"><li>Stay on the same line as surrounding content ✅</li><li>Size is only as big as the content inside them ✅</li><li>You <strong>cannot</strong> set <code>width</code>, <code>height</code>, <code>margin-top</code>, or <code>margin-bottom</code> ❌</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>💡 Why can't you set width/height on inline elements?</strong> Because inline elements are designed to flow inside text. Giving them a fixed width would break the natural text flow. This is a frustrating limitation — and <code>inline-block</code> was created to solve it!</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
-  <div class="code-body"><pre>/* Good inline-block uses */
+</div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 7</div>
+    <div class="phase-title">Conceptual Understanding</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is <code>display: inline-block</code>?</h3>
+<p class="v2-p"><code>display: inline-block</code> is a <strong>hybrid</strong> display type that combines the most useful features of both <code>inline</code> and <code>block</code> elements.</p>
+<p class="v2-p"><strong>Here is the simple definition:</strong></p>
+<blockquote class="v2-bq"><p class="v2-p">An <code>inline-block</code> element sits <strong>on the same line</strong> as other elements (like inline), BUT you can still set its <strong>width, height, margin-top, and margin-bottom</strong> (like block).</p></blockquote>
+<p class="v2-p"><strong>Analogy:</strong> Imagine you are building a shelf to display books. Each book stands upright next to the others (inline behaviour — side by side). But each book has its own specific height and width (block behaviour — controllable size). <code>inline-block</code> is exactly like that.</p>
+<h3 class="v2-h3">The Three Display Types — Side by Side Comparison</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Feature</th><th><code>inline</code></th><th><code>block</code></th><th><code>inline-block</code></th></tr></thead><tbody><tr><td>Sits on same line as others?</td><td>✅ Yes</td><td>❌ No (new line)</td><td>✅ Yes</td></tr><tr><td>Stretches to full width?</td><td>❌ No</td><td>✅ Yes</td><td>❌ No</td></tr><tr><td>You can set <code>width</code>?</td><td>❌ No</td><td>✅ Yes</td><td>✅ Yes</td></tr><tr><td>You can set <code>height</code>?</td><td>❌ No</td><td>✅ Yes</td><td>✅ Yes</td></tr><tr><td>You can set <code>margin-top</code>/<code>margin-bottom</code>?</td><td>❌ No</td><td>✅ Yes</td><td>✅ Yes</td></tr><tr><td>You can set <code>padding</code>?</td><td>⚠️ Partially</td><td>✅ Yes</td><td>✅ Yes</td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>💡 Think of it like this:</strong></p>
+<ul class="v2-ul"><li><code>inline</code> = words in a sentence (flows with text, no size control)</li><li><code>block</code> = paragraphs (own line, full control of size)</li><li><code>inline-block</code> = buttons in a toolbar (side by side, full control of size)</li></ul></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Conceptual Understanding</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 7</div>
+    <div class="phase-title">Simple Standalone Examples</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Example 1 — Comparing <code>inline</code>, <code>inline-block</code>, and <code>block</code> on <code>&lt;span&gt;</code> Elements</h3>
+<p class="v2-p">This is the most important example in this lesson. We will apply all three display values to three separate <code>&lt;span&gt;</code> elements and observe the different results.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* Span A — default inline behaviour */
+    span.a {
+      display: inline;      /* This is the default for &lt;span&gt; */
+      padding: 5px;
+      border: 2px solid red;
+    }
 
-/* Button group */
-.btn-group .btn {
+    /* Span B — inline-block: side by side BUT with size control */
+    span.b {
+      display: inline-block;
+      width: 100px;         /* We CAN set width now! */
+      height: 35px;         /* We CAN set height now! */
+      padding: 5px;
+      border: 2px solid red;
+    }
+
+    /* Span C — block: takes its own full line */
+    span.c {
+      display: block;
+      width: 100px;
+      height: 35px;
+      padding: 5px;
+      border: 2px solid red;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h2&gt;display: inline&lt;/h2&gt;
+  &lt;span class=&quot;a&quot;&gt;Hello!&lt;/span&gt;
+  &lt;span class=&quot;a&quot;&gt;World!&lt;/span&gt;
+  &lt;span class=&quot;a&quot;&gt;CSS!&lt;/span&gt;
+
+  &lt;h2&gt;display: inline-block&lt;/h2&gt;
+  &lt;span class=&quot;b&quot;&gt;Hello!&lt;/span&gt;
+  &lt;span class=&quot;b&quot;&gt;World!&lt;/span&gt;
+  &lt;span class=&quot;b&quot;&gt;CSS!&lt;/span&gt;
+
+  &lt;h2&gt;display: block&lt;/h2&gt;
+  &lt;span class=&quot;c&quot;&gt;Hello!&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;World!&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;CSS!&lt;/span&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visually):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>display: inline
+[Hello!] [World!] [CSS!]       ← All on one line, size fits content
+
+display: inline-block
+[Hello!   ] [World!   ] [CSS!  ]  ← All on one line, all exactly 100px wide, 35px tall
+
+display: block
+[Hello!           ]
+[World!           ]
+[CSS!             ]            ← Each on its own full line</code></pre></div></div>
+<p class="v2-p"><strong>Breaking down the code — line by line:</strong></p>
+<p class="v2-p"><code>display: inline;</code> — This is the natural default for <code>&lt;span&gt;</code>. The element flows like a word in text. Even though we set <code>padding</code> and <code>border</code>, the height and width cannot be explicitly controlled.</p>
+<p class="v2-p"><code>display: inline-block;</code> — Now the element sits beside others on the same line, BUT the <code>width: 100px</code> and <code>height: 35px</code> we specified are actually applied. This is the new power!</p>
+<p class="v2-p"><code>display: block;</code> — The element takes up its own full line. Even though it has <code>width: 100px</code>, it still forces a new line for the next element.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>🤔 Thinking prompt:</strong> What happens if you remove the <code>width</code> and <code>height</code> from <code>span.b</code>? Try it — the element will still sit inline but shrink to just fit its content, just like <code>inline</code>. Width and height are optional with <code>inline-block</code>.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 2 — Why You Can't Control Size with <code>inline</code> (A Common Frustration)</h3>
+<p class="v2-p">This example shows the limitation of <code>inline</code> and why <code>inline-block</code> was invented.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    span.fail {
+      display: inline;
+      width: 200px;       /* This will be IGNORED by the browser */
+      height: 50px;       /* This will also be IGNORED */
+      background-color: lightgreen;
+      padding: 5px;
+    }
+
+    span.success {
+      display: inline-block;
+      width: 200px;       /* This WORKS! */
+      height: 50px;       /* This WORKS! */
+      background-color: lightgreen;
+      padding: 5px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;p&gt;Inline (width and height are ignored):&lt;/p&gt;
+  &lt;span class=&quot;fail&quot;&gt;I wanted to be 200px wide...&lt;/span&gt;
+
+  &lt;p&gt;Inline-block (width and height are respected):&lt;/p&gt;
+  &lt;span class=&quot;success&quot;&gt;I am exactly 200px wide!&lt;/span&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visually):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Inline (width and height are ignored):
+[I wanted to be 200px wide...]   ← Only as wide as the text content
+
+Inline-block (width and height are respected):
+[I am exactly 200px wide!        ]  ← Exactly 200px wide, 50px tall</code></pre></div></div>
+<p class="v2-p">This example proves the core value of <code>inline-block</code>: <strong>you regain full size control without losing the side-by-side placement</strong>.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Simple Standalone Examples</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 7</div>
+    <div class="phase-title">Using `inline-block` to Build a Horizontal Navigation Menu</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">One of the most common, practical uses for <code>display: inline-block</code> in real web development is creating <strong>horizontal navigation menus</strong> — the row of links you see at the top of most websites (Home | About | Services | Contact).</p>
+<h3 class="v2-h3">Why <code>inline-block</code> for Navigation?</h3>
+<p class="v2-p">Normally, <code>&lt;li&gt;</code> list items are block elements. This means they stack vertically. To make them sit side by side in a horizontal menu, we change their <code>display</code> to <code>inline-block</code>. This also lets us apply padding around each link to give them a proper clickable area.</p>
+<h3 class="v2-h3">Example 3 — A Horizontal Navigation Menu with <code>inline-block</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* Style the container (the &lt;ul&gt; list) */
+    .nav {
+      background-color: lightgray;  /* Gray background for the whole nav bar */
+      list-style-type: none;        /* Remove bullet points from list items */
+      padding: 0;                   /* Remove default padding */
+      margin: 0;                    /* Remove default margin */
+    }
+
+    /* Style each menu item (each &lt;li&gt;) */
+    .nav li {
+      display: inline-block;   /* THIS is the key — makes list items sit side by side */
+      font-size: 18px;
+      padding: 15px;           /* Adds space around each menu item for a comfortable click area */
+    }
+
+    /* Optional: style the links inside */
+    .nav li a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .nav li a:hover {
+      color: royalblue;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;ul class=&quot;nav&quot;&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Services&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visually):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Home ]  [ About ]  [ Services ]  [ Portfolio ]  [ Contact ]
+(All items appear in a single horizontal row on a gray background)</code></pre></div></div>
+<p class="v2-p"><strong>Breaking down the code — line by line:</strong></p>
+<p class="v2-p"><code>list-style-type: none;</code> — Removes the default bullet points (<code>•</code>) that <code>&lt;ul&gt;</code> lists show by default. In a navigation bar, we don't want bullets.</p>
+<p class="v2-p"><code>padding: 0; margin: 0;</code> — Browsers add default spacing around <code>&lt;ul&gt;</code> and <code>&lt;li&gt;</code> elements. We reset both to zero so we can control the spacing ourselves.</p>
+<p class="v2-p"><code>display: inline-block;</code> — This single rule transforms the list items from stacking vertically to sitting horizontally in a row. Without this, all five nav items would appear in a vertical list.</p>
+<p class="v2-p"><code>padding: 15px;</code> — Adds 15 pixels of space on all four sides of each nav item. This makes each item look like a proper button and gives users a comfortable area to click.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>🌍 Real-World Connection:</strong> Almost every website you visit uses this exact pattern (or a modern version of it with Flexbox) for their navigation bar. The header menu of news websites, online shops, and business sites all use horizontal navigation built with techniques like this.</p></blockquote>
+<blockquote class="v2-bq"><p class="v2-p"><strong>🤔 Thinking prompt:</strong> What happens if you change <code>display: inline-block</code> to <code>display: block</code> in the <code>.nav li</code> rule? Try it — the menu items will go back to stacking vertically like a standard list.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Using <code>inline-block</code> to Build a Horizontal Navigation Menu</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 7</div>
+    <div class="phase-title">Guided Practice Exercises</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — Warm-Up: Spot the Difference</h3>
+<p class="v2-p"><strong>Objective:</strong> Understand visually how <code>inline</code> vs <code>inline-block</code> behaves differently.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a small widget that shows three status labels for a weather app: "Sunny", "Windy", and "Rainy".</p>
+<p class="v2-p"><strong>Your task:</strong> Write the HTML and CSS below, then <strong>change <code>display: inline-block</code> to <code>display: inline</code></strong> and observe how the boxes lose their set height.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .label {
+      display: inline-block;   /* Change this to inline and observe */
+      width: 80px;
+      height: 40px;
+      background-color: #4a90d9;
+      color: white;
+      text-align: center;
+      line-height: 40px;       /* Vertically centers text inside the 40px height */
+      margin: 5px;
+      border-radius: 5px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;span class=&quot;label&quot;&gt;Sunny&lt;/span&gt;
+  &lt;span class=&quot;label&quot;&gt;Windy&lt;/span&gt;
+  &lt;span class=&quot;label&quot;&gt;Rainy&lt;/span&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (with <code>inline-block</code>):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Sunny ]  [ Windy ]  [ Rainy ]
+(Three equally-sized blue pill-shaped labels side by side)</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (if you switch to <code>inline</code>):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[Sunny][Windy][Rainy]
+(The width and height settings are ignored — boxes shrink to text size only)</code></pre></div></div>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ol class="v2-ol"><li>Did the height change when you switched to <code>inline</code>?</li><li>Is the text still centered vertically when you use <code>inline</code>? Why not?</li><li>What does <code>line-height: 40px</code> do? (Hint: it matches the <code>height</code> value.)</li></ol>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Build a Button Row</h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>inline-block</code> to create a row of styled action buttons.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a simple order management panel. You need three buttons — "Approve", "Reject", and "Hold" — to appear in a horizontal row with consistent sizing.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an HTML file with three <code>&lt;a&gt;</code> tags (links styled as buttons).</li><li>Apply <code>display: inline-block</code> to each button.</li><li>Set a specific <code>width</code> of <code>120px</code> and <code>height</code> of <code>40px</code> for each.</li><li>Add <code>background-color</code>, <code>color</code>, <code>text-align: center</code>, and <code>line-height: 40px</code> for styling.</li></ol>
+<p class="v2-p"><strong>Starter Code:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .btn {
+      display: inline-block;
+      width: 120px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;        /* Centers text vertically */
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 4px;
+      margin: 5px;
+    }
+
+    .btn-approve {
+      background-color: #27ae60;  /* Green */
+      color: white;
+    }
+
+    .btn-reject {
+      background-color: #e74c3c;  /* Red */
+      color: white;
+    }
+
+    .btn-hold {
+      background-color: #f39c12;  /* Orange */
+      color: white;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h3&gt;Order #1042 — Pending Review&lt;/h3&gt;
+
+  &lt;a href=&quot;#&quot; class=&quot;btn btn-approve&quot;&gt;Approve&lt;/a&gt;
+  &lt;a href=&quot;#&quot; class=&quot;btn btn-reject&quot;&gt;Reject&lt;/a&gt;
+  &lt;a href=&quot;#&quot; class=&quot;btn btn-hold&quot;&gt;Hold&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visually):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Order #1042 — Pending Review
+
+[ Approve ]  [ Reject ]  [ Hold ]
+  (green)     (red)      (orange)
+  120px wide, 40px tall each, all on one line</code></pre></div></div>
+<p class="v2-p"><strong>Hints:</strong></p>
+<ul class="v2-ul"><li>If the buttons are stacking vertically, make sure <code>display: inline-block</code> is set on <code>.btn</code>.</li><li>If text is not centered vertically, check that <code>line-height</code> equals the <code>height</code> value.</li><li>If the buttons are too close together, increase the <code>margin</code> value.</li></ul>
+<p class="v2-p"><strong>What-if challenge:</strong> What happens if you set <code>width: 100%</code> on <code>.btn</code>? Try it and observe. Can you explain why the buttons stack vertically when you do that?</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Build a Simple Icon Toolbar</h3>
+<p class="v2-p"><strong>Objective:</strong> Combine <code>inline-block</code> with text and emoji content to make a toolbar.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a simple text-editor toolbar with formatting buttons: Bold, Italic, Underline, and Link.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .toolbar {
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .tool-btn {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      cursor: pointer;
+      margin: 2px;
+      font-weight: bold;
+    }
+
+    .tool-btn:hover {
+      background-color: #dce8ff;
+      border-color: #4a90d9;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;toolbar&quot;&gt;
+    &lt;span class=&quot;tool-btn&quot;&gt;B&lt;/span&gt;
+    &lt;span class=&quot;tool-btn&quot;&gt;&lt;em&gt;I&lt;/em&gt;&lt;/span&gt;
+    &lt;span class=&quot;tool-btn&quot;&gt;&lt;u&gt;U&lt;/u&gt;&lt;/span&gt;
+    &lt;span class=&quot;tool-btn&quot;&gt;🔗&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visually):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌──────────────────────────────────┐
+│  [B]  [I]  [U]  [🔗]            │
+└──────────────────────────────────┘
+(Four square buttons, side by side, in a toolbar container)</code></pre></div></div>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ol class="v2-ol"><li>What would happen if you removed <code>display: inline-block</code> from <code>.tool-btn</code>?</li><li>Why do we set both <code>height: 36px</code> and <code>line-height: 36px</code> to the same value?</li><li>What does <code>cursor: pointer</code> do? (Try removing it and notice the cursor change.)</li></ol>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 7</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 — Forgetting That <code>inline-block</code> Still Has a Small Gap Between Elements</h3>
+<p class="v2-p">When you place multiple <code>inline-block</code> elements side by side, browsers add a tiny gap between them (usually 3–4px). This gap comes from <strong>whitespace in the HTML</strong> (the line breaks and spaces between your tags).</p>
+<p class="v2-p"><strong>The problem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;span class=&quot;box&quot;&gt;A&lt;/span&gt;
+&lt;span class=&quot;box&quot;&gt;B&lt;/span&gt;
+&lt;span class=&quot;box&quot;&gt;C&lt;/span&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[A] [B] [C]
+     ↑ tiny gaps here</code></pre></div></div>
+<p class="v2-p"><strong>Why this happens:</strong> The browser sees the newline and space characters between <code>&lt;/span&gt;</code> and <code>&lt;span&gt;</code> as text content — just like a space between two words.</p>
+<p class="v2-p"><strong>Fix Option 1 — Remove whitespace in HTML (not very readable):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;span class=&quot;box&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;box&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;box&quot;&gt;C&lt;/span&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Fix Option 2 — Use <code>font-size: 0</code> on the parent (clean approach):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+  font-size: 0;          /* Eliminates the whitespace gap */
+}
+.box {
   display: inline-block;
-  padding: 8px 16px;
-  border: 1px solid #0284c7;
-  color: #0284c7;
-  cursor: pointer;
+  font-size: 16px;       /* Re-apply font size to the children */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Fix Option 3 — Use negative margin:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.box {
+  display: inline-block;
+  margin-right: -4px;    /* Offsets the gap */
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>💡 Pro tip:</strong> In modern projects, developers often use Flexbox (<code>display: flex</code>) to avoid this gap entirely. But <code>inline-block</code> is still important to understand and perfectly valid for many use cases.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Trying to Use <code>width</code> and <code>height</code> on an <code>inline</code> Element</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — width and height are ignored on inline elements */
+span {
+  display: inline;
+  width: 200px;    /* ← IGNORED by the browser */
+  height: 50px;   /* ← IGNORED by the browser */
+}
+
+/* CORRECT — change to inline-block first */
+span {
+  display: inline-block;
+  width: 200px;    /* ← Now this WORKS */
+  height: 50px;   /* ← Now this WORKS */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Confusing <code>inline-block</code> with <code>float</code></h3>
+<p class="v2-p">Both <code>inline-block</code> and <code>float</code> can make elements appear side by side. But they work very differently:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th></th><th><code>inline-block</code></th><th><code>float</code></th></tr></thead><tbody><tr><td>Element stays in document flow?</td><td>✅ Yes</td><td>❌ No (floated elements are pulled out of flow)</td></tr><tr><td>Causes layout issues with siblings?</td><td>❌ Rarely</td><td>✅ Often (needs clearfix)</td></tr><tr><td>Aligns vertically with siblings?</td><td>✅ Yes (controlled by <code>vertical-align</code>)</td><td>❌ Complex</td></tr><tr><td>Best used for</td><td>Buttons, nav items, inline content</td><td>Wrapping text around images</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Rule of thumb:</strong> Use <code>inline-block</code> for nav bars, button rows, and horizontal lists. Use <code>float</code> mainly for wrapping text around images.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Forgetting <code>list-style-type: none</code> When Making Horizontal Nav Menus</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — bullet points will appear in your nav bar */
+.nav li {
+  display: inline-block;
+  padding: 10px;
+}
+
+/* CORRECT — remove bullet points */
+.nav {
+  list-style-type: none;   /* Remove bullets from the list */
+  padding: 0;
   margin: 0;
 }
-.btn-group .btn:first-child { border-radius: 8px 0 0 8px; }
-.btn-group .btn:last-child  { border-radius: 0 8px 8px 0; }
-.btn-group .btn.active { background: #0284c7; color: white; }
 
-/* Tag/pill list */
-.tag {
+.nav li {
   display: inline-block;
-  padding: 4px 12px;
-  background: #dbeafe;
-  color: #1e40af;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  margin: 3px;
-}</pre></div>
-</div>
+  padding: 10px;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Not Understanding Vertical Alignment</h3>
+<p class="v2-p">When multiple <code>inline-block</code> elements have different heights, they may not align the way you expect. By default, they align to their <strong>baseline</strong> (the bottom of text).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Fix misaligned inline-block elements */
+.box {
+  display: inline-block;
+  vertical-align: top;    /* Aligns tops of all boxes */
+  /* Other options: middle, bottom, baseline */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Example of the problem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[Short box]     [This is a
+                 tall box with
+                 more text]
+↑ The short box aligns to the baseline of the tall box&#x27;s text — looks uneven</code></pre></div></div>
+<p class="v2-p"><strong>Fix:</strong> Add <code>vertical-align: top</code> to align the tops of all boxes.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Build a button group (three buttons that look joined together — left button rounded left, right button rounded right, middle button square). Then build a tag cloud: 8 tags using inline-block with padding and border-radius, each a different colour.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My Inline-block Grid</div>
-  <p class="project-desc">Build a three-column card grid and a tag cloud using only inline-block.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Overview</div>
+  <div class="build-desc">You will build a horizontal navigation bar that includes the company name on the left and a list of nav links on the right. All nav links will be made with <code>display: inline-block</code>.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
     </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;CSS Inline-block&lt;/title&gt;
-    &lt;style&gt;
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff;
-             padding: 30px; max-width: 900px; margin: 0 auto; color: #0f172a; }
-      h1 { color: #0284c7; margin-bottom: 6px; }
-      h2 { color: #0369a1; margin: 28px 0 14px;
-           border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
-      /* Three-column card grid */
-      .card-row { font-size: 0; margin: -8px; }
-      .card {
-        display: inline-block;
-        width: 33.33%;
-        padding: 8px;
-        font-size: 1rem;
-        vertical-align: top;
-      }
-      .card-inner {
-        background: white; border: 1.5px solid #bae6fd;
-        border-radius: 14px; padding: 22px;
-        height: 100%;
-      }
-      .card-inner h3 { color: #0284c7; margin: 0 0 8px; font-size: 15px; }
-      .card-inner p  { color: #475569; font-size: 13px; line-height: 1.7; margin: 0; }
-      /* Button group */
-      .btn-group { display: inline-flex; }
-      .btn-group .btn {
-        display: inline-block; padding: 10px 20px;
-        border: 2px solid #0284c7; color: #0284c7;
-        background: white; cursor: pointer; font-size: 14px;
-        font-weight: 700; text-decoration: none;
-        transition: background .15s, color .15s;
-      }
-      .btn-group .btn:first-child { border-radius: 9px 0 0 9px; }
-      .btn-group .btn:last-child  { border-radius: 0 9px 9px 0; }
-      .btn-group .btn:not(:first-child) { border-left: none; }
-      .btn-group .btn:hover,
-      .btn-group .btn.active { background: #0284c7; color: white; }
-      /* Tags */
-      .tags { margin-top: 12px; }
-      .tag {
-        display: inline-block; padding: 5px 14px;
-        border-radius: 100px; font-size: 12px; font-weight: 700; margin: 4px;
-      }
-      @media (max-width: 640px) { .card { width: 100%; } }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;CSS Inline-block&lt;/h1&gt;
-    &lt;h2&gt;Three-Column Card Grid&lt;/h2&gt;
-    &lt;div class="card-row"&gt;
-      &lt;div class="card"&gt;&lt;div class="card-inner"&gt;&lt;h3&gt;CSS Selectors&lt;/h3&gt;
-        &lt;p&gt;Element, class, id, pseudo-class — target exactly the right elements.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;div class="card"&gt;&lt;div class="card-inner"&gt;&lt;h3&gt;Box Model&lt;/h3&gt;
-        &lt;p&gt;Content, padding, border and margin — the core of every layout.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;div class="card"&gt;&lt;div class="card-inner"&gt;&lt;h3&gt;Typography&lt;/h3&gt;
-        &lt;p&gt;Google Fonts, size scales, shadows and text transforms.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
-    &lt;/div&gt;
-    &lt;h2&gt;Button Group&lt;/h2&gt;
-    &lt;div class="btn-group"&gt;
-      &lt;a href="#" class="btn active"&gt;All&lt;/a&gt;
-      &lt;a href="#" class="btn"&gt;HTML&lt;/a&gt;
-      &lt;a href="#" class="btn"&gt;CSS&lt;/a&gt;
-      &lt;a href="#" class="btn"&gt;JavaScript&lt;/a&gt;
-    &lt;/div&gt;
-    &lt;h2&gt;Tag Cloud&lt;/h2&gt;
-    &lt;div class="tags"&gt;
-      &lt;span class="tag" style="background:#dbeafe;color:#1e40af"&gt;CSS&lt;/span&gt;
-      &lt;span class="tag" style="background:#dcfce7;color:#166534"&gt;HTML&lt;/span&gt;
-      &lt;span class="tag" style="background:#fef3c7;color:#92400e"&gt;JavaScript&lt;/span&gt;
-      &lt;span class="tag" style="background:#ede9fe;color:#5b21b6"&gt;Python&lt;/span&gt;
-      &lt;span class="tag" style="background:#fee2e2;color:#991b1b"&gt;Scratch&lt;/span&gt;
-      &lt;span class="tag" style="background:#e0f2fe;color:#0369a1"&gt;Flexbox&lt;/span&gt;
-      &lt;span class="tag" style="background:#fce7f3;color:#9d174d"&gt;Grid&lt;/span&gt;
-      &lt;span class="tag" style="background:#f0fdf4;color:#166534"&gt;Responsive&lt;/span&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
-  </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Inline-block</title>
-    <style>
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff;
-             padding: 30px; max-width: 900px; margin: 0 auto; color: #0f172a; }
-      h1 { color: #0284c7; margin-bottom: 6px; }
-      h2 { color: #0369a1; margin: 28px 0 14px;
-           border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
-      /* Three-column card grid */
-      .card-row { font-size: 0; margin: -8px; }
-      .card {
-        display: inline-block;
-        width: 33.33%;
-        padding: 8px;
-        font-size: 1rem;
-        vertical-align: top;
-      }
-      .card-inner {
-        background: white; border: 1.5px solid #bae6fd;
-        border-radius: 14px; padding: 22px;
-        height: 100%;
-      }
-      .card-inner h3 { color: #0284c7; margin: 0 0 8px; font-size: 15px; }
-      .card-inner p  { color: #475569; font-size: 13px; line-height: 1.7; margin: 0; }
-      /* Button group */
-      .btn-group { display: inline-flex; }
-      .btn-group .btn {
-        display: inline-block; padding: 10px 20px;
-        border: 2px solid #0284c7; color: #0284c7;
-        background: white; cursor: pointer; font-size: 14px;
-        font-weight: 700; text-decoration: none;
-        transition: background .15s, color .15s;
-      }
-      .btn-group .btn:first-child { border-radius: 9px 0 0 9px; }
-      .btn-group .btn:last-child  { border-radius: 0 9px 9px 0; }
-      .btn-group .btn:not(:first-child) { border-left: none; }
-      .btn-group .btn:hover,
-      .btn-group .btn.active { background: #0284c7; color: white; }
-      /* Tags */
-      .tags { margin-top: 12px; }
-      .tag {
-        display: inline-block; padding: 5px 14px;
-        border-radius: 100px; font-size: 12px; font-weight: 700; margin: 4px;
-      }
-      @media (max-width: 640px) { .card { width: 100%; } }
-    </style>
-  </head>
-  <body>
-    <h1>CSS Inline-block</h1>
-    <h2>Three-Column Card Grid</h2>
-    <div class="card-row">
-      <div class="card"><div class="card-inner"><h3>CSS Selectors</h3>
-        <p>Element, class, id, pseudo-class — target exactly the right elements.</p></div></div>
-      <div class="card"><div class="card-inner"><h3>Box Model</h3>
-        <p>Content, padding, border and margin — the core of every layout.</p></div></div>
-      <div class="card"><div class="card-inner"><h3>Typography</h3>
-        <p>Google Fonts, size scales, shadows and text transforms.</p></div></div>
-    </div>
-    <h2>Button Group</h2>
-    <div class="btn-group">
-      <a href="#" class="btn active">All</a>
-      <a href="#" class="btn">HTML</a>
-      <a href="#" class="btn">CSS</a>
-      <a href="#" class="btn">JavaScript</a>
-    </div>
-    <h2>Tag Cloud</h2>
-    <div class="tags">
-      <span class="tag" style="background:#dbeafe;color:#1e40af">CSS</span>
-      <span class="tag" style="background:#dcfce7;color:#166534">HTML</span>
-      <span class="tag" style="background:#fef3c7;color:#92400e">JavaScript</span>
-      <span class="tag" style="background:#ede9fe;color:#5b21b6">Python</span>
-      <span class="tag" style="background:#fee2e2;color:#991b1b">Scratch</span>
-      <span class="tag" style="background:#e0f2fe;color:#0369a1">Flexbox</span>
-      <span class="tag" style="background:#fce7f3;color:#9d174d">Grid</span>
-      <span class="tag" style="background:#f0fdf4;color:#166534">Responsive</span>
-    </div>
-  </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;NovaTech — Navigation Bar&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;navbar.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
 
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  &lt;nav class=&quot;navbar&quot;&gt;
+
+    &lt;!-- Left side: Company name --&gt;
+    &lt;span class=&quot;brand&quot;&gt;NovaTech&lt;/span&gt;
+
+    &lt;!-- Right side: Navigation links --&gt;
+    &lt;ul class=&quot;nav-links&quot;&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Products&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Solutions&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Pricing&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot; class=&quot;cta-btn&quot;&gt;Get Started&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+
+  &lt;/nav&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-26-css_inline-block</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 26 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-26-css_inline-block/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html>
+<head>
+  <title>NovaTech — Navigation Bar</title>
+  <link rel="stylesheet" href="navbar.css">
+</head>
+<body>
+
+  <nav class="navbar">
+
+    <!-- Left side: Company name -->
+    <span class="brand">NovaTech</span>
+
+    <!-- Right side: Navigation links -->
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Solutions</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#" class="cta-btn">Get Started</a></li>
+    </ul>
+
+  </nav>
+
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
+  </div>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-26-project-overview</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 26 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-26-project-overview/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 26 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Inline-block for Horizontal Layouts</li><li>✅ Inline-block vs Flexbox</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_25.html" class="ln-btn">← Lesson 25</a>
-    <a href="lesson_27.html" class="ln-btn primary">Lesson 27 →</a>
-  </div>
+  <h2>🎉 Lesson 26 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Conceptual Understanding</li><li>✅ Simple Standalone Examples</li><li>✅ Using `inline-block` to Build a Horizontal Navigation Menu</li><li>✅ Guided Practice Exercises</li><li>✅ Common Beginner Mistakes</li></ul>
+  <div class="lesson-nav"><a href="lesson_25.html" class="ln-btn">← Lesson 25</a><a href="lesson_27.html" class="ln-btn primary">Lesson 27 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 26 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 26 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_26_phase';
+const TOTAL=7,KEY='techbase_css_l26';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

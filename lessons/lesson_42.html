@@ -2,482 +2,941 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 42: CSS Math Functions — Techbase CSS Course</title>
-<meta name="description" content="Use calc(), min(), max(), clamp() and round() for dynamic, responsive CSS calculations">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 42: CSS Math Functions: calc(), min(), max(), and clamp() — Techbase CSS</title>
+<meta name="description" content="CSS Math Functions: calc(), min(), max(), and clamp()">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 42 of 73 &nbsp;·&nbsp; CSS Math Functions</span>
-  <div class="nav-actions"><a href="lesson_41.html" class="ln-btn">← Lesson 41</a><a href="lesson_43.html" class="ln-btn primary">Lesson 43 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 42 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 42</div>
-    <h1>CSS Math Functions</h1>
-    <p class="lesson-tagline">Use calc(), min(), max(), clamp() and round() for dynamic, responsive CSS calculations</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My Math Functions Demo</span>
-      
-    </div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 42</div>
+    <h1>CSS Math Functions: calc(), min(), max(), and clamp()</h1>
+    <div class="l-hero-sub">9 phases · Build: Project Goal</div>
   </div>
+</div>
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 42</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever wished that CSS could <strong>do maths for you</strong> — automatically? Like saying _"make this box 100% of the screen minus the sidebar width"_ without having to calculate it yourself every time the screen changes?</p>
+<p class="v2-p">That is exactly what <strong>CSS math functions</strong> do. They let you write <strong>live calculations directly inside your CSS</strong>. The browser does the maths — you just write the formula.</p>
+<p class="v2-p">In this lesson, you will learn four powerful CSS math functions:</p>
+<ul class="v2-ul"><li><code>calc()</code> — performs arithmetic (add, subtract, multiply, divide) on CSS values</li><li><code>min()</code> — picks the <strong>smallest</strong> value from a list</li><li><code>max()</code> — picks the <strong>largest</strong> value from a list</li><li><code>clamp()</code> — keeps a value <strong>between a minimum and maximum</strong>, with a preferred middle value</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to use these functions to build flexible, responsive, and professional layouts without writing a single line of JavaScript.</p>
+<blockquote class="v2-bq"><p class="v2-p">🎯 <strong>Real-world connection:</strong> Every professional website you see today — from Netflix to Google — uses these functions behind the scenes to make layouts that automatically adapt to different screen sizes, fonts, and devices.</p></blockquote>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 9 phases</span>
+    <span>🏗️ Project Goal</span>
+  </div>
+</div></div>
 </section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 42!</div>
-  <h2>CSS Math Functions</h2>
-  <p>Use calc(), min(), max(), clamp() and round() for dynamic, responsive CSS calculations. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
-</div>
-<div class="phase " id="phase1" data-phase="1">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">calc() for Dynamic Values</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 9</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p><code>calc()</code> performs maths inside CSS values. Mix units: <code>calc(100% - 48px)</code> (full width minus 48px padding). Use any operator: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>. Always put spaces around <code>+</code> and <code>-</code> operators. Common uses: sidebar + content that fills the rest of the width, off-set an element by the header height, create consistent spacing ratios.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Sidebar + content fill exactly 100% */
-.sidebar { width: 240px; float: left; }
-.content { width: calc(100% - 240px); float: left; }
-
-/* Full height minus header */
-.main { min-height: calc(100vh - 62px); }
-
-/* Consistent spacing */
-:root { --spacing: 16px; }
-.card { padding: calc(var(--spacing) * 1.5); } /* 24px */
-.card-sm { padding: calc(var(--spacing) * 0.75); } /* 12px */
-
-/* Centred element with offset */
-.off-centre {
-  position: absolute;
-  left: calc(50% + 20px);
-  transform: translateX(-50%);
-}
-
-/* Grid gap that accounts for a border */
-.grid { gap: calc(16px - 1px); } /* accounts for 1px borders */</pre></div>
-</div>
+    <p class="v2-p">Have you ever wished that CSS could <strong>do maths for you</strong> — automatically? Like saying _"make this box 100% of the screen minus the sidebar width"_ without having to calculate it yourself every time the screen changes?</p>
+<p class="v2-p">That is exactly what <strong>CSS math functions</strong> do. They let you write <strong>live calculations directly inside your CSS</strong>. The browser does the maths — you just write the formula.</p>
+<p class="v2-p">In this lesson, you will learn four powerful CSS math functions:</p>
+<ul class="v2-ul"><li><code>calc()</code> — performs arithmetic (add, subtract, multiply, divide) on CSS values</li><li><code>min()</code> — picks the <strong>smallest</strong> value from a list</li><li><code>max()</code> — picks the <strong>largest</strong> value from a list</li><li><code>clamp()</code> — keeps a value <strong>between a minimum and maximum</strong>, with a preferred middle value</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to use these functions to build flexible, responsive, and professional layouts without writing a single line of JavaScript.</p>
+<blockquote class="v2-bq"><p class="v2-p">🎯 <strong>Real-world connection:</strong> Every professional website you see today — from Netflix to Google — uses these functions behind the scenes to make layouts that automatically adapt to different screen sizes, fonts, and devices.</p></blockquote>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Use <code>calc(100% - 240px)</code> to create a layout where a 240px sidebar and a fluid main content fill exactly 100% of the width. Then use <code>calc(100vh - 62px)</code> to give the main area the remaining height below a 62px header.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
+</div>
+<div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">min(), max() and clamp()</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 9</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p><code>min(a, b)</code> takes the smaller of two values — useful for width that shrinks on mobile: <code>width: min(600px, 100%)</code>. <code>max(a, b)</code> takes the larger — useful for minimum sizes. <code>clamp(min, preferred, max)</code> constrains a value between min and max — the preferred scales fluidly. This is the modern way to write fully responsive typography and spacing without media queries.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* min() — smaller of two values */
-.card { width: min(400px, 100%); } /* 400px or full width, whichever is smaller */
-
-/* max() — larger of two values */
-.sidebar { width: max(200px, 20%); } /* at least 200px wide */
-.text { font-size: max(14px, 1rem); } /* never below 14px */
-
-/* clamp(minimum, preferred, maximum) */
-h1 { font-size: clamp(1.5rem, 5vw, 3rem); }
-/* = 1.5rem on small screens, 5vw on medium, max 3rem */
-
-.container { padding: clamp(16px, 4vw, 48px); }
-/* = 16px on mobile, grows with viewport, max 48px */
-
-.card { width: clamp(280px, 40%, 520px); }
-/* = between 280px and 520px, ideally 40% of parent */</pre></div>
-</div>
+    <p class="v2-p">Before we dive in, let us quickly review a few ideas you need to understand first. If you already know these, feel free to skim — but if any of them feel unfamiliar, read carefully!</p>
+<h3 class="v2-h3">What is a CSS Property Value?</h3>
+<p class="v2-p">In CSS, when you write a rule like:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>width: 300px;</code></pre></div></div>
+<p class="v2-p">The <code>300px</code> is called the <strong>value</strong> of the <code>width</code> property. CSS math functions replace that plain value with a <strong>calculated expression</strong> instead.</p>
+<h3 class="v2-h3">What are CSS Units?</h3>
+<p class="v2-p">CSS uses different types of measurement units:</p>
+<ul class="v2-ul"><li><code>px</code> — pixels (a fixed, absolute size. Example: <code>20px</code>)</li><li><code>%</code> — percentage (relative to the parent element. Example: <code>50%</code> = half the parent's size)</li><li><code>vw</code> — viewport width (relative to the browser window. Example: <code>100vw</code> = full width of window)</li><li><code>vh</code> — viewport height (full height of browser window)</li><li><code>em</code> — relative to the font size of the current element</li><li><code>rem</code> — relative to the font size of the root (<code>&lt;html&gt;</code>) element</li></ul>
+<p class="v2-p"><strong>Why does this matter?</strong> CSS math functions are special because they let you <strong>mix different units together</strong> in one calculation. Normally you cannot write <code>300px + 50%</code> — but inside <code>calc()</code>, you can!</p>
+<h3 class="v2-h3">What is Responsive Design?</h3>
+<p class="v2-p">Responsive design means making your webpage look good on <strong>all screen sizes</strong> — phones, tablets, laptops, desktops. CSS math functions are one of the most important tools for doing this.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Create a heading that uses <code>clamp(1.5rem, 5vw, 3.5rem)</code> for font-size. Resize your browser from very small to very large — the heading should scale fluidly between 1.5rem and 3.5rem. Replace your fixed padding with <code>clamp(16px, 4vw, 48px)</code> for responsive spacing.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My Math Functions Demo</div>
-  <p class="project-desc">Build a responsive page using calc(), min(), max(), and clamp() throughout the layout.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
-    </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;CSS Math Functions&lt;/title&gt;
-    &lt;style&gt;
-      :root { --header-h: 62px; --sidebar-w: 240px; --gap: 24px; }
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff; margin: 0; color: #0f172a; }
-      /* Header — fixed height */
-      .header { height: var(--header-h); background: #0284c7; display: flex; align-items: center; padding: 0 28px; position: sticky; top: 0; z-index: 100; }
-      .header h1 { color: white; font-size: 1.1rem; margin: 0; }
-      /* Layout using calc() */
-      .layout { display: flex; min-height: calc(100vh - var(--header-h)); }
-      .sidebar { width: var(--sidebar-w); background: #0f172a; flex-shrink: 0; padding: 24px 12px; }
-      .sidebar a { display: block; color: #94a3b8; text-decoration: none; padding: 9px 12px; border-radius: 8px; font-size: 13px; margin-bottom: 2px; }
-      .sidebar a:hover { background: rgba(255,255,255,.08); color: white; }
-      .main { flex: 1; min-width: 0; padding: clamp(20px, 3vw, 48px); }
-      /* Fluid heading with clamp() */
-      .fluid-h { font-size: clamp(1.4rem, 4vw, 2.5rem); font-weight: 800; color: #0284c7; margin-bottom: 8px; }
-      .sub { color: #64748b; font-size: min(1rem, 4vw); margin-bottom: 28px; }
-      /* Demo boxes */
-      .demos { display: grid; gap: clamp(12px, 2vw, 24px); }
-      .demo { background: white; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 20px; }
-      .demo h3 { color: #0369a1; margin: 0 0 8px; font-size: 14px; font-family: monospace; }
-      .demo p  { color: #475569; font-size: 13px; line-height: 1.7; margin: 0; }
-      /* calc() visual */
-      .calc-bar { height: 40px; background: #0284c7; border-radius: 8px; margin-top: 12px;
-                  display: flex; align-items: center; justify-content: center;
-                  color: white; font-size: 12px; font-weight: bold; }
-      .bar-33 { width: min(33.33%, 200px); }
-      .bar-50 { width: min(50%, 300px); }
-      .bar-75 { width: min(75%, 450px); }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div class="header"&gt;&lt;h1&gt;⚡ CSS Math Functions&lt;/h1&gt;&lt;/div&gt;
-    &lt;div class="layout"&gt;
-      &lt;aside class="sidebar"&gt;
-        &lt;a href="#calc"&gt;calc()&lt;/a&gt;
-        &lt;a href="#min"&gt;min()&lt;/a&gt;
-        &lt;a href="#max"&gt;max()&lt;/a&gt;
-        &lt;a href="#clamp"&gt;clamp()&lt;/a&gt;
-      &lt;/aside&gt;
-      &lt;main class="main"&gt;
-        &lt;h2 class="fluid-h"&gt;CSS Math Functions&lt;/h2&gt;
-        &lt;p class="sub"&gt;Resize the browser — heading and padding scale fluidly with clamp()!&lt;/p&gt;
-        &lt;div class="demos"&gt;
-          &lt;div class="demo" id="calc"&gt;
-            &lt;h3&gt;calc() — Mix Units&lt;/h3&gt;
-            &lt;p&gt;Sidebar is &lt;strong&gt;240px&lt;/strong&gt; fixed. Main area fills &lt;strong&gt;calc(100% - 240px)&lt;/strong&gt; exactly. No overflow, no gaps.&lt;/p&gt;
-            &lt;div class="calc-bar bar-33"&gt;width: min(33.33%, 200px)&lt;/div&gt;
-            &lt;div class="calc-bar bar-50" style="margin-top:8px"&gt;width: min(50%, 300px)&lt;/div&gt;
-            &lt;div class="calc-bar bar-75" style="margin-top:8px"&gt;width: min(75%, 450px)&lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div class="demo" id="clamp"&gt;
-            &lt;h3&gt;clamp(1.4rem, 4vw, 2.5rem) — Fluid Typography&lt;/h3&gt;
-            &lt;p&gt;The heading above scales between 1.4rem (mobile) and 2.5rem (desktop) based on viewport width. No media queries needed!&lt;/p&gt;
-            &lt;p style="font-size:clamp(1rem,2.5vw,1.5rem);color:#0284c7;font-weight:700;margin-top:8px"&gt;This text also uses clamp() — resize to see!&lt;/p&gt;
-          &lt;/div&gt;
-          &lt;div class="demo" id="min"&gt;
-            &lt;h3&gt;min() and max()&lt;/h3&gt;
-            &lt;p&gt;&lt;code&gt;width: min(400px, 100%)&lt;/code&gt; — 400px or full width, whichever is smaller (responsive!).&lt;br&gt;
-               &lt;code&gt;font-size: max(14px, 1rem)&lt;/code&gt; — never below 14px.&lt;/p&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/main&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 9</div>
+    <div class="phase-title">Conceptual Understanding</div>
+    <div class="phase-check" id="chk3"></div>
   </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Math Functions</title>
-    <style>
-      :root { --header-h: 62px; --sidebar-w: 240px; --gap: 24px; }
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff; margin: 0; color: #0f172a; }
-      /* Header — fixed height */
-      .header { height: var(--header-h); background: #0284c7; display: flex; align-items: center; padding: 0 28px; position: sticky; top: 0; z-index: 100; }
-      .header h1 { color: white; font-size: 1.1rem; margin: 0; }
-      /* Layout using calc() */
-      .layout { display: flex; min-height: calc(100vh - var(--header-h)); }
-      .sidebar { width: var(--sidebar-w); background: #0f172a; flex-shrink: 0; padding: 24px 12px; }
-      .sidebar a { display: block; color: #94a3b8; text-decoration: none; padding: 9px 12px; border-radius: 8px; font-size: 13px; margin-bottom: 2px; }
-      .sidebar a:hover { background: rgba(255,255,255,.08); color: white; }
-      .main { flex: 1; min-width: 0; padding: clamp(20px, 3vw, 48px); }
-      /* Fluid heading with clamp() */
-      .fluid-h { font-size: clamp(1.4rem, 4vw, 2.5rem); font-weight: 800; color: #0284c7; margin-bottom: 8px; }
-      .sub { color: #64748b; font-size: min(1rem, 4vw); margin-bottom: 28px; }
-      /* Demo boxes */
-      .demos { display: grid; gap: clamp(12px, 2vw, 24px); }
-      .demo { background: white; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 20px; }
-      .demo h3 { color: #0369a1; margin: 0 0 8px; font-size: 14px; font-family: monospace; }
-      .demo p  { color: #475569; font-size: 13px; line-height: 1.7; margin: 0; }
-      /* calc() visual */
-      .calc-bar { height: 40px; background: #0284c7; border-radius: 8px; margin-top: 12px;
-                  display: flex; align-items: center; justify-content: center;
-                  color: white; font-size: 12px; font-weight: bold; }
-      .bar-33 { width: min(33.33%, 200px); }
-      .bar-50 { width: min(50%, 300px); }
-      .bar-75 { width: min(75%, 450px); }
-    </style>
-  </head>
-  <body>
-    <div class="header"><h1>⚡ CSS Math Functions</h1></div>
-    <div class="layout">
-      <aside class="sidebar">
-        <a href="#calc">calc()</a>
-        <a href="#min">min()</a>
-        <a href="#max">max()</a>
-        <a href="#clamp">clamp()</a>
-      </aside>
-      <main class="main">
-        <h2 class="fluid-h">CSS Math Functions</h2>
-        <p class="sub">Resize the browser — heading and padding scale fluidly with clamp()!</p>
-        <div class="demos">
-          <div class="demo" id="calc">
-            <h3>calc() — Mix Units</h3>
-            <p>Sidebar is <strong>240px</strong> fixed. Main area fills <strong>calc(100% - 240px)</strong> exactly. No overflow, no gaps.</p>
-            <div class="calc-bar bar-33">width: min(33.33%, 200px)</div>
-            <div class="calc-bar bar-50" style="margin-top:8px">width: min(50%, 300px)</div>
-            <div class="calc-bar bar-75" style="margin-top:8px">width: min(75%, 450px)</div>
-          </div>
-          <div class="demo" id="clamp">
-            <h3>clamp(1.4rem, 4vw, 2.5rem) — Fluid Typography</h3>
-            <p>The heading above scales between 1.4rem (mobile) and 2.5rem (desktop) based on viewport width. No media queries needed!</p>
-            <p style="font-size:clamp(1rem,2.5vw,1.5rem);color:#0284c7;font-weight:700;margin-top:8px">This text also uses clamp() — resize to see!</p>
-          </div>
-          <div class="demo" id="min">
-            <h3>min() and max()</h3>
-            <p><code>width: min(400px, 100%)</code> — 400px or full width, whichever is smaller (responsive!).<br>
-               <code>font-size: max(14px, 1rem)</code> — never below 14px.</p>
-          </div>
-        </div>
-      </main>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is a CSS Math Function?</h3>
+<p class="v2-p">Think of a CSS math function like a <strong>calculator built into your CSS</strong>. Instead of writing a fixed number, you write a formula, and the browser calculates the answer automatically — every single time the page loads or the screen resizes.</p>
+<p class="v2-p"><strong>Analogy:</strong> Imagine you are painting a room. Instead of measuring the wall and calculating paint manually, you have a magic brush that always knows the wall size and adjusts how much paint it uses automatically. That is what CSS math functions do for sizing elements on a webpage.</p>
+<h3 class="v2-h3">Why Do We Need Them?</h3>
+<p class="v2-p">Without math functions, you might write:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Without math functions — fixed, not flexible */
+.sidebar { width: 250px; }
+.main-content { width: 750px; } /* You manually calculated 1000 - 250 */</code></pre></div></div>
+<p class="v2-p">The problem: if the total page width changes, your numbers break. You have to go back and recalculate manually.</p>
+<p class="v2-p">With math functions:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* With calc() — flexible and automatic */
+.sidebar { width: 250px; }
+.main-content { width: calc(100% - 250px); } /* Browser always calculates this */</code></pre></div></div>
+<p class="v2-p">Now, no matter how wide the page is, <code>.main-content</code> is always exactly <code>250px</code> less than the full width. <strong>The browser does the work.</strong></p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Conceptual Understanding</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-  </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 9</div>
+    <div class="phase-title">Part 1 — The `calc()` Function</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is <code>calc()</code>?</h3>
+<p class="v2-p"><code>calc()</code> stands for <strong>calculate</strong>. It lets you perform arithmetic operations on CSS values using:</p>
+<ul class="v2-ul"><li><code>+</code> (addition)</li><li><code>-</code> (subtraction)</li><li><code>*</code> (multiplication)</li><li><code>/</code> (division)</li></ul>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>property: calc(expression);</code></pre></div></div>
+<p class="v2-p">Where <code>expression</code> is a mathematical formula using CSS values and operators.</p>
+<h3 class="v2-h3">Critical Rule — Spaces Around <code>+</code> and <code>-</code></h3>
+<blockquote class="v2-bq"><p class="v2-p">⚠️ <strong>Important:</strong> When using <code>+</code> or <code>-</code> in <code>calc()</code>, you <strong>MUST</strong> put a space on both sides of the operator. If you forget the spaces, the browser will not understand your formula and will ignore the whole rule!</p></blockquote>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — spaces around + and - */
+width: calc(100% - 20px);
+width: calc(50% + 10px);
+
+/* WRONG — will NOT work! */
+width: calc(100%-20px);
+width: calc(50%+10px);</code></pre></div></div>
+<p class="v2-p">This rule does <strong>not</strong> apply to <code>*</code> and <code>/</code>, but it is a good habit to always include spaces for readability.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 1 — Subtracting Fixed Pixels from a Percentage</h3>
+<p class="v2-p"><strong>Scenario:</strong> You want a box to be as wide as its container, but with 40px of padding (20px on each side).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .container {
+    width: 600px;
+    background-color: lightgray;
+    padding: 0;
   }
-  </script>
-</div>
 
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  .box {
+    width: calc(100% - 40px);  /* Full width minus 40px */
+    margin: 20px;
+    background-color: coral;
+    height: 60px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>What happens step by step:</strong></p>
+<ol class="v2-ol"><li><code>.container</code> is 600px wide.</li><li><code>.box</code> gets <code>width: calc(100% - 40px)</code>.</li><li><code>100%</code> of 600px = 600px.</li><li><code>600px - 40px = 560px</code>.</li><li>The browser sets <code>.box</code> to exactly <strong>560px wide</strong>.</li></ol>
+<p class="v2-p"><strong>Expected Output:</strong> A coral-coloured box that is 560px wide, sitting with 20px of space on either side inside the container.</p>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> What would happen if <code>.container</code> were only 400px wide? What would the box width become? <strong>Answer:</strong> <code>calc(100% - 40px)</code> = <code>400px - 40px</code> = <strong>360px</strong>. The browser recalculates automatically!</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 2 — Adding Different Units</h3>
+<p class="v2-p"><strong>Scenario:</strong> You want an element's height to be <code>100vh</code> (full screen height) minus <code>80px</code> (to account for a top navigation bar that is 80px tall).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.page-content {
+  height: calc(100vh - 80px);
+  background-color: #f0f0f0;
+  overflow-y: scroll;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<ul class="v2-ul"><li><code>100vh</code> = 100% of the browser window's height (this changes with every screen size).</li><li><code>80px</code> = the fixed height of the navigation bar.</li><li><code>calc(100vh - 80px)</code> = the browser window height minus 80px = exactly the remaining space below the navbar.</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> <code>.page-content</code> fills the entire screen below the navbar, no matter what screen size.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Why this is powerful:</strong> You could <strong>never</strong> do <code>100vh - 80px</code> without <code>calc()</code>. These are different types of units — one is relative, one is fixed. <code>calc()</code> is the only way to mix them.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 3 — Multiplication</h3>
+<p class="v2-p"><strong>Scenario:</strong> You want a font size to be exactly 5 times a base unit.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  font-size: calc(1rem * 5);  /* = 5rem */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> The heading will be 5rem in size (5 × the root font size, usually 5 × 16px = 80px).</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 4 — Division</h3>
+<p class="v2-p"><strong>Scenario:</strong> You want to divide the full width into 3 equal columns.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.column {
+  width: calc(100% / 3);  /* One-third of the parent width */
+  float: left;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> Each <code>.column</code> takes up exactly one-third of the available width.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Real-World <code>calc()</code> Usage</h3>
+<p class="v2-p">Here is a realistic layout where a sidebar and main content area are calculated precisely:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar {
+    width: 200px;
+    height: 100vh;
+    background-color: #2c3e50;
+    color: white;
+    float: left;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .main-content {
+    width: calc(100% - 200px);  /* Full page minus sidebar */
+    min-height: 100vh;
+    background-color: #ecf0f1;
+    float: left;
+    padding: 30px;
+    box-sizing: border-box;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;sidebar&quot;&gt;
+    &lt;h3&gt;Sidebar&lt;/h3&gt;
+    &lt;p&gt;Navigation here&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;main-content&quot;&gt;
+    &lt;h1&gt;Main Content&lt;/h1&gt;
+    &lt;p&gt;Page content goes here.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> A two-column layout where the sidebar is always 200px and the main area fills the rest of the screen — regardless of screen width.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>The <code>calc()</code> Function</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-42-css_math_functions</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 42 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-42-css_math_functions/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 9</div>
+    <div class="phase-title">Part 2 — The `min()` Function</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is <code>min()</code>?</h3>
+<p class="v2-p"><code>min()</code> takes <strong>two or more values</strong> and returns the <strong>smallest one</strong>.</p>
+<p class="v2-p">Think of it like asking: <em>"Of all these choices, which is the smallest? Use that one."</em></p>
+<p class="v2-p"><strong>Analogy:</strong> Imagine you can only pick the smallest pizza from a menu. If the menu says "300px or 50%", the browser looks at both and picks whichever is actually smaller on the current screen.</p>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>property: min(value1, value2, value3, ...);</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 1 — Limiting Width</h3>
+<p class="v2-p"><strong>Scenario:</strong> You want an element to be 50% of its parent, but never more than 300px wide.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.box {
+  width: min(50%, 300px);
+  background-color: steelblue;
+  height: 100px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>How it works:</strong></p>
+<ul class="v2-ul"><li>If the parent is 800px wide: <code>50% = 400px</code>. Since <code>400px &gt; 300px</code>, the browser picks <code>300px</code>.</li><li>If the parent is 400px wide: <code>50% = 200px</code>. Since <code>200px &lt; 300px</code>, the browser picks <code>200px</code>.</li></ul>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Parent Width</th><th>50% Value</th><th>min() picks</th></tr></thead><tbody><tr><td>800px</td><td>400px</td><td>300px (smaller)</td></tr><tr><td>400px</td><td>200px</td><td>200px (smaller)</td></tr><tr><td>200px</td><td>100px</td><td>100px (smaller)</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Expected Output:</strong> The box is always as narrow as possible between <code>50%</code> and <code>300px</code>.</p>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> What if the parent is 600px wide? <code>50% = 300px</code>. Both values are equal! The browser picks <strong>300px</strong> — it does not matter which one in a tie.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 2 — Responsive Font Size</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h2 {
+  font-size: min(5vw, 40px);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Explanation:</strong></p>
+<ul class="v2-ul"><li><code>5vw</code> = 5% of the viewport width. On a 1000px wide screen: <code>5vw = 50px</code>. On a 600px screen: <code>5vw = 30px</code>.</li><li><code>40px</code> = a fixed maximum.</li><li><code>min(5vw, 40px)</code> means: use <code>5vw</code>, but never let it be bigger than <code>40px</code>.</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>On a large screen: font stays capped at <code>40px</code>.</li><li>On a small screen: font shrinks proportionally.</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Real-World <code>min()</code> Usage — Responsive Card</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+  width: min(90%, 500px);  /* Be 90% wide, but never more than 500px */
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> On a large screen the card is 500px wide (centered). On a small phone screen, the card takes up 90% of the width — no awkward overflow or scrollbars!</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>The <code>min()</code> Function</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 9</div>
+    <div class="phase-title">Part 3 — The `max()` Function</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is <code>max()</code>?</h3>
+<p class="v2-p"><code>max()</code> is the opposite of <code>min()</code>. It takes <strong>two or more values</strong> and returns the <strong>largest one</strong>.</p>
+<p class="v2-p">Think of it like: <em>"Of all these choices, which is the biggest? Use that one."</em></p>
+<p class="v2-p"><strong>Analogy:</strong> You set a minimum wage — no one can be paid less than a certain amount. <code>max()</code> works the same way: it ensures a value never falls below a certain floor.</p>
+<h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>property: max(value1, value2, value3, ...);</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 1 — Minimum Width Guarantee</h3>
+<p class="v2-p"><strong>Scenario:</strong> You want a button's width to be 10% of the parent, but never narrower than 100px (so the text never overflows).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.button {
+  width: max(10%, 100px);
+  background-color: royalblue;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}</code></pre></div></div>
+<p class="v2-p"><strong>How it works:</strong></p>
+<ul class="v2-ul"><li>If the parent is 1500px: <code>10% = 150px</code>. Since <code>150px &gt; 100px</code>, browser picks <code>150px</code>.</li><li>If the parent is 600px: <code>10% = 60px</code>. Since <code>60px &lt; 100px</code>, browser picks <code>100px</code>.</li></ul>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Parent Width</th><th>10% Value</th><th>max() picks</th></tr></thead><tbody><tr><td>1500px</td><td>150px</td><td>150px (larger)</td></tr><tr><td>600px</td><td>60px</td><td>100px (larger)</td></tr><tr><td>400px</td><td>40px</td><td>100px (larger)</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Expected Output:</strong> The button is always at least 100px wide — never too small to read.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 2 — Minimum Font Size</h3>
+<p class="v2-p"><strong>Scenario:</strong> You want a font to scale with the viewport but never be smaller than 16px (for readability).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  font-size: max(2vw, 16px);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Explanation:</strong></p>
+<ul class="v2-ul"><li><code>2vw</code> on a 1200px screen = <code>24px</code>. Browser picks <code>24px</code> (larger).</li><li><code>2vw</code> on a 400px screen = <code>8px</code>. Browser picks <code>16px</code> (larger, protects readability).</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> Text always stays readable — never drops below 16px.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">min() vs max() — Side by Side Comparison</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Function</th><th>Behaviour</th><th>Use Case</th></tr></thead><tbody><tr><td><code>min(a, b)</code></td><td>Picks the <strong>smaller</strong> value</td><td>Set a <strong>maximum</strong> limit (cap)</td></tr><tr><td><code>max(a, b)</code></td><td>Picks the <strong>larger</strong> value</td><td>Set a <strong>minimum</strong> limit (floor)</td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Memory trick:</strong> <code>min()</code> gives you a ceiling (maximum cap). <code>max()</code> gives you a floor (minimum guarantee). It sounds backwards at first — but think of it this way: <code>min()</code> makes sure the value is never <strong>too big</strong>, <code>max()</code> makes sure it is never <strong>too small</strong>.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>The <code>max()</code> Function</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 9</div>
+    <div class="phase-title">Part 4 — The `clamp()` Function</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is <code>clamp()</code>?</h3>
+<p class="v2-p"><code>clamp()</code> is the most powerful of the four functions. It <strong>combines the ideas of <code>min()</code> and <code>max()</code></strong> in a single function. It keeps a value <strong>clamped</strong> (trapped) between a minimum and maximum, while allowing it to scale fluidly in between.</p>
+<p class="v2-p"><code>clamp()</code> takes <strong>exactly three values</strong> in this order:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>property: clamp(minimum, preferred, maximum);</code></pre></div></div>
+<ul class="v2-ul"><li><strong>minimum</strong> — the smallest the value can ever be</li><li><strong>preferred</strong> — the ideal value (usually a flexible unit like <code>vw</code> or <code>%</code>)</li><li><strong>maximum</strong> — the largest the value can ever be</li></ul>
+<p class="v2-p"><strong>Analogy:</strong> Think of a thermostat. You set a minimum temperature (e.g. 18°C), a maximum temperature (e.g. 26°C), and a preferred temperature that adjusts automatically (e.g. based on time of day). The thermostat will never go below 18°C or above 26°C — but in between, it adjusts smoothly. <code>clamp()</code> works the same way.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 1 — Clamped Font Size</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  font-size: clamp(20px, 5vw, 60px);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<ul class="v2-ul"><li><code>20px</code> — minimum: the font will NEVER be smaller than 20px</li><li><code>5vw</code> — preferred: ideally the font scales with the viewport</li><li><code>60px</code> — maximum: the font will NEVER be bigger than 60px</li></ul>
+<p class="v2-p"><strong>How it works across different screen sizes:</strong></p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Screen Width</th><th>5vw Value</th><th>clamp result</th></tr></thead><tbody><tr><td>2000px</td><td>100px</td><td><strong>60px</strong> (capped at max)</td></tr><tr><td>1000px</td><td>50px</td><td><strong>50px</strong> (within range, uses preferred)</td></tr><tr><td>600px</td><td>30px</td><td><strong>30px</strong> (within range, uses preferred)</td></tr><tr><td>300px</td><td>15px</td><td><strong>20px</strong> (floored at min)</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Expected Output:</strong> On huge screens, the heading does not become ridiculously large. On tiny screens, it does not become unreadably small. In between — it scales perfectly.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 2 — Clamped Width</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+  width: clamp(300px, 50%, 800px);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Explanation:</strong></p>
+<ul class="v2-ul"><li>Never narrower than <code>300px</code></li><li>Never wider than <code>800px</code></li><li>Prefers to be <code>50%</code> of the parent</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> The container is perfectly responsive — small screens get a usable minimum, large screens get a maximum cap, and mid-range screens get a proportional size.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 3 — Clamped Padding</h3>
+<p class="v2-p"><strong>Scenario:</strong> You want padding that scales with the screen, but stays within reasonable bounds.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>section {
+  padding: clamp(10px, 3vw, 50px);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>On small screens: minimum <code>10px</code> padding (not cramped)</li><li>On large screens: maximum <code>50px</code> padding (not excessive)</li><li>In between: <code>3vw</code> padding scales smoothly</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3"><code>clamp()</code> vs <code>min()</code> and <code>max()</code></h3>
+<p class="v2-p">Here is a key insight: <code>clamp(min, preferred, max)</code> is actually equivalent to writing:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* These two are identical: */
+font-size: clamp(20px, 5vw, 60px);
+font-size: max(20px, min(5vw, 60px));</code></pre></div></div>
+<p class="v2-p"><code>clamp()</code> just makes it much easier to read and write.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">All Four Functions — Quick Reference Table</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Function</th><th>Syntax</th><th>What It Does</th></tr></thead><tbody><tr><td><code>calc()</code></td><td><code>calc(expression)</code></td><td>Performs arithmetic on CSS values; can mix units</td></tr><tr><td><code>min()</code></td><td><code>min(a, b, ...)</code></td><td>Returns the smallest value (sets a ceiling/cap)</td></tr><tr><td><code>max()</code></td><td><code>max(a, b, ...)</code></td><td>Returns the largest value (sets a floor/minimum)</td></tr><tr><td><code>clamp()</code></td><td><code>clamp(min, preferred, max)</code></td><td>Keeps value between min and max, using preferred when possible</td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>The <code>clamp()</code> Function</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 9</div>
+    <div class="phase-title">Guided Practice Exercises</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — <code>calc()</code> Basics</h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>calc()</code> to create a centred box with side margins.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a blog layout. The main content area should always have exactly 40px of horizontal space on each side (total 80px), taking up the remaining width.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a <code>&lt;div&gt;</code> with the class <code>blog-post</code>.</li><li>Give the container <code>div</code> a width of 100%.</li><li>Use <code>calc()</code> to set <code>.blog-post</code>'s width.</li></ol>
+<p class="v2-p"><strong>Starter Code:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .page-wrapper {
+    width: 100%;
+    background-color: #f5f5f5;
+    padding: 20px 0;
+  }
+
+  .blog-post {
+    /* YOUR CODE HERE: width should be 100% minus 80px */
+    margin: 0 auto; /* centres the box */
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;page-wrapper&quot;&gt;
+    &lt;div class=&quot;blog-post&quot;&gt;
+      &lt;h2&gt;My Blog Post&lt;/h2&gt;
+      &lt;p&gt;Some content here...&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Hint:</strong> Replace <code>/<em> YOUR CODE HERE </em>/</code> with <code>width: calc(100% - 80px);</code></p>
+<p class="v2-p"><strong>Expected Output:</strong> The blog post box has 40px of space on either side.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.blog-post {
+  width: calc(100% - 80px);
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ol class="v2-ol"><li>What happens to the box width if you change the page to 500px wide?</li><li>What would the box width be on a 1200px wide page?</li><li>What would break if you removed the space around <code>-</code> in <code>calc()</code>?</li></ol>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — <code>min()</code> for Responsive Images</h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>min()</code> to make an image responsive but capped at a maximum width.</p>
+<p class="v2-p"><strong>Scenario:</strong> You have a product image. It should be 100% wide on small screens (fill the screen) but no more than 400px wide on large screens.</p>
+<p class="v2-p"><strong>Starter Code:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .product-image {
+    /* YOUR CODE HERE: use min() */
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 8px;
+    background-color: #ddd;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;product-image&quot; style=&quot;height:200px;&quot;&gt;Product Image&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> On a phone, the image fills the screen. On a desktop, it never exceeds 400px.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.product-image {
+  width: min(100%, 400px);
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What-if challenge:</strong> What would happen if you changed <code>400px</code> to <code>600px</code>? Would it make the image larger or smaller on a 500px screen?</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — <code>clamp()</code> for Responsive Typography</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a heading that scales fluidly between mobile and desktop.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a landing page hero section. The main heading should be at least 24px (mobile), scale with the viewport at 4vw, and reach a maximum of 72px (desktop).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .hero {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 80px 40px;
+    text-align: center;
+  }
+
+  .hero h1 {
+    /* YOUR CODE HERE: use clamp() */
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .hero p {
+    font-size: clamp(14px, 2vw, 20px);  /* Already done as an example! */
+    max-width: 600px;
+    margin: 20px auto 0;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;hero&quot;&gt;
+    &lt;h1&gt;Welcome to My Website&lt;/h1&gt;
+    &lt;p&gt;A modern, responsive site built with CSS math functions.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero h1 {
+  font-size: clamp(24px, 4vw, 72px);
+  margin: 0;
+  line-height: 1.2;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ol class="v2-ol"><li>At what viewport width would the heading be exactly 40px? (Hint: <code>4vw = 40px</code> when <code>vw = 10px</code>, meaning the viewport is 1000px wide)</li><li>Why is it important to have both a minimum AND maximum for font sizes?</li><li>What would <code>clamp(16px, 4vw, 16px)</code> do? (Hint: min and max are the same!)</li></ol>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 9</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 — Missing Spaces Around <code>+</code> and <code>-</code> in <code>calc()</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — will not work, browser ignores this */
+width: calc(100%-20px);
+padding: calc(50%+10px);
+
+/* ✅ CORRECT — spaces required around + and - */
+width: calc(100% - 20px);
+padding: calc(50% + 10px);</code></pre></div></div>
+<p class="v2-p"><strong>Why it breaks:</strong> The browser reads <code>100%-20px</code> as an unknown value, not a math expression. The spaces signal to the browser that <code>+</code> and <code>-</code> are arithmetic operators, not part of a unit name.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Forgetting Units</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — 20 has no unit */
+width: calc(100% - 20);
+
+/* ✅ CORRECT — every number must have a unit */
+width: calc(100% - 20px);</code></pre></div></div>
+<p class="v2-p"><strong>Why it breaks:</strong> CSS requires units on all length values. <code>20</code> alone means nothing — <code>20px</code>, <code>20%</code>, <code>20vw</code>, etc. are all valid.</p>
+<p class="v2-p"><strong>Exception:</strong> Pure multipliers and divisors do NOT need units:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ✅ These are fine — 3 and 4 are pure numbers (no unit needed) */
+width: calc(100% / 4);
+font-size: calc(1rem * 3);</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Dividing by Zero</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — dividing by zero is undefined */
+width: calc(100px / 0);
+
+/* ✅ Make sure the divisor is never zero */
+width: calc(100px / 4);</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Wrong Argument Count in <code>clamp()</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — clamp() requires exactly 3 values */
+font-size: clamp(16px, 20px);  /* Only 2 values */
+font-size: clamp(16px, 2vw, 40px, 60px);  /* 4 values */
+
+/* ✅ CORRECT — exactly 3: min, preferred, max */
+font-size: clamp(16px, 2vw, 40px);</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — min/max Values in Wrong Order in <code>clamp()</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — minimum is bigger than maximum! */
+font-size: clamp(60px, 4vw, 20px);  /* min=60px &gt; max=20px — nonsensical */
+
+/* ✅ CORRECT — minimum must always be ≤ maximum */
+font-size: clamp(20px, 4vw, 60px);</code></pre></div></div>
+<p class="v2-p"><strong>Why it breaks:</strong> If the minimum is bigger than the maximum, the values conflict and the result is undefined/unreliable.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6 — Using <code>min()</code>/<code>max()</code> When You Need <code>clamp()</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ Partially correct but incomplete */
+font-size: max(16px, 4vw);  /* No maximum cap — scales infinitely */
+
+/* ✅ Better — use clamp() to set both floor and ceiling */
+font-size: clamp(16px, 4vw, 48px);</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 7 — Nesting <code>calc()</code> unnecessarily</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ Redundant — not wrong, just unnecessary */
+width: calc(calc(100% - 20px) - 10px);
+
+/* ✅ Simpler — one calc() is enough */
+width: calc(100% - 30px);</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Goal</div>
+  <div class="build-desc">Build a profile card that:</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Profile Card&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;page-wrapper&quot;&gt;
+    &lt;div class=&quot;profile-card&quot;&gt;
+      &lt;div class=&quot;avatar&quot;&gt;&lt;/div&gt;
+      &lt;h2 class=&quot;profile-name&quot;&gt;Adaeze Okonkwo&lt;/h2&gt;
+      &lt;p class=&quot;profile-role&quot;&gt;Frontend Developer&lt;/p&gt;
+      &lt;p class=&quot;profile-bio&quot;&gt;
+        Passionate about building beautiful, accessible, and responsive web experiences.
+      &lt;/p&gt;
+      &lt;div class=&quot;stats-row&quot;&gt;
+        &lt;div class=&quot;stat&quot;&gt;
+          &lt;span class=&quot;stat-number&quot;&gt;128&lt;/span&gt;
+          &lt;span class=&quot;stat-label&quot;&gt;Projects&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;stat&quot;&gt;
+          &lt;span class=&quot;stat-number&quot;&gt;4.2k&lt;/span&gt;
+          &lt;span class=&quot;stat-label&quot;&gt;Followers&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;stat&quot;&gt;
+          &lt;span class=&quot;stat-number&quot;&gt;312&lt;/span&gt;
+          &lt;span class=&quot;stat-label&quot;&gt;Stars&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button class=&quot;follow-btn&quot;&gt;Follow&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Card</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="profile-card">
+      <div class="avatar"></div>
+      <h2 class="profile-name">Adaeze Okonkwo</h2>
+      <p class="profile-role">Frontend Developer</p>
+      <p class="profile-bio">
+        Passionate about building beautiful, accessible, and responsive web experiences.
+      </p>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-number">128</span>
+          <span class="stat-label">Projects</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">4.2k</span>
+          <span class="stat-label">Followers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">312</span>
+          <span class="stat-label">Stars</span>
+        </div>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+  </div>
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
+  </div>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-42-project-goal</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 42 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-42-project-goal/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 42 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ calc() for Dynamic Values</li><li>✅ min(), max() and clamp()</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_41.html" class="ln-btn">← Lesson 41</a>
-    <a href="lesson_43.html" class="ln-btn primary">Lesson 43 →</a>
-  </div>
+  <h2>🎉 Lesson 42 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Conceptual Understanding</li><li>✅ Part 1 — The `calc()` Function</li><li>✅ Part 2 — The `min()` Function</li><li>✅ Part 3 — The `max()` Function</li><li>✅ Part 4 — The `clamp()` Function</li><li>✅ Guided Practice Exercises</li></ul>
+  <div class="lesson-nav"><a href="lesson_41.html" class="ln-btn">← Lesson 41</a><a href="lesson_43.html" class="ln-btn primary">Lesson 43 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 42 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 42 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_42_phase';
+const TOTAL=9,KEY='techbase_css_l42';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

@@ -2,462 +2,1121 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 23: CSS Z-index — Techbase CSS Course</title>
-<meta name="description" content="Control which elements appear in front of others using z-index and stacking contexts">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 23: CSS z-index – Controlling the Stack Order of Elements — Techbase CSS</title>
+<meta name="description" content="CSS z-index – Controlling the Stack Order of Elements">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 23 of 73 &nbsp;·&nbsp; CSS Z-index</span>
-  <div class="nav-actions"><a href="lesson_22.html" class="ln-btn">← Lesson 22</a><a href="lesson_24.html" class="ln-btn primary">Lesson 24 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 23 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 23</div>
-    <h1>CSS Z-index</h1>
-    <p class="lesson-tagline">Control which elements appear in front of others using z-index and stacking contexts</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My Stacking Demo</span>
-      
-    </div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 23</div>
+    <h1>CSS z-index – Controlling the Stack Order of Elements</h1>
+    <div class="l-hero-sub">11 phases · Build: Stage 1: Setup — The Card Structure</div>
   </div>
+</div>
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 23</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever noticed how a dropdown menu appears on top of the rest of the page content? Or how a pop-up dialog box sits in front of everything else? Or how a "Back to Top" button floats visibly over images and text without disappearing behind them?</p>
+<p class="v2-p">That visual "who is on top" behaviour is controlled by a CSS property called <strong><code>z-index</code></strong>.</p>
+<p class="v2-p">In this lesson you will learn exactly what <code>z-index</code> is, why it exists, how it works, what rules control it, and how to use it confidently in real web pages. We will build up from the very basics to a realistic mini-project step by step, with every single concept explained and demonstrated with examples.</p>
+<p class="v2-p">By the end of this lesson you will be able to:</p>
+<ul class="v2-ul"><li>Understand how browsers stack elements on top of each other by default</li><li>Use <code>z-index</code> to control which element appears "in front" of another</li><li>Understand exactly when <code>z-index</code> works and when it does NOT work (and why)</li><li>Recognise common beginner mistakes and fix them</li><li>Apply <code>z-index</code> in realistic layouts like tooltips, overlays, modals, and sticky headers</li></ul>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 11 phases</span>
+    <span>🏗️ Stage 1: Setup — The Card Structure</span>
+  </div>
+</div></div>
 </section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 23!</div>
-  <h2>CSS Z-index</h2>
-  <p>Control which elements appear in front of others using z-index and stacking contexts. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
-</div>
-<div class="phase " id="phase1" data-phase="1">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">Z-index Basics</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 11</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p><code>z-index</code> controls stacking order of <em>positioned</em> elements (position other than static). Higher value = in front. Z-index only competes within the same <strong>stacking context</strong>. Use multiples of 10 (10, 100, 1000) to leave room for inserting values later. Common scale: content=1–9, dropdowns=100–199, modals=900–999, notifications=9000+.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* z-index needs position set first */
-.box { position: relative; }
-
-.behind { z-index: 1; }
-.middle { z-index: 2; }
-.front  { z-index: 3; }
-
-/* Common scale */
-:root {
-  --z-content:  10;
-  --z-dropdown: 100;
-  --z-overlay:  900;
-  --z-modal:    1000;
-  --z-toast:    9999;
-}
-
-.navbar   { position: fixed; z-index: 100; }
-.dropdown { position: absolute; z-index: 200; }
-.overlay  { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 900; }
-.modal    { position: fixed; z-index: 1000; }</pre></div>
-</div>
+    <p class="v2-p">Have you ever noticed how a dropdown menu appears on top of the rest of the page content? Or how a pop-up dialog box sits in front of everything else? Or how a "Back to Top" button floats visibly over images and text without disappearing behind them?</p>
+<p class="v2-p">That visual "who is on top" behaviour is controlled by a CSS property called <strong><code>z-index</code></strong>.</p>
+<p class="v2-p">In this lesson you will learn exactly what <code>z-index</code> is, why it exists, how it works, what rules control it, and how to use it confidently in real web pages. We will build up from the very basics to a realistic mini-project step by step, with every single concept explained and demonstrated with examples.</p>
+<p class="v2-p">By the end of this lesson you will be able to:</p>
+<ul class="v2-ul"><li>Understand how browsers stack elements on top of each other by default</li><li>Use <code>z-index</code> to control which element appears "in front" of another</li><li>Understand exactly when <code>z-index</code> works and when it does NOT work (and why)</li><li>Recognise common beginner mistakes and fix them</li><li>Apply <code>z-index</code> in realistic layouts like tooltips, overlays, modals, and sticky headers</li></ul>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Create three overlapping divs with <code>position: absolute</code> inside a relative parent. Give them z-index 1, 2, 3. They should stack in order. Change the values — which one wins? Open DevTools to inspect computed z-index.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
+</div>
+<div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">Dropdown and Modal Pattern</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 11</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>Two of the most common z-index use cases: (1) <strong>Dropdown menus</strong> appear above page content on hover. (2) <strong>Modal dialogs</strong> use a dark overlay (z-index: 900) with the dialog on top (z-index: 1000). Always use a <code>position: fixed; inset: 0;</code> overlay that covers the whole screen.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Dropdown */
-.dropdown-wrap { position: relative; }
-.drop-menu {
-  position: absolute; top: 100%; left: 0; z-index: 200;
-  background: white; border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.12);
-  min-width: 180px; display: none;
-}
-.dropdown-wrap:hover .drop-menu { display: block; }
-
-/* Modal */
-.overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.5); z-index: 900;
-}
-.modal-box {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: white; border-radius: 16px; padding: 32px;
-  z-index: 1000; max-width: 420px; width: 90%;
-}</pre></div>
-</div>
+    <p class="v2-p">Before we dive into <code>z-index</code>, you need to understand a few foundational ideas. If you already know these, feel free to skim — but even a quick refresh is helpful.</p>
+<h3 class="v2-h3">What is CSS Positioning?</h3>
+<p class="v2-p">By default, HTML elements sit one after another on the page, flowing from top to bottom. This is called <strong>normal document flow</strong>.</p>
+<p class="v2-p">But CSS has a property called <code>position</code> that lets you take elements out of that normal flow and place them wherever you like on the page. The <code>position</code> property has these values:</p>
+<ul class="v2-ul"><li><code>static</code> — The default. The element stays in normal flow. No special positioning.</li><li><code>relative</code> — The element stays in normal flow, but you can offset it from its original spot using <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code>.</li><li><code>absolute</code> — The element is removed from normal flow and positioned relative to its nearest <em>positioned</em> ancestor (or to the <code>&lt;body&gt;</code> if there is none).</li><li><code>fixed</code> — The element is removed from normal flow and positioned relative to the browser window. It stays in place even when you scroll.</li><li><code>sticky</code> — A mix of <code>relative</code> and <code>fixed</code>. It acts like <code>relative</code> until you scroll past a certain point, then it sticks in place.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Why does this matter for z-index?</strong> Because <code>z-index</code> ONLY works on positioned elements — that is, elements with <code>position</code> set to <code>relative</code>, <code>absolute</code>, <code>fixed</code>, or <code>sticky</code>. It does NOT work on <code>position: static</code> elements (the default).</p></blockquote>
+<h3 class="v2-h3">What is the Z-Axis?</h3>
+<p class="v2-p">Your screen has two visible dimensions:</p>
+<ul class="v2-ul"><li><strong>X-axis</strong> — going left and right (horizontal)</li><li><strong>Y-axis</strong> — going up and down (vertical)</li></ul>
+<p class="v2-p">But there is also a third dimension:</p>
+<ul class="v2-ul"><li><strong>Z-axis</strong> — going toward you and away from you (depth, or "in front of" vs "behind")</li></ul>
+<p class="v2-p">Although your screen is flat, browsers simulate this depth using a <strong>stacking order</strong> — deciding which element should appear "on top" when two elements occupy the same space on screen.</p>
+<p class="v2-p">Think of it like stacking sheets of paper on a desk. The paper on top covers any paper underneath it. <code>z-index</code> lets you choose which "sheet" goes on top.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Build a modal: (1) overlay div covering the whole screen (<code>position:fixed; inset:0; z-index:900</code>), (2) modal box on top (<code>z-index:1000</code>, centred with transform). Add a button to open it and a close button inside. Toggle with JavaScript.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My Stacking Demo</div>
-  <p class="project-desc">Build a stacking demo, a hover dropdown, and a modal overlay dialog.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
-    </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;CSS Z-index Demo&lt;/title&gt;
-    &lt;style&gt;
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff; padding: 30px; max-width: 860px; margin: 0 auto; color: #0f172a; }
-      h1 { color: #0284c7; margin-bottom: 6px; }
-      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
-      .stack { position: relative; height: 160px; margin-bottom: 20px; }
-      .sb { position: absolute; width: 140px; height: 90px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 13px; }
-      .s1 { background: rgba(2,132,199,.8);  top:0;    left:0;   z-index:1; }
-      .s2 { background: rgba(234,79,33,.8);  top:25px; left:50px;z-index:2; }
-      .s3 { background: rgba(16,185,129,.8); top:50px; left:100px;z-index:3;}
-      .dw { position: relative; display: inline-block; }
-      .drop-btn { background: #0284c7; color: white; border: none; padding: 10px 20px; border-radius: 9px; cursor: pointer; font-weight: bold; font-size: 14px; }
-      .drop-menu { display: none; position: absolute; top: 100%; left: 0; z-index: 200; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 180px; padding: 8px 0; margin-top: 6px; }
-      .dw:hover .drop-menu { display: block; }
-      .drop-menu a { display: block; padding: 10px 16px; color: #334155; text-decoration: none; font-size: 14px; }
-      .drop-menu a:hover { background: #f0f9ff; color: #0284c7; }
-      .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 900; }
-      .modal-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: white; border-radius: 16px; padding: 32px; width: 90%; max-width: 420px; }
-      .modal-box h3 { color: #0284c7; margin: 0 0 12px; }
-      .modal-box p  { color: #475569; margin: 0 0 20px; font-size: 14px; }
-      .modal-close { width: 100%; padding: 11px; border: none; background: #0284c7; color: white; border-radius: 9px; font-size: 15px; font-weight: bold; cursor: pointer; }
-      .btn { background: #0284c7; color: white; border: none; padding: 10px 20px; border-radius: 9px; font-size: 14px; font-weight: bold; cursor: pointer; }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;CSS Z-index Demo&lt;/h1&gt;
-    &lt;h2&gt;Stacking Order&lt;/h2&gt;
-    &lt;div class="stack"&gt;
-      &lt;div class="sb s1"&gt;z-index: 1&lt;/div&gt;
-      &lt;div class="sb s2"&gt;z-index: 2&lt;/div&gt;
-      &lt;div class="sb s3"&gt;z-index: 3&lt;/div&gt;
-    &lt;/div&gt;
-    &lt;h2&gt;Dropdown (z-index: 200)&lt;/h2&gt;
-    &lt;div class="dw"&gt;
-      &lt;button class="drop-btn"&gt;Hover for Menu ▾&lt;/button&gt;
-      &lt;div class="drop-menu"&gt;
-        &lt;a href="#"&gt;🏠 Home&lt;/a&gt;
-        &lt;a href="#"&gt;📚 Courses&lt;/a&gt;
-        &lt;a href="#"&gt;👤 Profile&lt;/a&gt;
-        &lt;a href="#"&gt;⚙️ Settings&lt;/a&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;h2 style="margin-top:80px"&gt;Modal (overlay: 900, modal: 1000)&lt;/h2&gt;
-    &lt;button class="btn" onclick="document.getElementById('modal').style.display='block'"&gt;Open Modal&lt;/button&gt;
-    &lt;div class="modal-overlay" id="modal"&gt;
-      &lt;div class="modal-box"&gt;
-        &lt;h3&gt;Modal Dialog&lt;/h3&gt;
-        &lt;p&gt;Overlay z-index: 900. This dialog: z-index: 1000. Both are &lt;code&gt;position: fixed&lt;/code&gt;.&lt;/p&gt;
-        &lt;button class="modal-close" onclick="document.getElementById('modal').style.display='none'"&gt;Close ✓&lt;/button&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 11</div>
+    <div class="phase-title">Part 1: Conceptual Understanding — What is `z-index`?</div>
+    <div class="phase-check" id="chk3"></div>
   </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Z-index Demo</title>
-    <style>
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff; padding: 30px; max-width: 860px; margin: 0 auto; color: #0f172a; }
-      h1 { color: #0284c7; margin-bottom: 6px; }
-      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
-      .stack { position: relative; height: 160px; margin-bottom: 20px; }
-      .sb { position: absolute; width: 140px; height: 90px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 13px; }
-      .s1 { background: rgba(2,132,199,.8);  top:0;    left:0;   z-index:1; }
-      .s2 { background: rgba(234,79,33,.8);  top:25px; left:50px;z-index:2; }
-      .s3 { background: rgba(16,185,129,.8); top:50px; left:100px;z-index:3;}
-      .dw { position: relative; display: inline-block; }
-      .drop-btn { background: #0284c7; color: white; border: none; padding: 10px 20px; border-radius: 9px; cursor: pointer; font-weight: bold; font-size: 14px; }
-      .drop-menu { display: none; position: absolute; top: 100%; left: 0; z-index: 200; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 180px; padding: 8px 0; margin-top: 6px; }
-      .dw:hover .drop-menu { display: block; }
-      .drop-menu a { display: block; padding: 10px 16px; color: #334155; text-decoration: none; font-size: 14px; }
-      .drop-menu a:hover { background: #f0f9ff; color: #0284c7; }
-      .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 900; }
-      .modal-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: white; border-radius: 16px; padding: 32px; width: 90%; max-width: 420px; }
-      .modal-box h3 { color: #0284c7; margin: 0 0 12px; }
-      .modal-box p  { color: #475569; margin: 0 0 20px; font-size: 14px; }
-      .modal-close { width: 100%; padding: 11px; border: none; background: #0284c7; color: white; border-radius: 9px; font-size: 15px; font-weight: bold; cursor: pointer; }
-      .btn { background: #0284c7; color: white; border: none; padding: 10px 20px; border-radius: 9px; font-size: 14px; font-weight: bold; cursor: pointer; }
-    </style>
-  </head>
-  <body>
-    <h1>CSS Z-index Demo</h1>
-    <h2>Stacking Order</h2>
-    <div class="stack">
-      <div class="sb s1">z-index: 1</div>
-      <div class="sb s2">z-index: 2</div>
-      <div class="sb s3">z-index: 3</div>
-    </div>
-    <h2>Dropdown (z-index: 200)</h2>
-    <div class="dw">
-      <button class="drop-btn">Hover for Menu ▾</button>
-      <div class="drop-menu">
-        <a href="#">🏠 Home</a>
-        <a href="#">📚 Courses</a>
-        <a href="#">👤 Profile</a>
-        <a href="#">⚙️ Settings</a>
-      </div>
-    </div>
-    <h2 style="margin-top:80px">Modal (overlay: 900, modal: 1000)</h2>
-    <button class="btn" onclick="document.getElementById('modal').style.display='block'">Open Modal</button>
-    <div class="modal-overlay" id="modal">
-      <div class="modal-box">
-        <h3>Modal Dialog</h3>
-        <p>Overlay z-index: 900. This dialog: z-index: 1000. Both are <code>position: fixed</code>.</p>
-        <button class="modal-close" onclick="document.getElementById('modal').style.display='none'">Close ✓</button>
-      </div>
-    </div>
-  </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
+  <div class="phase-body">
+    <h3 class="v2-h3">The Simple Explanation</h3>
+<p class="v2-p"><code>z-index</code> is a CSS property that controls the <strong>stack order</strong> of a positioned element. An element with a <strong>higher</strong> <code>z-index</code> value will appear <strong>in front of</strong> an element with a <strong>lower</strong> <code>z-index</code> value when they overlap.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>selector {
+  position: relative; /* z-index requires a position value other than static */
+  z-index: 1;         /* any whole number — positive, zero, or negative */
+}</code></pre></div></div>
+<h3 class="v2-h3">The Real-Life Analogy</h3>
+<p class="v2-p">Imagine you have a stack of papers on a desk:</p>
+<ul class="v2-ul"><li>Paper at the bottom of the stack is at the lowest level → <code>z-index: 1</code></li><li>Paper in the middle is → <code>z-index: 2</code></li><li>Paper on top, covering everything → <code>z-index: 3</code></li></ul>
+<p class="v2-p">The paper with the highest <code>z-index</code> number is "closest to you" (on top). The one with the lowest number is "furthest from you" (at the bottom).</p>
+<h3 class="v2-h3">Default Stacking — What Happens Without z-index</h3>
+<p class="v2-p">Without <code>z-index</code>, when two positioned elements overlap, the browser stacks them in the order they appear in the HTML. Elements that come <strong>later</strong> in the HTML sit <strong>on top</strong> of elements that come <strong>earlier</strong>.</p>
+<p class="v2-p"><strong>Example — Default HTML stacking order:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .box {
+    width: 200px;
+    height: 200px;
+    position: absolute;
   }
-  </script>
-</div>
 
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+  .box-one {
+    background-color: coral;
+    top: 50px;
+    left: 50px;
+  }
+
+  .box-two {
+    background-color: steelblue;
+    top: 100px;   /* overlaps box-one */
+    left: 100px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;box box-one&quot;&gt;Box One (coral)&lt;/div&gt;
+  &lt;div class=&quot;box box-two&quot;&gt;Box Two (blue)&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>Box One (coral) is drawn first.</li><li>Box Two (blue) is drawn on top of it, partially covering it.</li><li>The blue box appears "in front" of the coral box simply because it comes later in the HTML.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking Prompt:</strong> What would happen if you swapped the order of the two <code>&lt;div&gt;</code> elements in the HTML? Which box would appear on top?</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Conceptual Understanding — What is <code>z-index</code>?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-23-css_z-index</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 23 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-23-css_z-index/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+</div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 11</div>
+    <div class="phase-title">Part 2: Using `z-index` to Control Stack Order</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Basic Rule</h3>
+<p class="v2-p">To give an element a <code>z-index</code>, you must first give it a <code>position</code> value that is NOT <code>static</code>. Then set <code>z-index</code> to any whole number.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.element {
+  position: relative; /* or absolute, fixed, or sticky */
+  z-index: 10;
+}</code></pre></div></div>
+<ul class="v2-ul"><li><strong>Higher number = in front</strong></li><li><strong>Lower number = behind</strong></li><li><strong>Negative numbers</strong> are allowed — they place the element behind even normal (non-positioned) content</li></ul>
+<h3 class="v2-h3">Simple Example — z-index in action</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .box {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+  }
+
+  .box-one {
+    background-color: coral;
+    top: 50px;
+    left: 50px;
+    z-index: 2;        /* higher number — this will be ON TOP */
+  }
+
+  .box-two {
+    background-color: steelblue;
+    top: 100px;
+    left: 100px;
+    z-index: 1;        /* lower number — this will be BEHIND */
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;box box-one&quot;&gt;Box One (coral) z-index: 2&lt;/div&gt;
+  &lt;div class=&quot;box box-two&quot;&gt;Box Two (blue) z-index: 1&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>Even though Box Two comes AFTER Box One in the HTML (and would normally be on top), the <code>z-index</code> values override that default.</li><li>Box One (coral) now appears ON TOP because its <code>z-index: 2</code> is greater than <code>z-index: 1</code>.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Key Insight:</strong> <code>z-index</code> overrides the default HTML source-order stacking. Higher number = winner.</p></blockquote>
+<h3 class="v2-h3">Example 2 — Three Overlapping Elements</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .box {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+  }
+
+  #red {
+    background-color: crimson;
+    top: 40px;
+    left: 40px;
+    z-index: 1;
+  }
+
+  #green {
+    background-color: seagreen;
+    top: 80px;
+    left: 80px;
+    z-index: 3;    /* HIGHEST — will be on top */
+  }
+
+  #blue {
+    background-color: steelblue;
+    top: 120px;
+    left: 120px;
+    z-index: 2;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div id=&quot;red&quot;&gt;Red (z:1)&lt;/div&gt;
+  &lt;div id=&quot;green&quot;&gt;Green (z:3)&lt;/div&gt;
+  &lt;div id=&quot;blue&quot;&gt;Blue (z:2)&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>Green box is fully visible on top (z-index: 3 — highest)</li><li>Blue box is in the middle (z-index: 2)</li><li>Red box is at the bottom, mostly covered (z-index: 1 — lowest)</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking Prompt:</strong> What would happen if you changed the green box's <code>z-index</code> from <code>3</code> to <code>-1</code>? Try to guess before experimenting.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Using <code>z-index</code> to Control Stack Order</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 11</div>
+    <div class="phase-title">Part 3: The Critical Rule — z-index Only Works with Positioned Elements</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">This is the most important rule beginners overlook, and it causes a lot of confusion.</p>
+<h3 class="v2-h3">The Rule</h3>
+<p class="v2-p"><code>z-index</code> has <strong>no effect</strong> on an element with <code>position: static</code> (the default position value).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* This does NOTHING — static is the default */
+.box {
+  z-index: 999;   /* ignored completely because position is static by default */
+}
+
+/* This WORKS */
+.box {
+  position: relative;   /* now z-index is respected */
+  z-index: 999;
+}</code></pre></div></div>
+<h3 class="v2-h3">Why Does This Rule Exist?</h3>
+<p class="v2-p">CSS's stacking mechanism only activates for elements that have been "taken out of" or "placed in" a specific layer context. Elements with <code>position: static</code> are just in the normal document flow — they don't participate in the z-axis stacking game at all.</p>
+<p class="v2-p">Think of it this way: normal flow elements are like furniture sitting on the floor of a room. Positioned elements are like objects you've picked up and are holding at different heights. Only the objects you're holding can be at different heights — the furniture on the floor is just on the floor.</p>
+<h3 class="v2-h3">Demonstration of the Rule</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .box {
+    width: 200px;
+    height: 200px;
+  }
+
+  .box-a {
+    background-color: coral;
+    /* position: static is the default — z-index won&#x27;t work */
+    z-index: 999;      /* This is IGNORED */
+    margin-bottom: -50px;  /* just to cause overlap for demonstration */
+  }
+
+  .box-b {
+    background-color: steelblue;
+    position: relative;    /* THIS activates z-index */
+    z-index: 1;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;box box-a&quot;&gt;Box A (static, z-index: 999 — IGNORED)&lt;/div&gt;
+  &lt;div class=&quot;box box-b&quot;&gt;Box B (relative, z-index: 1 — WORKS)&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>Box B (blue) appears ON TOP of Box A (coral) despite Box A having <code>z-index: 999</code>.</li><li>This is because Box A's <code>z-index</code> is ignored — it has no <code>position</code> value.</li><li>Box B has <code>position: relative</code> so its <code>z-index: 1</code> IS respected.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Common Beginner Mistake:</strong> Setting a high <code>z-index</code> but forgetting to set a <code>position</code> property — and then wondering why it doesn't work!</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: The Critical Rule — z-index Only Works with Positioned Elements</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 11</div>
+    <div class="phase-title">Part 4: Stacking Context — The Advanced Rule</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is a Stacking Context?</h3>
+<p class="v2-p">A <strong>stacking context</strong> is like a self-contained "arena" where elements compete against each other for position on the z-axis. Elements inside one stacking context cannot overlap elements in a different stacking context based on their individual <code>z-index</code> values — the entire context is treated as a single unit.</p>
+<p class="v2-p">This can be confusing, but the analogy makes it clear:</p>
+<p class="v2-p"><strong>The Folder Analogy:</strong></p>
+<p class="v2-p">Imagine you have two physical folders of papers on a desk:</p>
+<ul class="v2-ul"><li><strong>Folder A</strong> is the bottom folder.</li><li><strong>Folder B</strong> is placed on top of Folder A.</li></ul>
+<p class="v2-p">Inside Folder A, you can arrange the papers in any order you want using their own numbering system. Inside Folder B, the same. BUT, no matter how high you number a paper inside Folder A, it can NEVER appear above ANY paper inside Folder B — because the entire Folder A is underneath Folder B.</p>
+<p class="v2-p">This is exactly how stacking contexts work in CSS.</p>
+<h3 class="v2-h3">What Creates a New Stacking Context?</h3>
+<p class="v2-p">A new stacking context is created whenever an element has:</p>
+<ul class="v2-ul"><li><code>position</code> set to <code>absolute</code>, <code>relative</code>, <code>fixed</code>, or <code>sticky</code> AND a <code>z-index</code> value that is NOT <code>auto</code></li><li><code>opacity</code> less than <code>1</code> (e.g., <code>opacity: 0.9</code>)</li><li><code>transform</code>, <code>filter</code>, <code>perspective</code>, or <code>clip-path</code> applied</li><li><code>will-change</code> set to certain values</li><li>Being a flex or grid container child with a <code>z-index</code> that is not <code>auto</code></li></ul>
+<p class="v2-p">For beginners, the most common cause is: <strong>a positioned element with a specific <code>z-index</code> value creates a new stacking context for its children.</strong></p>
+<h3 class="v2-h3">Stacking Context Example — The Trap</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .context-a {
+    position: relative;
+    z-index: 1;           /* Creates a new stacking context */
+    background-color: lightcoral;
+    width: 300px;
+    height: 200px;
+    padding: 10px;
+  }
+
+  .context-b {
+    position: relative;
+    z-index: 2;           /* context-b is ABOVE context-a */
+    background-color: lightblue;
+    width: 300px;
+    height: 200px;
+    margin-top: -100px;   /* overlap deliberately */
+    padding: 10px;
+  }
+
+  .child-of-a {
+    position: relative;
+    z-index: 9999;        /* VERY high — but trapped inside context-a */
+    background-color: gold;
+    width: 150px;
+    height: 80px;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;context-a&quot;&gt;
+    Context A (z-index: 1)
+    &lt;div class=&quot;child-of-a&quot;&gt;Child of A (z-index: 9999)&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;context-b&quot;&gt;
+    Context B (z-index: 2) — I cover everything in Context A
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>Context B (blue) covers Context A (coral) completely — including the gold "Child of A" box.</li><li>Even though the child has <code>z-index: 9999</code>, it CANNOT escape its parent's stacking context.</li><li>Context A as a whole is at <code>z-index: 1</code>, and Context B is at <code>z-index: 2</code>. So ALL of Context A's children, regardless of their own z-index values, sit below Context B.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real World Analogy:</strong> No matter how important a piece of paper in Folder A is, if Folder B is placed on top of Folder A on the desk, every piece of paper in Folder A is covered.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Stacking Context — The Advanced Rule</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 11</div>
+    <div class="phase-title">Part 5: The `z-index: auto` Value</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">When you set <code>z-index: auto</code> (or don't set <code>z-index</code> at all on a positioned element), the element does NOT create a new stacking context. It participates in its parent's stacking context instead.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.element {
+  position: relative;
+  z-index: auto;   /* same as not setting z-index — does NOT create a new stacking context */
+}</code></pre></div></div>
+<p class="v2-p">vs.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.element {
+  position: relative;
+  z-index: 0;   /* creates a new stacking context, even though the value is 0 */
+}</code></pre></div></div>
+<p class="v2-p">This is a subtle difference. <code>z-index: 0</code> and <code>z-index: auto</code> behave similarly for the element itself, but <code>z-index: 0</code> creates a new stacking context while <code>z-index: auto</code> does not.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: The <code>z-index: auto</code> Value</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 11</div>
+    <div class="phase-title">Part 6: Negative z-index Values</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">You can use negative <code>z-index</code> values to push an element <strong>behind</strong> its parent or behind normal document flow content.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .container {
+    position: relative;
+    background-color: lightgrey;
+    width: 300px;
+    height: 200px;
+    padding: 20px;
+  }
+
+  .behind {
+    position: absolute;
+    z-index: -1;           /* pushed BEHIND the parent */
+    background-color: tomato;
+    width: 250px;
+    height: 150px;
+    top: 30px;
+    left: 30px;
+  }
+
+  p {
+    position: relative;    /* This text is above z-index: -1 */
+    z-index: 0;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;p&gt;This text is in normal flow inside the container.&lt;/p&gt;
+    &lt;div class=&quot;behind&quot;&gt;I am behind the container background (z-index: -1)&lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>The red <code>.behind</code> box is pushed behind the grey container's background.</li><li>The paragraph text sits in front of everything.</li><li>The red box is barely visible (or not at all) peeking out from behind the grey container.</li></ul>
+<p class="v2-p"><strong>Practical Use Case for Negative z-index:</strong></p>
+<ul class="v2-ul"><li>Placing a decorative background shape behind the main content</li><li>Creating a "watermark" effect</li><li>Building layered backgrounds without extra wrapper elements</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Negative z-index Values</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 11</div>
+    <div class="phase-title">Part 7: CSS `z-index` Property Reference</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Here is a complete reference of all valid values for the <code>z-index</code> property:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>What It Does</th></tr></thead><tbody><tr><td><code>auto</code></td><td>Default. The element's stack level is 0. Does NOT create a new stacking context.</td></tr><tr><td>Any positive integer (e.g., <code>1</code>, <code>5</code>, <code>100</code>)</td><td>Places the element higher in the stack than elements with lower values. Creates a new stacking context.</td></tr><tr><td><code>0</code></td><td>Stack level is 0. Creates a new stacking context.</td></tr><tr><td>Any negative integer (e.g., <code>-1</code>, <code>-5</code>)</td><td>Places the element below elements with a value of 0 or higher.</td></tr><tr><td><code>inherit</code></td><td>Inherits the <code>z-index</code> value from the parent element.</td></tr><tr><td><code>initial</code></td><td>Resets to the default value (<code>auto</code>).</td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: CSS <code>z-index</code> Property Reference</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase10">
+  <div class="phase-header">
+    <div class="phase-num">Phase 10 of 11</div>
+    <div class="phase-title">Part 8: Guided Practice Exercises</div>
+    <div class="phase-check" id="chk10"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — Basic Stack Control (Warm-Up)</h3>
+<p class="v2-p"><strong>Objective:</strong> Make the green box appear on top of the red box.</p>
+<p class="v2-p"><strong>Scenario:</strong> You have two overlapping coloured boxes. By default the red one appears on top. Use <code>z-index</code> to reverse this so green is on top.</p>
+<p class="v2-p"><strong>Starter Code:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .box {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+  }
+
+  #red-box {
+    background-color: crimson;
+    top: 20px;
+    left: 20px;
+    /* Add z-index here */
+  }
+
+  #green-box {
+    background-color: seagreen;
+    top: 70px;
+    left: 70px;
+    /* Add z-index here */
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id=&quot;red-box&quot;&gt;Red Box&lt;/div&gt;
+  &lt;div id=&quot;green-box&quot;&gt;Green Box&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Add <code>z-index: 1</code> to <code>#red-box</code>.</li><li>Add <code>z-index: 2</code> to <code>#green-box</code>.</li><li>Save and open in a browser.</li><li>Green should now sit on top of red.</li></ol>
+<p class="v2-p"><strong>Expected Output:</strong> Green box fully visible, covering part of the red box.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>#red-box {
+  background-color: crimson;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
+}
+
+#green-box {
+  background-color: seagreen;
+  top: 70px;
+  left: 70px;
+  z-index: 2;  /* higher = on top */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Self-Check Questions:</strong></p>
+<ul class="v2-ul"><li>What would happen if both boxes had <code>z-index: 1</code>? (The HTML source order would decide — green appears on top since it comes later.)</li><li>What would happen if you removed <code>position: absolute</code> from both boxes and kept the z-index values? (z-index would stop working — it requires a positioned element.)</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Tooltip Overlay</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a tooltip that appears in front of nearby text and images.</p>
+<p class="v2-p"><strong>Scenario:</strong> You have a word on a page with a tooltip. When you hover over the word, the tooltip box must appear in front of everything else on the page.</p>
+<p class="v2-p"><strong>Starter Code:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  body {
+    font-family: Arial, sans-serif;
+    padding: 40px;
+  }
+
+  .tooltip-container {
+    display: inline-block;
+    position: relative;   /* needed so the tooltip can be positioned relative to this */
+  }
+
+  .tooltip-trigger {
+    background-color: steelblue;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .tooltip-box {
+    display: none;           /* hidden by default */
+    position: absolute;
+    top: -50px;
+    left: 0;
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    /* Add z-index here to ensure it appears over everything */
+  }
+
+  .tooltip-container:hover .tooltip-box {
+    display: block;          /* show on hover */
+  }
+
+  .overlap-box {
+    background-color: lightcoral;
+    padding: 20px;
+    margin-top: -10px;       /* deliberately overlapping to test z-index */
+    position: relative;
+    z-index: 5;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;overlap-box&quot;&gt;
+    This red box has z-index: 5 — it might cover the tooltip if z-index is wrong!
+  &lt;/div&gt;
+
+  &lt;div class=&quot;tooltip-container&quot;&gt;
+    &lt;span class=&quot;tooltip-trigger&quot;&gt;Hover over me&lt;/span&gt;
+    &lt;div class=&quot;tooltip-box&quot;&gt;I am the tooltip!&lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Hover over the "Hover over me" button.</li><li>The tooltip may appear behind the red box.</li><li>Add <code>z-index: 10</code> to <code>.tooltip-box</code>.</li><li>Hover again — the tooltip should now appear in front of the red box.</li></ol>
+<p class="v2-p"><strong>Expected Output:</strong> Tooltip box appears clearly in front of the red overlap box.</p>
+<p class="v2-p"><strong>Solution Addition:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.tooltip-box {
+  /* ... existing styles ... */
+  z-index: 10;   /* higher than the overlap-box&#x27;s z-index: 5 */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Background Decoration with Negative z-index</h3>
+<p class="v2-p"><strong>Objective:</strong> Place a large decorative circle BEHIND a content card.</p>
+<p class="v2-p"><strong>Scenario:</strong> A profile card has a decorative coloured circle in the background. The circle should sit behind the card text.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .card {
+    position: relative;
+    width: 280px;
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin: 60px auto;
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 1;   /* sits above the decoration */
+  }
+
+  .background-circle {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: lightblue;
+    top: -60px;
+    right: -60px;
+    z-index: -1;   /* pushed behind the card content */
+  }
+
+  h2 { margin: 0 0 10px 0; }
+  p  { color: #555; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;background-circle&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;card-content&quot;&gt;
+      &lt;h2&gt;Jane Doe&lt;/h2&gt;
+      &lt;p&gt;Web Developer&lt;/p&gt;
+      &lt;p&gt;Lagos, Nigeria&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>A white card with text (name, role, location) clearly visible.</li><li>A soft blue decorative circle visible in the top-right corner, sitting BEHIND the text content.</li></ul>
+<p class="v2-p"><strong>Self-Check Questions:</strong></p>
+<ul class="v2-ul"><li>What happens if you change <code>.background-circle</code>'s <code>z-index</code> from <code>-1</code> to <code>2</code>? (It would cover the text.)</li><li>What if you remove the <code>z-index: 1</code> from <code>.card-content</code>? Would the text still show? (Yes, because the circle is at <code>-1</code> which is below everything by default.)</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase11">
+  <div class="phase-header">
+    <div class="phase-num">Phase 11 of 11</div>
+    <div class="phase-title">Part 10: Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk11"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 — Setting z-index without a position property</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.my-element {
+  z-index: 999;   /* IGNORED — no position set, defaults to static */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.my-element {
+  position: relative;  /* or absolute, fixed, sticky */
+  z-index: 999;        /* NOW it works */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Why it happens:</strong> Beginners set a high <code>z-index</code> and wonder why nothing changes. They forget that <code>z-index</code> has a prerequisite.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Confused by stacking contexts (the "trapped child" bug)</h3>
+<p class="v2-p"><strong>The Symptom:</strong> You set a child element's <code>z-index</code> to 9999 but it still appears behind another element on the page.</p>
+<p class="v2-p"><strong>The Cause:</strong> The child is inside a parent that has its own stacking context (because the parent has a <code>z-index</code> value). The child is "trapped" inside the parent's context and cannot escape above elements outside that context.</p>
+<p class="v2-p"><strong>Wrong (assuming child can escape parent):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.parent {
+  position: relative;
+  z-index: 1;
+}
+.child {
+  position: relative;
+  z-index: 9999; /* still trapped within the parent&#x27;s z-index: 1 context */
+}
+.outside-element {
+  position: relative;
+  z-index: 2;   /* entire parent (with all its children) is BELOW this */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Fix Option 1 — Raise the parent's z-index:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.parent {
+  z-index: 3;  /* now parent (and all children) is above outside-element */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Fix Option 2 — Move the child out of the parent if it needs to be above outside elements.</strong></p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Using extremely high z-index values unnecessarily</h3>
+<p class="v2-p"><strong>Wrong (common pattern):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.my-modal { z-index: 9999999; }
+.my-tooltip { z-index: 99999; }
+.my-dropdown { z-index: 9999; }</code></pre></div></div>
+<p class="v2-p"><strong>Why it's a problem:</strong> This becomes very hard to manage. When a new developer joins the project, they set <code>z-index: 99999999</code> to beat the existing values, and the numbers spiral out of control.</p>
+<p class="v2-p"><strong>Best Practice — Use a z-index scale:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Define a clear, manageable scale */
+/* z-index: 1-9     → slightly elevated elements */
+/* z-index: 10-99   → dropdowns, tooltips */
+/* z-index: 100-999 → modals, overlays */
+/* z-index: 1000+   → critical UI (cookie banners, chatbots) */
+
+.dropdown   { z-index: 10;  }
+.tooltip    { z-index: 20;  }
+.modal      { z-index: 100; }
+.modal-overlay { z-index: 99; }</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Forgetting that <code>opacity</code>, <code>transform</code>, and <code>filter</code> create stacking contexts</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* This parent has opacity &lt; 1, which creates a NEW stacking context */
+.parent {
+  opacity: 0.99;   /* Even 0.99 creates a stacking context! */
+  /* No z-index set, but stacking context is still created */
+}
+
+.child {
+  position: absolute;
+  z-index: 999;   /* still trapped inside .parent&#x27;s stacking context */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Fix:</strong> Be aware that <code>opacity</code>, <code>transform</code>, <code>filter</code>, <code>clip-path</code>, and <code>will-change</code> on a parent can trap children in a stacking context. If the parent doesn't need these on the same element, separate them.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Removing <code>position</code> accidentally</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Developer adds z-index */
+.header {
+  position: fixed;
+  z-index: 100;
+}
+
+/* Later, someone changes position by mistake */
+.header {
+  position: static;   /* THIS removes z-index functionality! */
+  z-index: 100;       /* now ignored */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Fix:</strong> Always check that <code>position</code> is set correctly when <code>z-index</code> stops working.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">`css
+/* Define a clear, manageable scale */
+/* z-index: 1-9     → slightly elevated elements */
+/* z-index: 10-99   → dropdowns, tooltips */
+/* z-index: 100-999 → modals, overlays */
+/* z-index: 1000+   → critical UI (cookie banners, chatbots) */
+
+.dropdown   { z-index: 10;  }
+.tooltip    { z-index: 20;  }
+.modal      { z-index: 100; }
+.modal-overlay { z-index: 99; }
+`
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Stage 1: Setup — The Card Structure</div>
+  <div class="build-desc">Create the basic HTML structure:</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Image Gallery with z-index Overlay&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;gallery.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;gallery&quot;&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;img src=&quot;https://picsum.photos/seed/nature/300/200&quot; alt=&quot;Nature&quot;&gt;
+      &lt;div class=&quot;overlay&quot;&gt;
+        &lt;p class=&quot;caption&quot;&gt;Beautiful Nature&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;img src=&quot;https://picsum.photos/seed/city/300/200&quot; alt=&quot;City&quot;&gt;
+      &lt;div class=&quot;overlay&quot;&gt;
+        &lt;p class=&quot;caption&quot;&gt;City Lights&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;img src=&quot;https://picsum.photos/seed/ocean/300/200&quot; alt=&quot;Ocean&quot;&gt;
+      &lt;div class=&quot;overlay&quot;&gt;
+        &lt;p class=&quot;caption&quot;&gt;Ocean Views&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Gallery with z-index Overlay</title>
+  <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+
+  <div class="gallery">
+
+    <div class="card">
+      <img src="https://picsum.photos/seed/nature/300/200" alt="Nature">
+      <div class="overlay">
+        <p class="caption">Beautiful Nature</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://picsum.photos/seed/city/300/200" alt="City">
+      <div class="overlay">
+        <p class="caption">City Lights</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://picsum.photos/seed/ocean/300/200" alt="Ocean">
+      <div class="overlay">
+        <p class="caption">Ocean Views</p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
+  </div>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-23-stage-1-setup-the-card-structure</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 23 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-23-stage-1-setup-the-card-structure/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 23 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Z-index Basics</li><li>✅ Dropdown and Modal Pattern</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_22.html" class="ln-btn">← Lesson 22</a>
-    <a href="lesson_24.html" class="ln-btn primary">Lesson 24 →</a>
-  </div>
+  <h2>🎉 Lesson 23 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1: Conceptual Understanding — What is `z-index`?</li><li>✅ Part 2: Using `z-index` to Control Stack Order</li><li>✅ Part 3: The Critical Rule — z-index Only Works with Positioned Elements</li><li>✅ Part 4: Stacking Context — The Advanced Rule</li><li>✅ Part 5: The `z-index: auto` Value</li><li>✅ Part 6: Negative z-index Values</li></ul>
+  <div class="lesson-nav"><a href="lesson_22.html" class="ln-btn">← Lesson 22</a><a href="lesson_24.html" class="ln-btn primary">Lesson 24 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 23 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 23 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_23_phase';
+const TOTAL=11,KEY='techbase_css_l23';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

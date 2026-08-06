@@ -2,339 +2,1228 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 64: CSS Text Effects — Techbase CSS Course</title>
-<meta name="description" content="Shadow, gradient text, animated gradient, stroke and neon effects">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 64: CSS User Interface – Resize and Outline Offset — Techbase CSS</title>
+<meta name="description" content="CSS User Interface – Resize and Outline Offset">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
-}
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
+/* HERO */
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
+/* TASK BOX */
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
+/* GITHUB ACCORDION */
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
-  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
-  <span class="l-nav-lesson">Lesson 64 of 73</span>
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 64 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
 <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
 <div class="l-hero">
   <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 64 </div>
-    <h1>CSS Text Effects</h1>
-    <div class="l-hero-tag">Shadow, gradient text, animated gradient, stroke and neon effects</div>
-    <div class="l-hero-build"><strong>🏗️ Build:</strong> My Text Effects Gallery</div>
+    <div class="l-badge">CSS · Lesson 64</div>
+    <h1>CSS User Interface – Resize and Outline Offset</h1>
+    <div class="l-hero-sub">9 phases · Build: Stage 1: Setup — Page and Form Shell</div>
   </div>
 </div>
-<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
-    <div class="welcome-box">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
   <h2>👋 Welcome to Lesson 64</h2>
-  <p>Shadow, gradient text, animated gradient, stroke and neon effects</p>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever visited a website and noticed that a comment box could be stretched larger by dragging its corner? Or noticed that a focused input field had a glowing ring slightly separated from the element itself — not touching it, but floating just outside? Both of those effects are controlled by CSS User Interface properties.</p>
+<p class="v2-p">In this lesson, you will learn two powerful CSS properties that directly improve the experience of people using your webpage:</p>
+<ul class="v2-ul"><li><strong><code>resize</code></strong> — lets you control whether a user can manually resize an element on the screen</li><li><strong><code>outline-offset</code></strong> — lets you control how far an outline sits from the edge of an element</li></ul>
+<p class="v2-p">These are small but mighty properties. Knowing them gives your web forms and interactive elements a polished, professional look and feel — exactly the kind of detail that separates beginner projects from professional ones.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">What You Will Learn</h3>
+<p class="v2-p">By the end of this lesson, you will be able to:</p>
+<ol class="v2-ol"><li>Explain what the <code>resize</code> property does and why it exists</li><li>Use <code>resize</code> to allow horizontal-only, vertical-only, or both-direction resizing</li><li>Disable resizing entirely on a <code>&lt;textarea&gt;</code> element</li><li>Explain what <code>outline-offset</code> does and how it differs from the <code>outline</code> property itself</li><li>Set an outline that floats away from an element's edge</li><li>Use both properties together in a real-world form design</li></ol>
+<hr class="v2-hr"></div>
   <div class="welcome-meta">
-    <span>📚 2 phases</span>
-    <span>🏗️ Build: My Text Effects Gallery</span>
-    
+    <span>📚 9 phases</span>
+    <span>🏗️ Stage 1: Setup — Page and Form Shell</span>
   </div>
-</div>
-  </div>
+</div></div>
 </section>
-<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
 <div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">Text shadow and gradient text</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 9</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>text-shadow: x y blur colour</code>. Multiple: comma-separated. Gradient text: <code>background: linear-gradient()</code> + <code>-webkit-background-clip:text</code> + <code>-webkit-text-fill-color:transparent</code>. Animate by moving background-position.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.soft { text-shadow: 2px 2px 6px rgba(0,0,0,.2); }
-.gradient { background: linear-gradient(135deg,#0284c7,#7c3aed,#ea4f21); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-@keyframes grad-move { to { background-position: 200% center; } }
-.anim { background: linear-gradient(to right,#0284c7,#ea4f21,#0284c7); background-size:200% auto; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation: grad-move 3s linear infinite; }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Apply gradient text to your page heading. Then animate it with background-size:200% and animating background-position.</p></div>
-    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+    <p class="v2-p">Have you ever visited a website and noticed that a comment box could be stretched larger by dragging its corner? Or noticed that a focused input field had a glowing ring slightly separated from the element itself — not touching it, but floating just outside? Both of those effects are controlled by CSS User Interface properties.</p>
+<p class="v2-p">In this lesson, you will learn two powerful CSS properties that directly improve the experience of people using your webpage:</p>
+<ul class="v2-ul"><li><strong><code>resize</code></strong> — lets you control whether a user can manually resize an element on the screen</li><li><strong><code>outline-offset</code></strong> — lets you control how far an outline sits from the edge of an element</li></ul>
+<p class="v2-p">These are small but mighty properties. Knowing them gives your web forms and interactive elements a polished, professional look and feel — exactly the kind of detail that separates beginner projects from professional ones.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">What You Will Learn</h3>
+<p class="v2-p">By the end of this lesson, you will be able to:</p>
+<ol class="v2-ol"><li>Explain what the <code>resize</code> property does and why it exists</li><li>Use <code>resize</code> to allow horizontal-only, vertical-only, or both-direction resizing</li><li>Disable resizing entirely on a <code>&lt;textarea&gt;</code> element</li><li>Explain what <code>outline-offset</code> does and how it differs from the <code>outline</code> property itself</li><li>Set an outline that floats away from an element's edge</li><li>Use both properties together in a real-world form design</li></ol>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
 </div>
 <div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">Text stroke and labels</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 9</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>-webkit-text-stroke: 3px #0284c7</code> + <code>color:transparent</code> = hollow text. Labels: <code>text-transform:uppercase; letter-spacing:.1em; font-size:.75rem; font-weight:800</code>. Truncate: <code>overflow:hidden; text-overflow:ellipsis; white-space:nowrap</code>.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.stroke { -webkit-text-stroke: 3px #0284c7; color: transparent; }
-.label  { text-transform:uppercase; letter-spacing:.1em; font-size:.75rem; font-weight:800; }
-.truncate { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Create a large hollow heading using text-stroke. Build a row of badge labels with uppercase + letter-spacing.</p></div>
-    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+    <p class="v2-p">Before diving into this lesson, make sure you are comfortable with these ideas. If anything feels unfamiliar, take a moment to review the earlier lesson linked to each concept.</p>
+<p class="v2-p"><strong>CSS Outlines (Lesson 39–40):</strong> An outline is a line drawn <em>outside</em> an element's border. Unlike borders, outlines do not take up space in the page layout. The <code>outline</code> property controls the style, width, and colour of that line.</p>
+<p class="v2-p"><strong>The <code>overflow</code> property:</strong> When an element is resized by the user, its content may overflow its original boundaries. Setting <code>overflow: auto</code> or <code>overflow: scroll</code> ensures the element handles that extra content gracefully by showing a scrollbar when needed.</p>
+<p class="v2-p"><strong>Block-level elements and <code>&lt;textarea&gt;</code>:</strong> A <code>&lt;div&gt;</code> is a generic block-level element — a rectangular box on the page. A <code>&lt;textarea&gt;</code> is an HTML form element where users can type multiple lines of text. Both can have the <code>resize</code> property applied to them.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It</div>
-  <div class="project-name">Text Effects Gallery</div>
-  <div class="project-desc">Shadow, 3D, gradient, animated, hollow stroke and neon effects.</div>
-  <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
-<div class="code-body"><pre>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;Text Effects&lt;/title&gt;
-&lt;style&gt;
-@keyframes grad-move{to{background-position:200% center}}
-@keyframes flicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.8}96%{opacity:.9}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
-*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.demo{background:white;border:1.5px solid #bae6fd;border-radius:12px;padding:20px;margin-bottom:14px}
-.fx{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;margin:8px 0;line-height:1.2}
-.lbl{font-size:11px;color:#94a3b8;font-family:monospace;margin-top:4px;display:block}
-.e-soft{text-shadow:3px 3px 8px rgba(0,0,0,.2)}
-.e-glow{color:white;background:#0f172a;padding:8px 16px;border-radius:8px;text-shadow:0 0 20px rgba(2,132,199,.9),0 0 40px rgba(2,132,199,.5)}
-.e-3d{color:#0284c7;text-shadow:1px 1px 0 #0369a1,2px 2px 0 #0369a1,3px 3px 0 #0369a1,4px 4px 0 rgba(0,0,0,.1)}
-.e-grad{background:linear-gradient(135deg,#0284c7,#7c3aed,#ea4f21);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.e-anim{background:linear-gradient(to right,#0284c7,#ea4f21,#10b981,#0284c7);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-move 4s linear infinite}
-.e-stroke{-webkit-text-stroke:3px #0284c7;color:transparent}
-.e-neon{color:#4ade80;background:#0f172a;padding:8px 16px;border-radius:8px;text-shadow:0 0 10px #4ade80,0 0 30px #4ade80,0 0 60px #4ade80;animation:flicker 4s infinite}
-.lbl-row{display:flex;gap:8px;flex-wrap:wrap}
-.pl{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:100px}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;h1 style=&quot;color:#0284c7;margin-bottom:4px&quot;&gt;CSS Text Effects Gallery&lt;/h1&gt;
-&lt;div class=&quot;demo&quot;&gt;
-&lt;div class=&quot;fx e-soft&quot;&gt;Soft Shadow&lt;span class=&quot;lbl&quot;&gt;text-shadow: 3px 3px 8px rgba(0,0,0,.2)&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fx e-glow&quot;&gt;Glow Effect&lt;span class=&quot;lbl&quot; style=&quot;color:#4ade80&quot;&gt;text-shadow: 0 0 20px rgba(blue,.9)&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fx e-3d&quot;&gt;3D Shadow&lt;span class=&quot;lbl&quot;&gt;4× stacked text-shadows&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fx e-grad&quot;&gt;Gradient Text&lt;span class=&quot;lbl&quot;&gt;background-clip:text + transparent fill&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fx e-anim&quot;&gt;Animated Gradient&lt;span class=&quot;lbl&quot;&gt;background-position animates infinitely&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fx e-stroke&quot;&gt;Hollow Stroke&lt;span class=&quot;lbl&quot;&gt;-webkit-text-stroke: 3px; color: transparent&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fx e-neon&quot;&gt;Neon Glow&lt;span class=&quot;lbl&quot; style=&quot;color:#4ade80&quot;&gt;multiple green text-shadows + flicker&lt;/span&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2&gt;Label Styles (uppercase + letter-spacing)&lt;/h2&gt;
-&lt;div class=&quot;demo&quot;&gt;&lt;div class=&quot;lbl-row&quot;&gt;
-&lt;span class=&quot;pl&quot; style=&quot;background:#dbeafe;color:#1e40af&quot;&gt;new&lt;/span&gt;
-&lt;span class=&quot;pl&quot; style=&quot;background:#dcfce7;color:#166534&quot;&gt;done&lt;/span&gt;
-&lt;span class=&quot;pl&quot; style=&quot;background:#fef3c7;color:#92400e&quot;&gt;beta&lt;/span&gt;
-&lt;span class=&quot;pl&quot; style=&quot;background:#fee2e2;color:#991b1b&quot;&gt;urgent&lt;/span&gt;
-&lt;span class=&quot;pl&quot; style=&quot;background:#0284c7;color:white&quot;&gt;primary&lt;/span&gt;
-&lt;/div&gt;&lt;/div&gt;
-&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 9</div>
+    <div class="phase-title">Part 1: The `resize` Property</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">1.1 — What Is It and Why Does It Exist?</h3>
+<p class="v2-p">Imagine you are filling in a feedback form on a Nigerian government portal. The comment box is tiny — barely two lines tall — but you have a lot to say. Frustrating, right?</p>
+<p class="v2-p">The <code>resize</code> property was created to solve exactly that problem. It lets the web designer give users the ability to manually drag the corner of an element to make it bigger (or smaller). Think of it like the resize handle in the bottom-right corner of a window on your computer.</p>
+<p class="v2-p"><strong>Why does this matter?</strong></p>
+<ul class="v2-ul"><li><strong>Better user experience</strong> — users can expand text areas as needed</li><li><strong>Flexible forms</strong> — feedback boxes, address fields, and message areas all benefit</li><li><strong>Design control</strong> — you can restrict resizing to only one direction (width or height), preventing your page layout from breaking</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.2 — The Four Values of <code>resize</code></h3>
+<p class="v2-p">The <code>resize</code> property accepts four possible values:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>What It Does</th></tr></thead><tbody><tr><td><code>horizontal</code></td><td>User can drag to change the <strong>width</strong> only</td></tr><tr><td><code>vertical</code></td><td>User can drag to change the <strong>height</strong> only</td></tr><tr><td><code>both</code></td><td>User can drag to change <strong>both</strong> width and height</td></tr><tr><td><code>none</code></td><td>User <strong>cannot</strong> resize the element at all</td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Important Rule:</strong> The <code>resize</code> property only works on elements that also have <code>overflow</code> set to something <em>other than</em> <code>visible</code>. You must set <code>overflow: auto</code>, <code>overflow: scroll</code>, or <code>overflow: hidden</code> alongside <code>resize</code> for it to work on most elements. A <code>&lt;textarea&gt;</code> is naturally resizable in most browsers without needing <code>overflow</code>, but it is still good practice to include it.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.3 — Example 1: Resize Width Only (<code>horizontal</code>)</h3>
+<p class="v2-p"><strong>The scenario:</strong> You want a search filter box on your market price comparison site for Lagos traders. The box should expand sideways if the user needs more space, but the height must stay fixed.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* This div can only be made wider by the user */
+    div {
+      border: 2px solid #2c7a2c;   /* Green border */
+      padding: 15px;
+      width: 300px;
+      height: 80px;
+      overflow: auto;              /* Required for resize to work */
+      resize: horizontal;          /* Allow width resizing only */
+      background-color: #f0fff0;
+      font-family: Arial, sans-serif;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Lagos Market Price Filter&lt;/h2&gt;
+  &lt;div&gt;Drag the right edge to make this box wider. The height will not change.&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A green-bordered box appears. The user can grab the bottom-right corner handle and drag it <strong>to the right</strong> to make the box wider. Dragging <strong>downward</strong> has no effect — the height stays fixed at 80px.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Think about this:</strong> What happens if you remove <code>overflow: auto</code> from the code above? Try it and observe whether the resize handle appears.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.4 — Example 2: Resize Height Only (<code>vertical</code>)</h3>
+<p class="v2-p"><strong>The scenario:</strong> A student registration form on a university site in Abuja wants to let users expand the "Additional Notes" box taller, but the width must stay aligned with the rest of the form.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    div {
+      border: 2px solid #1a3c6e;   /* Dark blue border */
+      padding: 15px;
+      width: 350px;
+      height: 80px;
+      overflow: auto;
+      resize: vertical;            /* Allow height resizing only */
+      background-color: #f0f4ff;
+      font-family: Arial, sans-serif;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Student Registration – Additional Notes&lt;/h2&gt;
+  &lt;div&gt;Drag the bottom edge downward to make this box taller. The width stays the same.&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A blue-bordered box appears. The user can drag the bottom handle <strong>downward</strong> to increase the height. The width stays locked at 350px no matter how the user drags.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.5 — Example 3: Resize Both Width and Height (<code>both</code>)</h3>
+<p class="v2-p"><strong>The scenario:</strong> A general-purpose notes widget on a productivity app used by Nigerian professionals should allow full freedom — users can reshape it however they like.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    div {
+      border: 2px solid #8b4513;   /* Brown border */
+      padding: 15px;
+      width: 300px;
+      height: 100px;
+      overflow: auto;
+      resize: both;                /* Allow both width and height resizing */
+      background-color: #fff8f0;
+      font-family: Arial, sans-serif;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;My Notes (Drag to Resize)&lt;/h2&gt;
+  &lt;div&gt;You can drag this box to make it wider, taller, or both. Try it!&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A brown-bordered box with a resize handle in the bottom-right corner. The user can drag in any direction — sideways, downward, or diagonally — to reshape the box freely.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.6 — Example 4: Disable Resizing on a <code>&lt;textarea&gt;</code> (<code>none</code>)</h3>
+<p class="v2-p">This is one of the most commonly used applications of <code>resize</code>. By default, most browsers let users drag and resize a <code>&lt;textarea&gt;</code>. This can break carefully designed form layouts. The fix is simple:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* Without this, users can resize the textarea in most browsers */
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      font-size: 14px;
+      border: 2px solid #999;
+      resize: none;                /* Disable all resizing */
+      font-family: Arial, sans-serif;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Leave a Comment&lt;/h2&gt;
+  &lt;textarea placeholder=&quot;Write your thoughts about the Jollof Rice festival here...&quot;&gt;&lt;/textarea&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A text area appears where the user can type freely. However, the resize handle in the bottom-right corner is gone — the box stays exactly the same size no matter what.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> Every professional contact form or feedback form you see on major Nigerian websites — from banks to e-commerce platforms — disables textarea resizing to keep the layout neat.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.7 — Second Example of <code>resize: none</code> — Confirming the Concept</h3>
+<p class="v2-p">Let us see the same idea applied to a <code>&lt;div&gt;</code> so you understand that this is not textarea-specific:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .fixed-box {
+      width: 280px;
+      height: 100px;
+      border: 2px dashed tomato;
+      padding: 10px;
+      overflow: auto;
+      resize: none;                /* No resizing allowed */
+      background-color: #fff5f5;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Fixed Announcement Box&lt;/h2&gt;
+  &lt;div class=&quot;fixed-box&quot;&gt;
+    This box is locked in size. Users cannot resize it. Perfect for fixed-size widgets like announcement panels.
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A dashed red-bordered box with no resize handle visible at all. The size is completely locked.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body"></body>
+</html>
+`
+
+Expected output in browser:
+A brown-bordered box with a resize handle in the bottom-right corner. The user can drag in any direction — sideways, downward, or diagonally — to reshape the box freely.
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
 </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
-    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 9</div>
+    <div class="phase-title">Part 2: The `outline-offset` Property</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">2.1 — What Is It and Why Does It Exist?</h3>
+<p class="v2-p">You already know what an <code>outline</code> is — a line drawn <em>outside</em> an element's border. But by default, that outline sits right up against the element, touching its edge.</p>
+<p class="v2-p"><code>outline-offset</code> lets you push that outline <em>away</em> from the element — creating a visible gap or breathing room between the element's edge and its outline ring.</p>
+<p class="v2-p"><strong>A simple analogy:</strong> Imagine a framed painting on a wall in a Lagos art gallery. The frame itself is the outline. Now imagine the gallery puts a small gap of space between the painting's edge and the frame — the painting floats inside the frame rather than pressing against it. That floating space is the <code>outline-offset</code>.</p>
+<p class="v2-p"><strong>Why does this matter?</strong></p>
+<ul class="v2-ul"><li>Creates elegant focus rings on form inputs and buttons</li><li>Makes interactive elements visually distinct without using a border</li><li>Gives your UI a modern, polished feel</li><li>Improves accessibility — clearly shows which element has keyboard focus</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.2 — Syntax and How It Works</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>selector {
+  outline: [width] [style] [color];
+  outline-offset: [distance];
+}</code></pre></div></div>
+<p class="v2-p">The <code>outline-offset</code> value is a <strong>length</strong> — you can use <code>px</code>, <code>em</code>, or <code>rem</code>. It can even be <strong>negative</strong> (which pulls the outline <em>inside</em> the element).</p>
+<p class="v2-p">Positive value → outline moves <em>away</em> from the element (outward gap) Negative value → outline moves <em>into</em> the element (inside the element's boundary)</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.3 — Example 1: Basic <code>outline-offset</code> on a <code>&lt;div&gt;</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    div {
+      width: 250px;
+      padding: 20px;
+      margin: 40px;             /* Room for the outline to be visible */
+      background-color: #e8f4e8;
+      border: 2px solid #2c7a2c;
+      outline: 3px solid red;   /* The outline itself */
+      outline-offset: 10px;     /* Push outline 10px away from the border */
+      font-family: Arial, sans-serif;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Outline Offset Demo&lt;/h2&gt;
+  &lt;div&gt;This box has a red outline floating 10px outside its green border.&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A green-bordered box with a red outline ring. The red ring floats 10 pixels away from the green border — there is a visible gap of white/transparent space between them. The outline does not touch the box.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Notice:</strong> The <code>margin: 40px</code> gives the outline room to be fully visible. If the margin were zero, the outline could be clipped by the edge of the screen.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.4 — Example 2: <code>outline-offset</code> on a Focused Input (Real-World Use)</h3>
+<p class="v2-p">The most practical use of <code>outline-offset</code> is on form elements when they receive focus (when the user clicks or tabs into them).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    input {
+      width: 280px;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 2px solid #aaa;
+      border-radius: 6px;
+      outline: none;              /* Remove default browser outline */
+    }
+
+    /* When the user clicks or tabs into the input */
+    input:focus {
+      border-color: #1a5c9e;
+      outline: 3px solid #5b9bd5;  /* Blue glow outline */
+      outline-offset: 4px;         /* Float 4px from the border */
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Student Login – University of Lagos&lt;/h2&gt;
+  &lt;p&gt;Click inside the field below and observe the outline:&lt;/p&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;Enter your matric number&quot;&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> An input field appears. When the user clicks inside it, a blue outline ring appears, floating 4 pixels outside the input's border — a clean "halo" effect. This is a common pattern in modern, accessible web forms.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What happens if you change <code>outline-offset: 4px</code> to <code>outline-offset: 0px</code>? What about <code>outline-offset: -4px</code>?</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.5 — Example 3: Negative <code>outline-offset</code></h3>
+<p class="v2-p">A negative value pulls the outline <em>inside</em> the element, which creates a completely different visual effect — useful for decorative inset rings.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .card {
+      width: 280px;
+      padding: 30px 20px;
+      margin: 20px;
+      background-color: #1a3c6e;
+      color: white;
+      text-align: center;
+      outline: 3px dashed #f0c040;  /* Gold dashed outline */
+      outline-offset: -12px;        /* Pull outline INSIDE the element */
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Award Certificate Preview&lt;/h2&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    Chidinma Okafor&lt;br&gt;
+    Best Student — Computer Science 2024
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A dark blue card with white text. A gold dashed ring appears <em>inside</em> the card (inset), creating a decorative border frame effect. This is a common trick for certificate designs, VIP cards, and styled announcement panels.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.6 — Second Example of <code>outline-offset</code> — Confirming the Concept</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    button {
+      padding: 12px 28px;
+      font-size: 16px;
+      background-color: #008000;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    button:focus {
+      outline: 3px solid #90ee90;  /* Light green focus ring */
+      outline-offset: 6px;         /* Float 6px away from button edge */
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Submit Application&lt;/h2&gt;
+  &lt;p&gt;Press Tab to focus the button and see the outline:&lt;/p&gt;
+  &lt;button&gt;Submit&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A green button. When keyboard-focused (Tab key), a light green outline ring appears, floating 6 pixels away from the button's edges on all sides — a modern, accessible focus indicator.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: The <code>outline-offset</code> Property</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 9</div>
+    <div class="phase-title">Part 3: Using Both Properties Together</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">3.1 — Combined Example: A Nigerian Contact Form</h3>
+<p class="v2-p">Let us now combine <code>resize</code> and <code>outline-offset</code> in a realistic scenario — a styled contact form for a Lagos-based tech company.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #1a3c6e;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 2px solid #aaa;
+      border-radius: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;               /* Remove browser default outline */
+    }
+
+    /* Custom focus style using outline-offset */
+    input:focus, textarea:focus {
+      border-color: #2c7a2c;
+      outline: 3px solid #90ee90;
+      outline-offset: 3px;
+    }
+
+    /* The message textarea can only be resized vertically */
+    textarea {
+      height: 120px;
+      resize: vertical;            /* Let users make it taller only */
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #1a3c6e;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    button:focus {
+      outline: 3px solid #5b9bd5;
+      outline-offset: 4px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Contact Eko Digital Solutions&lt;/h2&gt;
+  &lt;p&gt;Located in Victoria Island, Lagos. Fill the form below:&lt;/p&gt;
+
+  &lt;label&gt;Full Name&lt;/label&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;e.g. Adaeze Nwosu&quot;&gt;
+
+  &lt;label&gt;Email Address&lt;/label&gt;
+  &lt;input type=&quot;email&quot; placeholder=&quot;e.g. adaeze@example.com&quot;&gt;
+
+  &lt;label&gt;Your Message&lt;/label&gt;
+  &lt;textarea placeholder=&quot;Type your message here. Drag the bottom edge to expand this area...&quot;&gt;&lt;/textarea&gt;
+
+  &lt;button&gt;Send Message&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A clean, styled contact form. Each field shows a green outline ring floating 3px away from its border when clicked. The textarea can be dragged taller but not wider. The button shows a blue floating outline when tab-focused. The form looks polished and professional.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Using Both Properties Together</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 9</div>
+    <div class="phase-title">Part 4: Guided Practice Exercises</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — Resize a Product Description Box</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a product listing box where users can resize it in both directions.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a product page for an online supermarket selling Nigerian food items. Each product has a description box that users can reshape as they prefer.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an HTML file</li><li>Add a <code>&lt;div&gt;</code> with a class of <code>product-box</code></li><li>Give it a width of <code>320px</code>, height of <code>100px</code>, padding of <code>15px</code>, and a border</li><li>Set <code>overflow: auto</code> and <code>resize: both</code></li><li>Place the text "Indomie Noodles – Chicken Flavour. A quick and tasty meal ready in 3 minutes. Available in cartons of 40 packs." inside the div</li><li>Add a heading above the box</li></ol>
+<p class="v2-p"><strong>Full Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .product-box {
+      width: 320px;
+      height: 100px;
+      padding: 15px;
+      border: 2px solid #cc6600;
+      background-color: #fff9f0;
+      overflow: auto;
+      resize: both;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Naija Supermart – Product Details&lt;/h2&gt;
+  &lt;div class=&quot;product-box&quot;&gt;
+    Indomie Noodles – Chicken Flavour. A quick and tasty meal ready in 3 minutes. Available in cartons of 40 packs.
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A small orange-bordered box with product text. Users can grab the bottom-right corner and drag it in any direction to resize the box.</p>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>Does the resize handle appear in the bottom-right corner of the box?</li><li>What happens to the text when you make the box very small?</li><li>Does <code>overflow: auto</code> show a scrollbar when the content is bigger than the box?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Fixed Feedback Form with Offset Outline</h3>
+<p class="v2-p"><strong>Objective:</strong> Build a feedback form where the textarea cannot be resized (to protect layout), and focused fields show a floating outline.</p>
+<p class="v2-p"><strong>Scenario:</strong> A bank in Abuja wants a clean feedback form. The textarea must not be resizable. Focused fields must show a clear but elegant blue outline ring floating 5px away.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an HTML file with a form structure</li><li>Add an <code>&lt;input&gt;</code> for name and a <code>&lt;textarea&gt;</code> for comments</li><li>Apply <code>resize: none</code> to the textarea</li><li>Apply <code>outline: 3px solid #1a5c9e</code> and <code>outline-offset: 5px</code> to the <code>:focus</code> state of both elements</li><li>Remove default browser outline on the elements themselves</li></ol>
+<p class="v2-p"><strong>Full Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 420px;
+      margin: 30px auto;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 2px solid #ccc;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #1a5c9e;
+      outline: 3px solid #1a5c9e;
+      outline-offset: 5px;
+    }
+
+    textarea {
+      height: 130px;
+      resize: none;     /* Prevent user from resizing */
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;First Bank of Nigeria – Customer Feedback&lt;/h2&gt;
+  &lt;label&gt;Your Name&lt;/label&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;e.g. Emeka Eze&quot;&gt;
+  &lt;label&gt;Your Feedback&lt;/label&gt;
+  &lt;textarea placeholder=&quot;Tell us about your recent banking experience...&quot;&gt;&lt;/textarea&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A two-field form. When either field is clicked, a dark blue outline ring appears floating 5px outside the field border. The textarea has no resize handle — it is completely fixed in size.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Award Certificate with Negative Outline Offset</h3>
+<p class="v2-p"><strong>Objective:</strong> Style a certificate card using a negative <code>outline-offset</code> to create an inset decorative ring.</p>
+<p class="v2-p"><strong>Scenario:</strong> The Computer Science Department of a Nigerian university wants a simple digital certificate preview card.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a <code>&lt;div&gt;</code> with class <code>certificate</code></li><li>Give it a dark background, white text, and generous padding</li><li>Add an outline with a <strong>negative</strong> offset to create an inset ring effect</li><li>Include recipient name, achievement, and institution</li></ol>
+<p class="v2-p"><strong>Full Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .certificate {
+      width: 380px;
+      padding: 50px 30px;
+      margin: 40px auto;
+      background-color: #1a3c6e;
+      color: white;
+      text-align: center;
+      font-family: Georgia, serif;
+      outline: 4px solid gold;
+      outline-offset: -18px;      /* Inset decorative ring */
+    }
+
+    .certificate h1 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .certificate p {
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .certificate .name {
+      font-size: 26px;
+      font-weight: bold;
+      color: gold;
+      margin: 12px 0;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;certificate&quot;&gt;
+    &lt;h1&gt;CERTIFICATE OF EXCELLENCE&lt;/h1&gt;
+    &lt;p&gt;This is to certify that&lt;/p&gt;
+    &lt;div class=&quot;name&quot;&gt;Funmilayo Adeyemi&lt;/div&gt;
+    &lt;p&gt;has successfully completed the&lt;br&gt;
+    &lt;strong&gt;Web Development Bootcamp 2024&lt;/strong&gt;&lt;br&gt;
+    at the University of Ibadan,&lt;br&gt;
+    Department of Computer Science.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output in browser:</strong> A dark blue certificate card with white and gold text. A gold outline ring appears <em>inside</em> the card boundary, creating an elegant decorative inner frame effect. The text is centred within the ring.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 9</div>
+    <div class="phase-title">Part 5: Code Challenges</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">These challenges are adapted from the W3Schools CSS User Interface challenge set. Try each one on your own before checking the solution.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge 1</h3>
+<p class="v2-p"><strong>Task:</strong> Make a <code>&lt;div&gt;</code> element resizable only in the <strong>horizontal</strong> (width) direction.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Starting code --&gt;
+&lt;style&gt;
+  div {
+    border: 2px solid black;
+    padding: 15px;
+    width: 300px;
+    overflow: auto;
+    /* Add your resize property here */
+  }
+&lt;/style&gt;
+&lt;div&gt;Resize me horizontally!&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  div {
+    border: 2px solid black;
+    padding: 15px;
+    width: 300px;
+    overflow: auto;
+    resize: horizontal;
+  }
+&lt;/style&gt;
+&lt;div&gt;Resize me horizontally!&lt;/div&gt;</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge 2</h3>
+<p class="v2-p"><strong>Task:</strong> Disable resizing on the <code>&lt;textarea&gt;</code> element below.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Starting code --&gt;
+&lt;style&gt;
+  textarea {
+    width: 100%;
+    height: 100px;
+    /* Add your resize property here */
+  }
+&lt;/style&gt;
+&lt;textarea&gt;This textarea should not be resizable.&lt;/textarea&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+  }
+&lt;/style&gt;
+&lt;textarea&gt;This textarea should not be resizable.&lt;/textarea&gt;</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge 3</h3>
+<p class="v2-p"><strong>Task:</strong> Give the <code>&lt;div&gt;</code> below an outline that is offset <strong>15px</strong> from the element's edge.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Starting code --&gt;
+&lt;style&gt;
+  div {
+    border: 2px solid black;
+    padding: 20px;
+    width: 250px;
+    margin: 30px;
+    outline: 4px dashed red;
+    /* Add your outline-offset property here */
+  }
+&lt;/style&gt;
+&lt;div&gt;I should have a floating outline!&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  div {
+    border: 2px solid black;
+    padding: 20px;
+    width: 250px;
+    margin: 30px;
+    outline: 4px dashed red;
+    outline-offset: 15px;
+  }
+&lt;/style&gt;
+&lt;div&gt;I should have a floating outline!&lt;/div&gt;</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge 4</h3>
+<p class="v2-p"><strong>Task:</strong> Make a button that shows a floating green outline ring (3px solid, offset 8px) when it is focused.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Starting code --&gt;
+&lt;style&gt;
+  button {
+    padding: 10px 24px;
+    font-size: 15px;
+    cursor: pointer;
+    outline: none;
+    /* Add focus styles below */
+  }
+&lt;/style&gt;
+&lt;button&gt;Click or Tab to me&lt;/button&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  button {
+    padding: 10px 24px;
+    font-size: 15px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  button:focus {
+    outline: 3px solid green;
+    outline-offset: 8px;
+  }
+&lt;/style&gt;
+&lt;button&gt;Click or Tab to me&lt;/button&gt;</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">`html
+<!-- Starting code -->
+<style>
+  textarea {
+    width: 100%;
+    height: 100px;
+    /* Add your resize property here */
+  }
+</style>
+<textarea>This textarea should not be resizable.</textarea>
+`
+
+Solution:
+
+`html
+<style>
+  textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+  }
+</style>
+<textarea>This textarea should not be resizable.</textarea>
+`
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 9</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 — Using <code>resize</code> Without <code>overflow</code></h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  resize: both;
+  /* Missing overflow! */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Why it fails:</strong> On most elements (not textarea), the browser ignores <code>resize</code> unless <code>overflow</code> is set to something other than <code>visible</code>.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  resize: both;
+  overflow: auto;  /* This activates the resize handle */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Forgetting <code>margin</code> When Using <code>outline-offset</code></h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  outline: 3px solid red;
+  outline-offset: 15px;
+  margin: 0;  /* The outline may be clipped at the screen edge */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Why it fails:</strong> The outline floats <em>outside</em> the element. If there is no margin, the outer part of the outline may be clipped by the screen or the parent container edge.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  outline: 3px solid red;
+  outline-offset: 15px;
+  margin: 25px;   /* Give the floating outline room to breathe */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Thinking <code>outline-offset</code> Changes the Element's Size</h3>
+<p class="v2-p"><strong>Misconception:</strong> "If I add <code>outline-offset: 20px</code>, will it push the other elements on the page further apart?"</p>
+<p class="v2-p"><strong>Reality:</strong> No. Outlines — including their offsets — never affect the page layout or push other elements around. Only <code>border</code>, <code>margin</code>, and <code>padding</code> affect layout. An outline with an offset floats visually but takes up zero layout space.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Applying <code>resize</code> to Inline Elements</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>span {
+  resize: both;
+  overflow: auto;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Why it fails:</strong> <code>resize</code> only works on <strong>block-level</strong> elements and replaced elements (like <code>&lt;textarea&gt;</code>). A <code>&lt;span&gt;</code> is inline — it has no resizable dimensions by default.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>span {
+  display: block;  /* Convert to block first */
+  resize: both;
+  overflow: auto;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Removing Browser Outline Without Providing a Replacement</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>input:focus {
+  outline: none;  /* User now has NO visual focus indicator */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Why it fails:</strong> This is an <strong>accessibility problem</strong>. Users navigating by keyboard (or users with visual needs) rely on the focus ring to know which element is active. Removing it without replacing it is harmful.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>input:focus {
+  outline: none;                      /* Remove browser default */
+  border-color: green;                /* Add your own custom focus style */
+  box-shadow: 0 0 0 3px lightgreen;   /* Or use box-shadow as a ring */
+}</code></pre></div></div>
+<p class="v2-p">Or better still, use <code>outline-offset</code> to keep a ring but style it beautifully:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>input:focus {
+  outline: 3px solid green;
+  outline-offset: 3px;
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 9</div>
+    <div class="phase-title">Quick Reference Card</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>Values</th><th>Notes</th></tr></thead><tbody><tr><td><code>resize</code></td><td><code>horizontal</code></td><td>Width only</td></tr><tr><td><code>resize</code></td><td><code>vertical</code></td><td>Height only</td></tr><tr><td><code>resize</code></td><td><code>both</code></td><td>Width and height</td></tr><tr><td><code>resize</code></td><td><code>none</code></td><td>No resizing</td></tr><tr><td><code>resize</code></td><td>Requires <code>overflow: auto</code></td><td>On block elements</td></tr><tr><td><code>outline-offset</code></td><td>Positive <code>px</code></td><td>Outline moves outward</td></tr><tr><td><code>outline-offset</code></td><td>Negative <code>px</code></td><td>Outline moves inward</td></tr><tr><td><code>outline-offset</code></td><td>No layout effect</td><td>Purely visual</td></tr><tr><td>Best practice</td><td><code>outline-offset</code> on <code>:focus</code></td><td>Accessible focus rings</td></tr></tbody></table></div>
+<hr class="v2-hr">
+<p class="v2-p"><em>End of Lesson 64 — CSS User Interface</em></p>
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">---
+
+*End of Lesson 64 — CSS User Interface*</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Stage 1: Setup — Page and Form Shell</div>
+  <div class="build-desc"><strong>Goal:</strong> Build a complete, styled application form that uses both <code>resize</code> and <code>outline-offset</code> together to create a polished, professional result.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .form-container {
+      max-width: 520px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      padding: 35px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #1a3c6e;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;form-container&quot;&gt;
+    &lt;h2&gt;Eko Tech Academy&lt;/h2&gt;
+    &lt;p class=&quot;subtitle&quot;&gt;Course Application Form – Lagos Campus&lt;/p&gt;
+    &lt;!-- Form fields will go here in next stages --&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .form-container {
+      max-width: 520px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      padding: 35px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #1a3c6e;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Eko Tech Academy</h2>
+    <p class="subtitle">Course Application Form – Lagos Campus</p>
+    <!-- Form fields will go here in next stages -->
+  </div>
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
       ⬇ Download starter.html
     </button>
-    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
       🐙 Push to GitHub →
     </button>
   </div>
-  <script>
-  const __code = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Text Effects</title>
-<style>
-@keyframes grad-move{to{background-position:200% center}}
-@keyframes flicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.8}96%{opacity:.9}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
-*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.demo{background:white;border:1.5px solid #bae6fd;border-radius:12px;padding:20px;margin-bottom:14px}
-.fx{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;margin:8px 0;line-height:1.2}
-.lbl{font-size:11px;color:#94a3b8;font-family:monospace;margin-top:4px;display:block}
-.e-soft{text-shadow:3px 3px 8px rgba(0,0,0,.2)}
-.e-glow{color:white;background:#0f172a;padding:8px 16px;border-radius:8px;text-shadow:0 0 20px rgba(2,132,199,.9),0 0 40px rgba(2,132,199,.5)}
-.e-3d{color:#0284c7;text-shadow:1px 1px 0 #0369a1,2px 2px 0 #0369a1,3px 3px 0 #0369a1,4px 4px 0 rgba(0,0,0,.1)}
-.e-grad{background:linear-gradient(135deg,#0284c7,#7c3aed,#ea4f21);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.e-anim{background:linear-gradient(to right,#0284c7,#ea4f21,#10b981,#0284c7);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-move 4s linear infinite}
-.e-stroke{-webkit-text-stroke:3px #0284c7;color:transparent}
-.e-neon{color:#4ade80;background:#0f172a;padding:8px 16px;border-radius:8px;text-shadow:0 0 10px #4ade80,0 0 30px #4ade80,0 0 60px #4ade80;animation:flicker 4s infinite}
-.lbl-row{display:flex;gap:8px;flex-wrap:wrap}
-.pl{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:100px}
-</style></head><body>
-<h1 style="color:#0284c7;margin-bottom:4px">CSS Text Effects Gallery</h1>
-<div class="demo">
-<div class="fx e-soft">Soft Shadow<span class="lbl">text-shadow: 3px 3px 8px rgba(0,0,0,.2)</span></div>
-<div class="fx e-glow">Glow Effect<span class="lbl" style="color:#4ade80">text-shadow: 0 0 20px rgba(blue,.9)</span></div>
-<div class="fx e-3d">3D Shadow<span class="lbl">4× stacked text-shadows</span></div>
-<div class="fx e-grad">Gradient Text<span class="lbl">background-clip:text + transparent fill</span></div>
-<div class="fx e-anim">Animated Gradient<span class="lbl">background-position animates infinitely</span></div>
-<div class="fx e-stroke">Hollow Stroke<span class="lbl">-webkit-text-stroke: 3px; color: transparent</span></div>
-<div class="fx e-neon">Neon Glow<span class="lbl" style="color:#4ade80">multiple green text-shadows + flicker</span></div>
 </div>
-<h2>Label Styles (uppercase + letter-spacing)</h2>
-<div class="demo"><div class="lbl-row">
-<span class="pl" style="background:#dbeafe;color:#1e40af">new</span>
-<span class="pl" style="background:#dcfce7;color:#166534">done</span>
-<span class="pl" style="background:#fef3c7;color:#92400e">beta</span>
-<span class="pl" style="background:#fee2e2;color:#991b1b">urgent</span>
-<span class="pl" style="background:#0284c7;color:white">primary</span>
-</div></div>
-</body></html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-64-css_text_effects</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 64 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-64-css_text_effects/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-64-stage-1-setup-page-and-form-shell</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 64 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-64-stage-1-setup-page-and-form-shell/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 64 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Text shadow and gradient text</li><li>✅ Text stroke and labels</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_63.html" class="ln-btn">← Lesson 63</a>
-    <a href="lesson_65.html" class="ln-btn primary">Lesson 65 →</a>
-  </div>
+  <h2>🎉 Lesson 64 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1: The `resize` Property</li><li>✅ Part 2: The `outline-offset` Property</li><li>✅ Part 3: Using Both Properties Together</li><li>✅ Part 4: Guided Practice Exercises</li><li>✅ Part 5: Code Challenges</li><li>✅ Common Beginner Mistakes</li></ul>
+  <div class="lesson-nav"><a href="lesson_63.html" class="ln-btn">← Lesson 63</a><a href="lesson_65.html" class="ln-btn primary">Lesson 65 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 64 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 64 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_css_64_phase';
+const TOTAL=9,KEY='techbase_css_l64';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

@@ -2,504 +2,883 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 01: CSS Introduction — Techbase CSS Course</title>
-<meta name="description" content="Discover what CSS is and how it transforms plain HTML into beautiful, styled web pages">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 01: Introduction to CSS — What It Is, Why It Exists, and How It Works — Techbase CSS</title>
+<meta name="description" content="Introduction to CSS — What It Is, Why It Exists, and How It Works">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 01 of 73 &nbsp;·&nbsp; CSS Introduction</span>
-  <div class="nav-actions"><a href="lesson_02.html" class="ln-btn primary">Lesson 02 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 01 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 01</div>
-    <h1>CSS Introduction</h1>
-    <p class="lesson-tagline">Discover what CSS is and how it transforms plain HTML into beautiful, styled web pages</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My First Styled Page</span>
-      
-    </div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 01</div>
+    <h1>Introduction to CSS — What It Is, Why It Exists, and How It Works</h1>
+    <div class="l-hero-sub">10 phases · Build: Project Brief</div>
   </div>
+</div>
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 01</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Welcome! In this lesson, you will take your very first steps into the world of <strong>CSS</strong> — one of the most important technologies used to build websites and web applications.</p>
+<p class="v2-p">By the time you finish this lesson, you will be able to:</p>
+<ul class="v2-ul"><li>Explain what CSS is and why it was created</li><li>Understand how CSS and HTML work together</li><li>Write a complete, correct CSS rule from memory</li><li>Know the names and roles of every part of a CSS rule</li><li>Spot and fix common CSS mistakes</li><li>Apply CSS to a real mini-project</li></ul>
+<p class="v2-p">You do not need any previous knowledge to start. This lesson will teach you everything from the ground up. Even if you have never written a single line of code before, you are in the right place.</p>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 10 phases</span>
+    <span>🏗️ Project Brief</span>
+  </div>
+</div></div>
 </section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 01!</div>
-  <h2>CSS Introduction</h2>
-  <p>Discover what CSS is and how it transforms plain HTML into beautiful, styled web pages. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
-</div>
-<div class="phase " id="phase1" data-phase="1">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">What Is CSS?</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 10</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>CSS stands for <strong>Cascading Style Sheets</strong>. While HTML provides the structure (the bones), CSS provides the appearance (the skin). Without CSS, every website would look the same — plain black text on a white background. CSS controls colours, fonts, spacing, layout and animations. The word <em>cascading</em> means styles flow down from parent elements to children, and when two rules conflict, specific rules win.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">index.html</span>
-  </div>
-  <div class="code-body"><pre>&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;CSS Introduction&lt;/title&gt;
-    &lt;style&gt;
-      /* This is a CSS comment */
-      body {
-        background-color: #f0f9ff;
-        font-family: Arial, sans-serif;
-        color: #0f172a;
-      }
-      h1 { color: #0284c7; }
-      p  { font-size: 18px; line-height: 1.8; }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Hello, CSS!&lt;/h1&gt;
-    &lt;p&gt;CSS makes this page look beautiful.&lt;/p&gt;
-    &lt;p&gt;Try changing the color values and font-size!&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
-</div>
+    <p class="v2-p">Welcome! In this lesson, you will take your very first steps into the world of <strong>CSS</strong> — one of the most important technologies used to build websites and web applications.</p>
+<p class="v2-p">By the time you finish this lesson, you will be able to:</p>
+<ul class="v2-ul"><li>Explain what CSS is and why it was created</li><li>Understand how CSS and HTML work together</li><li>Write a complete, correct CSS rule from memory</li><li>Know the names and roles of every part of a CSS rule</li><li>Spot and fix common CSS mistakes</li><li>Apply CSS to a real mini-project</li></ul>
+<p class="v2-p">You do not need any previous knowledge to start. This lesson will teach you everything from the ground up. Even if you have never written a single line of code before, you are in the right place.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Change <code>background-color</code> to <code>#fff3ef</code> (warm peach). Change the <code>h1</code> colour to <code>#ea4f21</code> (orange). Change the paragraph <code>font-size</code> to <code>20px</code>. Save and refresh — see the difference CSS makes instantly!</p>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
+</div>
+<div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">CSS History and the Browser</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 10</div>
+    <div class="phase-title">Prerequisite Concepts — Things You Need to Know First</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>CSS was first proposed by Håkon Wium Lie in 1994 and became a W3C standard in 1996. Today we use CSS3, which adds animations, gradients, variables and much more. The browser reads your HTML first, then reads your CSS and applies the styles. This two-step process is called <strong>rendering</strong>. DevTools (F12) lets you inspect and change CSS live in the browser — a skill every developer uses every single day.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">index.html</span>
-  </div>
-  <div class="code-body"><pre>&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
+    <p class="v2-p">Before we dive into CSS, we need to briefly explain one idea that CSS depends on: <strong>HTML</strong>.</p>
+<h3 class="v2-h3">What is HTML?</h3>
+<p class="v2-p"><strong>HTML</strong> stands for <strong>HyperText Markup Language</strong>. It is the language used to build the <em>structure</em> of a web page — like the skeleton of a building. It defines things like headings, paragraphs, images, and links.</p>
+<p class="v2-p">Here is a simple HTML example:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
   &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;CSS in the Browser&lt;/title&gt;
-    &lt;style&gt;
-      body { font-family: 'Segoe UI', Arial, sans-serif;
-             max-width: 700px; margin: 0 auto; padding: 30px; }
-      .timeline { border-left: 4px solid #0284c7; padding-left: 24px; }
-      .event    { margin-bottom: 20px; }
-      .event h3 { color: #0284c7; margin: 0 0 4px; }
-      .event p  { color: #475569; margin: 0; font-size: 15px; }
-      .year     { font-family: monospace; font-weight: bold; color: #94a3b8; }
-    &lt;/style&gt;
+    &lt;title&gt;My First Page&lt;/title&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;h1 style="color: #0284c7;"&gt;CSS Timeline&lt;/h1&gt;
-    &lt;div class="timeline"&gt;
-      &lt;div class="event"&gt;
-        &lt;h3&gt;&lt;span class="year"&gt;1994&lt;/span&gt; — CSS Proposed&lt;/h3&gt;
-        &lt;p&gt;Håkon Wium Lie proposes CSS to separate style from structure.&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class="event"&gt;
-        &lt;h3&gt;&lt;span class="year"&gt;1996&lt;/span&gt; — CSS1 Standard&lt;/h3&gt;
-        &lt;p&gt;W3C releases the first official CSS specification.&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class="event"&gt;
-        &lt;h3&gt;&lt;span class="year"&gt;1998&lt;/span&gt; — CSS2 Released&lt;/h3&gt;
-        &lt;p&gt;Adds positioning, z-index, media types and aural CSS.&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class="event"&gt;
-        &lt;h3&gt;&lt;span class="year"&gt;2011+&lt;/span&gt; — CSS3 Modules&lt;/h3&gt;
-        &lt;p&gt;Animations, gradients, flexbox, grid, variables and more!&lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+    &lt;p&gt;This is a paragraph of text.&lt;/p&gt;
   &lt;/body&gt;
-&lt;/html&gt;</pre></div>
-</div>
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>What does this produce?</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Hello, World!
+This is a paragraph of text.</code></pre></div></div>
+<p class="v2-p">The page appears plain and unstyled — just raw black text on a white background. It has structure, but no design. That is where CSS comes in.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Analogy:</strong> Think of HTML as the bricks and concrete of a building (structure), and CSS as the paint, wallpaper, and furniture (appearance).</p></blockquote>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Open DevTools (F12) on this page. In the Elements panel, click on the <code>h1</code>. In the Styles panel on the right, change the <code>color</code> to any value. Notice the change is instant — but it doesn't save. Now try it on any real website!</p>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts — Things You Need to Know First</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My First Styled Page</div>
-  <p class="project-desc">Build an HTML page that uses CSS to set background colour, font, text colour, and line height.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 10</div>
+    <div class="phase-title">Section 1 — What Is CSS?</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Simple Definition</h3>
+<p class="v2-p"><strong>CSS</strong> stands for <strong>Cascading Style Sheets</strong>.</p>
+<p class="v2-p">CSS is the language used to control how HTML elements <em>look</em> on a screen, on a printed page, or in any other display medium.</p>
+<p class="v2-p">Without CSS, every webpage would look like a plain, unstyled document — like a Word document with no formatting. CSS is what makes websites look colourful, professional, and beautiful.</p>
+<h3 class="v2-h3">Breaking Down the Name</h3>
+<p class="v2-p">Let us look at each word in "Cascading Style Sheets" so you understand exactly what it means:</p>
+<ul class="v2-ul"><li><strong>Cascading</strong> — CSS rules can come from multiple places (your file, the browser's defaults, inline styles). The word "cascading" describes how these rules flow together and how conflicts between them are resolved. We will learn more about this later.</li><li><strong>Style</strong> — CSS controls the visual style: colours, fonts, sizes, spacing, layout, and more.</li><li><strong>Sheets</strong> — CSS rules are usually written in a separate file (a "sheet"), though they can also appear inside an HTML file.</li></ul>
+<h3 class="v2-h3">What Can CSS Control?</h3>
+<p class="v2-p">CSS can control almost every visual aspect of a webpage, including:</p>
+<ul class="v2-ul"><li><strong>Colours</strong> — background colour, text colour, border colour</li><li><strong>Fonts</strong> — font family, font size, bold, italic</li><li><strong>Layout</strong> — where elements sit on the page, how wide they are, how much space surrounds them</li><li><strong>Spacing</strong> — the gap inside an element (padding) and outside an element (margin)</li><li><strong>Borders</strong> — lines drawn around elements</li><li><strong>Animations</strong> — moving and transitioning elements smoothly</li><li><strong>Responsive design</strong> — making pages look good on phones, tablets, and desktops</li></ul>
+<h3 class="v2-h3">CSS Saves a Huge Amount of Work</h3>
+<p class="v2-p">Here is one of the most important things to understand about CSS: <strong>a single CSS file can control the appearance of an entire website</strong> — dozens or hundreds of pages at once.</p>
+<p class="v2-p">Imagine you have a website with 100 pages and you want to change the colour of all your headings from black to blue. Without CSS, you would need to open every single page and change each heading individually. With CSS, you open <em>one</em> CSS file, change one line, and every page on your website updates automatically.</p>
+<p class="v2-p">This is why CSS exists. It separates the <em>content</em> (HTML) from the <em>design</em> (CSS), making large websites much easier to manage.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>What Is CSS?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 10</div>
+    <div class="phase-title">Section 2 — CSS and HTML: How They Work Together</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Think of building a webpage like decorating a room:</p>
+<ul class="v2-ul"><li><strong>HTML</strong> = the walls, furniture, and objects in the room</li><li><strong>CSS</strong> = the paint on the walls, the colour of the furniture, the size of the windows</li></ul>
+<p class="v2-p">HTML creates the <em>things</em> on the page. CSS decides how those <em>things look</em>.</p>
+<h3 class="v2-h3">A Real-World Analogy</h3>
+<p class="v2-p">Imagine a restaurant menu. The words on the menu (dish names, descriptions, prices) are like <strong>HTML</strong> — they are the content. But whether those words appear in a fancy gold font on dark paper, or in plain black on white paper, or in a big red title — that is like <strong>CSS</strong>. The content is the same; only the presentation changes.</p>
+<h3 class="v2-h3">Seeing CSS In Action</h3>
+<p class="v2-p">Look at the same HTML page below, first without CSS and then with CSS applied:</p>
+<p class="v2-p"><strong>HTML only (no CSS):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;h1&gt;Welcome to My Bakery&lt;/h1&gt;
+&lt;p&gt;We bake fresh bread every morning.&lt;/p&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Output (no CSS):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Welcome to My Bakery
+We bake fresh bread every morning.</code></pre></div></div>
+<p class="v2-p">Plain, black text. No colour. No personality.</p>
+<p class="v2-p"><strong>Same HTML with CSS applied:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: darkred;
+  font-size: 36px;
+  text-align: center;
+}
+
+p {
+  color: gray;
+  font-size: 18px;
+  font-family: Georgia, serif;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Output (with CSS):</strong></p>
+<p class="v2-p">The heading appears large, dark red, and centred. The paragraph appears smaller, grey, and in an elegant serif font. Same HTML content — completely different visual experience.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> What would happen if you changed <code>color: darkred</code> to <code>color: blue</code>? The heading would appear blue instead. CSS gives you that kind of control instantly.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>CSS and HTML: How They Work Together</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 10</div>
+    <div class="phase-title">Section 3 — CSS Syntax: The Grammar of CSS</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Every programming language or styling language has a <strong>syntax</strong> — a set of rules about how you must write your code so the computer understands it. CSS syntax is very simple and follows a consistent pattern.</p>
+<h3 class="v2-h3">The Three Parts of a CSS Rule</h3>
+<p class="v2-p">A complete CSS instruction is called a <strong>CSS rule</strong>. Every CSS rule is made up of exactly three parts:</p>
+<ol class="v2-ol"><li><strong>Selector</strong> — tells CSS <em>which</em> HTML element to style</li><li><strong>Property</strong> — tells CSS <em>what</em> aspect to change (colour, size, font, etc.)</li><li><strong>Value</strong> — tells CSS <em>how</em> to change it (red, 20px, bold, etc.)</li></ol>
+<p class="v2-p">Here is the pattern:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>selector {
+  property: value;
+}</code></pre></div></div>
+<p class="v2-p">And here is a real example:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: red;
+}</code></pre></div></div>
+<p class="v2-p">Let us break every character down:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Part</th><th>What it is</th><th>What it does</th></tr></thead><tbody><tr><td><code>p</code></td><td>Selector</td><td>Targets all <code>&lt;p&gt;</code> (paragraph) HTML elements</td></tr><tr><td><code>{</code></td><td>Opening curly brace</td><td>Opens the "instruction block" — everything inside applies to the selector</td></tr><tr><td><code>color</code></td><td>Property</td><td>The visual aspect we want to change — in this case, the text colour</td></tr><tr><td><code>:</code></td><td>Colon</td><td>Separates the property name from its value</td></tr><tr><td><code>red</code></td><td>Value</td><td>The specific setting for the property — make the text red</td></tr><tr><td><code>;</code></td><td>Semicolon</td><td>Marks the end of this one declaration. Required if there are more below it.</td></tr><tr><td><code>}</code></td><td>Closing curly brace</td><td>Closes the instruction block</td></tr></tbody></table></div>
+<h3 class="v2-h3">The Correct Terms to Know</h3>
+<p class="v2-p">CSS professionals use specific words for these parts:</p>
+<ul class="v2-ul"><li>The <code>selector + { ... }</code> together is called a <strong>CSS rule</strong> (or "rule set")</li><li>The part inside the curly braces is called the <strong>declaration block</strong></li><li>Each single <code>property: value;</code> line inside the block is called a <strong>declaration</strong></li><li>The word on the left of the colon (<code>:</code>) is the <strong>property</strong></li><li>The word on the right of the colon (<code>:</code>) is the <strong>value</strong></li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Full structure labelled: */
+
+p              /* ← SELECTOR */
+{              /* ← Opening brace of DECLARATION BLOCK */
+  color: red;  /* ← DECLARATION (property: value;) */
+}              /* ← Closing brace of DECLARATION BLOCK */</code></pre></div></div>
+<h3 class="v2-h3">Multiple Declarations in One Rule</h3>
+<p class="v2-p">You can write as many declarations as you want inside one rule block. Each declaration must end with a semicolon (<code>;</code>).</p>
+<p class="v2-p"><strong>Example with three declarations:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: red;
+  text-align: center;
+  font-size: 20px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What this does:</strong></p>
+<ul class="v2-ul"><li><code>color: red;</code> — makes the text red</li><li><code>text-align: center;</code> — centres the text horizontally</li><li><code>font-size: 20px;</code> — makes the text 20 pixels tall</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> All paragraphs (<code>&lt;p&gt;</code> elements) on the page appear with red text, centred, at a size of 20 pixels.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> What would happen if you removed the semicolon after <code>color: red</code>? Many browsers will still understand it if it is the last declaration, but it is considered bad practice and can cause bugs when you add more declarations later. Always use semicolons.</p></blockquote>
+<h3 class="v2-h3">Multiple Rules for Different Selectors</h3>
+<p class="v2-p">You can write as many CSS rules as you need — one for each type of HTML element you want to style:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  background-color: lightblue;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+}
+
+p {
+  font-family: verdana;
+  font-size: 20px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Breaking this down line by line:</strong></p>
+<ul class="v2-ul"><li><code>body { background-color: lightblue; }</code> — The <code>body</code> selector targets the entire webpage. This makes the whole page background light blue.</li><li><code>h1 { color: white; text-align: center; }</code> — Targets all <code>&lt;h1&gt;</code> (biggest heading) elements. Makes them white and centred.</li><li><code>p { font-family: verdana; font-size: 20px; }</code> — Targets all <code>&lt;p&gt;</code> (paragraph) elements. Sets their font to Verdana and their size to 20px.</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> A webpage with a light blue background, white centred headings, and paragraphs in Verdana at 20px.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>CSS Syntax: The Grammar of CSS</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 10</div>
+    <div class="phase-title">Section 4 — Understanding Each Part in Depth</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">4.1 — The Selector</h3>
+<p class="v2-p">The <strong>selector</strong> is the part of a CSS rule that says "which HTML element should this rule apply to?"</p>
+<p class="v2-p">Think of it like the name tag at a job site. If you want all the painters to wear blue uniforms, you write a rule targeted at "painters". If you want all the electricians to wear yellow uniforms, you write a separate rule for "electricians".</p>
+<p class="v2-p">The most basic type of selector is the <strong>element selector</strong> — it simply names the HTML tag you want to style.</p>
+<p class="v2-p"><strong>Simple element selectors:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Target all &lt;h1&gt; elements */
+h1 {
+  color: navy;
+}
+
+/* Target all &lt;p&gt; elements */
+p {
+  color: darkgray;
+}
+
+/* Target all &lt;body&gt; elements (the whole page) */
+body {
+  background-color: ivory;
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">📌 <strong>Important:</strong> In the CSS selector, you do NOT include the angle brackets (<code>&lt;</code> and <code>&gt;</code>). You write <code>p</code>, not <code>&lt;p&gt;</code>. You write <code>h1</code>, not <code>&lt;h1&gt;</code>.</p></blockquote>
+<p class="v2-p"><strong>What happens with an element selector?</strong></p>
+<p class="v2-p">When you write <code>h1 { color: blue; }</code>, CSS finds <em>every single</em> <code>&lt;h1&gt;</code> element in your entire HTML document and makes all of them blue. One rule, multiple elements — that is the power of CSS.</p>
+<h3 class="v2-h3">4.2 — The Property</h3>
+<p class="v2-p">The <strong>property</strong> is the name of the visual aspect you want to change.</p>
+<p class="v2-p">CSS has hundreds of properties. Here are some of the most common ones you will use:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>What it controls</th><th>Example value</th></tr></thead><tbody><tr><td><code>color</code></td><td>Text colour</td><td><code>red</code>, <code>blue</code>, <code>#ff0000</code></td></tr><tr><td><code>background-color</code></td><td>Background colour</td><td><code>lightblue</code>, <code>white</code></td></tr><tr><td><code>font-size</code></td><td>How large the text is</td><td><code>16px</code>, <code>2em</code></td></tr><tr><td><code>font-family</code></td><td>Which font to use</td><td><code>Arial</code>, <code>Georgia</code></td></tr><tr><td><code>text-align</code></td><td>Left, centre, or right alignment</td><td><code>center</code>, <code>left</code>, <code>right</code></td></tr><tr><td><code>border</code></td><td>Line around an element</td><td><code>1px solid black</code></td></tr><tr><td><code>margin</code></td><td>Space <em>outside</em> an element</td><td><code>20px</code>, <code>auto</code></td></tr><tr><td><code>padding</code></td><td>Space <em>inside</em> an element</td><td><code>10px</code></td></tr><tr><td><code>width</code></td><td>How wide the element is</td><td><code>300px</code>, <code>50%</code></td></tr><tr><td><code>height</code></td><td>How tall the element is</td><td><code>200px</code></td></tr></tbody></table></div>
+<p class="v2-p">Properties always go on the <strong>left side</strong> of the colon (<code>:</code>).</p>
+<h3 class="v2-h3">4.3 — The Value</h3>
+<p class="v2-p">The <strong>value</strong> tells CSS exactly how to apply the property. It always goes on the <strong>right side</strong> of the colon (<code>:</code>).</p>
+<p class="v2-p">Different properties accept different types of values:</p>
+<ul class="v2-ul"><li><strong>Colour values:</strong> <code>red</code>, <code>blue</code>, <code>lightblue</code>, <code>#ff0000</code>, <code>rgb(255, 0, 0)</code></li><li><strong>Size values:</strong> <code>20px</code>, <code>1.5em</code>, <code>50%</code>, <code>2rem</code></li><li><strong>Text values:</strong> <code>center</code>, <code>left</code>, <code>bold</code>, <code>italic</code></li><li><strong>Font values:</strong> <code>Arial</code>, <code>Georgia</code>, <code>sans-serif</code></li></ul>
+<p class="v2-p"><strong>Example — showing different value types:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h2 {
+  color: navy;           /* colour keyword */
+  font-size: 24px;       /* pixel size */
+  text-align: center;    /* alignment keyword */
+  font-family: Arial;    /* font name */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> All <code>&lt;h2&gt;</code> headings appear navy blue, 24px tall, centred, in the Arial font.</p>
+<h3 class="v2-h3">4.4 — Curly Braces <code>{ }</code></h3>
+<p class="v2-p">The curly braces <code>{</code> and <code>}</code> are like a container or a box. Everything you put inside them belongs to the selector above them.</p>
+<ul class="v2-ul"><li><code>{</code> opens the container</li><li><code>}</code> closes the container</li></ul>
+<p class="v2-p"><strong>Never forget to close your curly brace!</strong> A missing <code>}</code> is one of the most common CSS mistakes and can break every rule below it.</p>
+<h3 class="v2-h3">4.5 — The Colon <code>:</code></h3>
+<p class="v2-p">The colon separates the <strong>property name</strong> from its <strong>value</strong>. There must always be a colon between them.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Correct */
+color: red;
+
+/* Wrong - no colon */
+color red;
+
+/* Wrong - semicolon instead of colon */
+color; red;</code></pre></div></div>
+<h3 class="v2-h3">4.6 — The Semicolon <code>;</code></h3>
+<p class="v2-p">The semicolon marks the end of each declaration. It acts like a full stop in a sentence. Without it, CSS does not know where one declaration ends and the next one begins.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: red;       /* ← semicolon here */
+  font-size: 18px;  /* ← semicolon here */
+  text-align: left; /* ← semicolon here (good habit, even on the last line) */
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Best Practice:</strong> Always put a semicolon after every declaration, including the last one. It is technically optional on the last one, but if you always do it, you will never accidentally introduce a bug when you add another line later.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Understanding Each Part in Depth</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 10</div>
+    <div class="phase-title">Section 5 — Simple Standalone Examples</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Let us look at several complete, working examples from the very simplest to slightly more complex.</p>
+<h3 class="v2-h3">Example 1 — Styling a Heading (Most Basic Possible)</h3>
+<p class="v2-p"><strong>CSS:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: blue;
+}</code></pre></div></div>
+<p class="v2-p"><strong>HTML:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;h1&gt;Hello, World!&lt;/h1&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> The text "Hello, World!" appears in blue.</p>
+<p class="v2-p"><strong>What happened?</strong></p>
+<ul class="v2-ul"><li>Selector: <code>h1</code> — targets the <code>&lt;h1&gt;</code> element</li><li>Property: <code>color</code> — controls the text colour</li><li>Value: <code>blue</code> — makes it blue</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 2 — Changing the Background</h3>
+<p class="v2-p"><strong>CSS:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  background-color: lightyellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>HTML:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;body&gt;
+  &lt;p&gt;This page has a light yellow background.&lt;/p&gt;
+&lt;/body&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> The entire webpage background becomes light yellow.</p>
+<p class="v2-p"><strong>What happened?</strong></p>
+<ul class="v2-ul"><li><code>body</code> is the selector — it targets the <code>&lt;body&gt;</code> tag which wraps the entire page</li><li><code>background-color</code> is the property — controls the background</li><li><code>lightyellow</code> is the value — a pale yellow colour</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 3 — Styling a Paragraph</h3>
+<p class="v2-p"><strong>CSS:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  font-size: 20px;
+  color: darkgreen;
+  text-align: center;
+}</code></pre></div></div>
+<p class="v2-p"><strong>HTML:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;p&gt;This paragraph is styled with CSS.&lt;/p&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> The paragraph text appears dark green, 20 pixels tall, and centred.</p>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<ul class="v2-ul"><li><code>font-size: 20px;</code> — makes the text 20 pixels high. <code>px</code> stands for "pixels" — tiny dots on your screen.</li><li><code>color: darkgreen;</code> — sets the text colour to dark green</li><li><code>text-align: center;</code> — centres the text horizontally within the page</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 4 — Multiple Rules for Multiple Elements</h3>
+<p class="v2-p"><strong>CSS:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  background-color: lightblue;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+}
+
+p {
+  font-family: verdana;
+  font-size: 20px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>HTML:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;body&gt;
+  &lt;h1&gt;My Website&lt;/h1&gt;
+  &lt;p&gt;Welcome to my page. This text is in Verdana font.&lt;/p&gt;
+&lt;/body&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<ul class="v2-ul"><li>The whole page background is light blue</li><li>The heading "My Website" is white and centred</li><li>The paragraph uses Verdana font at 20px</li></ul>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> Can you predict what would happen if you added <code>color: navy;</code> as a new declaration inside the <code>p { }</code> rule? The paragraph text would appear navy blue.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Simple Standalone Examples</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 10</div>
+    <div class="phase-title">Section 6 — Guided Practice Exercises</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">These exercises will help you build confidence by writing real CSS rules.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 1 — Warm-Up: Your First CSS Rule</h3>
+<p class="v2-p"><strong>Objective:</strong> Write a CSS rule that makes all <code>&lt;h1&gt;</code> headings appear in the colour <code>coral</code>.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a webpage for a surf shop. The owner wants the main heading to stand out in a vibrant colour.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Identify the selector. Which HTML element are we targeting? → <code>h1</code></li><li>Identify the property. What aspect are we changing? → <code>color</code></li><li>Identify the value. What colour do we want? → <code>coral</code></li><li>Write the rule using correct CSS syntax.</li></ol>
+<p class="v2-p"><strong>Your Answer Should Look Like:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: coral;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> All <code>&lt;h1&gt;</code> elements on the page appear in the colour coral (a warm pinkish-orange).</p>
+<p class="v2-p"><strong>Self-Check Questions:</strong></p>
+<ul class="v2-ul"><li>Did you use curly braces <code>{ }</code>?</li><li>Did you use a colon <code>:</code> between the property and value?</li><li>Did you end the declaration with a semicolon <code>;</code>?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Multiple Declarations</h3>
+<p class="v2-p"><strong>Objective:</strong> Style a paragraph so it uses the Georgia font, has a font size of 18px, and dark gray text colour.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are designing a blog post page. The reading text needs to be elegant and easy to read.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Selector → <code>p</code></li><li>You need three declarations:</li></ol>
+<p class="v2-p">- Font family → <code>font-family: Georgia;</code>    - Font size → <code>font-size: 18px;</code>    - Text colour → <code>color: darkgray;</code></p>
+<p class="v2-p"><strong>Your Answer Should Look Like:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  font-family: Georgia;
+  font-size: 18px;
+  color: darkgray;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> All paragraphs use the Georgia font, are 18 pixels tall, and appear in dark gray.</p>
+<p class="v2-p"><strong>Self-Check Questions:</strong></p>
+<ul class="v2-ul"><li>Does each declaration end with a semicolon?</li><li>Is the entire block wrapped in curly braces?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Page Background and Heading Together</h3>
+<p class="v2-p"><strong>Objective:</strong> Create two CSS rules: one that gives the whole page a <code>lightgray</code> background, and one that makes <code>&lt;h2&gt;</code> headings appear <code>darkblue</code> and centred.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are creating a simple company profile page and want a clean, professional look.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Write a rule for <code>body</code> → <code>background-color: lightgray;</code></li><li>Write a second rule for <code>h2</code> → <code>color: darkblue;</code> and <code>text-align: center;</code></li></ol>
+<p class="v2-p"><strong>Your Answer Should Look Like:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  background-color: lightgray;
+}
+
+h2 {
+  color: darkblue;
+  text-align: center;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> The whole page has a light gray background. All <code>&lt;h2&gt;</code> headings are dark blue and centred.</p>
+<p class="v2-p"><strong>What-If Challenge:</strong> What would happen if you changed <code>text-align: center;</code> to <code>text-align: right;</code>? The headings would shift to the right side of the page.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 4 — Build a Full Simple Stylesheet</h3>
+<p class="v2-p"><strong>Objective:</strong> Write a complete stylesheet with rules for <code>body</code>, <code>h1</code>, <code>h2</code>, and <code>p</code>.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a simple recipe page. Use this specification:</p>
+<ul class="v2-ul"><li>Page background: <code>#fff5e6</code> (a warm cream colour)</li><li><code>h1</code>: colour <code>saddlebrown</code>, centred</li><li><code>h2</code>: colour <code>sienna</code>, font size <code>22px</code></li><li><code>p</code>: font family <code>Arial</code>, font size <code>16px</code>, colour <code>#333</code></li></ul>
+<p class="v2-p"><strong>Your Answer Should Look Like:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  background-color: #fff5e6;
+}
+
+h1 {
+  color: saddlebrown;
+  text-align: center;
+}
+
+h2 {
+  color: sienna;
+  font-size: 22px;
+}
+
+p {
+  font-family: Arial;
+  font-size: 16px;
+  color: #333;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> A warm cream-coloured page with brown headings and dark gray body text — perfect for a recipe page.</p>
+<blockquote class="v2-bq"><p class="v2-p">📌 <strong>Note about <code>#333</code>:</strong> This is a colour written in <strong>hexadecimal format</strong> — a way of describing colours using numbers and letters. <code>#333</code> is a very dark gray. You do not need to fully understand hex colours yet — just know they are another valid way to specify a colour in CSS.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 10</div>
+    <div class="phase-title">Section 7 — Common Beginner Mistakes (and How to Fix Them)</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">These are the mistakes that almost every beginner makes at least once. Knowing them in advance will save you a lot of frustration.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 1 — Missing Curly Braces</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p
+  color: red;
+  font-size: 18px;</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> There are no curly braces <code>{ }</code>. CSS cannot tell where the declarations belong.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: red;
+  font-size: 18px;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Missing Colon</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color red;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> There is no colon <code>:</code> between the property (<code>color</code>) and the value (<code>red</code>). CSS cannot understand this.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: red;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Missing Semicolons Between Declarations</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: red
+  font-size: 18px
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> There are no semicolons after each declaration. CSS might misread these as one broken declaration.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: red;
+  font-size: 18px;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Writing the Selector as an HTML Tag</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>&lt;p&gt; {
+  color: blue;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> CSS selectors do NOT use angle brackets. Those are only for HTML.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: blue;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Confusing the Colon and Semicolon</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color; red:
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> The colon and semicolon are swapped. Colon always goes <em>between</em> property and value. Semicolon always goes <em>at the end</em> of a declaration.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: red;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6 — Forgetting to Close the Curly Brace</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: navy;
+
+p {
+  font-size: 16px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> The <code>h1</code> rule is never closed. CSS gets confused about where <code>h1</code>'s declarations end and where <code>p</code>'s begin. This can break <em>everything</em> below the missing brace.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: navy;
+}
+
+p {
+  font-size: 16px;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 7 — Misspelling a Property or Value</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  colour: red;       /* British spelling — not valid in CSS */
+  tekst-align: center; /* typo in property name */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> CSS uses American English. <code>colour</code> is wrong; it must be <code>color</code>. And <code>tekst-align</code> is a typo; it must be <code>text-align</code>.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  color: red;
+  text-align: center;
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Tip:</strong> CSS silently ignores rules it cannot understand. If a style is not working, check for spelling mistakes first!</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes (and How to Fix Them)</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase10">
+  <div class="phase-header">
+    <div class="phase-num">Phase 10 of 10</div>
+    <div class="phase-title">Section 9 — Real-World Use Cases</div>
+    <div class="phase-check" id="chk10"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Understanding CSS is not just academic — it is directly used in:</p>
+<ul class="v2-ul"><li><strong>Web development jobs:</strong> Every frontend developer writes CSS daily</li><li><strong>Marketing and branding:</strong> Companies use CSS to ensure their brand colours, fonts, and layouts appear consistently across their website</li><li><strong>Journalism and publishing:</strong> News sites like BBC or CNN use CSS to make articles readable and attractive</li><li><strong>E-commerce:</strong> Online stores like Amazon use CSS to highlight prices, buttons, and product layouts</li><li><strong>Mobile apps:</strong> Many mobile apps are built with web technologies that include CSS</li><li><strong>Data dashboards:</strong> Scientists and data analysts who build web-based data visualisation tools use CSS to style charts and reports</li></ul>
+<p class="v2-p">Even if you never become a professional developer, understanding CSS helps you communicate with designers and developers, customise website templates, and troubleshoot why something looks wrong on your screen.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Real-World Use Cases</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Brief</div>
+  <div class="build-desc">You are building a simple personal profile page for someone named "Amara Johnson". The page already has HTML written. Your job is to write all the CSS.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
   &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;My First Styled Page&lt;/title&gt;
-    &lt;style&gt;
-      /* ===== GLOBAL STYLES ===== */
-      body {
-        background-color: #f0f9ff;
-        font-family: Arial, sans-serif;
-        color: #0f172a;
-        max-width: 750px;
-        margin: 0 auto;
-        padding: 40px 30px;
-      }
-
-      /* ===== HEADINGS ===== */
-      h1 {
-        color: #0284c7;
-        font-size: 2.2rem;
-        margin-bottom: 8px;
-      }
-      h2 {
-        color: #0369a1;
-        font-size: 1.3rem;
-        margin-top: 28px;
-      }
-
-      /* ===== PARAGRAPHS ===== */
-      p {
-        font-size: 16px;
-        line-height: 1.8;
-        color: #334155;
-      }
-
-      /* ===== HIGHLIGHT BOX ===== */
-      .highlight {
-        background-color: #e0f2fe;
-        border-left: 4px solid #0284c7;
-        padding: 14px 18px;
-        border-radius: 0 8px 8px 0;
-        margin: 20px 0;
-      }
-    &lt;/style&gt;
+    &lt;title&gt;Amara&#x27;s Profile&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
   &lt;/head&gt;
   &lt;body&gt;
-
-    &lt;h1&gt;Welcome to CSS! 🎨&lt;/h1&gt;
-    &lt;p&gt;This is my first page styled with CSS. CSS stands for
-       &lt;strong&gt;Cascading Style Sheets&lt;/strong&gt; and it controls
-       how HTML looks in the browser.&lt;/p&gt;
-
-    &lt;div class="highlight"&gt;
-      &lt;p&gt;💡 &lt;strong&gt;Key fact:&lt;/strong&gt; Without CSS, every website
-         would look like a plain text document. CSS adds colour,
-         layout, fonts and animations!&lt;/p&gt;
-    &lt;/div&gt;
-
-    &lt;h2&gt;What CSS Controls&lt;/h2&gt;
-    &lt;p&gt;CSS controls: colours, fonts, sizes, spacing, borders,
-       backgrounds, animations and layout. Everything visual
-       on a webpage is styled with CSS.&lt;/p&gt;
-
-    &lt;h2&gt;My First CSS Rules&lt;/h2&gt;
-    &lt;p&gt;In the &amp;lt;style&amp;gt; block above, I wrote CSS rules for
-       body, h1, h2, p, and a special .highlight class.
-       Try changing the values and see what happens!&lt;/p&gt;
-
+    &lt;h1&gt;Amara Johnson&lt;/h1&gt;
+    &lt;h2&gt;Web Developer &amp; Designer&lt;/h2&gt;
+    &lt;p&gt;Hello! I am a passionate web developer based in Lagos. I love building
+    clean, user-friendly websites that make a difference.&lt;/p&gt;
+    &lt;h2&gt;My Skills&lt;/h2&gt;
+    &lt;p&gt;HTML, CSS, JavaScript, Python, UI Design&lt;/p&gt;
+    &lt;h2&gt;Contact&lt;/h2&gt;
+    &lt;p&gt;Email: amara@example.com&lt;/p&gt;
   &lt;/body&gt;
-&lt;/html&gt;</pre></div>
+&lt;/html&gt;</code></pre></div>
   </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
-<html lang="en">
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Styled Page</title>
-    <style>
-      /* ===== GLOBAL STYLES ===== */
-      body {
-        background-color: #f0f9ff;
-        font-family: Arial, sans-serif;
-        color: #0f172a;
-        max-width: 750px;
-        margin: 0 auto;
-        padding: 40px 30px;
-      }
-
-      /* ===== HEADINGS ===== */
-      h1 {
-        color: #0284c7;
-        font-size: 2.2rem;
-        margin-bottom: 8px;
-      }
-      h2 {
-        color: #0369a1;
-        font-size: 1.3rem;
-        margin-top: 28px;
-      }
-
-      /* ===== PARAGRAPHS ===== */
-      p {
-        font-size: 16px;
-        line-height: 1.8;
-        color: #334155;
-      }
-
-      /* ===== HIGHLIGHT BOX ===== */
-      .highlight {
-        background-color: #e0f2fe;
-        border-left: 4px solid #0284c7;
-        padding: 14px 18px;
-        border-radius: 0 8px 8px 0;
-        margin: 20px 0;
-      }
-    </style>
+    <title>Amara's Profile</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-
-    <h1>Welcome to CSS! 🎨</h1>
-    <p>This is my first page styled with CSS. CSS stands for
-       <strong>Cascading Style Sheets</strong> and it controls
-       how HTML looks in the browser.</p>
-
-    <div class="highlight">
-      <p>💡 <strong>Key fact:</strong> Without CSS, every website
-         would look like a plain text document. CSS adds colour,
-         layout, fonts and animations!</p>
-    </div>
-
-    <h2>What CSS Controls</h2>
-    <p>CSS controls: colours, fonts, sizes, spacing, borders,
-       backgrounds, animations and layout. Everything visual
-       on a webpage is styled with CSS.</p>
-
-    <h2>My First CSS Rules</h2>
-    <p>In the &lt;style&gt; block above, I wrote CSS rules for
-       body, h1, h2, p, and a special .highlight class.
-       Try changing the values and see what happens!</p>
-
+    <h1>Amara Johnson</h1>
+    <h2>Web Developer & Designer</h2>
+    <p>Hello! I am a passionate web developer based in Lagos. I love building
+    clean, user-friendly websites that make a difference.</p>
+    <h2>My Skills</h2>
+    <p>HTML, CSS, JavaScript, Python, UI Design</p>
+    <h2>Contact</h2>
+    <p>Email: amara@example.com</p>
   </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-01-css_introduction</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 01 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-01-css_introduction/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-01-project-brief</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 01 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-01-project-brief/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 01 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ What Is CSS?</li><li>✅ CSS History and the Browser</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <span></span>
-    <a href="lesson_02.html" class="ln-btn primary">Lesson 02 →</a>
-  </div>
+  <h2>🎉 Lesson 01 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts — Things You Need to Know First</li><li>✅ Section 1 — What Is CSS?</li><li>✅ Section 2 — CSS and HTML: How They Work Together</li><li>✅ Section 3 — CSS Syntax: The Grammar of CSS</li><li>✅ Section 4 — Understanding Each Part in Depth</li><li>✅ Section 5 — Simple Standalone Examples</li><li>✅ Section 6 — Guided Practice Exercises</li></ul>
+  <div class="lesson-nav"><span></span><a href="lesson_02.html" class="ln-btn primary">Lesson 02 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 01 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 01 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_01_phase';
+const TOTAL=10,KEY='techbase_css_l01';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

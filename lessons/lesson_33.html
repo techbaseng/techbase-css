@@ -2,513 +2,1366 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 33: CSS Dropdowns — Techbase CSS Course</title>
-<meta name="description" content="Build pure CSS dropdown menus using position, display and hover — no JavaScript needed">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 33: CSS Dropdowns — Building Hidden Menus That Appear on Hover — Techbase CSS</title>
+<meta name="description" content="CSS Dropdowns — Building Hidden Menus That Appear on Hover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 33 of 73 &nbsp;·&nbsp; CSS Dropdowns</span>
-  <div class="nav-actions"><a href="lesson_32.html" class="ln-btn">← Lesson 32</a><a href="lesson_34.html" class="ln-btn primary">Lesson 34 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 33 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 33</div>
-    <h1>CSS Dropdowns</h1>
-    <p class="lesson-tagline">Build pure CSS dropdown menus using position, display and hover — no JavaScript needed</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My Dropdown Navigation</span>
-      
-    </div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 33</div>
+    <h1>CSS Dropdowns — Building Hidden Menus That Appear on Hover</h1>
+    <div class="l-hero-sub">9 phases · Build: Stage 1 — HTML Structure</div>
   </div>
-</section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 33!</div>
-  <h2>CSS Dropdowns</h2>
-  <p>Build pure CSS dropdown menus using position, display and hover — no JavaScript needed. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
 </div>
-<div class="phase " id="phase1" data-phase="1">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 33</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Think about the navigation bar at the top of almost every professional website — Amazon, Google, GitHub, any news site. When you hover over a menu item, a panel of extra options slides down beneath it. That panel is a <strong>dropdown</strong>. It stays hidden until you need it, and appears right when you hover.</p>
+<p class="v2-p">This is one of the most practical, most commonly built UI components in web development. The good news: you can build a fully functional, styled dropdown menu using <strong>only HTML and CSS</strong> — no JavaScript required.</p>
+<p class="v2-p">In this lesson you will learn:</p>
+<ul class="v2-ul"><li>What a CSS dropdown is and how the hover mechanism works</li><li>How to build a simple text dropdown on a <code>&lt;div&gt;</code> element</li><li>How to build a dropdown on a styled button</li><li>How to build a dropdown navigation menu inside a <code>&lt;nav&gt;</code> bar</li><li>How to build a <strong>dropdown content box</strong> that contains an image and descriptive text (not just links)</li><li>How to control the exact position of the dropdown content</li><li>How to add a right-aligned dropdown</li><li>How to combine all of these into a complete, real-world navigation bar with multiple dropdowns</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to build the kind of dropdown menus seen on real professional websites, from scratch, with clean CSS.</p>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 9 phases</span>
+    <span>🏗️ Stage 1 — HTML Structure</span>
+  </div>
+</div></div>
+</section>
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">Basic CSS Dropdown</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 9</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>A CSS dropdown: the parent <code>&lt;li&gt;</code> is <code>position: relative</code>. The dropdown <code>&lt;ul&gt;</code> inside is <code>position: absolute; display: none</code>. On <code>li:hover</code>, set the nested <code>ul</code> to <code>display: block</code>. Add <code>z-index</code> to keep the menu above other content. The <code>top: 100%</code> positions it directly below the parent.</p>
+    <p class="v2-p">Think about the navigation bar at the top of almost every professional website — Amazon, Google, GitHub, any news site. When you hover over a menu item, a panel of extra options slides down beneath it. That panel is a <strong>dropdown</strong>. It stays hidden until you need it, and appears right when you hover.</p>
+<p class="v2-p">This is one of the most practical, most commonly built UI components in web development. The good news: you can build a fully functional, styled dropdown menu using <strong>only HTML and CSS</strong> — no JavaScript required.</p>
+<p class="v2-p">In this lesson you will learn:</p>
+<ul class="v2-ul"><li>What a CSS dropdown is and how the hover mechanism works</li><li>How to build a simple text dropdown on a <code>&lt;div&gt;</code> element</li><li>How to build a dropdown on a styled button</li><li>How to build a dropdown navigation menu inside a <code>&lt;nav&gt;</code> bar</li><li>How to build a <strong>dropdown content box</strong> that contains an image and descriptive text (not just links)</li><li>How to control the exact position of the dropdown content</li><li>How to add a right-aligned dropdown</li><li>How to combine all of these into a complete, real-world navigation bar with multiple dropdowns</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to build the kind of dropdown menus seen on real professional websites, from scratch, with clean CSS.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-  <div class="code-body"><pre>/* Dropdown container */
-.dropdown { position: relative; }
+</div>
+<div class="phase locked" id="phase2">
+  <div class="phase-header">
+    <div class="phase-num">Phase 2 of 9</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Before building dropdowns, make sure you are comfortable with these four CSS concepts that power every dropdown you will ever build.</p>
+<h3 class="v2-h3">1. The <code>display</code> Property — Showing and Hiding Elements</h3>
+<p class="v2-p">The <code>display</code> property controls whether an element is visible and takes up space on the page.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Hide an element completely — takes up NO space */
+.hidden {
+  display: none;
+}
 
-/* Hidden by default */
-.dropdown-menu {
+/* Show it again as a block */
+.visible {
+  display: block;
+}</code></pre></div></div>
+<p class="v2-p"><strong>This is the ON/OFF switch for dropdowns.</strong> The dropdown content starts with <code>display: none</code> and switches to <code>display: block</code> when triggered.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">2. The <code>:hover</code> Pseudo-class — Reacting to Mouse Movement</h3>
+<p class="v2-p"><code>:hover</code> is a CSS pseudo-class that applies styles <strong>only while the user's cursor is on top of an element</strong>.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* When the user hovers over a button, change its background colour */
+button:hover {
+  background-color: blue;
+}</code></pre></div></div>
+<p class="v2-p"><strong>This is the trigger for dropdowns.</strong> When the user hovers over the trigger element, we use <code>:hover</code> to show the dropdown content.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">3. <code>position: relative</code> and <code>position: absolute</code> — Placing the Dropdown Panel</h3>
+<p class="v2-p">These two positioning values work as a team to place the dropdown panel exactly where you want it.</p>
+<ul class="v2-ul"><li><code>position: relative</code> on the <strong>parent/wrapper</strong>: "This element is the anchor. Measure from here."</li><li><code>position: absolute</code> on the <strong>dropdown content</strong>: "Place me at an exact position relative to my nearest <code>position: relative</code> ancestor."</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.wrapper {
+  position: relative;  /* The anchor point */
+}
+
+.dropdown-content {
+  position: absolute;  /* Positioned relative to .wrapper */
+  top: 100%;           /* Start just below the wrapper (100% of wrapper&#x27;s height) */
+  left: 0;             /* Align left edge with wrapper&#x27;s left edge */
+}</code></pre></div></div>
+<p class="v2-p"><strong>This is how the dropdown panel appears directly below its trigger</strong> — instead of floating somewhere random on the page.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">4. The Descendant Combinator for Hover — The Magic Link</h3>
+<p class="v2-p">This is the CSS pattern that makes everything work together:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WHEN .dropdown is hovered → SHOW .dropdown-content inside it */
+.dropdown:hover .dropdown-content {
+  display: block;
+}</code></pre></div></div>
+<p class="v2-p">Read this as: "When the element with class <code>dropdown</code> is being hovered, find the element with class <code>dropdown-content</code> that lives <strong>inside</strong> it, and set its display to block."</p>
+<p class="v2-p">This is the core pattern behind every pure CSS dropdown.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 9</div>
+    <div class="phase-title">Part 1 — The Basic Hover Dropdown</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Let's build the simplest possible dropdown: a text element that reveals a panel of links when hovered.</p>
+<h3 class="v2-h3">Understanding the Structure</h3>
+<p class="v2-p">A CSS dropdown always has this two-part structure:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[Trigger element]          ← the thing you hover over
+  └── [Dropdown content]   ← the hidden panel that appears</code></pre></div></div>
+<p class="v2-p">Both are wrapped in a <strong>container</strong> that has <code>position: relative</code>.</p>
+<h3 class="v2-h3">Example 1 — The Simplest Dropdown (Text Trigger)</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* ── 1. The outer wrapper ─────────────────────────
+       position: relative makes this the anchor for the
+       absolutely-positioned dropdown panel below       */
+    .dropdown {
+      position: relative;
+      display: inline-block;   /* shrink-wrap to content width */
+    }
+
+    /* ── 2. The dropdown panel ────────────────────────
+       Starts hidden. Positioned absolutely so it floats
+       directly below the trigger without pushing
+       other content down                               */
+    .dropdown-content {
+      display: none;             /* HIDDEN by default */
+      position: absolute;        /* floats above page flow */
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;                /* ensures it appears above other elements */
+    }
+
+    /* ── 3. Links inside the dropdown panel ──────────*/
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;            /* makes each link its own full row */
+    }
+
+    /* ── 4. Hover effect on the links ────────────────*/
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    /* ── 5. THE KEY RULE: show the panel on hover ────
+       When .dropdown is hovered → .dropdown-content
+       inside it switches from display:none to
+       display:block                                   */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h2&gt;Hover over the text below:&lt;/h2&gt;
+
+  &lt;div class=&quot;dropdown&quot;&gt;
+    &lt;span&gt;Hover over me ▼&lt;/span&gt;   &lt;!-- the trigger text --&gt;
+
+    &lt;div class=&quot;dropdown-content&quot;&gt;  &lt;!-- the hidden panel --&gt;
+      &lt;a href=&quot;#&quot;&gt;Link 1&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Link 2&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Link 3&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<p class="v2-p">Before hover:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Hover over me ▼
+(nothing else visible)</code></pre></div></div>
+<p class="v2-p">After hovering over "Hover over me ▼":</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Hover over me ▼
+┌──────────────────┐
+│ Link 1           │
+│ Link 2           │
+│ Link 3           │
+└──────────────────┘</code></pre></div></div>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Breaking down every single line — nothing skipped:</strong></p>
+<p class="v2-p"><strong><code>.dropdown { position: relative; display: inline-block; }</code></strong> This is the outer wrapper. <code>position: relative</code> is crucial — it tells CSS "when the dropdown panel inside uses <code>position: absolute</code>, measure its position from me." <code>display: inline-block</code> makes the wrapper only as wide as its content, so multiple dropdowns can sit side by side.</p>
+<p class="v2-p"><strong><code>.dropdown-content { display: none; }</code></strong> The panel starts invisible. <code>display: none</code> removes it from the page entirely — it takes up zero space and is completely invisible.</p>
+<p class="v2-p"><strong><code>position: absolute;</code></strong> The panel is lifted out of the normal page flow. It won't push content below it down when it appears. It hovers above everything else.</p>
+<p class="v2-p"><strong><code>z-index: 1;</code></strong> This ensures the dropdown panel appears <strong>on top of</strong> any other elements it might overlap. Think of it like layers in a photo editor — <code>z-index</code> controls which layer is on top.</p>
+<p class="v2-p"><strong><code>.dropdown-content a { display: block; }</code></strong> By default, <code>&lt;a&gt;</code> links are <code>inline</code> — they'd all appear on one line. Setting <code>display: block</code> makes each link fill the full width of the panel, creating a proper vertical menu look.</p>
+<p class="v2-p"><strong><code>.dropdown:hover .dropdown-content { display: block; }</code></strong> This is the magic line. It means: "When <code>.dropdown</code> is hovered, find the <code>.dropdown-content</code> inside it and set <code>display: block</code>." This overrides the <code>display: none</code> that was hiding the panel, making it instantly visible.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>💡 Why does the panel stay visible while hovering over the links?</strong> Because the links are <em>inside</em> <code>.dropdown</code>. When you move your cursor from the trigger text down to a link, your cursor is still hovering over <code>.dropdown</code> (the wrapper) — so the hover state is maintained and the panel stays open.</p></blockquote>
+<blockquote class="v2-bq"><p class="v2-p"><strong>🤔 Thinking prompt:</strong> What would happen if you removed <code>position: relative</code> from <code>.dropdown</code>? The dropdown panel would use <code>position: absolute</code> but with no relative parent — it would be positioned relative to the browser window instead, and appear in the wrong place entirely.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 2 — Dropdown on a Styled Button</h3>
+<p class="v2-p">In practice, you almost always want the trigger to look like a button. This is the same mechanism, just with a <code>&lt;button&gt;</code> element styled as the trigger.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* The trigger button */
+    .dropbtn {
+      background-color: #4CAF50;   /* green */
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Hover and focus state for the trigger button */
+    .dropbtn:hover,
+    .dropbtn:focus {
+      background-color: #3e8e41;   /* darker green on hover */
+    }
+
+    /* The wrapper */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* The hidden panel */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    /* Links in the panel */
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Show the panel when the wrapper is hovered */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;dropdown&quot;&gt;
+    &lt;button class=&quot;dropbtn&quot;&gt;Dropdown ▼&lt;/button&gt;
+    &lt;div class=&quot;dropdown-content&quot;&gt;
+      &lt;a href=&quot;#&quot;&gt;Link 1&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Link 2&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Link 3&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<p class="v2-p">Before hover:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Dropdown ▼ ]  (green button)</code></pre></div></div>
+<p class="v2-p">After hovering:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Dropdown ▼ ]
+┌─────────────────┐
+│ Link 1          │
+│ Link 2          │
+│ Link 3          │
+└─────────────────┘</code></pre></div></div>
+<p class="v2-p"><strong>What changed from Example 1?</strong></p>
+<ul class="v2-ul"><li>The trigger is now a <code>&lt;button class="dropbtn"&gt;</code> instead of a plain <code>&lt;span&gt;</code> — giving us a real styled button.</li><li>We added <code>.dropbtn:focus</code> styling so keyboard users who tab to the button also see a visual response.</li><li>The hover colours are green and a darker green for the active state.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>🌍 Real-world connection:</strong> This button dropdown pattern is used everywhere — "Account" menus, "Settings" dropdowns, "Share" buttons, and language/currency selectors on e-commerce sites.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>The Basic Hover Dropdown</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 9</div>
+    <div class="phase-title">Part 2 — Dropdown Inside a Navigation Bar</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Now we will place a dropdown inside a proper horizontal navigation bar — the pattern you'll use on virtually every real website project.</p>
+<h3 class="v2-h3">Example 3 — Navbar with a Dropdown Menu</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* ── Reset ─────────────────────────────────────── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── The navigation bar container ─────────────── */
+    .navbar {
+      overflow: hidden;             /* clears floated children */
+      background-color: #333;
+    }
+
+    /* ── Regular navbar links ──────────────────────── */
+    .navbar a {
+      float: left;                  /* line up links horizontally */
+      font-size: 16px;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    /* ── The dropdown wrapper inside the navbar ────── */
+    .navbar .dropdown {
+      float: left;                  /* lines up with the other nav links */
+      overflow: hidden;
+    }
+
+    /* ── The dropdown trigger button (styled like nav links) */
+    .navbar .dropdown .dropbtn {
+      font-size: 16px;
+      border: none;
+      outline: none;
+      color: white;
+      padding: 14px 16px;
+      background-color: inherit;    /* matches the navbar background */
+      font-family: inherit;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    /* ── Hover state for nav links and dropdown trigger */
+    .navbar a:hover,
+    .navbar .dropdown:hover .dropbtn {
+      background-color: red;
+    }
+
+    /* ── The dropdown panel ─────────────────────────── */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    /* ── Links inside the dropdown panel ─────────────── */
+    .dropdown-content a {
+      float: none;                  /* override the float from .navbar a */
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+    }
+
+    /* ── Hover state for links in the panel ──────────── */
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    /* ── Show the dropdown panel on hover ────────────── */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;navbar&quot;&gt;
+    &lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;News&lt;/a&gt;
+    &lt;div class=&quot;dropdown&quot;&gt;
+      &lt;button class=&quot;dropbtn&quot;&gt;Dropdown ▼&lt;/button&gt;
+      &lt;div class=&quot;dropdown-content&quot;&gt;
+        &lt;a href=&quot;#&quot;&gt;Link 1&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Link 2&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Link 3&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;h3 style=&quot;padding: 20px;&quot;&gt;Hover over &quot;Dropdown&quot; in the navbar above.&lt;/h3&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<p class="v2-p">Before hover:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Home ]  [ News ]  [ Dropdown ▼ ]     ← dark grey navbar</code></pre></div></div>
+<p class="v2-p">After hovering "Dropdown ▼":</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Home ]  [ News ]  [ Dropdown ▼ ]     ← &quot;Dropdown ▼&quot; turns red
+                    ┌─────────────────┐
+                    │ Link 1          │
+                    │ Link 2          │
+                    │ Link 3          │
+                    └─────────────────┘</code></pre></div></div>
+<p class="v2-p"><strong>Key lines explained:</strong></p>
+<p class="v2-p"><strong><code>float: left</code></strong> on <code>.navbar a</code> and <code>.navbar .dropdown</code> — This is how the nav links line up horizontally across the bar. Without float, they would stack vertically.</p>
+<p class="v2-p"><strong><code>overflow: hidden</code></strong> on <code>.navbar</code> — When child elements are floated, the parent collapses to zero height. <code>overflow: hidden</code> on the parent forces it to expand and contain its floated children.</p>
+<p class="v2-p"><strong><code>background-color: inherit</code></strong> on <code>.dropbtn</code> — The button inherits the background colour of the navbar (<code>#333</code>), so it blends in and looks like a regular nav link rather than a separate styled button.</p>
+<p class="v2-p"><strong><code>float: none</code></strong> on <code>.dropdown-content a</code> — The links inside the dropdown panel would otherwise inherit the <code>float: left</code> rule from <code>.navbar a</code>. We override this with <code>float: none</code> so the links stack vertically inside the panel, as expected.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Dropdown Inside a Navigation Bar</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 9</div>
+    <div class="phase-title">Part 3 — Advanced Dropdown: Image and Text Content</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">A dropdown doesn't have to contain just links. You can put <strong>any HTML content</strong> inside the panel — images, headings, paragraphs, cards. This is called a <strong>mega dropdown</strong> or <strong>content dropdown</strong>.</p>
+<h3 class="v2-h3">Example 4 — Dropdown with an Image Card</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* Wrapper */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Styled trigger button */
+    .dropbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .dropbtn:hover {
+      background-color: #3e8e41;
+    }
+
+    /* Dropdown panel — wider to fit image + text */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      width: 200px;               /* wide enough for image */
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    /* Style for any paragraph text inside the panel */
+    .dropdown-content p {
+      padding: 10px 14px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Style for any links inside the panel */
+    .dropdown-content a {
+      padding: 10px 14px;
+      display: block;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    /* Image fills full width of the panel */
+    .dropdown-content img {
+      width: 100%;
+    }
+
+    /* Show panel on hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;dropdown&quot;&gt;
+    &lt;button class=&quot;dropbtn&quot;&gt;Our Products ▼&lt;/button&gt;
+
+    &lt;div class=&quot;dropdown-content&quot;&gt;
+      &lt;!-- An image at the top of the panel --&gt;
+      &lt;img src=&quot;https://via.placeholder.com/200x100?text=Product+Image&quot; alt=&quot;Product&quot;&gt;
+
+      &lt;!-- Descriptive text below the image --&gt;
+      &lt;p&gt;Discover our latest collection of tech accessories.&lt;/p&gt;
+
+      &lt;!-- Links below the text --&gt;
+      &lt;a href=&quot;#&quot;&gt;Laptops&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Tablets&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Accessories&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output after hover:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Our Products ▼ ]
+┌──────────────────────┐
+│ [Product Image 200px]│
+│ Discover our latest  │
+│ collection of tech   │
+│ accessories.         │
+│ Laptops              │
+│ Tablets              │
+│ Accessories          │
+└──────────────────────┘</code></pre></div></div>
+<p class="v2-p"><strong>Key insight:</strong> The <code>dropdown-content</code> div is just a normal <code>&lt;div&gt;</code> that is hidden by default. You can put <strong>anything</strong> inside it — images, paragraphs, forms, grids of cards. The only CSS rules that matter are <code>display: none</code> (hidden) and <code>display: block</code> (shown on hover). Everything else is up to you.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Advanced Dropdown: Image and Text Content</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 9</div>
+    <div class="phase-title">Part 4 — Right-Aligned Dropdown</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">By default, the dropdown panel aligns its <strong>left edge</strong> with the left edge of the trigger. If your trigger is near the right side of the screen, the panel might overflow off-screen. You can fix this by aligning the <strong>right edge</strong> of the panel instead.</p>
+<h3 class="v2-h3">Example 5 — Right-Aligned Dropdown Panel</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      background-color: #3498db;
+      color: white;
+      padding: 14px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .dropbtn:hover {
+      background-color: #2980b9;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;             /* ← RIGHT-aligned: panel&#x27;s right edge = wrapper&#x27;s right edge */
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- Push the dropdown to the right side of the page for demonstration --&gt;
+  &lt;div style=&quot;text-align: right; padding: 20px;&quot;&gt;
+    &lt;div class=&quot;dropdown&quot;&gt;
+      &lt;button class=&quot;dropbtn&quot;&gt;Account ▼&lt;/button&gt;
+      &lt;div class=&quot;dropdown-content&quot;&gt;
+        &lt;a href=&quot;#&quot;&gt;My Profile&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Settings&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Sign Out&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (panel aligns to the right):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>                              [ Account ▼ ]
+                    ┌─────────────────────┐
+                    │ My Profile          │
+                    │ Settings            │
+                    │ Sign Out            │
+                    └─────────────────────┘
+                              ↑ right edge aligned with button</code></pre></div></div>
+<p class="v2-p"><strong>The key difference:</strong> <code>right: 0</code> instead of <code>left: 0</code>.</p>
+<ul class="v2-ul"><li><code>left: 0</code> — panel's left edge aligns with the wrapper's left edge (default, opens to the right)</li><li><code>right: 0</code> — panel's right edge aligns with the wrapper's right edge (opens to the left)</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>🌍 Real-world connection:</strong> The "Account" or "Profile" dropdown in the top-right corner of websites like GitHub, Twitter/X, and Amazon always uses <code>right: 0</code> so the panel doesn't overflow off-screen to the right.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Right-Aligned Dropdown</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 9</div>
+    <div class="phase-title">Part 5 — Dropdown Button Highlight Stays Active</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">There is one subtle detail worth teaching: when the user's mouse moves from the trigger button down into the dropdown panel, we want the trigger button to <strong>stay highlighted</strong>. We achieve this because the entire <code>.dropdown</code> wrapper is still hovered — the panel is inside it.</p>
+<p class="v2-p">But what if we want the button itself to have a distinct "active" colour? We need to match the hover state of both the button and the panel trigger at the same time:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Keep the button highlighted while the panel is open */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;   /* stays the darker green */
+}</code></pre></div></div>
+<p class="v2-p">This selector reads: "When <code>.dropdown</code> is being hovered, style the <code>.dropbtn</code> inside it." This keeps the button looking "pressed" the whole time the panel is open.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Dropdown Button Highlight Stays Active</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 9</div>
+    <div class="phase-title">Guided Practice Exercises</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — Warm-Up: Your First Dropdown</h3>
+<p class="v2-p"><strong>Objective:</strong> Build the basic dropdown from scratch without looking at the examples.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a small settings widget. Create a button labelled "Settings ⚙" that reveals three options when hovered: "Edit Profile", "Change Password", and "Logout".</p>
+<p class="v2-p"><strong>Requirements:</strong></p>
+<ul class="v2-ul"><li>The trigger must be a styled button with a blue background (<code>#2196F3</code>)</li><li>The panel must have a white background and a subtle shadow</li><li>Each option must highlight grey on hover</li><li>The panel must appear directly below the button</li></ul>
+<p class="v2-p"><strong>Starter HTML (fill in the CSS):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* Write your CSS here */
+
+    .dropbtn {
+      /* Style the button: blue background, white text, padding, no border */
+    }
+
+    .dropdown {
+      /* Make it the position anchor and inline */
+    }
+
+    .dropdown-content {
+      /* Hidden by default, absolute position, white bg, shadow, z-index */
+    }
+
+    .dropdown-content a {
+      /* Each option: block display, black text, padding, no underline */
+    }
+
+    .dropdown-content a:hover {
+      /* Light grey background on hover */
+    }
+
+    .dropdown:hover .dropdown-content {
+      /* Show the panel */
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;dropdown&quot;&gt;
+    &lt;button class=&quot;dropbtn&quot;&gt;Settings ⚙&lt;/button&gt;
+    &lt;div class=&quot;dropdown-content&quot;&gt;
+      &lt;a href=&quot;#&quot;&gt;Edit Profile&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Change Password&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Logout&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output after hover:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Settings ⚙ ]  (blue button)
+┌──────────────────┐
+│ Edit Profile     │
+│ Change Password  │
+│ Logout           │
+└──────────────────┘</code></pre></div></div>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ol class="v2-ol"><li>What happens if you forget <code>position: relative</code> on <code>.dropdown</code>?</li><li>What does <code>z-index: 1</code> do, and when would you need a higher value?</li><li>Why must <code>.dropdown-content a</code> have <code>display: block</code>?</li></ol>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Navbar with Two Dropdowns</h3>
+<p class="v2-p"><strong>Objective:</strong> Build a nav bar with two separate dropdowns.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a portfolio website. The navigation needs: Home (plain link), Projects (dropdown), Blog (plain link), Contact (dropdown).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    .navbar {
+      background-color: #2c3e50;
+      overflow: hidden;
+    }
+
+    .navbar a, .navbar .dropbtn {
+      float: left;
+      color: white;
+      text-align: center;
+      padding: 14px 18px;
+      text-decoration: none;
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .navbar a:hover, .navbar .dropdown:hover .dropbtn {
+      background-color: #e74c3c;
+    }
+
+    .navbar .dropdown {
+      float: left;
+      overflow: hidden;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #34495e;
+      min-width: 160px;
+      z-index: 1;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+
+    .dropdown-content a {
+      float: none;
+      color: #ecf0f1;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;navbar&quot;&gt;
+    &lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;
+
+    &lt;div class=&quot;dropdown&quot;&gt;
+      &lt;button class=&quot;dropbtn&quot;&gt;Projects ▼&lt;/button&gt;
+      &lt;div class=&quot;dropdown-content&quot;&gt;
+        &lt;a href=&quot;#&quot;&gt;Web Design&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Mobile Apps&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Data Projects&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;a href=&quot;#&quot;&gt;Blog&lt;/a&gt;
+
+    &lt;div class=&quot;dropdown&quot;&gt;
+      &lt;button class=&quot;dropbtn&quot;&gt;Contact ▼&lt;/button&gt;
+      &lt;div class=&quot;dropdown-content&quot;&gt;
+        &lt;a href=&quot;#&quot;&gt;Email Me&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;LinkedIn&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;GitHub&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;p style=&quot;padding: 20px; font-family: Arial;&quot;&gt;
+    Hover over &quot;Projects&quot; or &quot;Contact&quot; to see the dropdowns.
+  &lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Home ]  [ Projects ▼ ]  [ Blog ]  [ Contact ▼ ]   ← dark blue bar
+
+Hovering &quot;Projects ▼&quot;:
+                ┌──────────────────┐
+                │ Web Design       │
+                │ Mobile Apps      │
+                │ Data Projects    │
+                └──────────────────┘
+
+Hovering &quot;Contact ▼&quot;:
+                              ┌──────────────────┐
+                              │ Email Me         │
+                              │ LinkedIn         │
+                              │ GitHub           │
+                              └──────────────────┘</code></pre></div></div>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ol class="v2-ol"><li>Why do we need <code>float: none</code> on <code>.dropdown-content a</code>?</li><li>If you removed <code>overflow: hidden</code> from <code>.navbar</code>, what would happen?</li><li>How could you make both dropdowns right-aligned?</li></ol>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Dropdown with Mixed Content (Image + Links)</h3>
+<p class="v2-p"><strong>Objective:</strong> Build a dropdown that contains a featured image and links — like a "Featured Product" panel.</p>
+<p class="v2-p"><strong>Your task:</strong> Build a "Shop" button dropdown that shows:</p>
+<ul class="v2-ul"><li>A placeholder product image at the top</li><li>A short tagline paragraph</li><li>Three category links: Electronics, Clothing, Books</li></ul>
+<p class="v2-p">Use the structure from Example 4 but style it with your own colour palette (try a dark theme: dark grey panel, white text, orange hover).</p>
+<p class="v2-p"><strong>Expected Output after hover:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Shop ▼ ]
+┌────────────────────────┐
+│  [Product Banner img]  │
+│  New arrivals this     │
+│  season — shop now!    │
+│ Electronics            │
+│ Clothing               │
+│ Books                  │
+└────────────────────────┘</code></pre></div></div>
+<p class="v2-p"><strong>Hints:</strong></p>
+<ul class="v2-ul"><li>Set <code>.dropdown-content</code> width to <code>220px</code></li><li>Set <code>.dropdown-content img { width: 100%; display: block; }</code></li><li>For a dark theme: <code>background-color: #2c2c2c</code>, link colour <code>#eee</code></li><li>Orange hover: <code>background-color: #e67e22</code></li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 9</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 — Forgetting <code>position: relative</code> on the Wrapper</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG: no position: relative on the wrapper */
+.dropdown {
+  display: inline-block;
+  /* missing: position: relative */
+}
+
+.dropdown-content {
   display: none;
   position: absolute;
-  top: 100%;
+  top: 0; left: 0;   /* this now positions relative to the &lt;body&gt;! */
+}</code></pre></div></div>
+<p class="v2-p"><strong>What goes wrong:</strong> The dropdown panel appears in the top-left corner of the browser window, not beneath the button.</p>
+<p class="v2-p"><strong>Fix:</strong> Always add <code>position: relative</code> to the wrapper <code>.dropdown</code>.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Putting the Hover Rule on the Wrong Element</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG: hovering the panel itself, not the wrapper */
+.dropdown-content:hover .dropdown-content {
+  display: block;
+}
+
+/* CORRECT: hovering the WRAPPER reveals the CONTENT inside it */
+.dropdown:hover .dropdown-content {
+  display: block;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What goes wrong:</strong> The panel can never be shown — you can't hover over something that's already hidden.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — The Panel Disappears When Moving the Mouse from Trigger to Links</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- WRONG: gap between trigger and panel --&gt;
+&lt;button class=&quot;dropbtn&quot;&gt;Menu&lt;/button&gt;
+
+&lt;!-- A gap here (margin/padding) causes the mouse to leave .dropdown --&gt;
+
+&lt;div class=&quot;dropdown-content&quot;&gt;...&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Fix: ensure no gap between trigger bottom and panel top */
+.dropdown-content {
+  position: absolute;
+  top: 100%;    /* Starts exactly at the bottom of the wrapper — no gap */
   left: 0;
-  min-width: 200px;
-  background: white;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.12);
-  z-index: 200;
-  padding: 6px 0;
-  margin-top: 4px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What goes wrong:</strong> If there is any gap between the bottom of the trigger and the top of the panel, the mouse leaves <code>.dropdown</code> as it passes through the gap, the hover state ends, and the panel disappears.</p>
+<p class="v2-p"><strong>Fix:</strong> Always use <code>top: 100%</code> (no gap) or ensure the panel starts exactly where the trigger ends.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Forgetting <code>float: none</code> on Links Inside a Navbar Dropdown</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* In a float-based navbar, .navbar a has float: left */
+.navbar a {
+  float: left;   /* This applies to ALL &lt;a&gt; tags in .navbar */
 }
 
-/* Show on hover */
-.dropdown:hover .dropdown-menu { display: block; }
+/* So links in .dropdown-content also inherit float: left and stack horizontally! */
 
-/* Menu items */
-.dropdown-menu a {
+/* Fix: explicitly remove float inside the panel */
+.dropdown-content a {
+  float: none;   /* override the inherited float */
   display: block;
-  padding: 10px 16px;
-  color: #334155;
-  text-decoration: none;
-  font-size: 14px;
-  transition: background .15s;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What goes wrong:</strong> All the dropdown links appear on one horizontal line instead of stacking vertically.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Using <code>visibility: hidden</code> Instead of <code>display: none</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WORKS but not ideal */
+.dropdown-content {
+  visibility: hidden;   /* element is invisible but STILL TAKES UP SPACE */
 }
-.dropdown-menu a:hover {
-  background: #f0f9ff;
-  color: #0284c7;
-}</pre></div>
-</div>
+
+.dropdown:hover .dropdown-content {
+  visibility: visible;
+}
+
+/* BETTER: use display: none so the panel takes up no space when hidden */
+.dropdown-content {
+  display: none;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What goes wrong with <code>visibility: hidden</code>:</strong> The hidden panel still occupies space in the layout, which causes a large invisible empty area below your trigger button. Other content gets pushed down even though nothing appears there.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6 — The Dropdown Panel Goes Behind Other Content</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG: no z-index, panel gets buried under other elements */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  /* missing z-index */
+}
+
+/* FIX: give the panel a high enough z-index */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 100;   /* ensures it floats above everything else */
+}</code></pre></div></div>
+<p class="v2-p"><strong>What goes wrong:</strong> Images, other <code>&lt;div&gt;</code> elements, or banners appear on top of the dropdown panel, making the links unreadable or hidden.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Create a navigation bar with one dropdown. The parent link should say 'Courses ▾' and the dropdown should contain 4 course links. Add hover styles to both the parent link and the dropdown items. Make sure to add <code>position: relative</code> to the parent <code>li</code>!</p>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
-  </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
-  <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">Animated Dropdowns and Click-toggle</div></div>
-    <div class="phase-check" id="check2"></div>
-  </div>
-  <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>Improve the hover dropdown with CSS transitions: animate the dropdown sliding down from above using <code>transform: scaleY(0)</code> to <code>transform: scaleY(1)</code> with <code>transform-origin: top</code>. For accessibility, add click-to-toggle using a tiny JavaScript function rather than hover-only. Add a small arrow indicator with <code>::after</code>.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Animated dropdown */
-.dropdown-menu {
-  display: block;
-  opacity: 0;
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: opacity .2s, transform .2s;
-  pointer-events: none;
-}
-
-.dropdown:hover .dropdown-menu {
-  opacity: 1;
-  transform: scaleY(1);
-  pointer-events: auto;
-}
-
-/* Arrow indicator */
-.dropdown &gt; a::after {
-  content: ' ▾';
-  font-size: .75em;
-  opacity: .7;
-}
-
-/* Divider inside dropdown */
-.dropdown-divider {
-  height: 1px;
-  background: #e2e8f0;
-  margin: 6px 0;
-}
-
-/* Dropdown sections */
-.dropdown-header {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: #94a3b8;
-  padding: 8px 16px 4px;
-  font-weight: 700;
-}</pre></div>
-</div>
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <p>Add a CSS transition to your dropdown so it fades and scales into view. Use <code>opacity</code> and <code>transform: scaleY()</code> with <code>transform-origin: top</code>. Add a divider line with a 1px border and a small section header inside the dropdown.</p>
-    </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My Dropdown Navigation</div>
-  <p class="project-desc">Build a navigation bar with animated CSS dropdowns and grouped menu sections.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Stage 1 — HTML Structure</div>
+  <div class="build-desc"><nav class="topnav"></div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
     </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;CSS Dropdowns&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"&gt;
-    &lt;style&gt;
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff; color: #0f172a; }
-      /* NAVBAR */
-      .navbar { background: #0284c7; display: flex; align-items: center; padding: 0 28px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(2,132,199,.3); }
-      .brand { font-weight: 800; color: white; font-size: 1.05rem; padding: 18px 0; margin-right: auto; }
-      .nav-list { list-style: none; display: flex; gap: 0; }
-      .nav-list &gt; li { position: relative; }
-      .nav-list &gt; li &gt; a { display: block; color: rgba(255,255,255,.85); text-decoration: none; font-weight: 600; font-size: 14px; padding: 18px 16px; transition: background .15s, color .15s; }
-      .nav-list &gt; li &gt; a:hover, .nav-list &gt; li:hover &gt; a { background: rgba(255,255,255,.15); color: white; }
-      /* DROPDOWN */
-      .dropdown-menu { display: block; opacity: 0; transform: scaleY(0) translateY(-8px); transform-origin: top; transition: opacity .2s ease, transform .2s ease; pointer-events: none; position: absolute; top: 100%; left: 0; min-width: 220px; background: white; border: 1.5px solid #e2e8f0; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,.12); z-index: 200; padding: 8px 0; margin-top: 4px; }
-      .nav-list &gt; li:hover .dropdown-menu { opacity: 1; transform: scaleY(1) translateY(0); pointer-events: auto; }
-      .dropdown-header { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #94a3b8; padding: 8px 16px 4px; font-weight: 700; }
-      .dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 9px 16px; color: #334155; text-decoration: none; font-size: 14px; transition: background .15s; }
-      .dropdown-menu a:hover { background: #f0f9ff; color: #0284c7; }
-      .dropdown-menu a i  { font-size: 1rem; color: #0284c7; width: 16px; }
-      .dropdown-divider { height: 1px; background: #e2e8f0; margin: 6px 0; }
-      /* Arrow indicator */
-      .has-dropdown::after { content: ' ▾'; font-size: .7em; opacity: .7; }
-      /* PAGE CONTENT */
-      .hero { padding: 80px 28px; text-align: center; }
-      .hero h1 { font-size: 2.2rem; color: #0284c7; margin-bottom: 12px; }
-      .hero p  { color: #475569; font-size: 1.05rem; max-width: 500px; margin: 0 auto; }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;nav class="navbar"&gt;
-      &lt;span class="brand"&gt;⚡ Techbase&lt;/span&gt;
-      &lt;ul class="nav-list"&gt;
-        &lt;li&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;
-          &lt;a href="#" class="has-dropdown"&gt;Courses&lt;/a&gt;
-          &lt;div class="dropdown-menu"&gt;
-            &lt;div class="dropdown-header"&gt;Beginner&lt;/div&gt;
-            &lt;a href="#"&gt;&lt;i class="bi bi-code-slash"&gt;&lt;/i&gt;HTML Basics&lt;/a&gt;
-            &lt;a href="#"&gt;&lt;i class="bi bi-palette-fill"&gt;&lt;/i&gt;CSS Mastery&lt;/a&gt;
-            &lt;div class="dropdown-divider"&gt;&lt;/div&gt;
-            &lt;div class="dropdown-header"&gt;Intermediate&lt;/div&gt;
-            &lt;a href="#"&gt;&lt;i class="bi bi-lightning-fill"&gt;&lt;/i&gt;JavaScript&lt;/a&gt;
-            &lt;a href="#"&gt;&lt;i class="bi bi-braces"&gt;&lt;/i&gt;Python&lt;/a&gt;
-          &lt;/div&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-          &lt;a href="#" class="has-dropdown"&gt;Resources&lt;/a&gt;
-          &lt;div class="dropdown-menu"&gt;
-            &lt;a href="#"&gt;&lt;i class="bi bi-book-fill"&gt;&lt;/i&gt;Documentation&lt;/a&gt;
-            &lt;a href="#"&gt;&lt;i class="bi bi-youtube"&gt;&lt;/i&gt;Video Tutorials&lt;/a&gt;
-            &lt;a href="#"&gt;&lt;i class="bi bi-github"&gt;&lt;/i&gt;GitHub Projects&lt;/a&gt;
-          &lt;/div&gt;
-        &lt;/li&gt;
-        &lt;li&gt;&lt;a href="#"&gt;About&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href="#"&gt;Contact&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/nav&gt;
-    &lt;div class="hero"&gt;
-      &lt;h1&gt;CSS Dropdown Menus&lt;/h1&gt;
-      &lt;p&gt;Hover over &lt;strong&gt;Courses&lt;/strong&gt; or &lt;strong&gt;Resources&lt;/strong&gt; in the navbar to see the animated dropdown menus — no JavaScript required!&lt;/p&gt;
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;ShopNow — Navigation&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;shopnow-nav.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;nav class=&quot;topnav&quot;&gt;
+
+    &lt;!-- Logo / Brand --&gt;
+    &lt;a href=&quot;#&quot; class=&quot;brand&quot;&gt;🛒 ShopNow&lt;/a&gt;
+
+    &lt;!-- Plain nav links --&gt;
+    &lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;Deals&lt;/a&gt;
+
+    &lt;!-- Dropdown 1: Categories --&gt;
+    &lt;div class=&quot;dropdown&quot;&gt;
+      &lt;button class=&quot;dropbtn&quot;&gt;Categories ▼&lt;/button&gt;
+      &lt;div class=&quot;dropdown-content&quot;&gt;
+        &lt;a href=&quot;#&quot;&gt;Electronics&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Clothing &amp;amp; Fashion&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Books &amp;amp; Stationery&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Home &amp;amp; Kitchen&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Sports &amp;amp; Outdoors&lt;/a&gt;
+      &lt;/div&gt;
     &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
-  </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Dropdowns</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff; color: #0f172a; }
-      /* NAVBAR */
-      .navbar { background: #0284c7; display: flex; align-items: center; padding: 0 28px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(2,132,199,.3); }
-      .brand { font-weight: 800; color: white; font-size: 1.05rem; padding: 18px 0; margin-right: auto; }
-      .nav-list { list-style: none; display: flex; gap: 0; }
-      .nav-list > li { position: relative; }
-      .nav-list > li > a { display: block; color: rgba(255,255,255,.85); text-decoration: none; font-weight: 600; font-size: 14px; padding: 18px 16px; transition: background .15s, color .15s; }
-      .nav-list > li > a:hover, .nav-list > li:hover > a { background: rgba(255,255,255,.15); color: white; }
-      /* DROPDOWN */
-      .dropdown-menu { display: block; opacity: 0; transform: scaleY(0) translateY(-8px); transform-origin: top; transition: opacity .2s ease, transform .2s ease; pointer-events: none; position: absolute; top: 100%; left: 0; min-width: 220px; background: white; border: 1.5px solid #e2e8f0; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,.12); z-index: 200; padding: 8px 0; margin-top: 4px; }
-      .nav-list > li:hover .dropdown-menu { opacity: 1; transform: scaleY(1) translateY(0); pointer-events: auto; }
-      .dropdown-header { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #94a3b8; padding: 8px 16px 4px; font-weight: 700; }
-      .dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 9px 16px; color: #334155; text-decoration: none; font-size: 14px; transition: background .15s; }
-      .dropdown-menu a:hover { background: #f0f9ff; color: #0284c7; }
-      .dropdown-menu a i  { font-size: 1rem; color: #0284c7; width: 16px; }
-      .dropdown-divider { height: 1px; background: #e2e8f0; margin: 6px 0; }
-      /* Arrow indicator */
-      .has-dropdown::after { content: ' ▾'; font-size: .7em; opacity: .7; }
-      /* PAGE CONTENT */
-      .hero { padding: 80px 28px; text-align: center; }
-      .hero h1 { font-size: 2.2rem; color: #0284c7; margin-bottom: 12px; }
-      .hero p  { color: #475569; font-size: 1.05rem; max-width: 500px; margin: 0 auto; }
-    </style>
-  </head>
-  <body>
-    <nav class="navbar">
-      <span class="brand">⚡ Techbase</span>
-      <ul class="nav-list">
-        <li><a href="#">Home</a></li>
-        <li>
-          <a href="#" class="has-dropdown">Courses</a>
-          <div class="dropdown-menu">
-            <div class="dropdown-header">Beginner</div>
-            <a href="#"><i class="bi bi-code-slash"></i>HTML Basics</a>
-            <a href="#"><i class="bi bi-palette-fill"></i>CSS Mastery</a>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-header">Intermediate</div>
-            <a href="#"><i class="bi bi-lightning-fill"></i>JavaScript</a>
-            <a href="#"><i class="bi bi-braces"></i>Python</a>
-          </div>
-        </li>
-        <li>
-          <a href="#" class="has-dropdown">Resources</a>
-          <div class="dropdown-menu">
-            <a href="#"><i class="bi bi-book-fill"></i>Documentation</a>
-            <a href="#"><i class="bi bi-youtube"></i>Video Tutorials</a>
-            <a href="#"><i class="bi bi-github"></i>GitHub Projects</a>
-          </div>
-        </li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="hero">
-      <h1>CSS Dropdown Menus</h1>
-      <p>Hover over <strong>Courses</strong> or <strong>Resources</strong> in the navbar to see the animated dropdown menus — no JavaScript required!</p>
-    </div>
-  </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
 
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+    &lt;!-- Dropdown 2: Brands (with image card) --&gt;
+    &lt;div class=&quot;dropdown&quot;&gt;
+      &lt;button class=&quot;dropbtn&quot;&gt;Brands ▼&lt;/button&gt;
+      &lt;div class=&quot;dropdown-content brands-panel&quot;&gt;
+        &lt;img src=&quot;https://via.placeholder.com/220x80?text=Featured+Brands&quot; alt=&quot;Brands&quot;&gt;
+        &lt;p&gt;Shop top-rated brands at unbeatable prices.&lt;/p&gt;
+        &lt;a href=&quot;#&quot;&gt;Apple&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Samsung&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Nike&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Sony&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;a href=&quot;#&quot;&gt;Contact&lt;/a&gt;
+
+    &lt;!-- Right-aligned Account Dropdown --&gt;
+    &lt;div class=&quot;dropdown right-dropdown&quot;&gt;
+      &lt;button class=&quot;dropbtn account-btn&quot;&gt;My Account ▼&lt;/button&gt;
+      &lt;div class=&quot;dropdown-content account-panel&quot;&gt;
+        &lt;a href=&quot;#&quot;&gt;👤 Profile&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;📦 My Orders&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;❤️ Wishlist&lt;/a&gt;
+        &lt;hr style=&quot;border-color: #eee;&quot;&gt;
+        &lt;a href=&quot;#&quot; style=&quot;color: #e74c3c;&quot;&gt;🚪 Sign Out&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/nav&gt;
+
+  &lt;div style=&quot;padding: 30px; font-family: Arial;&quot;&gt;
+    &lt;h2&gt;Welcome to ShopNow!&lt;/h2&gt;
+    &lt;p&gt;Hover over the navigation items above to explore the dropdowns.&lt;/p&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-33-css_dropdowns</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 33 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-33-css_dropdowns/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html>
+<head>
+  <title>ShopNow — Navigation</title>
+  <link rel="stylesheet" href="shopnow-nav.css">
+</head>
+<body>
+
+  <nav class="topnav">
+
+    <!-- Logo / Brand -->
+    <a href="#" class="brand">🛒 ShopNow</a>
+
+    <!-- Plain nav links -->
+    <a href="#">Home</a>
+    <a href="#">Deals</a>
+
+    <!-- Dropdown 1: Categories -->
+    <div class="dropdown">
+      <button class="dropbtn">Categories ▼</button>
+      <div class="dropdown-content">
+        <a href="#">Electronics</a>
+        <a href="#">Clothing &amp; Fashion</a>
+        <a href="#">Books &amp; Stationery</a>
+        <a href="#">Home &amp; Kitchen</a>
+        <a href="#">Sports &amp; Outdoors</a>
+      </div>
+    </div>
+
+    <!-- Dropdown 2: Brands (with image card) -->
+    <div class="dropdown">
+      <button class="dropbtn">Brands ▼</button>
+      <div class="dropdown-content brands-panel">
+        <img src="https://via.placeholder.com/220x80?text=Featured+Brands" alt="Brands">
+        <p>Shop top-rated brands at unbeatable prices.</p>
+        <a href="#">Apple</a>
+        <a href="#">Samsung</a>
+        <a href="#">Nike</a>
+        <a href="#">Sony</a>
+      </div>
+    </div>
+
+    <a href="#">Contact</a>
+
+    <!-- Right-aligned Account Dropdown -->
+    <div class="dropdown right-dropdown">
+      <button class="dropbtn account-btn">My Account ▼</button>
+      <div class="dropdown-content account-panel">
+        <a href="#">👤 Profile</a>
+        <a href="#">📦 My Orders</a>
+        <a href="#">❤️ Wishlist</a>
+        <hr style="border-color: #eee;">
+        <a href="#" style="color: #e74c3c;">🚪 Sign Out</a>
+      </div>
+    </div>
+
+  </nav>
+
+  <div style="padding: 30px; font-family: Arial;">
+    <h2>Welcome to ShopNow!</h2>
+    <p>Hover over the navigation items above to explore the dropdowns.</p>
+  </div>
+
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
+  </div>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-33-stage-1-html-structure</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 33 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-33-stage-1-html-structure/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 33 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Basic CSS Dropdown</li><li>✅ Animated Dropdowns and Click-toggle</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_32.html" class="ln-btn">← Lesson 32</a>
-    <a href="lesson_34.html" class="ln-btn primary">Lesson 34 →</a>
-  </div>
+  <h2>🎉 Lesson 33 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — The Basic Hover Dropdown</li><li>✅ Part 2 — Dropdown Inside a Navigation Bar</li><li>✅ Part 3 — Advanced Dropdown: Image and Text Content</li><li>✅ Part 4 — Right-Aligned Dropdown</li><li>✅ Part 5 — Dropdown Button Highlight Stays Active</li><li>✅ Guided Practice Exercises</li></ul>
+  <div class="lesson-nav"><a href="lesson_32.html" class="ln-btn">← Lesson 32</a><a href="lesson_34.html" class="ln-btn primary">Lesson 34 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 33 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 33 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_33_phase';
+const TOTAL=9,KEY='techbase_css_l33';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

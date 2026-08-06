@@ -2,329 +2,1467 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 58: CSS Styling Images — Techbase CSS Course</title>
-<meta name="description" content="Style images with border-radius, shadows, filters and hover effects">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 58: CSS Image Styling — Shapes, Effects, Filters, Hover, Modals &amp; Centering — Techbase CSS</title>
+<meta name="description" content="CSS Image Styling — Shapes, Effects, Filters, Hover, Modals &amp; Centering">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
-}
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
+/* HERO */
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
+/* TASK BOX */
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
+/* GITHUB ACCORDION */
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
-  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
-  <span class="l-nav-lesson">Lesson 58 of 73</span>
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 58 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
 <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
 <div class="l-hero">
   <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 58 </div>
-    <h1>CSS Styling Images</h1>
-    <div class="l-hero-tag">Style images with border-radius, shadows, filters and hover effects</div>
-    <div class="l-hero-build"><strong>🏗️ Build:</strong> My Image Styling Showcase</div>
+    <div class="l-badge">CSS · Lesson 58</div>
+    <h1>CSS Image Styling — Shapes, Effects, Filters, Hover, Modals &amp; Centering</h1>
+    <div class="l-hero-sub">11 phases · Build: Project Overview</div>
   </div>
 </div>
-<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
-    <div class="welcome-box">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
   <h2>👋 Welcome to Lesson 58</h2>
-  <p>Style images with border-radius, shadows, filters and hover effects</p>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Welcome to one of the most visual and exciting topics in all of CSS! In this lesson, you will learn how to take a plain, boring image on a webpage and completely transform it using CSS alone — no image editing software required.</p>
+<p class="v2-p">By the time you finish this lesson, you will know how to:</p>
+<ul class="v2-ul"><li>Style images with rounded corners, borders, shadows, and transparency</li><li>Create image effects like grayscale, blur, and sepia using CSS filters</li><li>Build hover overlays that reveal text or colour when the user's mouse moves over an image</li><li>Make images pop up in a modal (a lightbox-style enlargement)</li><li>Centre images perfectly on any page</li><li>Clip and reshape images into circles, hexagons, and triangles</li><li>Apply real-world techniques used in professional portfolios, news sites, and online shops</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Who is this lesson for?</strong> This lesson assumes you know what an HTML <code>&lt;img&gt;</code> tag is and that you have written at least a few lines of CSS before (like changing a colour or a font size). If you have done those things, you are perfectly ready.</p></blockquote>
+<hr class="v2-hr"></div>
   <div class="welcome-meta">
-    <span>📚 2 phases</span>
-    <span>🏗️ Build: My Image Styling Showcase</span>
-    
+    <span>📚 11 phases</span>
+    <span>🏗️ Project Overview</span>
   </div>
-</div>
-  </div>
+</div></div>
 </section>
-<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
 <div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">Shapes and frames</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 11</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p>Round corners: <code>border-radius: 50%</code> = circle. Frame: <code>border + box-shadow</code>. Responsive: <code>max-width:100%; height:auto</code>. Object-fit: <code>cover</code> fills without distortion.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.circle { border-radius: 50%; object-fit: cover; }
-.framed { border: 4px solid white; box-shadow: 0 4px 20px rgba(0,0,0,.15); border-radius:12px; }
-.polaroid { background: white; padding: 12px 12px 40px; box-shadow: 0 4px 20px rgba(0,0,0,.12); transform: rotate(-2deg); transition: transform .3s; }
-.polaroid:hover { transform: rotate(0deg) scale(1.05); }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Style 3 images: (1) circle with outline ring, (2) polaroid with rotation + hover, (3) framed with shadow.</p></div>
-    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+    <p class="v2-p">Welcome to one of the most visual and exciting topics in all of CSS! In this lesson, you will learn how to take a plain, boring image on a webpage and completely transform it using CSS alone — no image editing software required.</p>
+<p class="v2-p">By the time you finish this lesson, you will know how to:</p>
+<ul class="v2-ul"><li>Style images with rounded corners, borders, shadows, and transparency</li><li>Create image effects like grayscale, blur, and sepia using CSS filters</li><li>Build hover overlays that reveal text or colour when the user's mouse moves over an image</li><li>Make images pop up in a modal (a lightbox-style enlargement)</li><li>Centre images perfectly on any page</li><li>Clip and reshape images into circles, hexagons, and triangles</li><li>Apply real-world techniques used in professional portfolios, news sites, and online shops</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Who is this lesson for?</strong> This lesson assumes you know what an HTML <code>&lt;img&gt;</code> tag is and that you have written at least a few lines of CSS before (like changing a colour or a font size). If you have done those things, you are perfectly ready.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
 </div>
 <div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">CSS Filters</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 11</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>filter: grayscale(100%)</code>, <code>blur(4px)</code>, <code>brightness(1.3)</code>, <code>sepia(0.8)</code>, <code>hue-rotate(90deg)</code>. Hover colour reveal: go from grayscale to saturated.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.photo { filter: grayscale(100%); transition: filter .4s ease; }
-.photo:hover { filter: grayscale(0%) saturate(1.3); }
-.vintage { filter: sepia(.6) contrast(1.1) brightness(1.05); }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Apply grayscale to a set of images. On hover reveal the colour with a 0.4s transition — this is a popular portfolio effect.</p></div>
-    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+    <p class="v2-p">Before diving in, let us quickly recap two things you will use constantly in this lesson.</p>
+<h3 class="v2-h3">What is an <code>&lt;img&gt;</code> tag?</h3>
+<p class="v2-p">The <code>&lt;img&gt;</code> tag is used in HTML to display an image on a webpage.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;img src=&quot;photo.jpg&quot; alt=&quot;A mountain at sunset&quot;&gt;</code></pre></div></div>
+<ul class="v2-ul"><li><code>src</code> — the path to the image file (where it lives)</li><li><code>alt</code> — a text description (shown when the image cannot load, and read by screen readers)</li></ul>
+<h3 class="v2-h3">What is a CSS property?</h3>
+<p class="v2-p">A CSS property is an instruction you give to a browser about how an element should look.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  width: 300px;      /* Makes the image 300 pixels wide */
+  border: 2px solid black;  /* Adds a solid black border */
+}</code></pre></div></div>
+<p class="v2-p">The pattern is always: <code>property: value;</code></p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It</div>
-  <div class="project-name">Image Styling Showcase</div>
-  <div class="project-desc">Shapes, frames, polaroid, filters and hover colour reveal.</div>
-  <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
-<div class="code-body"><pre>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;Image Styling&lt;/title&gt;
-&lt;style&gt;*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto}
-h2{color:#0369a1;margin:24px 0 14px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-img{display:block;max-width:100%}
-.shape-row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;margin-bottom:20px}
-.shape-item{text-align:center}.shape-item p{font-size:11px;color:#64748b;margin-top:8px;font-family:monospace}
-.img-plain{width:100px;height:100px;object-fit:cover;border-radius:8px}
-.img-circle{width:100px;height:100px;object-fit:cover;border-radius:50%;outline:4px solid #0284c7;outline-offset:4px}
-.polaroid{background:white;padding:10px 10px 36px;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:rotate(-2deg);transition:transform .3s,box-shadow .3s;display:inline-block}
-.polaroid:hover{transform:rotate(0) scale(1.05);box-shadow:0 8px 32px rgba(0,0,0,.2)}
-.polaroid img{width:100px;height:100px;object-fit:cover}
-.framed{border:5px solid white;box-shadow:0 4px 16px rgba(0,0,0,.15);border-radius:10px;width:100px;height:100px;object-fit:cover}
-.filter-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.fi{text-align:center}.fi img{width:120px;height:90px;object-fit:cover;border-radius:10px;transition:filter .4s}
-.fi span{font-size:10px;font-family:monospace;color:#64748b;display:block;margin-top:4px}
-.f-hover{filter:grayscale(1)}.f-hover:hover{filter:grayscale(0) saturate(1.3)}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;h1 style=&quot;color:#0284c7;margin-bottom:4px&quot;&gt;CSS Image Styling&lt;/h1&gt;
-&lt;h2&gt;Shapes and Frames&lt;/h2&gt;
-&lt;div class=&quot;shape-row&quot;&gt;
-&lt;div class=&quot;shape-item&quot;&gt;&lt;img class=&quot;img-plain&quot; src=&quot;https://via.placeholder.com/100/0284c7/dbeafe?text=CSS&quot; alt=&quot;plain&quot;&gt;&lt;p&gt;plain + radius&lt;/p&gt;&lt;/div&gt;
-&lt;div class=&quot;shape-item&quot;&gt;&lt;img class=&quot;img-circle&quot; src=&quot;https://via.placeholder.com/100/ea4f21/fff?text=T&quot; alt=&quot;circle&quot;&gt;&lt;p&gt;border-radius:50%&lt;/p&gt;&lt;/div&gt;
-&lt;div class=&quot;shape-item&quot;&gt;&lt;div class=&quot;polaroid&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/100/7c3aed/fff?text=📷&quot; alt=&quot;polaroid&quot;&gt;&lt;/div&gt;&lt;p&gt;polaroid (hover!)&lt;/p&gt;&lt;/div&gt;
-&lt;div class=&quot;shape-item&quot;&gt;&lt;img class=&quot;framed&quot; src=&quot;https://via.placeholder.com/100/10b981/fff?text=🖼&quot; alt=&quot;framed&quot;&gt;&lt;p&gt;framed + shadow&lt;/p&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2&gt;CSS Filters (hover last one for colour reveal)&lt;/h2&gt;
-&lt;div class=&quot;filter-row&quot;&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/120x90/0284c7/dbeafe?text=original&quot; alt=&quot;original&quot;&gt;&lt;span&gt;original&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/120x90/0284c7/dbeafe?text=grey&quot; style=&quot;filter:grayscale(1)&quot; alt=&quot;grey&quot;&gt;&lt;span&gt;grayscale(1)&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/120x90/0284c7/dbeafe?text=sepia&quot; style=&quot;filter:sepia(.8)&quot; alt=&quot;sepia&quot;&gt;&lt;span&gt;sepia(.8)&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/120x90/0284c7/dbeafe?text=bright&quot; style=&quot;filter:brightness(1.5)&quot; alt=&quot;bright&quot;&gt;&lt;span&gt;brightness(1.5)&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img class=&quot;f-hover&quot; src=&quot;https://via.placeholder.com/120x90/0284c7/dbeafe?text=hover!&quot; alt=&quot;hover&quot;&gt;&lt;span&gt;hover → colour!&lt;/span&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 11</div>
+    <div class="phase-title">Part 1 — CSS Image Styling Fundamentals</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">1.1 Why Style Images with CSS?</h3>
+<p class="v2-p">Think of a photograph printed on plain white paper versus the same photo in a professional picture frame with a mat border. The content is identical, but the styled version looks far more polished and intentional.</p>
+<p class="v2-p">CSS lets you:</p>
+<ul class="v2-ul"><li>Add <strong>borders</strong> and <strong>padding</strong> to frame images</li><li>Make images <strong>responsive</strong> so they shrink on small screens</li><li>Add <strong>rounded corners</strong> for a modern card feel</li><li>Create <strong>transparency</strong> effects</li><li>Add <strong>hover effects</strong> so images react to mouse movement</li><li>Apply <strong>filter effects</strong> like making an image black-and-white</li></ul>
+<h3 class="v2-h3">1.2 Making an Image Responsive</h3>
+<p class="v2-p"><strong>The Problem:</strong> If you place an image on a webpage and the screen is smaller than the image, the image overflows and breaks the layout.</p>
+<p class="v2-p"><strong>The Solution:</strong> Tell the image it should never be wider than its container.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  max-width: 100%;
+  height: auto;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Line</th><th>What it does</th></tr></thead><tbody><tr><td><code>max-width: 100%;</code></td><td>The image may be as wide as its container but never wider. On a 400px container, the image shrinks to 400px. On a 1200px screen, it shows at its natural size.</td></tr><tr><td><code>height: auto;</code></td><td>The height adjusts automatically so the image does not get squashed or stretched.</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Expected result:</strong> The image scales down gracefully on phones and tablets but never becomes wider than the page.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> Every professional website uses <code>max-width: 100%</code> on images for mobile responsiveness. This is possibly the single most important image CSS rule you will ever write.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.3 Adding a Border to an Image</h3>
+<p class="v2-p">Just like any other HTML element, you can add a border to an image.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  border: 3px solid grey;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A grey 3-pixel-wide solid border appears around the image.</p>
+<p class="v2-p"><strong>Variations:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Dashed border */
+img { border: 2px dashed navy; }
+
+/* Thick red border */
+img { border: 8px solid red; }
+
+/* Dotted border */
+img { border: 4px dotted green; }</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.4 Rounded Corners on Images</h3>
+<p class="v2-p">The <code>border-radius</code> property cuts the corners of an element. When applied to an image, it rounds those corners.</p>
+<p class="v2-p"><strong>Simple example — slightly rounded corners:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  border-radius: 8px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The four corners of the image are gently rounded.</p>
+<p class="v2-p"><strong>More rounded:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  border-radius: 20px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Fully circular image:</strong></p>
+<p class="v2-p">For this to produce a perfect circle, the image must be <strong>square</strong> (equal width and height).</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;  /* Ensures the image fills the circle without distorting */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image appears as a perfect circle — ideal for profile pictures and avatars.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Why does <code>50%</code> create a circle?</strong> Because <code>border-radius: 50%</code> rounds each corner by half the element's width and height. On a square element, this results in a perfect circle.</p></blockquote>
+<blockquote class="v2-bq"><p class="v2-p"><strong>What happens if you change <code>50%</code> to <code>25%</code>?</strong> Try it! You will get a rounded square shape.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.5 The Thumbnail Image</h3>
+<p class="v2-p">A thumbnail is a small preview image, often used in galleries and product listings. Typically it has a border and a small amount of padding.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img.thumbnail {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;img class=&quot;thumbnail&quot; src=&quot;product.jpg&quot; alt=&quot;Red sneaker&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A small image with a light grey border, subtle rounded corners, and 5px of breathing room between the image edge and the border.</p>
+<p class="v2-p"><strong>Adding a hover effect to the thumbnail:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img.thumbnail:hover {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line explanation of <code>box-shadow</code>:</strong></p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>Meaning</th></tr></thead><tbody><tr><td><code>0</code></td><td>Horizontal shadow offset (no sideways shift)</td></tr><tr><td><code>0</code></td><td>Vertical shadow offset (no up/down shift)</td></tr><tr><td><code>2px</code></td><td>How blurry the shadow is</td></tr><tr><td><code>1px</code></td><td>How far the shadow spreads outward</td></tr><tr><td><code>rgba(0, 140, 186, 0.5)</code></td><td>A semi-transparent blue colour</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Expected result:</strong> When you hover over the thumbnail, a soft blue glow appears around it.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.6 The Polaroid Card Effect</h3>
+<p class="v2-p">A Polaroid is a vintage-style photo card — a photo with a white border and a caption underneath.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div.polaroid {
+  width: 250px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+div.polaroid img {
+  width: 100%;
+}
+
+div.container {
+  padding: 10px 5px;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;polaroid&quot;&gt;
+  &lt;img src=&quot;nature.jpg&quot; alt=&quot;Forest path&quot;&gt;
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;p&gt;A Walk in the Woods&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A white card with a photo on top and a caption below, with a soft drop shadow giving it depth. It looks like a real Polaroid photograph sitting on a table.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.7 Image Transparency with <code>opacity</code></h3>
+<p class="v2-p">The <code>opacity</code> property controls how see-through an element is.</p>
+<ul class="v2-ul"><li><code>opacity: 1</code> — completely visible (default)</li><li><code>opacity: 0</code> — completely invisible</li><li><code>opacity: 0.5</code> — 50% see-through</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  opacity: 0.5;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image appears faded, letting whatever is behind it show through.</p>
+<p class="v2-p"><strong>Combining opacity with hover:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+img:hover {
+  opacity: 0.5;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What this does:</strong> On hover, the image smoothly fades to 50% opacity over 0.3 seconds. The <code>transition</code> property creates the smooth animation.</p>
+<p class="v2-p"><strong>The reverse — faded by default, solid on hover:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+img:hover {
+  opacity: 1;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Use case:</strong> This is used on image galleries where dimmed images "come alive" when hovered.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>CSS Image Styling Fundamentals</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
 </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
-    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 11</div>
+    <div class="phase-title">Part 2 — Image Effects</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">2.1 Image Text Overlay Basics</h3>
+<p class="v2-p">Sometimes you want to place text directly on top of an image — like a headline over a hero image, or a price tag over a product photo.</p>
+<p class="v2-p">To do this, you need a <strong>container with <code>position: relative</code></strong> and the text element inside it with <strong><code>position: absolute</code></strong>.</p>
+<p class="v2-p"><strong>Why?</strong> Because <code>position: absolute</code> positions an element <em>relative to its nearest positioned ancestor</em>. By giving the parent <code>position: relative</code>, you make it that anchor point.</p>
+<p class="v2-p"><strong>Basic image with text overlay:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.image-container {
+  position: relative;   /* This becomes the anchor */
+  width: 300px;
+}
+
+.image-container img {
+  width: 100%;
+  display: block;
+}
+
+.overlay-text {
+  position: absolute;   /* Positioned inside the container */
+  top: 50%;             /* 50% down from the top */
+  left: 50%;            /* 50% from the left */
+  transform: translate(-50%, -50%);  /* Centres the text perfectly */
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;image-container&quot;&gt;
+  &lt;img src=&quot;mountain.jpg&quot; alt=&quot;Mountain&quot;&gt;
+  &lt;div class=&quot;overlay-text&quot;&gt;Hello World&lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The text "Hello World" appears centred on top of the image.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Why <code>transform: translate(-50%, -50%)</code>?</strong> When you set <code>top: 50%</code> and <code>left: 50%</code>, you position the <em>top-left corner</em> of the text element at the centre. The transform shifts the element back by half its own width and half its own height, so the <em>centre</em> of the text lands exactly at the centre of the image.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.2 Text Position Variations</h3>
+<p class="v2-p">You can position text in any corner or edge of the image:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Top left */
+.top-left {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+  color: white;
+}
+
+/* Top right */
+.top-right {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  color: white;
+}
+
+/* Bottom left */
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+  color: white;
+}
+
+/* Bottom right */
+.bottom-right {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  color: white;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Real-world use:</strong> News websites use bottom-left text overlays for photo captions. Online shops use top-right overlays for "Sale!" badges.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.3 Flipping an Image</h3>
+<p class="v2-p">CSS transforms allow you to flip (mirror) an image horizontally or vertically.</p>
+<p class="v2-p"><strong>Horizontal flip (mirror):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  transform: scaleX(-1);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Vertical flip (upside down):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  transform: scaleY(-1);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Both (rotate 180°):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  transform: scale(-1, -1);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image appears mirrored or flipped.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.4 The Shake Animation</h3>
+<p class="v2-p">You can make an image shake using CSS <code>@keyframes</code> animation.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img:hover {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%   { transform: translate(1px, 1px)   rotate(0deg);  }
+  10%  { transform: translate(-1px, -2px) rotate(-1deg); }
+  20%  { transform: translate(-3px, 0px)  rotate(1deg);  }
+  30%  { transform: translate(3px, 2px)   rotate(0deg);  }
+  40%  { transform: translate(1px, -1px)  rotate(1deg);  }
+  50%  { transform: translate(-1px, 2px)  rotate(-1deg); }
+  60%  { transform: translate(-3px, 1px)  rotate(0deg);  }
+  70%  { transform: translate(3px, 1px)   rotate(-1deg); }
+  80%  { transform: translate(-1px, -1px) rotate(1deg);  }
+  90%  { transform: translate(1px, 2px)   rotate(0deg);  }
+  100% { transform: translate(1px, -2px)  rotate(-1deg); }
+}</code></pre></div></div>
+<p class="v2-p"><strong>How this works:</strong></p>
+<ul class="v2-ul"><li><code>@keyframes shake</code> defines a sequence of positions (frames) the image moves through</li><li>Each percentage (0%, 10%, etc.) is a point in time during the animation</li><li><code>transform: translate(x, y)</code> moves the image by small pixel amounts left/right and up/down</li><li><code>rotate()</code> tilts the image slightly at each step</li><li>The result looks like rapid, realistic shaking</li></ul>
+<p class="v2-p"><strong>Expected result:</strong> When hovered, the image shakes like it is vibrating.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Image Effects</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 11</div>
+    <div class="phase-title">Part 3 — Image Hover Overlay Effects</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">3.1 What is a Hover Overlay?</h3>
+<p class="v2-p">A hover overlay is a layer (usually a coloured or semi-transparent panel with text) that appears <em>on top of</em> an image when the user hovers their mouse over it.</p>
+<p class="v2-p"><strong>Real-world examples:</strong></p>
+<ul class="v2-ul"><li>A product gallery where hovering shows "Quick View" text</li><li>A team member photo where hovering shows their job title</li><li>A portfolio image where hovering shows the project name</li></ul>
+<p class="v2-p">The <strong>technique</strong> always involves:</p>
+<ol class="v2-ol"><li>A container <code>&lt;div&gt;</code> with <code>position: relative</code></li><li>The <code>&lt;img&gt;</code> inside it</li><li>An overlay <code>&lt;div&gt;</code> inside the container, set to <code>position: absolute</code> and covering the full image</li><li>CSS that controls the overlay's visibility (using <code>opacity</code> or <code>height</code>)</li></ol>
+<hr class="v2-hr">
+<h3 class="v2-h3">3.2 Fade-In Overlay</h3>
+<p class="v2-p">This overlay is invisible by default and fades in on hover.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+  position: relative;
+  width: 300px;
+}
+
+.image {
+  display: block;
+  width: 100%;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;                          /* Hidden by default */
+  transition: opacity 0.5s ease;      /* Smooth 0.5s fade */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+}
+
+.container:hover .overlay {
+  opacity: 1;                          /* Fully visible on hover */
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;container&quot;&gt;
+  &lt;img class=&quot;image&quot; src=&quot;forest.jpg&quot; alt=&quot;Forest&quot;&gt;
+  &lt;div class=&quot;overlay&quot;&gt;
+    &lt;div class=&quot;text&quot;&gt;Hello World&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image is visible normally. When hovered, a dark transparent layer smoothly fades in over the image, revealing white text in the centre.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Think about it:</strong> What would happen if you changed <code>rgba(0, 0, 0, 0.7)</code> to <code>rgba(255, 0, 0, 0.5)</code>? You would get a red tint instead of a dark one!</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">3.3 Slide-In Overlay (from the bottom)</h3>
+<p class="v2-p">Instead of fading in, this overlay slides up from the bottom of the image.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(29, 161, 242, 0.9);  /* Blue */
+  overflow: hidden;
+  width: 100%;
+  height: 0;                         /* Starts at zero height */
+  transition: height 0.5s ease;     /* Animates height on hover */
+}
+
+.container:hover .overlay {
+  height: 100%;                      /* Expands to full height on hover */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> On hover, a blue overlay smoothly slides up from the bottom of the image, like a curtain rising.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">3.4 Slide-In Overlay (from the top)</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(29, 161, 242, 0.9);
+  overflow: hidden;
+  width: 100%;
+  height: 0;
+  transition: height 0.5s ease;
+}
+
+.container:hover .overlay {
+  height: 100%;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The overlay slides down from the top of the image.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">3.5 Slide-In Overlay (from the left)</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(29, 161, 242, 0.9);
+  overflow: hidden;
+  width: 0;                          /* Starts at zero width */
+  height: 100%;
+  transition: width 0.5s ease;      /* Animates width on hover */
+}
+
+.container:hover .overlay {
+  width: 100%;                       /* Expands to full width on hover */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The overlay slides in from the left side.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">3.6 Slide-In Overlay (from the right)</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;                          /* Anchored to the right */
+  background-color: rgba(29, 161, 242, 0.9);
+  overflow: hidden;
+  width: 0;
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.container:hover .overlay {
+  width: 100%;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The overlay slides in from the right side.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">3.7 Image Zoom on Hover</h3>
+<p class="v2-p">Another popular effect is zooming in on hover. This uses <code>overflow: hidden</code> on the container and <code>transform: scale()</code> on the image.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.zoom-container {
+  overflow: hidden;    /* Clips the image so it doesn&#x27;t overflow when scaled */
+  width: 300px;
+  height: 200px;
+}
+
+.zoom-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.zoom-container:hover img {
+  transform: scale(1.2);  /* Zooms to 120% of original size */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> When hovered, the image gently zooms in while staying neatly clipped inside its container.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Image Hover Overlay Effects</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 11</div>
+    <div class="phase-title">Part 4 — Image Modal (Lightbox)</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">4.1 What is a Modal?</h3>
+<p class="v2-p">A <strong>modal</strong> is a pop-up panel that appears on top of the rest of the page, dimming everything behind it. You have seen these before — clicking on a thumbnail in Google Images shows the full-size photo in a modal.</p>
+<p class="v2-p">For images, this is also called a <strong>lightbox</strong> effect.</p>
+<p class="v2-p"><strong>How it works (overview):</strong></p>
+<ol class="v2-ol"><li>User clicks a small image (thumbnail)</li><li>JavaScript copies the image's <code>src</code> into a larger <code>&lt;img&gt;</code> tag inside a hidden modal <code>&lt;div&gt;</code></li><li>CSS makes the modal visible (changes <code>display</code> from <code>none</code> to <code>block</code>)</li><li>User clicks the close button (×) or clicks outside the image to close it</li></ol>
+<hr class="v2-hr">
+<h3 class="v2-h3">4.2 The Complete Image Modal Example</h3>
+<p class="v2-p"><strong>HTML structure:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- The thumbnail the user clicks --&gt;
+&lt;img id=&quot;myImage&quot; src=&quot;photo.jpg&quot; alt=&quot;My Photo&quot; style=&quot;width:100%;max-width:300px;cursor:pointer&quot;&gt;
+
+&lt;!-- The Modal --&gt;
+&lt;div id=&quot;myModal&quot; class=&quot;modal&quot;&gt;
+  &lt;!-- Close button --&gt;
+  &lt;span class=&quot;close&quot;&gt;&amp;times;&lt;/span&gt;
+  &lt;!-- The large image inside the modal --&gt;
+  &lt;img class=&quot;modal-content&quot; id=&quot;imgInModal&quot;&gt;
+  &lt;!-- Caption --&gt;
+  &lt;div id=&quot;caption&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>CSS for the modal:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* The dark background overlay */
+.modal {
+  display: none;              /* Hidden by default */
+  position: fixed;            /* Covers the full viewport */
+  z-index: 1000;              /* On top of everything */
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);  /* Very dark background */
+}
+
+/* The large image inside the modal */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Caption text */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Smooth appearance animation */
+.modal-content,
+#caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+}</code></pre></div></div>
+<p class="v2-p"><strong>JavaScript to open and close the modal:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span></div><div class="v2-code-body"><pre><code>// Get elements
+var modal = document.getElementById(&quot;myModal&quot;);
+var img = document.getElementById(&quot;myImage&quot;);
+var modalImg = document.getElementById(&quot;imgInModal&quot;);
+var captionText = document.getElementById(&quot;caption&quot;);
+
+// When the small image is clicked, open the modal
+img.onclick = function() {
+  modal.style.display = &quot;block&quot;;        // Show the modal
+  modalImg.src = this.src;              // Copy the src to the large image
+  captionText.innerHTML = this.alt;     // Use alt text as caption
+}
+
+// When the close button (×) is clicked, close the modal
+var span = document.getElementsByClassName(&quot;close&quot;)[0];
+span.onclick = function() {
+  modal.style.display = &quot;none&quot;;
+}
+
+// When the user clicks outside the modal image, close it
+modal.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = &quot;none&quot;;
+  }
+}</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line explanation of the JavaScript:</strong></p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Line</th><th>What it does</th></tr></thead><tbody><tr><td><code>document.getElementById("myModal")</code></td><td>Finds the modal div in the HTML</td></tr><tr><td><code>modal.style.display = "block"</code></td><td>Makes the modal visible</td></tr><tr><td><code>modalImg.src = this.src</code></td><td>Sets the big image source to the clicked thumbnail's source</td></tr><tr><td><code>captionText.innerHTML = this.alt</code></td><td>Shows the image's alt text as the caption</td></tr><tr><td><code>modal.style.display = "none"</code></td><td>Hides the modal when × is clicked</td></tr><tr><td><code>if (event.target == modal)</code></td><td>Checks if the user clicked the dark background (not the image itself)</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Expected result:</strong> Clicking the small photo opens a full-screen dark overlay with the larger version of the photo zooming in smoothly. Clicking × or the dark background closes it.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Image Modal (Lightbox)</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 11</div>
+    <div class="phase-title">Part 5 — Centring Images</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">5.1 Why Centring an Image is Not Obvious</h3>
+<p class="v2-p">You might think <code>text-align: center</code> would centre an image. And sometimes it does — but only if the image is inside a <code>block</code> element and is itself <code>inline</code>. Let us learn the proper and reliable methods.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">5.2 Method 1: Auto Margins (Most Common)</h3>
+<p class="v2-p">The most widely used method uses <code>display: block</code> and <code>margin: auto</code>.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  display: block;   /* Makes the image a block element */
+  margin: auto;     /* Equal space on left and right */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Why <code>display: block</code>?</strong> By default, images are <code>inline</code> elements. <code>margin: auto</code> only works horizontally on <strong>block-level</strong> elements. Changing to <code>block</code> makes the auto-margin work.</p>
+<p class="v2-p"><strong>Expected result:</strong> The image is horizontally centred inside its container.</p>
+<p class="v2-p"><strong>Full example with a width set:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A responsive image that is always 50% of its container's width and perfectly centred.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">5.3 Method 2: Centering with Flexbox</h3>
+<p class="v2-p">Flexbox gives you powerful centering control with very little code.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.center-container {
+  display: flex;
+  justify-content: center;  /* Centres horizontally */
+  align-items: center;      /* Centres vertically */
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;center-container&quot;&gt;
+  &lt;img src=&quot;photo.jpg&quot; alt=&quot;Centred photo&quot;&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image is perfectly centred both horizontally and vertically inside the container.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">5.4 Method 3: Centering with text-align (for inline images)</h3>
+<p class="v2-p">If the image is inside a <code>&lt;p&gt;</code>, <code>&lt;div&gt;</code>, or similar container, you can centre it using <code>text-align: center</code> on the <em>parent</em>:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.parent {
+  text-align: center;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;parent&quot;&gt;
+  &lt;img src=&quot;photo.jpg&quot; alt=&quot;Photo&quot;&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image appears centred. This works because the image behaves like an inline element (like a letter of text).</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">5.5 Centering an Image Vertically and Horizontally on the Full Page</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  margin: 0;
+}
+
+.full-page-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;         /* Full viewport height */
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;full-page-center&quot;&gt;
+  &lt;img src=&quot;logo.png&quot; alt=&quot;Logo&quot; style=&quot;width: 300px;&quot;&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image is perfectly centred both horizontally and vertically on the entire browser window.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Centring Images</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 11</div>
+    <div class="phase-title">Part 6 — CSS Image Filters</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">6.1 What Are CSS Filters?</h3>
+<p class="v2-p">CSS filters are visual effects you can apply directly to an image (or any element) using pure CSS. They work the same way Photoshop filters do — but you do not need any image editing software!</p>
+<p class="v2-p">The CSS property is simply called <code>filter</code>.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  filter: &lt;function&gt;(&lt;value&gt;);
+}</code></pre></div></div>
+<p class="v2-p">You can also <strong>chain multiple filters</strong> in one rule:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  filter: grayscale(50%) blur(2px);
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">6.2 All CSS Filter Functions Explained</h3>
+<h4 class="v2-h4"><code>grayscale(%)</code> — Remove colour</h4>
+<p class="v2-p">Converts the image towards black and white.</p>
+<ul class="v2-ul"><li><code>0%</code> = original colour (no effect)</li><li><code>100%</code> = completely black and white</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: grayscale(100%); }</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A fully black-and-white image.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: grayscale(50%); }</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A washed-out, desaturated version (halfway between colour and black-and-white).</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> News websites use greyscale on photos of deceased people. Design agencies use it for a "before" effect in portfolio before/after sliders.</p></blockquote>
+<hr class="v2-hr">
+<h4 class="v2-h4"><code>sepia(%)</code> — Vintage brown tone</h4>
+<p class="v2-p">Sepia gives images a warm, vintage, old-photograph look.</p>
+<ul class="v2-ul"><li><code>0%</code> = original colour</li><li><code>100%</code> = full sepia (brown-orange tones)</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: sepia(100%); }</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image looks like an old faded photograph from the 1800s.</p>
+<hr class="v2-hr">
+<h4 class="v2-h4"><code>blur(px)</code> — Soften the image</h4>
+<p class="v2-p">Applies a Gaussian blur to the image.</p>
+<ul class="v2-ul"><li><code>0px</code> = sharp (no blur)</li><li>Higher values = more blurry</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: blur(4px); }</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image appears soft and out-of-focus.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> Blurred images are used as background images (so text on top is readable), for loading placeholders, and for creating depth-of-field effects.</p></blockquote>
+<hr class="v2-hr">
+<h4 class="v2-h4"><code>brightness(%)</code> — Make lighter or darker</h4>
+<ul class="v2-ul"><li><code>100%</code> = original brightness</li><li><code>&lt; 100%</code> = darker</li><li><code>&gt; 100%</code> = lighter/washed out</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: brightness(150%); }   /* Brighter */
+img { filter: brightness(50%);  }   /* Darker */</code></pre></div></div>
+<hr class="v2-hr">
+<h4 class="v2-h4"><code>contrast(%)</code> — Increase or decrease contrast</h4>
+<p class="v2-p">Contrast is the difference between the lightest and darkest parts of an image.</p>
+<ul class="v2-ul"><li><code>100%</code> = normal</li><li><code>&gt; 100%</code> = more vivid/dramatic</li><li><code>&lt; 100%</code> = flat and grey-looking</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: contrast(200%); }   /* Very high contrast */
+img { filter: contrast(50%);  }   /* Low contrast, faded look */</code></pre></div></div>
+<hr class="v2-hr">
+<h4 class="v2-h4"><code>saturate(%)</code> — Boost or reduce colour intensity</h4>
+<ul class="v2-ul"><li><code>100%</code> = normal</li><li><code>&gt; 100%</code> = very vivid, over-saturated colours</li><li><code>0%</code> = removes all colour (same effect as grayscale)</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: saturate(300%); }   /* Very vivid, punchy colours */
+img { filter: saturate(0%);   }   /* Black and white */</code></pre></div></div>
+<hr class="v2-hr">
+<h4 class="v2-h4"><code>hue-rotate(deg)</code> — Rotate the colour wheel</h4>
+<p class="v2-p">This shifts all the colours in the image around the colour wheel.</p>
+<ul class="v2-ul"><li><code>0deg</code> = original colours</li><li><code>90deg</code> = shift all colours 90 degrees</li><li><code>180deg</code> = complementary colours (reds become cyan, blues become orange)</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: hue-rotate(90deg); }</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image's colours are all shifted — grass that was green might appear blue or purple.</p>
+<hr class="v2-hr">
+<h4 class="v2-h4"><code>invert(%)</code> — Invert all colours (like a photo negative)</h4>
+<ul class="v2-ul"><li><code>0%</code> = original</li><li><code>100%</code> = fully inverted (dark becomes light, colours become their opposites)</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: invert(100%); }</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image looks like a photo negative — whites become black, blacks become white, and every colour becomes its complement.</p>
+<hr class="v2-hr">
+<h4 class="v2-h4"><code>opacity(%)</code> — Set transparency via filter</h4>
+<p class="v2-p">This works the same as the <code>opacity</code> property but as a filter function.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: opacity(50%); }</code></pre></div></div>
+<p class="v2-p"><strong>Note:</strong> For simple transparency, using the <code>opacity</code> property directly is more common. The filter version can be useful when chaining filters.</p>
+<hr class="v2-hr">
+<h4 class="v2-h4"><code>drop-shadow()</code> — Add a shadow</h4>
+<p class="v2-p">This is similar to <code>box-shadow</code> but follows the actual shape of the image (including transparency), not just the rectangular bounding box.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  filter: drop-shadow(5px 5px 10px black);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Parameters:</strong> <code>drop-shadow(x-offset y-offset blur-radius colour)</code></p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Parameter</th><th>Meaning</th></tr></thead><tbody><tr><td><code>5px</code></td><td>Move shadow 5px to the right</td></tr><tr><td><code>5px</code></td><td>Move shadow 5px downward</td></tr><tr><td><code>10px</code></td><td>Blur radius (how soft the shadow is)</td></tr><tr><td><code>black</code></td><td>Shadow colour</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Expected result:</strong> A soft black shadow appears beneath and to the right of the image, following its shape.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Tip:</strong> This is especially powerful for PNG images with transparent backgrounds — <code>box-shadow</code> would add a shadow to the rectangle, but <code>drop-shadow</code> follows the actual visible shape.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">6.3 Chaining Multiple Filters</h3>
+<p class="v2-p">You can apply several filters at once by listing them space-separated:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  filter: grayscale(50%) blur(2px) brightness(80%);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image is half-desaturated, slightly blurred, and 20% darker.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">6.4 Filter on Hover (Smooth Transition)</h3>
+<p class="v2-p">Filters work beautifully with CSS transitions for smooth hover effects:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  filter: grayscale(100%);           /* Start in black and white */
+  transition: filter 0.5s ease;
+}
+
+img:hover {
+  filter: grayscale(0%);             /* Become colourful on hover */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> Images are black-and-white by default. Hovering transforms them into colour over 0.5 seconds. This technique is used frequently in modern photography portfolios.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>CSS Image Filters</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 11</div>
+    <div class="phase-title">Part 7 — CSS Image Shapes</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">7.1 Why Shape Images with CSS?</h3>
+<p class="v2-p">By default, images are rectangular. But CSS gives you powerful tools to cut images into different shapes — circles, ovals, triangles, and custom polygon shapes.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">7.2 Circular Image</h3>
+<p class="v2-p">As you learned earlier, <code>border-radius: 50%</code> on a square image creates a circle.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;   /* Fills the circle without stretching */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A circular image — great for profile pictures and avatars.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>What is <code>object-fit: cover</code>?</strong> If the original image is not square, <code>object-fit: cover</code> scales it so it completely fills the circle, cropping the edges. Without it, the image might be squeezed or show gaps.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">7.3 Oval / Ellipse Shape</h3>
+<p class="v2-p">For an oval, use different values for horizontal and vertical <code>border-radius</code>:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  border-radius: 50% / 20%;  /* 50% horizontal, 20% vertical */
+  width: 300px;
+  height: 150px;
+}</code></pre></div></div>
+<p class="v2-p">Or use the 4-value shorthand for full control:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">7.4 Using <code>clip-path</code> for Advanced Shapes</h3>
+<p class="v2-p">The <code>clip-path</code> property is a powerful way to cut an element into virtually any shape by defining a "clipping region". Only the parts of the image <em>inside</em> the clip region are shown; everything outside is hidden.</p>
+<h4 class="v2-h4">Circle with <code>clip-path</code></h4>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  clip-path: circle(50%);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> Same as <code>border-radius: 50%</code> but using the clip-path approach.</p>
+<p class="v2-p">You can also control the position:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  clip-path: circle(50% at 50% 50%);   /* Circle centred in the middle */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h4 class="v2-h4">Ellipse with <code>clip-path</code></h4>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  clip-path: ellipse(60% 40% at 50% 50%);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Parameters:</strong> <code>ellipse(x-radius y-radius at x-position y-position)</code></p>
+<p class="v2-p"><strong>Expected result:</strong> An oval-shaped image.</p>
+<hr class="v2-hr">
+<h4 class="v2-h4">Triangle with <code>clip-path</code></h4>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}</code></pre></div></div>
+<p class="v2-p"><strong>How to read <code>polygon()</code>:</strong> Each pair of values (like <code>50% 0%</code>) is one point of the polygon. Three points = triangle.</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Point</th><th>Meaning</th></tr></thead><tbody><tr><td><code>50% 0%</code></td><td>Top centre</td></tr><tr><td><code>0% 100%</code></td><td>Bottom left</td></tr><tr><td><code>100% 100%</code></td><td>Bottom right</td></tr></tbody></table></div>
+<p class="v2-p"><strong>Expected result:</strong> The image is clipped into a triangle pointing upward.</p>
+<hr class="v2-hr">
+<h4 class="v2-h4">Pentagon with <code>clip-path</code></h4>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A five-sided shape.</p>
+<hr class="v2-hr">
+<h4 class="v2-h4">Rhombus (Diamond) with <code>clip-path</code></h4>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A diamond/rhombus-shaped image.</p>
+<hr class="v2-hr">
+<h4 class="v2-h4">Star with <code>clip-path</code></h4>
+<p class="v2-p">A five-pointed star uses 10 polygon points:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%,
+    79% 91%, 50% 70%, 21% 91%, 32% 57%,
+    2% 35%, 39% 35%
+  );
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> A star-shaped image — unique and eye-catching for decorative purposes.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">7.5 Using <code>shape-outside</code> for Text Wrapping Around Shapes</h3>
+<p class="v2-p"><code>shape-outside</code> controls how text wraps around a <em>floated</em> image. This is different from <code>clip-path</code> — it does not change the visible shape of the image, but tells the surrounding text to follow the shape.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  float: left;
+  shape-outside: circle(50%);
+  clip-path: circle(50%);   /* Visually makes the image circular */
+  width: 200px;
+  height: 200px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The image appears circular AND the text beside it wraps in a curve around the circle, rather than wrapping around the rectangular bounding box.</p>
+<p class="v2-p"><strong>Other shape values:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { shape-outside: ellipse(150px 100px at 50% 50%); }
+img { shape-outside: polygon(50% 0%, 100% 100%, 0% 100%); }
+img { shape-outside: url(image.png); }  /* Uses the image&#x27;s transparency as the shape */</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>CSS Image Shapes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase10">
+  <div class="phase-header">
+    <div class="phase-num">Phase 10 of 11</div>
+    <div class="phase-title">Part 8 — Guided Practice Exercises</div>
+    <div class="phase-check" id="chk10"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1: The Profile Card</h3>
+<p class="v2-p"><strong>Objective:</strong> Build a professional-looking profile card with a circular photo, name, and role.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a team page for a small company website.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an HTML file with the following structure:</li></ol>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Profile Card&lt;/title&gt;
+  &lt;style&gt;
+    /* Your CSS goes here */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;img src=&quot;https://via.placeholder.com/150&quot; alt=&quot;Jane Doe&quot;&gt;
+    &lt;h2&gt;Jane Doe&lt;/h2&gt;
+    &lt;p&gt;Lead Developer&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<ol class="v2-ol"><li>Add CSS to:</li></ol>
+<p class="v2-p">- Make the card <code>300px</code> wide with a <code>box-shadow</code>    - Make the image circular (<code>border-radius: 50%</code>)    - Centre everything with <code>text-align: center</code>    - Add <code>padding: 20px</code></p>
+<p class="v2-p"><strong>Expected output:</strong> A neat card with a round photo, centred name, and role.</p>
+<p class="v2-p"><strong>Hint:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+  width: 300px;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 10px;
+}
+
+.card img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>Does the image appear circular?</li><li>Is the card shadow visible?</li><li>What happens if you remove <code>object-fit: cover</code>?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2: Hover Gallery with Overlay</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a 3-image row where hovering each image reveals a dark overlay with a caption.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create three image containers with overlays</li><li>Use <code>opacity: 0</code> by default and <code>opacity: 1</code> on hover</li><li>Include a <code>transition: 0.4s ease</code> for smoothness</li></ol>
+<p class="v2-p"><strong>Starter code:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;gallery&quot;&gt;
+  &lt;div class=&quot;img-container&quot;&gt;
+    &lt;img src=&quot;https://via.placeholder.com/300x200&quot; alt=&quot;Sunset&quot;&gt;
+    &lt;div class=&quot;overlay&quot;&gt;&lt;div class=&quot;caption&quot;&gt;Sunset&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;img-container&quot;&gt;
+    &lt;img src=&quot;https://via.placeholder.com/300x200&quot; alt=&quot;Ocean&quot;&gt;
+    &lt;div class=&quot;overlay&quot;&gt;&lt;div class=&quot;caption&quot;&gt;Ocean&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;img-container&quot;&gt;
+    &lt;img src=&quot;https://via.placeholder.com/300x200&quot; alt=&quot;Mountains&quot;&gt;
+    &lt;div class=&quot;overlay&quot;&gt;&lt;div class=&quot;caption&quot;&gt;Mountains&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>CSS to complete:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.gallery {
+  display: flex;
+  gap: 10px;
+}
+
+.img-container {
+  position: relative;
+  width: 300px;
+}
+
+.img-container img {
+  width: 100%;
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-container:hover .overlay {
+  opacity: 1;
+}
+
+.caption {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> Three images in a row. Each shows a dark overlay with its caption text on hover.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3: Filter Showcase</h3>
+<p class="v2-p"><strong>Objective:</strong> Apply 5 different filters to 5 copies of the same image.</p>
+<p class="v2-p"><strong>Challenge:</strong> Create a row of 5 images with labels, each using a different filter:</p>
+<ol class="v2-ol"><li>Original (no filter)</li><li><code>grayscale(100%)</code></li><li><code>sepia(100%)</code></li><li><code>blur(3px)</code></li><li><code>brightness(150%)</code></li></ol>
+<p class="v2-p"><strong>Starter CSS:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.filters {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  text-align: center;
+}
+
+.filter-item img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.filter-item p {
+  font-size: 12px;
+  margin: 5px 0 0;
+}
+
+.grayscale  { filter: grayscale(100%); }
+.sepia      { filter: sepia(100%); }
+.blurred    { filter: blur(3px); }
+.bright     { filter: brightness(150%); }</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 4: Image Shapes Gallery</h3>
+<p class="v2-p"><strong>Objective:</strong> Display the same image in five different shapes.</p>
+<p class="v2-p"><strong>CSS to write:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.circle   { clip-path: circle(50%); }
+.ellipse  { clip-path: ellipse(55% 40%); }
+.triangle { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+.diamond  { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+.star     { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }</code></pre></div></div>
+<p class="v2-p">Apply these classes to the same image repeated five times. Add <code>width: 200px; height: 200px; object-fit: cover;</code> to all of them.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase11">
+  <div class="phase-header">
+    <div class="phase-num">Phase 11 of 11</div>
+    <div class="phase-title">Part 10 — Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk11"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1: Forgetting <code>position: relative</code> on the container</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container img { ... }
+.overlay { position: absolute; top: 0; left: 0; } /* Positions relative to the viewport! */</code></pre></div></div>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container { position: relative; }  /* Anchors the overlay */
+.overlay { position: absolute; top: 0; left: 0; }</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">Without <code>position: relative</code> on the parent, <code>position: absolute</code> on the overlay will position itself relative to the nearest <em>positioned</em> ancestor — which might be the entire viewport.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2: Using <code>border-radius: 50%</code> on a non-square image expecting a circle</h3>
+<p class="v2-p"><strong>Problem:</strong> If your image is 300px wide and 200px tall, <code>border-radius: 50%</code> gives you an <strong>oval</strong>, not a circle.</p>
+<p class="v2-p"><strong>Fix:</strong> Set equal <code>width</code> and <code>height</code> and add <code>object-fit: cover</code>:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3: Forgetting <code>display: block</code> when using <code>margin: auto</code></h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  margin: auto;   /* Does nothing on an inline element */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  display: block;
+  margin: auto;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4: Stacking filters incorrectly (spaces, not commas)</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: grayscale(100%), blur(2px); }  /* Comma is wrong! */</code></pre></div></div>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img { filter: grayscale(100%) blur(2px); }   /* Space-separated */</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5: Using <code>clip-path</code> without <code>object-fit: cover</code></h3>
+<p class="v2-p">When you clip an image with <code>clip-path</code>, the image's original proportions remain. If the image is not square and you're clipping to a circle, it might look off.</p>
+<p class="v2-p"><strong>Always pair with:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  clip-path: circle(50%);
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6: Not adding <code>overflow: hidden</code> when using height/width animation for overlays</h3>
+<p class="v2-p">When you animate an overlay from <code>height: 0</code> to <code>height: 100%</code>, you need <code>overflow: hidden</code> to prevent the content inside from showing before the animation completes.</p>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.overlay { height: 0; }  /* Text is still visible because it overflows! */</code></pre></div></div>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.overlay { height: 0; overflow: hidden; }</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 7: Not using <code>transition</code> for smooth hover effects</h3>
+<p class="v2-p"><strong>Without transition:</strong> The effect snaps instantly — looks jarring and unprofessional.</p>
+<p class="v2-p"><strong>With transition:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  filter: grayscale(100%);
+  transition: filter 0.4s ease;
+}
+img:hover {
+  filter: grayscale(0%);
+}</code></pre></div></div>
+<p class="v2-p">The change is smooth and polished.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Overview</div>
+  <div class="build-desc">You will build a complete, polished <strong>"Photo Gallery Showcase"</strong> webpage that demonstrates all the techniques from this lesson.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Photo Gallery Showcase&lt;/title&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    section {
+      margin-bottom: 50px;
+    }
+    h2 {
+      margin-bottom: 15px;
+      color: #555;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 5px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;CSS Image Showcase&lt;/h1&gt;
+  &lt;!-- Sections go here --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery Showcase</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    section {
+      margin-bottom: 50px;
+    }
+    h2 {
+      margin-bottom: 15px;
+      color: #555;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS Image Showcase</h1>
+  <!-- Sections go here -->
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
       ⬇ Download starter.html
     </button>
-    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
       🐙 Push to GitHub →
     </button>
   </div>
-  <script>
-  const __code = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Image Styling</title>
-<style>*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto}
-h2{color:#0369a1;margin:24px 0 14px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-img{display:block;max-width:100%}
-.shape-row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;margin-bottom:20px}
-.shape-item{text-align:center}.shape-item p{font-size:11px;color:#64748b;margin-top:8px;font-family:monospace}
-.img-plain{width:100px;height:100px;object-fit:cover;border-radius:8px}
-.img-circle{width:100px;height:100px;object-fit:cover;border-radius:50%;outline:4px solid #0284c7;outline-offset:4px}
-.polaroid{background:white;padding:10px 10px 36px;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:rotate(-2deg);transition:transform .3s,box-shadow .3s;display:inline-block}
-.polaroid:hover{transform:rotate(0) scale(1.05);box-shadow:0 8px 32px rgba(0,0,0,.2)}
-.polaroid img{width:100px;height:100px;object-fit:cover}
-.framed{border:5px solid white;box-shadow:0 4px 16px rgba(0,0,0,.15);border-radius:10px;width:100px;height:100px;object-fit:cover}
-.filter-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.fi{text-align:center}.fi img{width:120px;height:90px;object-fit:cover;border-radius:10px;transition:filter .4s}
-.fi span{font-size:10px;font-family:monospace;color:#64748b;display:block;margin-top:4px}
-.f-hover{filter:grayscale(1)}.f-hover:hover{filter:grayscale(0) saturate(1.3)}
-</style></head><body>
-<h1 style="color:#0284c7;margin-bottom:4px">CSS Image Styling</h1>
-<h2>Shapes and Frames</h2>
-<div class="shape-row">
-<div class="shape-item"><img class="img-plain" src="https://via.placeholder.com/100/0284c7/dbeafe?text=CSS" alt="plain"><p>plain + radius</p></div>
-<div class="shape-item"><img class="img-circle" src="https://via.placeholder.com/100/ea4f21/fff?text=T" alt="circle"><p>border-radius:50%</p></div>
-<div class="shape-item"><div class="polaroid"><img src="https://via.placeholder.com/100/7c3aed/fff?text=📷" alt="polaroid"></div><p>polaroid (hover!)</p></div>
-<div class="shape-item"><img class="framed" src="https://via.placeholder.com/100/10b981/fff?text=🖼" alt="framed"><p>framed + shadow</p></div>
 </div>
-<h2>CSS Filters (hover last one for colour reveal)</h2>
-<div class="filter-row">
-<div class="fi"><img src="https://via.placeholder.com/120x90/0284c7/dbeafe?text=original" alt="original"><span>original</span></div>
-<div class="fi"><img src="https://via.placeholder.com/120x90/0284c7/dbeafe?text=grey" style="filter:grayscale(1)" alt="grey"><span>grayscale(1)</span></div>
-<div class="fi"><img src="https://via.placeholder.com/120x90/0284c7/dbeafe?text=sepia" style="filter:sepia(.8)" alt="sepia"><span>sepia(.8)</span></div>
-<div class="fi"><img src="https://via.placeholder.com/120x90/0284c7/dbeafe?text=bright" style="filter:brightness(1.5)" alt="bright"><span>brightness(1.5)</span></div>
-<div class="fi"><img class="f-hover" src="https://via.placeholder.com/120x90/0284c7/dbeafe?text=hover!" alt="hover"><span>hover → colour!</span></div>
-</div>
-</body></html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-58-css_styling_images</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 58 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-58-css_styling_images/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-58-project-overview</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 58 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-58-project-overview/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 58 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Shapes and frames</li><li>✅ CSS Filters</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_57.html" class="ln-btn">← Lesson 57</a>
-    <a href="lesson_59.html" class="ln-btn primary">Lesson 59 →</a>
-  </div>
+  <h2>🎉 Lesson 58 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — CSS Image Styling Fundamentals</li><li>✅ Part 2 — Image Effects</li><li>✅ Part 3 — Image Hover Overlay Effects</li><li>✅ Part 4 — Image Modal (Lightbox)</li><li>✅ Part 5 — Centring Images</li><li>✅ Part 6 — CSS Image Filters</li></ul>
+  <div class="lesson-nav"><a href="lesson_57.html" class="ln-btn">← Lesson 57</a><a href="lesson_59.html" class="ln-btn primary">Lesson 59 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 58 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 58 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_css_58_phase';
+const TOTAL=11,KEY='techbase_css_l58';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

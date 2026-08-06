@@ -2,347 +2,1430 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 72: CSS Filters — Techbase CSS Course</title>
-<meta name="description" content="Apply visual effects with filter and backdrop-filter for glassmorphism">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 72: Sass — A Complete Beginner&#x27;s Guide to Smarter CSS — Techbase CSS</title>
+<meta name="description" content="Sass — A Complete Beginner&#x27;s Guide to Smarter CSS">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
-}
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
+/* HERO */
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
+/* TASK BOX */
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
+/* GITHUB ACCORDION */
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
-  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
-  <span class="l-nav-lesson">Lesson 72 of 73</span>
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 72 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
 <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
 <div class="l-hero">
   <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 72 </div>
-    <h1>CSS Filters</h1>
-    <div class="l-hero-tag">Apply visual effects with filter and backdrop-filter for glassmorphism</div>
-    <div class="l-hero-build"><strong>🏗️ Build:</strong> My CSS Filters Gallery</div>
+    <div class="l-badge">CSS · Lesson 72</div>
+    <h1>Sass — A Complete Beginner&#x27;s Guide to Smarter CSS</h1>
+    <div class="l-hero-sub">11 phases · Build: Project Overview</div>
   </div>
 </div>
-<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
-    <div class="welcome-box">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
   <h2>👋 Welcome to Lesson 72</h2>
-  <p>Apply visual effects with filter and backdrop-filter for glassmorphism</p>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever been working on a website's stylesheet and thought: <em>"I keep typing the same colour code over and over again. There has to be a better way."</em> Or maybe your CSS file has grown so large it feels impossible to manage?</p>
+<p class="v2-p">That is exactly the problem Sass was built to solve.</p>
+<p class="v2-p">In this lesson you will learn Sass from absolute zero. By the end, you will be able to write cleaner, smarter, reusable CSS code just like professional front-end developers do every day — at companies, design agencies, and on open-source projects worldwide.</p>
+<p class="v2-p">This lesson covers everything from what Sass is, to installing it, to all its most important features: variables, nesting, importing, mixins, and extending. Every concept is taught with step-by-step examples, real-world analogies, guided exercises, and a mini-project you will build from scratch.</p>
+<hr class="v2-hr"></div>
   <div class="welcome-meta">
-    <span>📚 2 phases</span>
-    <span>🏗️ Build: My CSS Filters Gallery</span>
-    
+    <span>📚 11 phases</span>
+    <span>🏗️ Project Overview</span>
   </div>
-</div>
-  </div>
+</div></div>
 </section>
-<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
 <div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">filter functions</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 11</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>filter</code> applies to the element and all children. Functions: <code>grayscale(1)</code>, <code>blur(4px)</code>, <code>brightness(1.3)</code>, <code>contrast(1.5)</code>, <code>sepia(.8)</code>, <code>hue-rotate(90deg)</code>, <code>saturate(2)</code>, <code>invert(1)</code>. Combine them. <code>drop-shadow()</code> follows transparent shapes.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.grey    { filter: grayscale(1); }
-.vintage { filter: sepia(.6) contrast(1.1) brightness(1.05); }
-.bw-reveal { filter: grayscale(1); transition: filter .4s ease; }
-.bw-reveal:hover { filter: grayscale(0) saturate(1.3); }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Apply grayscale to images. On hover reveal colour with transition. Classic portfolio effect!</p></div>
-    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+    <p class="v2-p">Have you ever been working on a website's stylesheet and thought: <em>"I keep typing the same colour code over and over again. There has to be a better way."</em> Or maybe your CSS file has grown so large it feels impossible to manage?</p>
+<p class="v2-p">That is exactly the problem Sass was built to solve.</p>
+<p class="v2-p">In this lesson you will learn Sass from absolute zero. By the end, you will be able to write cleaner, smarter, reusable CSS code just like professional front-end developers do every day — at companies, design agencies, and on open-source projects worldwide.</p>
+<p class="v2-p">This lesson covers everything from what Sass is, to installing it, to all its most important features: variables, nesting, importing, mixins, and extending. Every concept is taught with step-by-step examples, real-world analogies, guided exercises, and a mini-project you will build from scratch.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
 </div>
 <div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">backdrop-filter glassmorphism</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 11</div>
+    <div class="phase-title">What You Need to Know Before Starting</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>backdrop-filter:blur(12px)</code> blurs everything BEHIND the element. Pair with semi-transparent background: <code>background:rgba(255,255,255,.1)</code>. Element must not be opaque. Always add <code>-webkit-backdrop-filter</code> for Safari.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.glass {
-  background: rgba(255,255,255,.1);
-  backdrop-filter: blur(12px) saturate(1.5);
-  -webkit-backdrop-filter: blur(12px) saturate(1.5);
-  border: 1px solid rgba(255,255,255,.2);
-  border-radius: 16px;
-}</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Create a frosted glass card over a gradient background. backdrop-filter blurs the gradient through the semi-transparent card — this is glassmorphism!</p></div>
-    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+    <p class="v2-p">This lesson assumes you have a basic understanding of two things:</p>
+<p class="v2-p"><strong>HTML</strong> — the language used to create the structure of a webpage (headings, paragraphs, buttons, links, etc.).</p>
+<p class="v2-p"><strong>CSS</strong> — the language used to style that structure (colours, fonts, spacing, layout).</p>
+<p class="v2-p">If you are not yet familiar with CSS, think of it like this: HTML is the blueprint of a house, and CSS is the paint, furniture, and decoration. Sass is a smarter pen you use to write your CSS plans — it does not change what the house looks like, but it makes designing it far easier.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>What You Need to Know Before Starting</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It</div>
-  <div class="project-name">Filters Gallery</div>
-  <div class="project-desc">Filter effects, hover colour reveal and frosted glass card.</div>
-  <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
-<div class="code-body"><pre>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;CSS Filters&lt;/title&gt;
-&lt;style&gt;*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.filter-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.fi{flex:1;min-width:120px;text-align:center}
-.fi img{width:100%;height:90px;object-fit:cover;border-radius:10px;display:block;margin-bottom:4px}
-.fi span{font-size:10px;font-family:monospace;color:#64748b}
-.reveal-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.rv img{flex:1;min-width:140px;height:100px;object-fit:cover;border-radius:10px;display:block;filter:grayscale(1);transition:filter .4s ease;cursor:pointer}
-.rv img:hover{filter:grayscale(0) saturate(1.3)}
-.glass-scene{background:linear-gradient(135deg,#0284c7,#7c3aed,#ea4f21);border-radius:16px;padding:44px 22px;position:relative;overflow:hidden}
-.glass-card{background:rgba(255,255,255,.12);backdrop-filter:blur(14px) saturate(1.5);-webkit-backdrop-filter:blur(14px) saturate(1.5);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:22px;color:white;max-width:340px;margin:0 auto}
-.glass-card h3{font-size:1.1rem;margin:0 0 8px}
-.glass-card p{font-size:14px;opacity:.85;line-height:1.7;margin:0}
-.glass-btn{margin-top:14px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:white;padding:8px 18px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;display:inline-block}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;h1 style=&quot;color:#0284c7;margin-bottom:4px&quot;&gt;CSS Filters Gallery&lt;/h1&gt;
-&lt;h2&gt;filter Functions&lt;/h2&gt;
-&lt;div class=&quot;filter-grid&quot;&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/200x90/0284c7/dbeafe?text=original&quot; alt=&quot;orig&quot;&gt;&lt;span&gt;original&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/200x90/0284c7/dbeafe?text=grey&quot; style=&quot;filter:grayscale(1)&quot; alt=&quot;grey&quot;&gt;&lt;span&gt;grayscale(1)&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/200x90/0284c7/dbeafe?text=sepia&quot; style=&quot;filter:sepia(.8)&quot; alt=&quot;sepia&quot;&gt;&lt;span&gt;sepia(.8)&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/200x90/0284c7/dbeafe?text=bright&quot; style=&quot;filter:brightness(1.5)&quot; alt=&quot;bright&quot;&gt;&lt;span&gt;brightness(1.5)&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/200x90/0284c7/dbeafe?text=invert&quot; style=&quot;filter:invert(1)&quot; alt=&quot;invert&quot;&gt;&lt;span&gt;invert(1)&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;fi&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/200x90/0284c7/dbeafe?text=blur&quot; style=&quot;filter:blur(3px)&quot; alt=&quot;blur&quot;&gt;&lt;span&gt;blur(3px)&lt;/span&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2&gt;Hover Colour Reveal&lt;/h2&gt;
-&lt;div class=&quot;reveal-grid&quot;&gt;
-&lt;div class=&quot;rv&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/200x100/0284c7/dbeafe?text=Hover+me!&quot; alt=&quot;css&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;rv&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/200x100/ea4f21/fff?text=Hover+me!&quot; alt=&quot;html&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;rv&quot;&gt;&lt;img src=&quot;https://via.placeholder.com/200x100/10b981/fff?text=Hover+me!&quot; alt=&quot;js&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2&gt;backdrop-filter — Glassmorphism&lt;/h2&gt;
-&lt;div class=&quot;glass-scene&quot;&gt;
-&lt;div class=&quot;glass-card&quot;&gt;
-&lt;h3&gt;🔮 Frosted Glass Card&lt;/h3&gt;
-&lt;p&gt;backdrop-filter:blur(14px) blurs the gradient behind through this semi-transparent card.&lt;/p&gt;
-&lt;span class=&quot;glass-btn&quot;&gt;Get Started →&lt;/span&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 11</div>
+    <div class="phase-title">Section 1 — What is Sass?</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Problem with Plain CSS</h3>
+<p class="v2-p">Imagine you are building a website for a company. The brand colour is a deep blue: <code>#1a3c6e</code>. You use this colour for the navigation bar, the headings, the button backgrounds, the footer links, and more — maybe 30 different places in your CSS file.</p>
+<p class="v2-p">Now the client says: "We changed our brand colour. Please update it everywhere."</p>
+<p class="v2-p">In plain CSS, you would have to hunt through every single line and change each one manually. If you miss even one, the design breaks.</p>
+<p class="v2-p">This is just one of the pain points that makes maintaining large CSS codebases exhausting.</p>
+<h3 class="v2-h3">What is Sass?</h3>
+<p class="v2-p"><strong>Sass</strong> stands for <strong>Syntactically Awesome Stylesheet</strong>. It is a <strong>CSS pre-processor</strong> — a tool that extends CSS with powerful programming features that plain CSS does not have.</p>
+<p class="v2-p">Sass was designed by Hampton Catlin and developed by Natalie Weizenbaum in 2006. It is free to download and use.</p>
+<p class="v2-p">Think of Sass as a supercharged version of CSS. You write your styles in Sass format, and then a tool called a <strong>transpiler</strong> converts it into regular CSS that browsers can read.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Transpiling</strong> means taking code written in one language and automatically translating it into another. Your browser only reads CSS — so Sass code gets converted to CSS before the browser ever sees it.</p></blockquote>
+<h3 class="v2-h3">What Can Sass Do That CSS Cannot?</h3>
+<p class="v2-p">Sass gives you the ability to use features that plain CSS either does not support or makes very tedious to manage. The big ones are:</p>
+<ul class="v2-ul"><li><strong>Variables</strong> — store values like colours, font sizes, and spacing in one place and reuse them everywhere.</li><li><strong>Nesting</strong> — write your selectors in a nested structure that mirrors your HTML, making your code easier to read.</li><li><strong>Imports</strong> — split your styles across multiple files and import them into a master file.</li><li><strong>Mixins</strong> — create reusable blocks of style code, almost like functions in programming.</li><li><strong>Extend/Inheritance</strong> — share a set of styles between multiple selectors without repeating code.</li></ul>
+<p class="v2-p">These features reduce repetition, save time, and make your stylesheets much easier to maintain.</p>
+<h3 class="v2-h3">How Does Sass Work? The Transpiling Flow</h3>
+<p class="v2-p">Here is the journey your Sass code takes before a browser can use it:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>You write Sass code   →   Sass transpiler converts it   →   Regular CSS file   →   Browser reads CSS
+   (style.scss)                (automatically)              (style.css)</code></pre></div></div>
+<p class="v2-p">You never deliver the <code>.scss</code> file to the browser. You deliver the output <code>.css</code> file. The Sass source file is just for you (and your team) to work in.</p>
+<h3 class="v2-h3">Sass File Type</h3>
+<p class="v2-p">Sass files use the <code>.scss</code> file extension. For example: <code>style.scss</code>, <code>_variables.scss</code>, <code>_buttons.scss</code>.</p>
+<h3 class="v2-h3">Sass Comments</h3>
+<p class="v2-p">Sass supports two kinds of comments:</p>
+<p class="v2-p"><strong>Block comments</strong> (same as CSS — they appear in the compiled CSS output):</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* This is a block comment — it survives transpiling */</code></pre></div></div>
+<p class="v2-p"><strong>Inline comments</strong> (Sass-only — they are removed during transpiling and do not appear in the final CSS):</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>// This is an inline comment — only for Sass developers</code></pre></div></div>
+<p class="v2-p"><strong>Example combining both:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Define the primary colour */
+$brand-color: #1a3c6e;   // dark navy blue
+
+.header {
+  background-color: $brand-color;  // apply the brand color here
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>What is Sass?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
 </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
-    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 11</div>
+    <div class="phase-title">Section 2 — Installing Sass</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">System Requirements</h3>
+<ul class="v2-ul"><li><strong>Operating system:</strong> Sass is platform-independent — it works on Windows, Mac, and Linux.</li><li><strong>Browser support:</strong> The compiled CSS output works in all modern browsers including Edge, Firefox, Chrome, Safari, and Opera.</li><li><strong>Runtime:</strong> Sass was originally built with Ruby, but the modern Dart Sass version is a standalone tool.</li></ul>
+<h3 class="v2-h3">How to Install Sass</h3>
+<p class="v2-p">There are several ways to install Sass depending on your workflow. You can find the full list of options on the official Sass website: <strong>https://sass-lang.com/install</strong></p>
+<p class="v2-p">The most common methods are:</p>
+<p class="v2-p"><strong>Option 1 — Using npm (Node Package Manager):</strong> If you have Node.js installed, open your terminal or command prompt and run:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">bash</span></div><div class="v2-code-body"><pre><code>npm install -g sass</code></pre></div></div>
+<p class="v2-p">This installs Sass globally on your computer.</p>
+<p class="v2-p"><strong>Option 2 — Using a GUI App:</strong> There are graphical applications for Mac, Windows, and Linux that handle Sass compilation with a visual interface, such as Scout-App or Koala. These are ideal if you prefer not to use the command line.</p>
+<h3 class="v2-h3">Compiling a Sass File</h3>
+<p class="v2-p">Once Sass is installed, you compile a <code>.scss</code> file to <code>.css</code> using this terminal command:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">bash</span></div><div class="v2-code-body"><pre><code>sass style.scss style.css</code></pre></div></div>
+<p class="v2-p">This tells Sass: "Take my <code>style.scss</code> file, compile it, and output the result as <code>style.css</code>."</p>
+<p class="v2-p">You can also watch a file for changes automatically (so you don't have to recompile manually every time):</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">bash</span></div><div class="v2-code-body"><pre><code>sass --watch style.scss:style.css</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">💡 In modern projects using tools like Webpack, Vite, or Parcel, Sass compilation is often set up automatically as part of the build pipeline — so you may never need to run these commands manually.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Installing Sass</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 11</div>
+    <div class="phase-title">Section 3 — Sass Variables</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is a Variable?</h3>
+<p class="v2-p">A <strong>variable</strong> is a named container that stores a value. Instead of typing the same value over and over, you store it once in a variable and then use the variable name everywhere.</p>
+<p class="v2-p">Think of it like a sticky label on a bottle. The label says "Brand Blue." Whenever you need that specific shade of blue, you just look at the label — you don't have to remember the exact hex code every time.</p>
+<h3 class="v2-h3">Why Use Variables in Sass?</h3>
+<p class="v2-p">Without variables:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS — the old way */
+.header { background-color: #1a3c6e; }
+.footer { background-color: #1a3c6e; }
+.button { background-color: #1a3c6e; }
+/* If the colour changes, you must update ALL three manually */</code></pre></div></div>
+<p class="v2-p">With Sass variables:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Sass — the smarter way */
+$brand-color: #1a3c6e;
+
+.header { background-color: $brand-color; }
+.footer { background-color: $brand-color; }
+.button { background-color: $brand-color; }
+/* Now if the colour changes, update ONLY the variable — done! */</code></pre></div></div>
+<h3 class="v2-h3">Sass Variable Syntax</h3>
+<p class="v2-p">The <code>$</code> symbol declares a variable. The syntax is:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>$variable-name: value;</code></pre></div></div>
+<ul class="v2-ul"><li><code>$</code> — tells Sass this is a variable (not a CSS property)</li><li><code>variable-name</code> — you choose a descriptive name (use hyphens or underscores)</li><li><code>:</code> — separates the name from the value</li><li><code>value</code> — whatever you are storing (a colour, a number, a font name, etc.)</li></ul>
+<h3 class="v2-h3">What Can Variables Store?</h3>
+<p class="v2-p">Sass variables can hold any of these types of values:</p>
+<ul class="v2-ul"><li><strong>Strings (text):</strong> <code>$font-stack: Helvetica, sans-serif;</code></li><li><strong>Numbers (with or without units):</strong> <code>$font-size: 18px;</code> or <code>$ratio: 1.5;</code></li><li><strong>Colours:</strong> <code>$primary: #ff6347;</code> or <code>$bg: lightblue;</code></li><li><strong>Booleans:</strong> <code>$debug-mode: true;</code></li><li><strong>Lists:</strong> <code>$spacing: 10px 20px 15px;</code></li><li><strong>Nulls:</strong> <code>$no-value: null;</code></li></ul>
+<h3 class="v2-h3">Simple Example: Four Variables</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* SASS — declaring variables */
+$myFont: Helvetica, sans-serif;
+$myColor: red;
+$myFontSize: 18px;
+$myWidth: 680px;
+
+/* Using the variables */
+body {
+  font-family: $myFont;     /* uses the font variable */
+  font-size: $myFontSize;   /* uses the font-size variable */
+  color: $myColor;          /* uses the colour variable */
+}
+
+#container {
+  width: $myWidth;          /* uses the width variable */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output (after transpiling):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  font-family: Helvetica, sans-serif;
+  font-size: 18px;
+  color: red;
+}
+
+#container {
+  width: 680px;
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> What happens if you change <code>$myColor: red;</code> to <code>$myColor: navy;</code>? The answer: every place where <code>$myColor</code> is used will automatically update — the <code>body</code> colour becomes navy without you needing to touch the <code>body</code> rule.</p></blockquote>
+<h3 class="v2-h3">A More Realistic Example: Brand Colours</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Define primary brand colours once */
+$primary_1: #a2b9bc;   /* muted teal */
+$primary_2: #b2ad7f;   /* warm khaki */
+$primary_3: #878f99;   /* steel grey */
+
+/* Apply them throughout */
+.main-header {
+  background-color: $primary_1;
+}
+
+.menu-left {
+  background-color: $primary_2;
+}
+
+.menu-right {
+  background-color: $primary_3;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.main-header {
+  background-color: #a2b9bc;
+}
+
+.menu-left {
+  background-color: #b2ad7f;
+}
+
+.menu-right {
+  background-color: #878f99;
+}</code></pre></div></div>
+<p class="v2-p">When the brand colours change, you only update three lines at the top.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Variable Scope — Local vs. Global</h3>
+<p class="v2-p"><strong>Variable scope</strong> means the area of code in which a variable is accessible.</p>
+<p class="v2-p">By default, Sass variables defined inside a rule (inside <code>{}</code> curly braces) are <strong>local</strong> — only available within that rule. Variables defined outside all rules are <strong>global</strong> — available everywhere.</p>
+<p class="v2-p"><strong>Example of local vs. global scope:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>$myColor: red;    /* GLOBAL variable */
+
+h1 {
+  $myColor: green;   /* LOCAL variable — only inside h1 */
+  color: $myColor;   /* Uses the LOCAL value: green */
+}
+
+p {
+  color: $myColor;   /* Uses the GLOBAL value: red */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: green;
+}
+
+p {
+  color: red;
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Why is this useful?</strong> Scope protects your variables. A temporary variable inside one rule doesn't accidentally overwrite the global one.</p></blockquote>
+<h3 class="v2-h3">Using <code>!global</code> to Promote a Variable</h3>
+<p class="v2-p">What if you want a variable that starts inside a rule but should also be available globally? You use the <code>!global</code> flag:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>$myColor: red;    /* global starts as red */
+
+h1 {
+  $myColor: green !global;   /* this OVERWRITES the global value */
+  color: $myColor;           /* green */
+}
+
+p {
+  color: $myColor;           /* also green now (global was changed) */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: green;
+}
+
+p {
+  color: green;
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Best Practice:</strong> Avoid using <code>!global</code> inside rules if you can. Instead, define all your global variables at the top of a dedicated <code>_variables.scss</code> file so they are easy to find and update.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Sass Variables</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 11</div>
+    <div class="phase-title">Section 4 — Sass Nesting</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is Nesting?</h3>
+<p class="v2-p"><strong>Nesting</strong> means placing CSS rules inside other CSS rules, mirroring the structure of your HTML.</p>
+<p class="v2-p">In plain CSS, when you want to style elements inside other elements, you repeat the parent selector:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Plain CSS — repetitive selectors */
+nav ul { margin: 0; padding: 0; list-style: none; }
+nav li { display: inline-block; }
+nav a { display: block; padding: 6px 12px; text-decoration: none; }</code></pre></div></div>
+<p class="v2-p">In Sass, you write the child rules <em>inside</em> the parent rule — much cleaner:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Sass — nested selectors */
+nav {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: inline-block;
+  }
+
+  a {
+    display: block;
+    padding: 6px 12px;
+    text-decoration: none;
+  }
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output (after transpiling):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+}
+
+nav a {
+  display: block;
+  padding: 6px 12px;
+  text-decoration: none;
+}</code></pre></div></div>
+<p class="v2-p">Sass automatically prepends the parent selector <code>nav</code> to each nested rule. The output is identical to the plain CSS version — but the Sass source is far easier to read and maintain.</p>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> Notice how the Sass version shows the structure clearly — you can immediately tell that <code>ul</code>, <code>li</code>, and <code>a</code> are all <em>inside</em> the <code>nav</code>. Does this visual nesting make the code easier to understand compared to the flat CSS version?</p></blockquote>
+<h3 class="v2-h3">Another Nesting Example: A Card Component</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+
+  h2 {
+    font-size: 22px;
+    color: #333;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .card-footer {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    font-size: 12px;
+    color: #999;
+  }
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.card h2 {
+  font-size: 22px;
+  color: #333;
+}
+
+.card p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.card .card-footer {
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  font-size: 12px;
+  color: #999;
+}</code></pre></div></div>
+<p class="v2-p">All the related card styles are grouped together visually. When you need to update the card, you open one block — not search through a giant flat stylesheet.</p>
+<h3 class="v2-h3">Nesting Properties with Shared Prefixes</h3>
+<p class="v2-p">Many CSS properties share a common prefix: <code>font-family</code>, <code>font-size</code>, <code>font-weight</code> all start with <code>font-</code>. Similarly, <code>text-align</code>, <code>text-transform</code>, <code>text-overflow</code> all start with <code>text-</code>.</p>
+<p class="v2-p">Sass lets you group these with a colon after the prefix:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>.element {
+  font: {
+    family: Helvetica, sans-serif;
+    size: 18px;
+    weight: bold;
+  }
+
+  text: {
+    align: center;
+    transform: lowercase;
+    overflow: hidden;
+  }
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.element {
+  font-family: Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: lowercase;
+  text-overflow: hidden;
+}</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">⚠️ <strong>Common Beginner Mistake:</strong> Nesting too deeply. Nesting more than 3–4 levels deep creates overly specific CSS that is hard to override later and may slow down browser rendering. Keep nesting shallow and purposeful.</p></blockquote>
+<p class="v2-p"><strong>Bad — too deeply nested:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Avoid this */
+.page {
+  .content {
+    .article {
+      .paragraph {
+        .link {
+          color: blue;  /* creates: .page .content .article .paragraph .link */
+        }
+      }
+    }
+  }
+}</code></pre></div></div>
+<p class="v2-p"><strong>Better — shallow nesting:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>.article {
+  .link {
+    color: blue;
+  }
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Sass Nesting</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 11</div>
+    <div class="phase-title">Section 5 — Sass `@import` and Partials</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Problem: One Giant File</h3>
+<p class="v2-p">As your website grows, your CSS file can become thousands of lines long. Finding the rule you need becomes slow and painful. You start mixing button styles with navigation styles with form styles — all jumbled together.</p>
+<h3 class="v2-h3">The Solution: Split Into Multiple Files</h3>
+<p class="v2-p">Sass lets you break your styles into many small, focused files and then combine them into one final CSS output. This is called <strong>modular CSS</strong> organisation.</p>
+<p class="v2-p">The benefit: your team can work on different parts of the styling simultaneously, and you can quickly find any style because it is in a logical, dedicated file.</p>
+<h3 class="v2-h3">The <code>@import</code> Directive</h3>
+<p class="v2-p">The <code>@import</code> directive pulls the contents of one Sass file into another.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>@import &quot;filename&quot;;</code></pre></div></div>
+<p class="v2-p">You do not need to include the <code>.scss</code> extension — Sass adds it automatically.</p>
+<p class="v2-p"><strong>Example: Importing multiple files into <code>main.scss</code>:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>@import &quot;variables&quot;;
+@import &quot;colors&quot;;
+@import &quot;reset&quot;;
+@import &quot;typography&quot;;
+@import &quot;buttons&quot;;
+@import &quot;navigation&quot;;</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Why is this better than CSS <code>@import</code>?</strong> Regular CSS <code>@import</code> makes an extra HTTP request to the server every time it is used — this slows down your page. Sass <code>@import</code> is different: it <strong>inlines</strong> the content of the imported file directly into the compiled CSS. No extra requests. Zero performance cost.</p></blockquote>
+<h3 class="v2-h3">Sass Partials — Files That Are Not Compiled Directly</h3>
+<p class="v2-p">By default, Sass compiles every <code>.scss</code> file into a <code>.css</code> file. But if you have a file of variables or mixins that should only be used when imported elsewhere — not compiled on its own — you use a <strong>partial</strong>.</p>
+<p class="v2-p"><strong>A partial is a Sass file whose name starts with an underscore <code>_</code>.</strong></p>
+<p class="v2-p">This underscore tells Sass: "Do not compile this file directly. It is only meant to be imported."</p>
+<p class="v2-p"><strong>Partial naming syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>_filename.scss</code></pre></div></div>
+<p class="v2-p"><strong>Example: A partial file called <code>_colors.scss</code>:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* _colors.scss — a partial (will NOT be compiled by itself) */
+
+$myPink: #EE82EE;
+$myBlue: #4169E1;
+$myGreen: #8FBC8F;</code></pre></div></div>
+<p class="v2-p"><strong>Importing the partial into another file:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* main.scss */
+@import &quot;colors&quot;;   /* Notice: no underscore needed when importing! */
+
+body {
+  font-family: Helvetica, sans-serif;
+  font-size: 18px;
+  color: $myBlue;    /* $myBlue is available because we imported _colors.scss */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output from <code>main.scss</code>:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  font-family: Helvetica, sans-serif;
+  font-size: 18px;
+  color: #4169E1;
+}</code></pre></div></div>
+<h3 class="v2-h3">A Realistic Project File Structure</h3>
+<p class="v2-p">Here is how a professional Sass project might be organised:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>scss/
+│
+├── main.scss             ← the master file (imports everything)
+│
+├── _variables.scss       ← colours, fonts, sizes
+├── _reset.scss           ← CSS reset/normalise
+├── _typography.scss      ← headings, body text, links
+├── _buttons.scss         ← button styles
+├── _navigation.scss      ← nav bar styles
+├── _forms.scss           ← input, textarea, select styles
+└── _footer.scss          ← footer styles</code></pre></div></div>
+<p class="v2-p"><code>main.scss</code> would look like:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>@import &quot;variables&quot;;
+@import &quot;reset&quot;;
+@import &quot;typography&quot;;
+@import &quot;buttons&quot;;
+@import &quot;navigation&quot;;
+@import &quot;forms&quot;;
+@import &quot;footer&quot;;</code></pre></div></div>
+<p class="v2-p">Everything compiles into a single <code>main.css</code> file.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 This modular approach is used by every professional web framework including Bootstrap, Foundation, and Material UI — all are built on exactly this pattern.</p></blockquote>
+<h3 class="v2-h3">Real-World Example: Reset File + Main File</h3>
+<p class="v2-p"><strong><code>_reset.scss</code> (partial):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>html,
+body,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}</code></pre></div></div>
+<p class="v2-p"><strong><code>standard.scss</code> (main file — imports the reset):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>@import &quot;reset&quot;;
+
+body {
+  font-family: Helvetica, sans-serif;
+  font-size: 18px;
+  color: red;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output from <code>standard.scss</code>:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>html, body, ul, ol {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  font-size: 18px;
+  color: red;
+}</code></pre></div></div>
+<p class="v2-p">The reset styles are blended in automatically — clean and seamless.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Sass <code>@import</code> and Partials</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 11</div>
+    <div class="phase-title">Section 6 — Sass `@mixin` and `@include`</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is a Mixin?</h3>
+<p class="v2-p">A <strong>mixin</strong> is a reusable block of CSS rules that you can include in any selector. Think of it like a recipe that you write once and cook many times.</p>
+<p class="v2-p"><strong>The problem without mixins:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* You write the same styles again and again */
+.warning-box {
+  color: red;
+  font-size: 25px;
+  font-weight: bold;
+  border: 1px solid blue;
+}
+
+.alert-box {
+  color: red;
+  font-size: 25px;
+  font-weight: bold;
+  border: 1px solid blue;
+  /* ...plus some unique styles */
+}</code></pre></div></div>
+<p class="v2-p">This is code duplication. Every time the design changes, you must update every copy.</p>
+<p class="v2-p"><strong>The solution with a mixin:</strong> Write the shared styles once in a mixin, then include it wherever needed.</p>
+<h3 class="v2-h3">Defining a Mixin</h3>
+<p class="v2-p">Use <code>@mixin</code> followed by a name:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>@mixin important-text {
+  color: red;
+  font-size: 25px;
+  font-weight: bold;
+  border: 1px solid blue;
+}</code></pre></div></div>
+<ul class="v2-ul"><li><code>@mixin</code> — the keyword that creates a mixin</li><li><code>important-text</code> — the name you choose (hyphens and underscores are treated the same)</li><li><code>{ ... }</code> — the block of CSS properties the mixin contains</li></ul>
+<h3 class="v2-h3">Using a Mixin with <code>@include</code></h3>
+<p class="v2-p">Use <code>@include</code> followed by the mixin name inside any selector:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>.danger {
+  @include important-text;
+  background-color: green;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.danger {
+  color: red;
+  font-size: 25px;
+  font-weight: bold;
+  border: 1px solid blue;
+  background-color: green;
+}</code></pre></div></div>
+<p class="v2-p">Sass copies all the mixin's properties into <code>.danger</code> — and then adds the unique <code>background-color</code> on top.</p>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> Imagine you had 10 different selectors all including <code>@include important-text</code>. If you need to change <code>font-size: 25px</code> to <code>font-size: 20px</code>, you only change it once — in the mixin. All 10 selectors update automatically.</p></blockquote>
+<h3 class="v2-h3">A Mixin Can Include Other Mixins</h3>
+<p class="v2-p">Mixins can be composed together:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>@mixin special-text {
+  @include important-text;    /* includes another mixin */
+  @include link;
+  @include special-border;
+}</code></pre></div></div>
+<p class="v2-p">This lets you build layers of reusable style systems.</p>
+<h3 class="v2-h3">Passing Variables (Arguments) into a Mixin</h3>
+<p class="v2-p">This is where mixins become truly powerful. You can make a mixin flexible by passing different values into it — like function arguments in programming.</p>
+<p class="v2-p"><strong>Defining a mixin with parameters:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Define mixin with two arguments: $color and $width */
+@mixin bordered($color, $width) {
+  border: $width solid $color;
+}</code></pre></div></div>
+<ul class="v2-ul"><li><code>$color</code> and <code>$width</code> — these are parameters (placeholders)</li><li>When you include the mixin, you provide actual values</li></ul>
+<p class="v2-p"><strong>Using the mixin with different arguments:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>.myArticle {
+  @include bordered(blue, 1px);   /* border: 1px solid blue */
+}
+
+.myNotes {
+  @include bordered(red, 2px);    /* border: 2px solid red */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.myArticle {
+  border: 1px solid blue;
+}
+
+.myNotes {
+  border: 2px solid red;
+}</code></pre></div></div>
+<p class="v2-p">One mixin, two completely different borders — with different colours and widths.</p>
+<h3 class="v2-h3">Default Values for Mixin Arguments</h3>
+<p class="v2-p">You can set default values for parameters so you don't always have to provide them:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>@mixin bordered($color: blue, $width: 1px) {
+  border: $width solid $color;
+}
+
+/* Using with default values — only change what you need */
+.myTips {
+  @include bordered($color: orange);
+  /* $width defaults to 1px, only $color is changed */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.myTips {
+  border: 1px solid orange;
+}</code></pre></div></div>
+<h3 class="v2-h3">Real-World Use: Vendor Prefixes</h3>
+<p class="v2-p">In web development, some CSS properties need <strong>vendor prefixes</strong> — special versions for different browsers. Writing them manually is tedious and error-prone. A mixin solves this beautifully:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>@mixin transform($property) {
+  -webkit-transform: $property;   /* for older Safari/Chrome */
+  -ms-transform: $property;       /* for older IE */
+  transform: $property;           /* the standard version */
+}
+
+/* Using the mixin */
+.myBox {
+  @include transform(rotate(20deg));
+}
+
+.myCircle {
+  @include transform(scale(1.5));
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output for <code>.myBox</code>:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.myBox {
+  -webkit-transform: rotate(20deg);
+  -ms-transform: rotate(20deg);
+  transform: rotate(20deg);
+}</code></pre></div></div>
+<p class="v2-p">You write one line in Sass, and three lines appear in the CSS. Changing the property in the mixin updates all three prefixes everywhere it is used.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Sass <code>@mixin</code> and <code>@include</code></strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 11</div>
+    <div class="phase-title">Section 7 — Sass `@extend` and Inheritance</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is <code>@extend</code>?</h3>
+<p class="v2-p">The <code>@extend</code> directive lets one selector <strong>inherit</strong> (copy) all the CSS properties from another selector.</p>
+<p class="v2-p"><strong>The real-world analogy:</strong> Imagine you have a blueprint for a basic chair (four legs, a seat, a back). A "dining chair" and an "office chair" are both chairs — they share the blueprint. But an office chair <em>extends</em> the basic chair with wheels and height adjustment.</p>
+<p class="v2-p">In Sass: the basic chair is your base class. The dining and office chairs extend it.</p>
+<h3 class="v2-h3">When Should You Use <code>@extend</code>?</h3>
+<p class="v2-p">Use <code>@extend</code> when you have elements that are <strong>almost identical</strong> but differ in a few specific details. Common examples:</p>
+<ul class="v2-ul"><li>Different types of buttons (primary, danger, success) that share the same shape</li><li>Different alert types (info, warning, error) that share the same layout</li><li>Different card variants that share the same border and padding</li></ul>
+<h3 class="v2-h3">Basic <code>@extend</code> Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Base button style — shared by all buttons */
+.button-basic {
+  border: none;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* &quot;Report&quot; button inherits all of .button-basic, plus has its own colour */
+.button-report {
+  @extend .button-basic;
+  background-color: red;
+}
+
+/* &quot;Submit&quot; button inherits all of .button-basic, plus its own colours */
+.button-submit {
+  @extend .button-basic;
+  background-color: green;
+  color: white;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Sass groups all extended selectors together */
+.button-basic, .button-report, .button-submit {
+  border: none;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button-report {
+  background-color: red;
+}
+
+.button-submit {
+  background-color: green;
+  color: white;
+}</code></pre></div></div>
+<p class="v2-p">Notice how Sass is smart about this: instead of copying the base styles into each selector (which would repeat them), it adds both <code>.button-report</code> and <code>.button-submit</code> to the <code>.button-basic</code> selector group. This produces the most efficient, minimal CSS possible.</p>
+<h3 class="v2-h3">Practical <code>@extend</code> Example: Alert Messages</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>.alert {
+  padding: 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.alert-success {
+  @extend .alert;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-warning {
+  @extend .alert;
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+.alert-danger {
+  @extend .alert;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.alert, .alert-success, .alert-warning, .alert-danger {
+  padding: 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}</code></pre></div></div>
+<p class="v2-p"><strong>In your HTML, you only need one class per element:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;alert-success&quot;&gt;Saved successfully!&lt;/div&gt;
+&lt;div class=&quot;alert-warning&quot;&gt;Low disk space.&lt;/div&gt;
+&lt;div class=&quot;alert-danger&quot;&gt;Error: invalid input.&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p">No need for: <code>&lt;div class="alert alert-success"&gt;</code> — the <code>@extend</code> handles the inheritance automatically.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 The <code>@extend</code> directive helps keep your Sass code <strong>DRY</strong> — Don't Repeat Yourself.</p></blockquote>
+<h3 class="v2-h3"><code>@extend</code> vs. <code>@mixin</code> — When to Use Which?</h3>
+<p class="v2-p">This is a common point of confusion. Here is a simple guide:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Situation</th><th>Use</th></tr></thead><tbody><tr><td>Sharing styles that are always <em>identical</em> between elements</td><td><code>@extend</code></td></tr><tr><td>Sharing styles that need <em>different values</em> in different places</td><td><code>@mixin</code> with arguments</td></tr><tr><td>Adding vendor prefixes</td><td><code>@mixin</code></td></tr><tr><td>Creating button/alert variants</td><td><code>@extend</code></td></tr><tr><td>Creating flexible utility functions</td><td><code>@mixin</code></td></tr></tbody></table></div>
+<p class="v2-p"><strong><code>@extend</code> keeps your CSS output small</strong> by grouping selectors. <strong><code>@mixin</code> copies code</strong> into each selector that includes it (which can increase output size but gives more flexibility).</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Sass <code>@extend</code> and Inheritance</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase10">
+  <div class="phase-header">
+    <div class="phase-num">Phase 10 of 11</div>
+    <div class="phase-title">Section 8 — Guided Practice Exercises</div>
+    <div class="phase-check" id="chk10"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1: Brand Variables</h3>
+<p class="v2-p"><strong>Objective:</strong> Practice creating and using Sass variables.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building the stylesheet for "TechStart Lagos" — a tech hub. Their brand colours are coral (<code>#FF6B6B</code>), dark navy (<code>#1A1A2E</code>), and white (<code>#FFFFFF</code>). The body font is <code>'Segoe UI', sans-serif</code>, body text size is <code>16px</code>, and heading text size is <code>28px</code>.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Declare 5 variables: two colours, one font, two font sizes.</li><li>Create a <code>body</code> rule using the font and text size variables.</li><li>Create an <code>.hero</code> rule with a background colour and white text.</li><li>Create an <code>h1</code> rule with the large font size.</li></ol>
+<p class="v2-p"><strong>Your Sass (try writing it first):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Step 1 — Declare variables */
+$brand-coral: #FF6B6B;
+$brand-navy: #1A1A2E;
+$brand-white: #FFFFFF;
+$body-font: &#x27;Segoe UI&#x27;, sans-serif;
+$body-size: 16px;
+$heading-size: 28px;
+
+/* Step 2 — Body */
+body {
+  font-family: $body-font;
+  font-size: $body-size;
+  background-color: $brand-white;
+  color: $brand-navy;
+}
+
+/* Step 3 — Hero section */
+.hero {
+  background-color: $brand-navy;
+  color: $brand-white;
+  padding: 60px 40px;
+}
+
+/* Step 4 — Heading */
+h1 {
+  font-size: $heading-size;
+  color: $brand-coral;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  font-family: &#x27;Segoe UI&#x27;, sans-serif;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  color: #1A1A2E;
+}
+
+.hero {
+  background-color: #1A1A2E;
+  color: #FFFFFF;
+  padding: 60px 40px;
+}
+
+h1 {
+  font-size: 28px;
+  color: #FF6B6B;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>What is the value of <code>$brand-coral</code>?</li><li>If the design team changes the navy colour to <code>#0D0D1A</code>, how many lines do you change?</li><li>What is the difference between a Sass variable and a CSS custom property (<code>--var</code>)?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2: Nested Navigation</h3>
+<p class="v2-p"><strong>Objective:</strong> Practice Sass nesting.</p>
+<p class="v2-p"><strong>Scenario:</strong> Build the CSS for a navigation bar for a news website.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>.site-nav {
+  background-color: #222;
+  padding: 0 20px;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+
+  li {
+    display: inline-block;
+  }
+
+  a {
+    display: block;
+    color: white;
+    padding: 14px 18px;
+    text-decoration: none;
+    font-size: 15px;
+  }
+
+  a:hover {
+    background-color: #444;
+    color: #ff6b6b;
+  }
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.site-nav {
+  background-color: #222;
+  padding: 0 20px;
+}
+
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.site-nav li {
+  display: inline-block;
+}
+
+.site-nav a {
+  display: block;
+  color: white;
+  padding: 14px 18px;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.site-nav a:hover {
+  background-color: #444;
+  color: #ff6b6b;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Self-check:</strong> The <code>a:hover</code> rule nested inside <code>.site-nav</code> outputs as <code>.site-nav a:hover</code> — can you see how the nesting hierarchy maps to the selector hierarchy?</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3: Mixin for Flex Containers</h3>
+<p class="v2-p"><strong>Objective:</strong> Practice creating and using a mixin with arguments.</p>
+<p class="v2-p"><strong>Scenario:</strong> Many sections of your website use flexbox. Create a mixin that sets up flex layout with customisable direction and justification.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Define the mixin */
+@mixin flex-layout($direction: row, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+/* Use the mixin */
+.hero-section {
+  @include flex-layout(row, center, center);
+  height: 400px;
+  background-color: #f5f5f5;
+}
+
+.sidebar-layout {
+  @include flex-layout(row, space-between, flex-start);
+  gap: 20px;
+}
+
+.card-stack {
+  @include flex-layout(column, flex-start, center);
+  padding: 20px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  background-color: #f5f5f5;
+}
+
+.sidebar-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.card-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 4: Extend for Button Variants</h3>
+<p class="v2-p"><strong>Objective:</strong> Practice <code>@extend</code> for shared base styles.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* Base button */
+.btn {
+  display: inline-block;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+/* Variant buttons */
+.btn-primary {
+  @extend .btn;
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-success {
+  @extend .btn;
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-danger {
+  @extend .btn;
+  background-color: #dc3545;
+  color: white;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected CSS Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.btn, .btn-primary, .btn-success, .btn-danger {
+  display: inline-block;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn:hover, .btn-primary:hover, .btn-success:hover, .btn-danger:hover {
+  opacity: 0.85;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}</code></pre></div></div>
+<p class="v2-p">Notice how the <code>:hover</code> style is automatically extended to all variant classes too — that is <code>@extend</code> being smart about related selectors.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase11">
+  <div class="phase-header">
+    <div class="phase-num">Phase 11 of 11</div>
+    <div class="phase-title">Section 10 — Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk11"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1: Forgetting the <code>$</code> When Using a Variable</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* WRONG */
+$brand-color: #336699;
+
+.button {
+  background-color: brand-color;  /* CSS property, not a variable — won&#x27;t work! */
+}
+
+/* CORRECT */
+.button {
+  background-color: $brand-color;  /* add the $ */
+}</code></pre></div></div>
+<h3 class="v2-h3">Mistake 2: Defining a Variable After Using It</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* WRONG — variable used before declaration */
+.header {
+  background-color: $primary;
+}
+
+$primary: navy;   /* Too late — Sass reads top to bottom */
+
+/* CORRECT — declare first, use after */
+$primary: navy;
+
+.header {
+  background-color: $primary;
+}</code></pre></div></div>
+<h3 class="v2-h3">Mistake 3: Over-Nesting</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* WRONG — 5 levels deep creates .page .wrapper .content .article .text */
+.page {
+  .wrapper {
+    .content {
+      .article {
+        .text { color: black; }
+      }
+    }
+  }
+}
+
+/* CORRECT — shallow and purposeful */
+.article {
+  .text { color: black; }
+}</code></pre></div></div>
+<h3 class="v2-h3">Mistake 4: Importing With the Underscore or <code>.scss</code> Extension</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* WRONG */
+@import &quot;_colors.scss&quot;;     /* do not include underscore or extension */
+@import &quot;_colors&quot;;          /* still wrong — no underscore needed */
+
+/* CORRECT */
+@import &quot;colors&quot;;           /* Sass handles the underscore and extension */</code></pre></div></div>
+<h3 class="v2-h3">Mistake 5: Using <code>@extend</code> on Complex Selectors</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* WRONG — cannot extend a nested selector from outside */
+.parent .child {
+  color: red;
+}
+
+.other {
+  @extend .parent .child;  /* this may cause unexpected results */
+}
+
+/* BETTER — extend simple, standalone class selectors */
+.base-style {
+  color: red;
+}
+
+.other {
+  @extend .base-style;
+}</code></pre></div></div>
+<h3 class="v2-h3">Mistake 6: Mixin Without <code>@include</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">scss</span></div><div class="v2-code-body"><pre><code>/* WRONG — calling a mixin without @include */
+.box {
+  important-text;   /* This does nothing — just looks like an error */
+}
+
+/* CORRECT */
+.box {
+  @include important-text;
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Overview</div>
+  <div class="build-desc">You will build a complete, production-quality Sass stylesheet for a fictional company called <strong>GreenPath — Sustainable Living Blog</strong>. The stylesheet will use all five Sass features you have learned: variables, nesting, <code>@import</code>, mixins, and <code>@extend</code>.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>scss/
+├── main.scss           ← imports everything
+├── _variables.scss     ← all design tokens
+├── _reset.scss         ← base reset
+├── _layout.scss        ← page structure
+├── _components.scss    ← buttons, cards, alerts
+└── _navigation.scss    ← site navigation</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`scss/
+├── main.scss           ← imports everything
+├── _variables.scss     ← all design tokens
+├── _reset.scss         ← base reset
+├── _layout.scss        ← page structure
+├── _components.scss    ← buttons, cards, alerts
+└── _navigation.scss    ← site navigation`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
       ⬇ Download starter.html
     </button>
-    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
       🐙 Push to GitHub →
     </button>
   </div>
-  <script>
-  const __code = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSS Filters</title>
-<style>*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.filter-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.fi{flex:1;min-width:120px;text-align:center}
-.fi img{width:100%;height:90px;object-fit:cover;border-radius:10px;display:block;margin-bottom:4px}
-.fi span{font-size:10px;font-family:monospace;color:#64748b}
-.reveal-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.rv img{flex:1;min-width:140px;height:100px;object-fit:cover;border-radius:10px;display:block;filter:grayscale(1);transition:filter .4s ease;cursor:pointer}
-.rv img:hover{filter:grayscale(0) saturate(1.3)}
-.glass-scene{background:linear-gradient(135deg,#0284c7,#7c3aed,#ea4f21);border-radius:16px;padding:44px 22px;position:relative;overflow:hidden}
-.glass-card{background:rgba(255,255,255,.12);backdrop-filter:blur(14px) saturate(1.5);-webkit-backdrop-filter:blur(14px) saturate(1.5);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:22px;color:white;max-width:340px;margin:0 auto}
-.glass-card h3{font-size:1.1rem;margin:0 0 8px}
-.glass-card p{font-size:14px;opacity:.85;line-height:1.7;margin:0}
-.glass-btn{margin-top:14px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:white;padding:8px 18px;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;display:inline-block}
-</style></head><body>
-<h1 style="color:#0284c7;margin-bottom:4px">CSS Filters Gallery</h1>
-<h2>filter Functions</h2>
-<div class="filter-grid">
-<div class="fi"><img src="https://via.placeholder.com/200x90/0284c7/dbeafe?text=original" alt="orig"><span>original</span></div>
-<div class="fi"><img src="https://via.placeholder.com/200x90/0284c7/dbeafe?text=grey" style="filter:grayscale(1)" alt="grey"><span>grayscale(1)</span></div>
-<div class="fi"><img src="https://via.placeholder.com/200x90/0284c7/dbeafe?text=sepia" style="filter:sepia(.8)" alt="sepia"><span>sepia(.8)</span></div>
-<div class="fi"><img src="https://via.placeholder.com/200x90/0284c7/dbeafe?text=bright" style="filter:brightness(1.5)" alt="bright"><span>brightness(1.5)</span></div>
-<div class="fi"><img src="https://via.placeholder.com/200x90/0284c7/dbeafe?text=invert" style="filter:invert(1)" alt="invert"><span>invert(1)</span></div>
-<div class="fi"><img src="https://via.placeholder.com/200x90/0284c7/dbeafe?text=blur" style="filter:blur(3px)" alt="blur"><span>blur(3px)</span></div>
 </div>
-<h2>Hover Colour Reveal</h2>
-<div class="reveal-grid">
-<div class="rv"><img src="https://via.placeholder.com/200x100/0284c7/dbeafe?text=Hover+me!" alt="css"></div>
-<div class="rv"><img src="https://via.placeholder.com/200x100/ea4f21/fff?text=Hover+me!" alt="html"></div>
-<div class="rv"><img src="https://via.placeholder.com/200x100/10b981/fff?text=Hover+me!" alt="js"></div>
-</div>
-<h2>backdrop-filter — Glassmorphism</h2>
-<div class="glass-scene">
-<div class="glass-card">
-<h3>🔮 Frosted Glass Card</h3>
-<p>backdrop-filter:blur(14px) blurs the gradient behind through this semi-transparent card.</p>
-<span class="glass-btn">Get Started →</span>
-</div>
-</div>
-</body></html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-72-css_filters</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 72 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-72-css_filters/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-72-project-overview</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 72 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-72-project-overview/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 72 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ filter functions</li><li>✅ backdrop-filter glassmorphism</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_71.html" class="ln-btn">← Lesson 71</a>
-    <a href="lesson_73.html" class="ln-btn primary">Lesson 73 →</a>
-  </div>
+  <h2>🎉 Lesson 72 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ What You Need to Know Before Starting</li><li>✅ Section 1 — What is Sass?</li><li>✅ Section 2 — Installing Sass</li><li>✅ Section 3 — Sass Variables</li><li>✅ Section 4 — Sass Nesting</li><li>✅ Section 5 — Sass `@import` and Partials</li><li>✅ Section 6 — Sass `@mixin` and `@include`</li></ul>
+  <div class="lesson-nav"><a href="lesson_71.html" class="ln-btn">← Lesson 71</a><a href="lesson_73.html" class="ln-btn primary">Lesson 73 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 72 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 72 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_css_72_phase';
+const TOTAL=11,KEY='techbase_css_l72';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

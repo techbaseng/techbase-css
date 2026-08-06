@@ -2,479 +2,1213 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 35: CSS Attribute Selectors — Techbase CSS Course</title>
-<meta name="description" content="Target elements based on their HTML attributes using attribute selector syntax">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 35: CSS Attribute Selectors — Techbase CSS</title>
+<meta name="description" content="CSS Attribute Selectors">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 35 of 73 &nbsp;·&nbsp; CSS Attribute Selectors</span>
-  <div class="nav-actions"><a href="lesson_34.html" class="ln-btn">← Lesson 34</a><a href="lesson_36.html" class="ln-btn primary">Lesson 36 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 35 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 35</div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 35</div>
     <h1>CSS Attribute Selectors</h1>
-    <p class="lesson-tagline">Target elements based on their HTML attributes using attribute selector syntax</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My Attribute Selector Demo</span>
-      
-    </div>
+    <div class="l-hero-sub">9 phases · Build: Project Overview</div>
   </div>
-</section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 35!</div>
-  <h2>CSS Attribute Selectors</h2>
-  <p>Target elements based on their HTML attributes using attribute selector syntax. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
 </div>
-<div class="phase " id="phase1" data-phase="1">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 35</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">So far in your CSS journey, you have selected elements using their <strong>tag name</strong> (<code>p</code>, <code>div</code>, <code>img</code>), their <strong>class</strong> (<code>.menu-item</code>), or their <strong>ID</strong> (<code>#header</code>). These are great — but what if you need to style elements based on something more specific, like:</p>
+<ul class="v2-ul"><li>All links that open in a new browser tab?</li><li>All text input fields (but not checkbox inputs or button inputs)?</li><li>All images whose file path ends in <code>.png</code>?</li><li>All elements whose class name <strong>starts with</strong> the word "btn"?</li></ul>
+<p class="v2-p">For situations like these, CSS gives you a powerful tool called <strong>attribute selectors</strong>. Instead of selecting elements by their tag or class name, attribute selectors let you target elements based on the <strong>attributes they carry</strong> — and even on the <strong>value</strong> of those attributes, or <strong>parts</strong> of those values.</p>
+<p class="v2-p">In this lesson, you will learn:</p>
+<ul class="v2-ul"><li>What HTML attributes are and why they matter for CSS selection</li><li>How to use the six core CSS attribute selectors</li><li>The difference between exact-match and partial-match attribute selectors</li><li>How to combine attribute selectors with element type selectors</li><li>A critical real-world use case: styling form inputs by type</li><li>How to apply these selectors confidently in your own projects</li></ul>
+<p class="v2-p">By the end, you will be writing powerful, precise CSS rules that require zero extra classes or IDs in your HTML.</p>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 9 phases</span>
+    <span>🏗️ Project Overview</span>
+  </div>
+</div></div>
+</section>
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">Exact and Partial Attribute Matching</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 9</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>CSS attribute selectors target elements based on their attributes and values. <code>[attr]</code> — has the attribute. <code>[attr='val']</code> — exact value. <code>[attr^='val']</code> — starts with. <code>[attr$='val']</code> — ends with. <code>[attr*='val']</code> — contains anywhere. <code>[attr~='val']</code> — word in space-separated list. <code>[attr|='val']</code> — exact or starts with 'val-'.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Has the attribute */
-input[required]     { border-color: #ef4444; }
-input[disabled]     { opacity: .5; }
-a[target]           { font-weight: bold; }
-
-/* Exact value */
-input[type="email"] { border-color: #0284c7; }
-input[type="text"]  { border-color: #94a3b8; }
-
-/* Starts with */
-a[href^="https"]    { color: #10b981; }
-a[href^="mailto"]   { color: #0284c7; }
-
-/* Ends with */
-a[href$=".pdf"]::after  { content: ' 📄'; }
-a[href$=".zip"]::after  { content: ' 📦'; }
-img[src$=".png"]        { border: 2px solid #e2e8f0; }
-
-/* Contains */
-a[href*="github"]   { color: #7c3aed; }
-[class*="btn"]      { cursor: pointer; }
-
-/* Case insensitive with i flag */
-a[href$=".PDF" i]   { color: #ea4f21; }</pre></div>
-</div>
+    <p class="v2-p">So far in your CSS journey, you have selected elements using their <strong>tag name</strong> (<code>p</code>, <code>div</code>, <code>img</code>), their <strong>class</strong> (<code>.menu-item</code>), or their <strong>ID</strong> (<code>#header</code>). These are great — but what if you need to style elements based on something more specific, like:</p>
+<ul class="v2-ul"><li>All links that open in a new browser tab?</li><li>All text input fields (but not checkbox inputs or button inputs)?</li><li>All images whose file path ends in <code>.png</code>?</li><li>All elements whose class name <strong>starts with</strong> the word "btn"?</li></ul>
+<p class="v2-p">For situations like these, CSS gives you a powerful tool called <strong>attribute selectors</strong>. Instead of selecting elements by their tag or class name, attribute selectors let you target elements based on the <strong>attributes they carry</strong> — and even on the <strong>value</strong> of those attributes, or <strong>parts</strong> of those values.</p>
+<p class="v2-p">In this lesson, you will learn:</p>
+<ul class="v2-ul"><li>What HTML attributes are and why they matter for CSS selection</li><li>How to use the six core CSS attribute selectors</li><li>The difference between exact-match and partial-match attribute selectors</li><li>How to combine attribute selectors with element type selectors</li><li>A critical real-world use case: styling form inputs by type</li><li>How to apply these selectors confidently in your own projects</li></ul>
+<p class="v2-p">By the end, you will be writing powerful, precise CSS rules that require zero extra classes or IDs in your HTML.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Style all <code>a[href^='https']</code> links green and add a ↗ after them. Style all <code>input[type='email']</code> with a blue border. Use <code>a[href$='.pdf']::after</code> to add a 📄 icon after any link to a PDF file.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
+</div>
+<div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">Attribute Selectors for Forms and UI</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 9</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>Attribute selectors shine in form styling. Target different input types, required vs optional fields, disabled states. Combine with pseudo-classes for powerful rules: <code>input[type='checkbox']:checked + label</code>. Also useful for: styling data attributes (<code>[data-theme='dark']</code>), ARIA roles (<code>[role='button']</code>), and language attributes (<code>[lang='fr']</code>).</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Style by input type */
-input[type="text"]     { border-left: 3px solid #94a3b8; }
-input[type="email"]    { border-left: 3px solid #0284c7; }
-input[type="password"] { border-left: 3px solid #ea4f21; }
-input[type="number"]   { border-left: 3px solid #10b981; }
+    <h3 class="v2-h3">What Is an HTML Attribute?</h3>
+<p class="v2-p">An <strong>attribute</strong> is extra information attached to an HTML element, written inside the opening tag. Attributes always come in <strong>name="value"</strong> pairs.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- The word &quot;href&quot; is the attribute NAME. &quot;https://example.com&quot; is the VALUE. --&gt;
+&lt;a href=&quot;https://example.com&quot;&gt;Visit site&lt;/a&gt;
 
-/* Required fields */
-input[required] + label::after,
-input[required] ~ label::after {
-  content: ' *';
-  color: #ef4444;
+&lt;!-- &quot;type&quot; is the attribute. &quot;text&quot; is the value. --&gt;
+&lt;input type=&quot;text&quot; placeholder=&quot;Enter your name&quot;&gt;
+
+&lt;!-- &quot;target&quot; is the attribute. &quot;_blank&quot; is the value. --&gt;
+&lt;a href=&quot;page.html&quot; target=&quot;_blank&quot;&gt;Open in new tab&lt;/a&gt;
+
+&lt;!-- &quot;class&quot; is the attribute. &quot;btn-primary&quot; is the value. --&gt;
+&lt;button class=&quot;btn-primary&quot;&gt;Submit&lt;/button&gt;
+
+&lt;!-- &quot;disabled&quot; is an attribute with NO value — it is a &quot;boolean&quot; attribute. --&gt;
+&lt;input type=&quot;text&quot; disabled&gt;</code></pre></div></div>
+<p class="v2-p">Every HTML element can carry one or more attributes. CSS attribute selectors let you use these attributes as selection criteria.</p>
+<h3 class="v2-h3">What Do Attribute Selectors Look Like?</h3>
+<p class="v2-p">All CSS attribute selectors use <strong>square brackets <code>[ ]</code></strong> around the attribute condition. You place them after the tag name (or alone, to match any tag):</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* General pattern */
+element[attribute]           /* Has the attribute */
+element[attribute=&quot;value&quot;]   /* Attribute equals exactly &quot;value&quot; */
+element[attribute~=&quot;value&quot;]  /* Attribute contains &quot;value&quot; as a whole word */
+element[attribute|=&quot;value&quot;]  /* Attribute equals &quot;value&quot; or starts with &quot;value-&quot; */
+element[attribute^=&quot;value&quot;]  /* Attribute starts with &quot;value&quot; */
+element[attribute$=&quot;value&quot;]  /* Attribute ends with &quot;value&quot; */
+element[attribute*=&quot;value&quot;]  /* Attribute contains &quot;value&quot; anywhere */</code></pre></div></div>
+<p class="v2-p">There are <strong>seven</strong> attribute selectors in total — four basic ones and three advanced ones. We will learn each one, one at a time.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 9</div>
+    <div class="phase-title">Section 1: The Basic Attribute Selectors</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">1.1 <code>[attribute]</code> — Select Elements That Have a Specific Attribute</h3>
+<p class="v2-p"><strong>What it does:</strong> Selects every element that has a particular attribute present, regardless of what the attribute's value is. Even elements with an empty attribute value will be selected.</p>
+<p class="v2-p"><strong>Why it exists:</strong> Sometimes you just want to know whether an attribute exists on an element, not what its value is. For example, all <code>&lt;a&gt;</code> tags that have a <code>target</code> attribute — regardless of whether that target is <code>_blank</code> or <code>_self</code> or <code>_parent</code>.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>element[attribute] {
+  /* styles */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Real example from W3Schools — style all links that have a <code>target</code> attribute:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML: Three links, only two have target attribute --&gt;
+&lt;a href=&quot;page1.html&quot;&gt;Link without target&lt;/a&gt;
+&lt;a href=&quot;page2.html&quot; target=&quot;_blank&quot;&gt;Link with target=&quot;_blank&quot;&lt;/a&gt;
+&lt;a href=&quot;page3.html&quot; target=&quot;_self&quot;&gt;Link with target=&quot;_self&quot;&lt;/a&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+a[target] {
+  background-color: yellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Link without target        ← no yellow background (no target attribute)
+Link with target=&quot;_blank&quot;  ← YELLOW background (has target attribute)
+Link with target=&quot;_self&quot;   ← YELLOW background (has target attribute)</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<ul class="v2-ul"><li><code>a</code> — We are targeting <code>&lt;a&gt;</code> (anchor/link) elements</li><li><code>[target]</code> — But only those that <strong>have</strong> the <code>target</code> attribute</li><li>The first link has no <code>target</code> attribute at all, so it is NOT selected</li><li>The second and third both have <code>target</code>, so they ARE selected — regardless of the value</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What if you wrote just <code>[target]</code> without the <code>a</code> in front? That would select <strong>any</strong> element that has a <code>target</code> attribute — not just links. You can omit the element type to cast a wider net.</p></blockquote>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Second example — select all inputs that have a <code>placeholder</code> attribute:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;input type=&quot;text&quot; placeholder=&quot;Your name&quot;&gt;
+&lt;input type=&quot;text&quot;&gt;
+&lt;input type=&quot;email&quot; placeholder=&quot;Your email&quot;&gt;
+&lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+input[placeholder] {
+  border: 2px solid green;
+  padding: 5px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Your name  ] ← green border (has placeholder)
+[            ] ← no green border (no placeholder)
+[ Your email ] ← green border (has placeholder)
+[ Submit     ] ← no green border (no placeholder)</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.2 <code>[attribute="value"]</code> — Select Elements with an Exact Attribute Value</h3>
+<p class="v2-p"><strong>What it does:</strong> Selects elements that have a specific attribute set to <strong>exactly</strong> the value you specify. The entire attribute value must match perfectly — not just part of it.</p>
+<p class="v2-p"><strong>Why it exists:</strong> The previous selector finds all elements with an attribute. This one narrows it down to only those where the attribute has a specific exact value. The most common use: styling different types of form inputs differently.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>element[attribute=&quot;value&quot;] {
+  /* styles */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Real example — style only links that open in a new tab:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;a href=&quot;home.html&quot;&gt;Home&lt;/a&gt;
+&lt;a href=&quot;docs.html&quot; target=&quot;_blank&quot;&gt;Documentation (new tab)&lt;/a&gt;
+&lt;a href=&quot;about.html&quot; target=&quot;_self&quot;&gt;About (same tab)&lt;/a&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+a[target=&quot;_blank&quot;] {
+  background-color: yellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Home                        ← no yellow (no target attribute)
+Documentation (new tab)     ← YELLOW (target=&quot;_blank&quot; exactly matches)
+About (same tab)            ← no yellow (target=&quot;_self&quot; does NOT equal &quot;_blank&quot;)</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Key point:</strong> <code>target="_self"</code> does NOT match <code>[target="_blank"]</code> because the value <code>_self</code> is not equal to <code>_blank</code>. This selector requires an <strong>exact, complete match</strong>.</p></blockquote>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Second example — the most famous practical use: styling form inputs by type:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML: A simple registration form --&gt;
+&lt;form&gt;
+  &lt;input type=&quot;text&quot;     placeholder=&quot;Full name&quot;&gt;
+  &lt;input type=&quot;email&quot;    placeholder=&quot;Email address&quot;&gt;
+  &lt;input type=&quot;password&quot; placeholder=&quot;Password&quot;&gt;
+  &lt;input type=&quot;checkbox&quot;&gt;
+  &lt;label&gt;Remember me&lt;/label&gt;
+  &lt;input type=&quot;submit&quot;   value=&quot;Register&quot;&gt;
+&lt;/form&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS: Style different input types differently — no class names needed! */
+input[type=&quot;text&quot;] {
+  width: 200px;
+  padding: 8px;
+  background-color: lightyellow;
+  border: 1px solid #aaa;
 }
 
-/* Data attributes for theme */
-[data-theme="dark"]  { background: #0f172a; color: white; }
-[data-theme="light"] { background: white; color: #0f172a; }
+input[type=&quot;email&quot;] {
+  width: 200px;
+  padding: 8px;
+  background-color: lightblue;
+  border: 1px solid blue;
+}
 
-/* ARIA */
-[role="button"] { cursor: pointer; }
-[aria-disabled="true"] { opacity: .5; pointer-events: none; }</pre></div>
-</div>
+input[type=&quot;password&quot;] {
+  width: 200px;
+  padding: 8px;
+  background-color: lightpink;
+  border: 1px solid red;
+}
+
+input[type=&quot;submit&quot;] {
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output (visual):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Full name     ]   ← lightyellow background (type=&quot;text&quot;)
+[ Email address ]   ← lightblue background  (type=&quot;email&quot;)
+[ Password      ]   ← lightpink background  (type=&quot;password&quot;)
+[ ] Remember me     ← default checkbox style (type=&quot;checkbox&quot; has no special rule)
+[ Register      ]   ← green button          (type=&quot;submit&quot;)</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> This technique is used constantly in web forms. Instead of adding class="text-input" or class="email-input" to every input element, attribute selectors let you target them based on what they already are.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.3 <code>[attribute~="value"]</code> — Select Elements Whose Attribute Value Contains a Specific <strong>Whole Word</strong></h3>
+<p class="v2-p"><strong>What it does:</strong> Selects elements where the attribute value is a <strong>space-separated list of words</strong> and the list contains the specified word. This is perfect for attributes that can hold multiple space-separated values — like the HTML <code>class</code> attribute or a <code>title</code> attribute with multiple words.</p>
+<p class="v2-p"><strong>The key rule:</strong> The specified value must be a <strong>complete word</strong> in the list. It will NOT match partial words or words joined by hyphens.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>element[attribute~=&quot;value&quot;] {
+  /* styles */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Real example — select elements whose <code>title</code> attribute contains the word "flower":</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;p title=&quot;flower&quot;&gt;Paragraph 1 — title is exactly &quot;flower&quot;&lt;/p&gt;
+&lt;p title=&quot;summer flower&quot;&gt;Paragraph 2 — title contains &quot;flower&quot; as a word&lt;/p&gt;
+&lt;p title=&quot;flower new&quot;&gt;Paragraph 3 — title starts with &quot;flower&quot;&lt;/p&gt;
+&lt;p title=&quot;my-flower&quot;&gt;Paragraph 4 — title is &quot;my-flower&quot; (hyphenated)&lt;/p&gt;
+&lt;p title=&quot;flowers&quot;&gt;Paragraph 5 — title is &quot;flowers&quot; (not the whole word &quot;flower&quot;)&lt;/p&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+p[title~=&quot;flower&quot;] {
+  background-color: yellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Paragraph 1  ← YELLOW (title=&quot;flower&quot; — &quot;flower&quot; is the whole value)
+Paragraph 2  ← YELLOW (title=&quot;summer flower&quot; — &quot;flower&quot; is one of the space-separated words)
+Paragraph 3  ← YELLOW (title=&quot;flower new&quot; — &quot;flower&quot; is the first word)
+Paragraph 4  ← no yellow (title=&quot;my-flower&quot; — &quot;flower&quot; is not a standalone word, it is joined by a hyphen)
+Paragraph 5  ← no yellow (title=&quot;flowers&quot; — &quot;flowers&quot; ≠ &quot;flower&quot;, it is a different word)</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Important distinction:</strong> <code>[title~="flower"]</code> matches "flower" as a <strong>standalone word</strong> in a space-separated list. It does NOT match "my-flower" (hyphenated) or "flowers" (plural — a different word entirely). This behaviour is very similar to how the <code>class</code> selector <code>.flower</code> works.</p></blockquote>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Second example — the class attribute with multiple values:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML: Elements with multiple classes (space-separated) --&gt;
+&lt;div class=&quot;card featured product&quot;&gt;Featured Product Card&lt;/div&gt;
+&lt;div class=&quot;card product&quot;&gt;Regular Product Card&lt;/div&gt;
+&lt;div class=&quot;card sidebar featured&quot;&gt;Featured Sidebar Card&lt;/div&gt;
+&lt;div class=&quot;widget featured&quot;&gt;Featured Widget&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS: Select elements where class list contains the word &quot;featured&quot; */
+[class~=&quot;featured&quot;] {
+  border: 3px solid gold;
+  background-color: lightyellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Featured Product Card  ]  ← gold border (class list contains &quot;featured&quot;)
+[ Regular Product Card   ]  ← no gold border (no &quot;featured&quot; in class list)
+[ Featured Sidebar Card  ]  ← gold border (class list contains &quot;featured&quot;)
+[ Featured Widget        ]  ← gold border (class list contains &quot;featured&quot;)</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> Notice that <code>[class~="featured"]</code> does exactly the same thing as the class selector <code>.featured</code>. This helps you understand how the <code>~=</code> operator works — it matches whole words in a space-separated list.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">1.4 <code>[attribute|="value"]</code> — Select Elements Whose Attribute Value Is Exactly the Value, or Starts with the Value Followed by a Hyphen</h3>
+<p class="v2-p"><strong>What it does:</strong> Selects elements where the attribute value is either:</p>
+<ul class="v2-ul"><li><strong>Exactly</strong> the specified value (e.g., <code>"top"</code>), OR</li><li>The specified value <strong>followed immediately by a hyphen</strong> (<code>-</code>) (e.g., <code>"top-text"</code> or <code>"top-section"</code>)</li></ul>
+<p class="v2-p"><strong>Why it exists:</strong> This selector was specifically designed for language codes, which use hyphen notation. For example, <code>lang="en"</code> (English), <code>lang="en-US"</code> (American English), <code>lang="en-GB"</code> (British English). The <code>|=</code> selector lets you match <code>lang="en"</code> AND <code>lang="en-US"</code> AND <code>lang="en-GB"</code> all at once with <code>[lang|="en"]</code>.</p>
+<p class="v2-p"><strong>The critical rule:</strong> The value must be a <strong>whole word</strong> — not a substring inside a longer word. <code>"top-text"</code> matches <code>[class|="top"]</code>, but <code>"topping"</code> does NOT.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>element[attribute|=&quot;value&quot;] {
+  /* styles */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Real example — select all elements whose class is "top" or starts with "top-":</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;p class=&quot;top&quot;&gt;Class is exactly &quot;top&quot;&lt;/p&gt;
+&lt;p class=&quot;top-text&quot;&gt;Class starts with &quot;top-&quot;&lt;/p&gt;
+&lt;p class=&quot;top-section&quot;&gt;Class starts with &quot;top-&quot;&lt;/p&gt;
+&lt;p class=&quot;topper&quot;&gt;Class starts with &quot;top&quot; but NOT followed by a hyphen&lt;/p&gt;
+&lt;p class=&quot;my-top&quot;&gt;Class contains &quot;top&quot; but doesn&#x27;t START with it&lt;/p&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+[class|=&quot;top&quot;] {
+  background-color: yellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Class is exactly &quot;top&quot;                           ← YELLOW (exact match)
+Class starts with &quot;top-&quot;                         ← YELLOW (&quot;top&quot; + hyphen)
+Class starts with &quot;top-&quot;                         ← YELLOW (&quot;top&quot; + hyphen)
+Class starts with &quot;top&quot; but NOT followed by a hyphen  ← no yellow (&quot;topper&quot; has no hyphen after &quot;top&quot;)
+Class contains &quot;top&quot; but doesn&#x27;t START with it   ← no yellow (doesn&#x27;t start with &quot;top&quot;)</code></pre></div></div>
+<p class="v2-p"><strong>Language code example — the original purpose of this selector:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML: paragraphs in different English variants --&gt;
+&lt;p lang=&quot;en&quot;&gt;Hello!&lt;/p&gt;
+&lt;p lang=&quot;en-US&quot;&gt;Howdy, y&#x27;all!&lt;/p&gt;
+&lt;p lang=&quot;en-GB&quot;&gt;Cheerio!&lt;/p&gt;
+&lt;p lang=&quot;fr&quot;&gt;Bonjour!&lt;/p&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS: Select all English language paragraphs (any variant) */
+p[lang|=&quot;en&quot;] {
+  font-style: italic;
+  color: navy;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Hello!         ← navy italic (lang=&quot;en&quot; — exact match)
+Howdy, y&#x27;all!  ← navy italic (lang=&quot;en-US&quot; — &quot;en&quot; + hyphen)
+Cheerio!       ← navy italic (lang=&quot;en-GB&quot; — &quot;en&quot; + hyphen)
+Bonjour!       ← normal style (lang=&quot;fr&quot; — not &quot;en&quot; or &quot;en-*&quot;)</code></pre></div></div>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Create a form with text, email, password and number inputs. Use attribute selectors to give each a different left-border colour. Add a <code>required</code> attribute to some inputs and style them with a different border colour or asterisk using <code>input[required]</code>.</p>
+      <div class="task-body">Now practise what you just learned about <strong>: The Basic Attribute Selectors</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My Attribute Selector Demo</div>
-  <p class="project-desc">Build a demo page showcasing all attribute selector types with real-world examples.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
-    </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;CSS Attribute Selectors&lt;/title&gt;
-    &lt;style&gt;
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff; padding: 30px; max-width: 860px; margin: 0 auto; color: #0f172a; }
-      h1 { color: #0284c7; margin-bottom: 6px; }
-      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
-      .demo { background: white; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 20px; margin-bottom: 14px; }
-      code { background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; }
-      /* Link attribute selectors */
-      a[href^="https"] { color: #10b981; font-weight: 600; }
-      a[href^="mailto"] { color: #0284c7; font-weight: 600; }
-      a[href$=".pdf"]::after { content: ' 📄'; }
-      a[href*="github"]::after { content: ' (GitHub)'; font-size: .85em; opacity: .7; }
-      /* Input type styles */
-      .typed-inputs input { display: block; width: 100%; padding: 10px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 9px; outline: none; margin-bottom: 10px; transition: .2s; }
-      .typed-inputs input[type="text"]     { border-left: 4px solid #94a3b8; }
-      .typed-inputs input[type="email"]    { border-left: 4px solid #0284c7; }
-      .typed-inputs input[type="password"] { border-left: 4px solid #ea4f21; }
-      .typed-inputs input[type="number"]   { border-left: 4px solid #10b981; }
-      .typed-inputs input[required]        { background: #fef9f0; }
-      .typed-inputs input:focus { box-shadow: 0 0 0 3px rgba(2,132,199,.2); }
-      /* Data theme */
-      [data-theme="dark"]  { background: #0f172a; color: #f1f5f9; border-radius: 10px; padding: 16px; }
-      [data-theme="light"] { background: white; color: #0f172a; border-radius: 10px; padding: 16px; border: 1.5px solid #e2e8f0; }
-      .theme-row { display: flex; gap: 14px; flex-wrap: wrap; }
-      .theme-row &gt; div { flex: 1; min-width: 180px; }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;CSS Attribute Selectors&lt;/h1&gt;
-
-    &lt;h2&gt;Link Selectors&lt;/h2&gt;
-    &lt;div class="demo"&gt;
-      &lt;p&gt;&lt;a href="https://techbasengr.com.ng"&gt;External link (href^="https") — green&lt;/a&gt;&lt;/p&gt;
-      &lt;p&gt;&lt;a href="mailto:hello@example.com"&gt;Email link (href^="mailto") — blue&lt;/a&gt;&lt;/p&gt;
-      &lt;p&gt;&lt;a href="report.pdf"&gt;PDF link (href$=".pdf") — gets 📄 icon&lt;/a&gt;&lt;/p&gt;
-      &lt;p&gt;&lt;a href="https://github.com/techbaseng"&gt;GitHub link (href*="github") — note&lt;/a&gt;&lt;/p&gt;
-    &lt;/div&gt;
-
-    &lt;h2&gt;Input Type Styles&lt;/h2&gt;
-    &lt;div class="demo typed-inputs"&gt;
-      &lt;input type="text" placeholder="Text input — grey left border"&gt;
-      &lt;input type="email" placeholder="Email input — blue left border" required&gt;
-      &lt;input type="password" placeholder="Password input — orange left border"&gt;
-      &lt;input type="number" placeholder="Number input — green left border" min="0"&gt;
-      &lt;p style="font-size:12px;color:#64748b;margin:0"&gt;Required inputs have a warm background tint (&lt;code&gt;input[required]&lt;/code&gt;).&lt;/p&gt;
-    &lt;/div&gt;
-
-    &lt;h2&gt;data-theme Attribute&lt;/h2&gt;
-    &lt;div class="theme-row"&gt;
-      &lt;div data-theme="light"&gt;
-        &lt;strong&gt;Light theme&lt;/strong&gt;
-        &lt;p style="font-size:13px;margin:4px 0 0"&gt;[data-theme="light"] selector&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div data-theme="dark"&gt;
-        &lt;strong&gt;Dark theme&lt;/strong&gt;
-        &lt;p style="font-size:13px;margin:4px 0 0"&gt;[data-theme="dark"] selector&lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 9</div>
+    <div class="phase-title">Section 2: The Advanced Attribute Selectors (Partial-Value Matching)</div>
+    <div class="phase-check" id="chk4"></div>
   </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
+  <div class="phase-body">
+    <p class="v2-p">The first four selectors all require either exact matches or whole-word matches. The next three are more flexible — they match <strong>any part</strong> of the attribute value. These are called <strong>partial-value matching selectors</strong> or <strong>substring selectors</strong>.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Quick analogy:</strong> Think of these like the "search and find" functions in a text editor. <code>^=</code> is like searching from the start of a word. <code>$=</code> is like searching the end. <code>*=</code> is like searching anywhere in the text.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.1 <code>[attribute^="value"]</code> — Attribute Value <strong>Starts With</strong> the Specified Value</h3>
+<p class="v2-p"><strong>What it does:</strong> Selects elements where the attribute value <strong>begins with</strong> the specified string. Unlike <code>|=</code>, the value does NOT need to be a whole word — it can be any starting substring.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>element[attribute^=&quot;value&quot;] {
+  /* styles */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Real example — select all elements whose class value starts with "top":</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;p class=&quot;top&quot;&gt;Exactly &quot;top&quot;&lt;/p&gt;
+&lt;p class=&quot;top-text&quot;&gt;Starts with &quot;top-&quot;&lt;/p&gt;
+&lt;p class=&quot;topper&quot;&gt;Starts with &quot;top&quot; (no hyphen needed!)&lt;/p&gt;
+&lt;p class=&quot;my-top-class&quot;&gt;Contains &quot;top&quot; but doesn&#x27;t START with it&lt;/p&gt;
+&lt;p class=&quot;bottom-top&quot;&gt;Ends with &quot;top&quot;, doesn&#x27;t start with it&lt;/p&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+[class^=&quot;top&quot;] {
+  background-color: yellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Exactly &quot;top&quot;                          ← YELLOW (starts with &quot;top&quot;)
+Starts with &quot;top-&quot;                     ← YELLOW (starts with &quot;top&quot;)
+Starts with &quot;top&quot; (no hyphen needed!)  ← YELLOW (starts with &quot;top&quot;)
+Contains &quot;top&quot; but doesn&#x27;t START with it  ← no yellow (starts with &quot;my&quot;, not &quot;top&quot;)
+Ends with &quot;top&quot;, doesn&#x27;t start with it    ← no yellow (starts with &quot;bottom&quot;)</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Compare with <code>|=</code>:</strong> The key difference is that <code>^="top"</code> matches <code>"topper"</code> (starts with "top" even without a hyphen), while <code>|="top"</code> would NOT match <code>"topper"</code> (requires "top" to be a whole word). The <code>^=</code> operator is purely about string position — is this text at the very beginning?</p></blockquote>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Practical use — style all external links (those whose href starts with "https"):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;a href=&quot;https://google.com&quot;&gt;Google (external)&lt;/a&gt;
+&lt;a href=&quot;https://github.com&quot;&gt;GitHub (external)&lt;/a&gt;
+&lt;a href=&quot;about.html&quot;&gt;About page (internal)&lt;/a&gt;
+&lt;a href=&quot;contact.html&quot;&gt;Contact page (internal)&lt;/a&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS: Mark all external links with a special colour */
+a[href^=&quot;https&quot;] {
+  color: green;
+  font-weight: bold;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Google (external)      ← GREEN + bold (href starts with &quot;https&quot;)
+GitHub (external)      ← GREEN + bold (href starts with &quot;https&quot;)
+About page (internal)  ← normal (href starts with &quot;about&quot;, not &quot;https&quot;)
+Contact page (internal) ← normal (href starts with &quot;contact&quot;, not &quot;https&quot;)</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> Many websites use <code>a[href^="https"]</code> or <code>a[href^="http"]</code> to automatically style external links differently from internal ones — adding an external link icon, a different colour, or an underline style.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.2 <code>[attribute$="value"]</code> — Attribute Value <strong>Ends With</strong> the Specified Value</h3>
+<p class="v2-p"><strong>What it does:</strong> Selects elements where the attribute value <strong>ends with</strong> the specified string. Again, it does not need to be a whole word — any ending substring works.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>element[attribute$=&quot;value&quot;] {
+  /* styles */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Real example — select elements whose class ends with "test":</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;p class=&quot;unit-test&quot;&gt;Ends with &quot;test&quot;&lt;/p&gt;
+&lt;p class=&quot;integration-test&quot;&gt;Ends with &quot;test&quot;&lt;/p&gt;
+&lt;p class=&quot;testing&quot;&gt;Contains &quot;test&quot; but ends with &quot;ing&quot;&lt;/p&gt;
+&lt;p class=&quot;protest&quot;&gt;Ends with &quot;test&quot; but is &quot;protest&quot;&lt;/p&gt;
+&lt;p class=&quot;best&quot;&gt;Ends with &quot;est&quot; not &quot;test&quot;&lt;/p&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+[class$=&quot;test&quot;] {
+  background-color: yellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Ends with &quot;test&quot;               ← YELLOW (class ends with &quot;test&quot;)
+Ends with &quot;test&quot;               ← YELLOW (class ends with &quot;test&quot;)
+Contains &quot;test&quot; but ends with &quot;ing&quot; ← no yellow (ends with &quot;ing&quot;)
+Ends with &quot;test&quot; but is &quot;protest&quot;  ← YELLOW (ends with &quot;test&quot;)
+Ends with &quot;est&quot; not &quot;test&quot;         ← no yellow (ends with &quot;est&quot; not &quot;test&quot;)</code></pre></div></div>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Practical use — style all PDF links differently from other links:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;a href=&quot;report-2024.pdf&quot;&gt;Annual Report (PDF)&lt;/a&gt;
+&lt;a href=&quot;brochure.pdf&quot;&gt;Company Brochure (PDF)&lt;/a&gt;
+&lt;a href=&quot;terms.html&quot;&gt;Terms of Service&lt;/a&gt;
+&lt;a href=&quot;contact.html&quot;&gt;Contact Us&lt;/a&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS: Highlight all links ending in .pdf */
+a[href$=&quot;.pdf&quot;] {
+  color: darkred;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Optional: Add a small PDF label after each PDF link */
+a[href$=&quot;.pdf&quot;]::after {
+  content: &quot; [PDF]&quot;;
+  font-size: 0.8em;
+  color: grey;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Annual Report (PDF) [PDF]      ← dark red, bold (href ends with &quot;.pdf&quot;)
+Company Brochure (PDF) [PDF]   ← dark red, bold (href ends with &quot;.pdf&quot;)
+Terms of Service               ← normal style (href ends with &quot;.html&quot;)
+Contact Us                     ← normal style (href ends with &quot;.html&quot;)</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> The <code>$=</code> selector is incredibly useful for automatically distinguishing file types in navigation links — PDF downloads, ZIP archives, external documents — without adding any extra classes.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">2.3 <code>[attribute*="value"]</code> — Attribute Value <strong>Contains</strong> the Specified Value Anywhere</h3>
+<p class="v2-p"><strong>What it does:</strong> Selects elements where the attribute value <strong>contains</strong> the specified string anywhere — at the beginning, middle, or end. It does not need to be a whole word.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>element[attribute*=&quot;value&quot;] {
+  /* styles */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Real example — select elements whose class contains "te" anywhere:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;p class=&quot;unite&quot;&gt;Contains &quot;te&quot; inside&lt;/p&gt;
+&lt;p class=&quot;internet&quot;&gt;Contains &quot;te&quot; inside&lt;/p&gt;
+&lt;p class=&quot;technology&quot;&gt;Contains &quot;te&quot; at start&lt;/p&gt;
+&lt;p class=&quot;rate&quot;&gt;Contains &quot;te&quot; at end&lt;/p&gt;
+&lt;p class=&quot;testing&quot;&gt;Contains &quot;te&quot; at start&lt;/p&gt;
+&lt;p class=&quot;box&quot;&gt;Contains no &quot;te&quot;&lt;/p&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+[class*=&quot;te&quot;] {
+  background-color: yellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>unite       ← YELLOW (&quot;te&quot; is inside &quot;unite&quot;)
+internet    ← YELLOW (&quot;te&quot; is inside &quot;internet&quot;)
+technology  ← YELLOW (&quot;te&quot; is at the start)
+rate        ← YELLOW (&quot;te&quot; is at the end)
+testing     ← YELLOW (&quot;te&quot; is at the start)
+box         ← no yellow (no &quot;te&quot; anywhere in &quot;box&quot;)</code></pre></div></div>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Practical use — style all links pointing to any Google property:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;a href=&quot;https://google.com&quot;&gt;Google Search&lt;/a&gt;
+&lt;a href=&quot;https://maps.google.com&quot;&gt;Google Maps&lt;/a&gt;
+&lt;a href=&quot;https://docs.google.com/document&quot;&gt;Google Docs&lt;/a&gt;
+&lt;a href=&quot;https://github.com&quot;&gt;GitHub (not Google)&lt;/a&gt;
+&lt;a href=&quot;https://youtube.com&quot;&gt;YouTube&lt;/a&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS: Style any link that contains &quot;google&quot; anywhere in the href */
+a[href*=&quot;google&quot;] {
+  color: #4285F4;   /* Google&#x27;s blue colour */
+  font-weight: bold;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Google Search    ← Google blue + bold (&quot;google&quot; in &quot;google.com&quot;)
+Google Maps      ← Google blue + bold (&quot;google&quot; in &quot;maps.google.com&quot;)
+Google Docs      ← Google blue + bold (&quot;google&quot; in &quot;docs.google.com&quot;)
+GitHub (not Google) ← normal (no &quot;google&quot; in &quot;github.com&quot;)
+YouTube          ← normal (no &quot;google&quot; in &quot;youtube.com&quot;)</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: The Advanced Attribute Selectors (Partial-Value Matching)</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 9</div>
+    <div class="phase-title">Section 3: Complete Reference Table</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Here is a summary of all seven attribute selectors in one place:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Selector</th><th>What It Matches</th><th>Example</th></tr></thead><tbody><tr><td><code>[attr]</code></td><td>Elements that <strong>have</strong> the attribute (any value)</td><td><code>a[target]</code> — all links with a target attribute</td></tr><tr><td><code>[attr="val"]</code></td><td>Attribute value is <strong>exactly</strong> "val"</td><td><code>input[type="text"]</code> — only text inputs</td></tr><tr><td><code>[attr~="val"]</code></td><td>Attribute is a space-separated list containing <strong>whole word</strong> "val"</td><td><code>[title~="flower"]</code> — title contains "flower" as a word</td></tr><tr><td>`[attr\</td><td>="val"]`</td><td>Attribute is <strong>exactly</strong> "val" <strong>or</strong> starts with "val-" (hyphen)</td><td>`[lang\</td><td>="en"]` — English language variants</td></tr><tr><td><code>[attr^="val"]</code></td><td>Attribute value <strong>starts with</strong> "val"</td><td><code>[class^="btn"]</code> — classes beginning with "btn"</td></tr><tr><td><code>[attr$="val"]</code></td><td>Attribute value <strong>ends with</strong> "val"</td><td><code>a[href$=".pdf"]</code> — links to PDF files</td></tr><tr><td><code>[attr*="val"]</code></td><td>Attribute value <strong>contains</strong> "val" anywhere</td><td><code>[class*="icon"]</code> — any class containing "icon"</td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Memory trick:</strong> Think of the operators as:</p>
+<ul class="v2-ul"><li><code>~=</code> → word in a <strong>~</strong>list (tilde = list/wave/many)</li><li><code>|=</code> → value or "value<strong>|</strong>hyphen" (pipe = divider, like a hyphen)</li><li><code>^=</code> → <strong>^</strong>top / starts (caret points UP — to the beginning)</li><li><code>$=</code> → en<strong>$</strong> / ends (dollar sign closes things — the end)</li><li><code><em>=</code> → <strong>\</strong></em> = wildcard = anywhere (asterisk = "anything goes")</li></ul></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Complete Reference Table</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 9</div>
+    <div class="phase-title">Section 4: Combining Attribute Selectors</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Combining with an Element Type</h3>
+<p class="v2-p">You can always narrow an attribute selector by placing a tag name in front of it. This targets only elements of that type that also match the attribute condition.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Any element with target attribute */
+[target] { color: red; }
+
+/* Only &lt;a&gt; elements with a target attribute */
+a[target] { color: red; }
+
+/* Only &lt;input&gt; elements with type=&quot;text&quot; */
+input[type=&quot;text&quot;] { background: yellow; }
+
+/* Any element with class containing &quot;icon&quot; */
+[class*=&quot;icon&quot;] { width: 24px; }
+
+/* Only &lt;img&gt; elements whose src ends with &quot;.png&quot; */
+img[src$=&quot;.png&quot;] { border: 2px solid blue; }</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Combining Multiple Attribute Selectors</h3>
+<p class="v2-p">You can chain multiple attribute selectors together to create very precise rules. Just write them one after another with no space between them:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Select input elements that are BOTH type=&quot;text&quot; AND have a placeholder attribute */
+input[type=&quot;text&quot;][placeholder] {
+  border: 2px solid green;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;input type=&quot;text&quot; placeholder=&quot;Your name&quot;&gt;  ← GREEN border (both match)
+&lt;input type=&quot;text&quot;&gt;                          ← no green (no placeholder)
+&lt;input type=&quot;email&quot; placeholder=&quot;Email&quot;&gt;     ← no green (type is &quot;email&quot; not &quot;text&quot;)</code></pre></div></div>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Another multi-selector example — style only HTTPS links that also open in a new tab:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+&lt;a href=&quot;https://google.com&quot; target=&quot;_blank&quot;&gt;Google (HTTPS + new tab)&lt;/a&gt;
+&lt;a href=&quot;https://github.com&quot;&gt;GitHub (HTTPS only)&lt;/a&gt;
+&lt;a href=&quot;http://oldsite.com&quot; target=&quot;_blank&quot;&gt;Old site (new tab, not HTTPS)&lt;/a&gt;
+&lt;a href=&quot;about.html&quot;&gt;About (internal)&lt;/a&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS: Only links that are BOTH https AND open in a new tab */
+a[href^=&quot;https&quot;][target=&quot;_blank&quot;] {
+  color: green;
+  font-weight: bold;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Google (HTTPS + new tab)    ← GREEN + bold (both conditions met)
+GitHub (HTTPS only)         ← normal (target attribute missing)
+Old site (new tab, not HTTPS) ← normal (href doesn&#x27;t start with &quot;https&quot;)
+About (internal)            ← normal (neither condition met)</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Combining Attribute Selectors</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 9</div>
+    <div class="phase-title">Section 5: Styling Forms with Attribute Selectors — A Practical Deep Dive</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">One of the most common and important real-world uses of attribute selectors is <strong>styling HTML forms</strong>. Forms contain many different <code>&lt;input&gt;</code> types — text, email, password, checkbox, radio, range, file, submit, and more. Without attribute selectors, you would need a separate class for each type. With attribute selectors, you can target them precisely using what they already have.</p>
+<h3 class="v2-h3">Complete Styled Form Example</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML: A full registration form --&gt;
+&lt;form class=&quot;registration-form&quot;&gt;
+  &lt;label&gt;Full Name:&lt;/label&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;Enter your full name&quot;&gt;
+
+  &lt;label&gt;Email:&lt;/label&gt;
+  &lt;input type=&quot;email&quot; placeholder=&quot;Enter your email&quot;&gt;
+
+  &lt;label&gt;Password:&lt;/label&gt;
+  &lt;input type=&quot;password&quot; placeholder=&quot;Create a password&quot;&gt;
+
+  &lt;label&gt;Age:&lt;/label&gt;
+  &lt;input type=&quot;number&quot; placeholder=&quot;Your age&quot; min=&quot;18&quot; max=&quot;120&quot;&gt;
+
+  &lt;label&gt;
+    &lt;input type=&quot;checkbox&quot;&gt; I agree to the terms
+  &lt;/label&gt;
+
+  &lt;input type=&quot;reset&quot; value=&quot;Clear Form&quot;&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Create Account&quot;&gt;
+&lt;/form&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS: Style each input type differently using attribute selectors */
+
+/* Base styles for all text-like inputs */
+input[type=&quot;text&quot;],
+input[type=&quot;email&quot;],
+input[type=&quot;password&quot;],
+input[type=&quot;number&quot;] {
+  width: 280px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  font-size: 1em;
+  display: block;
+}
+
+/* Text input — soft yellow */
+input[type=&quot;text&quot;] {
+  background-color: #fffde7;
+  border: 1px solid #f9a825;
+}
+
+/* Email input — soft blue */
+input[type=&quot;email&quot;] {
+  background-color: #e3f2fd;
+  border: 1px solid #1565c0;
+}
+
+/* Password input — soft red */
+input[type=&quot;password&quot;] {
+  background-color: #fce4ec;
+  border: 1px solid #c62828;
+}
+
+/* Number input — soft green */
+input[type=&quot;number&quot;] {
+  background-color: #e8f5e9;
+  border: 1px solid #2e7d32;
+}
+
+/* Checkbox — slightly larger */
+input[type=&quot;checkbox&quot;] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* Reset button — grey */
+input[type=&quot;reset&quot;] {
+  background-color: #9e9e9e;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* Submit button — green */
+input[type=&quot;submit&quot;] {
+  background-color: #2e7d32;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+input[type=&quot;submit&quot;]:hover {
+  background-color: #1b5e20;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Full Name: [ __________________ ]  ← yellow background, orange border
+Email:     [ __________________ ]  ← blue background, blue border
+Password:  [ __________________ ]  ← pink background, red border
+Age:       [ __________________ ]  ← green background, green border
+[ ] I agree to the terms           ← slightly larger checkbox
+[ Clear Form ]  [ Create Account ] ← grey / green buttons</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world insight:</strong> Notice there are <strong>zero class attributes</strong> on any of the input elements! All the styling is done purely through attribute selectors. This is clean, readable HTML and clean, maintainable CSS. Many professional CSS frameworks use this exact pattern for form styling.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Styling Forms with Attribute Selectors — A Practical Deep Dive</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 9</div>
+    <div class="phase-title">Section 6: Guided Practice Exercises</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1: Warm-Up — Target by Attribute Presence</h3>
+<p class="v2-p"><strong>Objective:</strong> Use the <code>[attribute]</code> selector to identify required form fields.</p>
+<p class="v2-p"><strong>Scenario:</strong> You have a form where some fields are marked as <code>required</code>. You want to give all required inputs a red left border to signal to users that these fields must be filled in.</p>
+<p class="v2-p"><strong>Starter HTML:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;form&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;Full name&quot; required&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;Nickname&quot;&gt;
+  &lt;input type=&quot;email&quot; placeholder=&quot;Email&quot; required&gt;
+  &lt;input type=&quot;tel&quot; placeholder=&quot;Phone number&quot;&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+&lt;/form&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Your task:</strong> Write a CSS rule using <code>[required]</code> to give all required inputs:</p>
+<ul class="v2-ul"><li>A <code>3px solid red</code> left border</li><li>A light red background: <code>#fff5f5</code></li><li><code>8px</code> padding</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Full name  ] ← red left border + light red bg (has required)
+[ Nickname   ] ← default border (no required)
+[ Email      ] ← red left border + light red bg (has required)
+[ Phone      ] ← default border (no required)
+[ Submit     ] ← default (no required)</code></pre></div></div>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ul class="v2-ul"><li>Does the submit button get the red border? Why or why not?</li><li>What would happen if you changed <code>[required]</code> to <code>input[required]</code>? Would anything look different?</li><li>Add <code>required</code> to the phone number input — does it automatically get the red border?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2: Exact Match — Style Link Destinations</h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>[attribute="value"]</code> to differentiate where links go.</p>
+<p class="v2-p"><strong>Scenario:</strong> A news website navigation has links that either stay on the same page or open a new tab. You want all "new tab" links to have a distinct colour.</p>
+<p class="v2-p"><strong>HTML to work with:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;nav&gt;
+  &lt;a href=&quot;home.html&quot;&gt;Home&lt;/a&gt;
+  &lt;a href=&quot;about.html&quot; target=&quot;_self&quot;&gt;About&lt;/a&gt;
+  &lt;a href=&quot;https://twitter.com&quot; target=&quot;_blank&quot;&gt;Twitter&lt;/a&gt;
+  &lt;a href=&quot;https://facebook.com&quot; target=&quot;_blank&quot;&gt;Facebook&lt;/a&gt;
+  &lt;a href=&quot;contact.html&quot;&gt;Contact&lt;/a&gt;
+&lt;/nav&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Your task:</strong> Write a CSS rule that:</p>
+<ul class="v2-ul"><li>Targets all <code>&lt;a&gt;</code> elements with <code>target="_blank"</code></li><li>Sets their colour to <code>#e65100</code> (orange)</li><li>Sets <code>font-weight: bold</code></li></ul>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Home     ← default colour (no target attribute)
+About    ← default colour (target=&quot;_self&quot;, not &quot;_blank&quot;)
+Twitter  ← ORANGE + bold (target=&quot;_blank&quot;)
+Facebook ← ORANGE + bold (target=&quot;_blank&quot;)
+Contact  ← default colour (no target attribute)</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3: Partial Match — File Type Indicators</h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>$=</code> to automatically style links by file type.</p>
+<p class="v2-p"><strong>Scenario:</strong> A school resources page has links to different file types. You want each file type to look visually different so students know what they are downloading before clicking.</p>
+<p class="v2-p"><strong>HTML:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;chapter1.pdf&quot;&gt;Chapter 1 Notes&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;worksheet.pdf&quot;&gt;Worksheet&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;slides.pptx&quot;&gt;Presentation Slides&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;data.xlsx&quot;&gt;Grade Data&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;home.html&quot;&gt;Go to Homepage&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Your task:</strong></p>
+<ul class="v2-ul"><li>Style links ending in <code>.pdf</code> → <code>color: darkred</code></li><li>Style links ending in <code>.pptx</code> → <code>color: darkorange</code></li><li>Style links ending in <code>.xlsx</code> → <code>color: darkgreen</code></li><li>All styled links should also have <code>font-weight: bold</code></li></ul>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Chapter 1 Notes      ← DARK RED + bold (.pdf)
+Worksheet            ← DARK RED + bold (.pdf)
+Presentation Slides  ← DARK ORANGE + bold (.pptx)
+Grade Data           ← DARK GREEN + bold (.xlsx)
+Go to Homepage       ← normal (it&#x27;s a .html file)</code></pre></div></div>
+<p class="v2-p"><strong>What-If Challenge:</strong> Add this rule too:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>a[href$=&quot;.pdf&quot;]::after {
+  content: &quot; 📄&quot;;
+}</code></pre></div></div>
+<p class="v2-p">What does it add after every PDF link? Why is <code>::after</code> useful here?</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 4: Contains Selector — Icon Classes</h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>*=</code> to target elements that belong to a broad category.</p>
+<p class="v2-p"><strong>Scenario:</strong> Your icon library uses class names like <code>icon-home</code>, <code>icon-user</code>, <code>icon-settings</code>, <code>icon-bell</code>. You want all icon elements to share the same base size without touching the HTML.</p>
+<p class="v2-p"><strong>HTML:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;span class=&quot;icon-home&quot;&gt;🏠&lt;/span&gt;
+&lt;span class=&quot;icon-user&quot;&gt;👤&lt;/span&gt;
+&lt;span class=&quot;btn-primary&quot;&gt;Submit&lt;/span&gt;
+&lt;span class=&quot;icon-settings&quot;&gt;⚙️&lt;/span&gt;
+&lt;span class=&quot;icon-bell&quot;&gt;🔔&lt;/span&gt;
+&lt;span class=&quot;label-warning&quot;&gt;Warning!&lt;/span&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Your task:</strong> Write ONE CSS rule using <code>[class*="icon"]</code> that gives all icon elements:</p>
+<ul class="v2-ul"><li><code>font-size: 24px</code></li><li><code>margin: 0 8px</code></li><li><code>cursor: pointer</code></li></ul>
+<p class="v2-p"><strong>Expected Output:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>🏠  👤  Submit  ⚙️  🔔  Warning!
+↑ ↑ styled   ↑ ↑   ↑ not styled</code></pre></div></div>
+<p class="v2-p">(The "Submit" button and "Warning!" label are NOT targeted because their class does not contain "icon".)</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">- Targets all <a> elements with target="_blank"
+- Sets their colour to #e65100 (orange)
+- Sets font-weight: bold
+
+Expected Output:
+`
+Home     ← default colour (no target attribute)
+About    ← default colour (target="_self", not "_blank")
+Twitter  ← ORANGE + bold (target="_blank")
+Facebook ← ORANGE + bold (target="_blank")
+Contact  ← default colour (no target attribute)
+`
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 9</div>
+    <div class="phase-title">Section 8: Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1: Forgetting the Square Brackets</h3>
+<p class="v2-p"><strong>The Problem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — this is NOT an attribute selector */
+input type=&quot;text&quot; {
+  background: yellow;
+}</code></pre></div></div>
+<p class="v2-p"><strong>The Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — always wrap in square brackets */
+input[type=&quot;text&quot;] {
+  background: yellow;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2: Using <code>=</code> When You Need <code>~=</code> (or vice versa)</h3>
+<p class="v2-p"><strong>The Problem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — if title=&quot;summer flower&quot;, this WON&#x27;T match because
+   &quot;summer flower&quot; is not exactly equal to &quot;flower&quot; */
+p[title=&quot;flower&quot;] { color: red; }</code></pre></div></div>
+<p class="v2-p"><strong>The Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — use ~= to match &quot;flower&quot; as a whole word within the value */
+p[title~=&quot;flower&quot;] { color: red; }</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3: Confusing <code>^=</code> (starts with) and <code>|=</code> (starts with hyphen variant)</h3>
+<p class="v2-p">Both match values that start with a specific string, but they work differently:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* |= &quot;top&quot; matches: &quot;top&quot; exactly OR &quot;top-anything&quot; (hyphen required!) */
+/* DOES NOT match &quot;topper&quot; */
+[class|=&quot;top&quot;] { background: yellow; }
+
+/* ^= &quot;top&quot; matches: anything that STARTS with &quot;top&quot; — &quot;top&quot;, &quot;topper&quot;, &quot;top-text&quot;, all match */
+[class^=&quot;top&quot;] { background: yellow; }</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Rule of thumb:</strong> If you need to match language codes or hyphenated naming conventions, use <code>|=</code>. For everything else (just "starts with"), use <code>^=</code>.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4: Thinking <code>*=</code> Requires Whole Words</h3>
+<p class="v2-p"><strong>The misconception:</strong> Some beginners think <code>[class*="te"]</code> only matches if "te" is a whole word.</p>
+<p class="v2-p"><strong>The truth:</strong> <code>*=</code> matches any substring, including partial words:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* This matches: &quot;rate&quot;, &quot;internet&quot;, &quot;technology&quot;, &quot;unite&quot;, &quot;testing&quot;
+   — because ALL of them contain &quot;te&quot; as a substring, even inside other words */
+[class*=&quot;te&quot;] { background: yellow; }</code></pre></div></div>
+<p class="v2-p">If you want whole words only, use <code>~=</code> instead.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5: Putting a Space Between the Tag and the Bracket</h3>
+<p class="v2-p"><strong>The Problem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — the space means &quot;a descendant with [target]&quot;,
+   NOT &quot;an &lt;a&gt; that has [target]&quot; */
+a [target] { color: red; }</code></pre></div></div>
+<p class="v2-p"><strong>The Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — no space means the &lt;a&gt; itself has the target attribute */
+a[target] { color: red; }</code></pre></div></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Critical rule:</strong> <code>a[target]</code> (no space) = select <code>&lt;a&gt;</code> elements that HAVE a <code>target</code> attribute. <code>a [target]</code> (with space) = select any element with <code>target</code> that is a DESCENDANT of an <code>&lt;a&gt;</code> element. These are completely different!</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6: Forgetting That Attribute Selectors Are Case-Sensitive by Default</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* This will NOT match href=&quot;HTTPS://google.com&quot; (uppercase HTTPS) */
+a[href^=&quot;https&quot;] { color: green; }
+
+/* Use the &#x27;i&#x27; flag for case-insensitive matching */
+a[href^=&quot;https&quot; i] { color: green; }</code></pre></div></div>
+<p class="v2-p">The <code>i</code> flag makes the value comparison case-insensitive. It is supported in all modern browsers.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Overview</div>
+  <div class="build-desc">You are building a resources page for a web development course. The page has:</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Course Resources&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;resources.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;header&gt;
+    &lt;h1&gt;Web Development Resources&lt;/h1&gt;
+    &lt;!-- Search bar — has a placeholder and type=&quot;search&quot; --&gt;
+    &lt;input type=&quot;search&quot; placeholder=&quot;Search resources...&quot;&gt;
+  &lt;/header&gt;
+
+  &lt;!-- Navigation: mix of internal and external links --&gt;
+  &lt;nav&gt;
+    &lt;a href=&quot;index.html&quot;&gt;Home&lt;/a&gt;
+    &lt;a href=&quot;lessons.html&quot;&gt;Lessons&lt;/a&gt;
+    &lt;a href=&quot;https://developer.mozilla.org&quot; target=&quot;_blank&quot;&gt;MDN Docs&lt;/a&gt;
+    &lt;a href=&quot;https://css-tricks.com&quot; target=&quot;_blank&quot;&gt;CSS-Tricks&lt;/a&gt;
+    &lt;a href=&quot;contact.html&quot;&gt;Contact&lt;/a&gt;
+  &lt;/nav&gt;
+
+  &lt;!-- Downloads: mix of file types --&gt;
+  &lt;section class=&quot;downloads&quot;&gt;
+    &lt;h2&gt;Downloads&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;css-cheatsheet.pdf&quot;&gt;CSS Cheat Sheet&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;html-reference.pdf&quot;&gt;HTML Reference Guide&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;project-template.zip&quot;&gt;Starter Project Template&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;grade-tracker.xlsx&quot;&gt;Grade Tracker&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;lesson-slides.pptx&quot;&gt;Lesson Slides&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;extra-notes.html&quot;&gt;Extra Notes&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Contact form: multiple input types --&gt;
+  &lt;section class=&quot;contact&quot;&gt;
+    &lt;h2&gt;Contact Instructor&lt;/h2&gt;
+    &lt;form&gt;
+      &lt;input type=&quot;text&quot;     placeholder=&quot;Your name&quot;    required&gt;
+      &lt;input type=&quot;email&quot;    placeholder=&quot;Your email&quot;   required&gt;
+      &lt;input type=&quot;tel&quot;      placeholder=&quot;Phone (optional)&quot;&gt;
+      &lt;input type=&quot;number&quot;   placeholder=&quot;Student ID&quot;   required&gt;
+      &lt;textarea placeholder=&quot;Your message...&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;
+      &lt;div&gt;
+        &lt;input type=&quot;checkbox&quot; id=&quot;notify&quot;&gt;
+        &lt;label for=&quot;notify&quot;&gt;Notify me by email&lt;/label&gt;
+      &lt;/div&gt;
+      &lt;input type=&quot;reset&quot;  value=&quot;Clear&quot;&gt;
+      &lt;input type=&quot;submit&quot; value=&quot;Send Message&quot;&gt;
+    &lt;/form&gt;
+  &lt;/section&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Attribute Selectors</title>
-    <style>
-      *, *::before, *::after { box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #f0f9ff; padding: 30px; max-width: 860px; margin: 0 auto; color: #0f172a; }
-      h1 { color: #0284c7; margin-bottom: 6px; }
-      h2 { color: #0369a1; margin: 28px 0 14px; border-bottom: 2px solid #bae6fd; padding-bottom: 6px; }
-      .demo { background: white; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 20px; margin-bottom: 14px; }
-      code { background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; }
-      /* Link attribute selectors */
-      a[href^="https"] { color: #10b981; font-weight: 600; }
-      a[href^="mailto"] { color: #0284c7; font-weight: 600; }
-      a[href$=".pdf"]::after { content: ' 📄'; }
-      a[href*="github"]::after { content: ' (GitHub)'; font-size: .85em; opacity: .7; }
-      /* Input type styles */
-      .typed-inputs input { display: block; width: 100%; padding: 10px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 9px; outline: none; margin-bottom: 10px; transition: .2s; }
-      .typed-inputs input[type="text"]     { border-left: 4px solid #94a3b8; }
-      .typed-inputs input[type="email"]    { border-left: 4px solid #0284c7; }
-      .typed-inputs input[type="password"] { border-left: 4px solid #ea4f21; }
-      .typed-inputs input[type="number"]   { border-left: 4px solid #10b981; }
-      .typed-inputs input[required]        { background: #fef9f0; }
-      .typed-inputs input:focus { box-shadow: 0 0 0 3px rgba(2,132,199,.2); }
-      /* Data theme */
-      [data-theme="dark"]  { background: #0f172a; color: #f1f5f9; border-radius: 10px; padding: 16px; }
-      [data-theme="light"] { background: white; color: #0f172a; border-radius: 10px; padding: 16px; border: 1.5px solid #e2e8f0; }
-      .theme-row { display: flex; gap: 14px; flex-wrap: wrap; }
-      .theme-row > div { flex: 1; min-width: 180px; }
-    </style>
-  </head>
-  <body>
-    <h1>CSS Attribute Selectors</h1>
+<head>
+  <meta charset="UTF-8">
+  <title>Course Resources</title>
+  <link rel="stylesheet" href="resources.css">
+</head>
+<body>
 
-    <h2>Link Selectors</h2>
-    <div class="demo">
-      <p><a href="https://techbasengr.com.ng">External link (href^="https") — green</a></p>
-      <p><a href="mailto:hello@example.com">Email link (href^="mailto") — blue</a></p>
-      <p><a href="report.pdf">PDF link (href$=".pdf") — gets 📄 icon</a></p>
-      <p><a href="https://github.com/techbaseng">GitHub link (href*="github") — note</a></p>
-    </div>
+  <header>
+    <h1>Web Development Resources</h1>
+    <!-- Search bar — has a placeholder and type="search" -->
+    <input type="search" placeholder="Search resources...">
+  </header>
 
-    <h2>Input Type Styles</h2>
-    <div class="demo typed-inputs">
-      <input type="text" placeholder="Text input — grey left border">
-      <input type="email" placeholder="Email input — blue left border" required>
-      <input type="password" placeholder="Password input — orange left border">
-      <input type="number" placeholder="Number input — green left border" min="0">
-      <p style="font-size:12px;color:#64748b;margin:0">Required inputs have a warm background tint (<code>input[required]</code>).</p>
-    </div>
+  <!-- Navigation: mix of internal and external links -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="lessons.html">Lessons</a>
+    <a href="https://developer.mozilla.org" target="_blank">MDN Docs</a>
+    <a href="https://css-tricks.com" target="_blank">CSS-Tricks</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 
-    <h2>data-theme Attribute</h2>
-    <div class="theme-row">
-      <div data-theme="light">
-        <strong>Light theme</strong>
-        <p style="font-size:13px;margin:4px 0 0">[data-theme="light"] selector</p>
+  <!-- Downloads: mix of file types -->
+  <section class="downloads">
+    <h2>Downloads</h2>
+    <ul>
+      <li><a href="css-cheatsheet.pdf">CSS Cheat Sheet</a></li>
+      <li><a href="html-reference.pdf">HTML Reference Guide</a></li>
+      <li><a href="project-template.zip">Starter Project Template</a></li>
+      <li><a href="grade-tracker.xlsx">Grade Tracker</a></li>
+      <li><a href="lesson-slides.pptx">Lesson Slides</a></li>
+      <li><a href="extra-notes.html">Extra Notes</a></li>
+    </ul>
+  </section>
+
+  <!-- Contact form: multiple input types -->
+  <section class="contact">
+    <h2>Contact Instructor</h2>
+    <form>
+      <input type="text"     placeholder="Your name"    required>
+      <input type="email"    placeholder="Your email"   required>
+      <input type="tel"      placeholder="Phone (optional)">
+      <input type="number"   placeholder="Student ID"   required>
+      <textarea placeholder="Your message..." rows="4"></textarea>
+      <div>
+        <input type="checkbox" id="notify">
+        <label for="notify">Notify me by email</label>
       </div>
-      <div data-theme="dark">
-        <strong>Dark theme</strong>
-        <p style="font-size:13px;margin:4px 0 0">[data-theme="dark"] selector</p>
-      </div>
-    </div>
-  </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
+      <input type="reset"  value="Clear">
+      <input type="submit" value="Send Message">
+    </form>
+  </section>
 
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-35-css_attribute_selectors</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 35 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-35-css_attribute_selectors/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-35-project-overview</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 35 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-35-project-overview/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 35 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Exact and Partial Attribute Matching</li><li>✅ Attribute Selectors for Forms and UI</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_34.html" class="ln-btn">← Lesson 34</a>
-    <a href="lesson_36.html" class="ln-btn primary">Lesson 36 →</a>
-  </div>
+  <h2>🎉 Lesson 35 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Section 1: The Basic Attribute Selectors</li><li>✅ Section 2: The Advanced Attribute Selectors (Partial-Value Matching)</li><li>✅ Section 3: Complete Reference Table</li><li>✅ Section 4: Combining Attribute Selectors</li><li>✅ Section 5: Styling Forms with Attribute Selectors — A Practical Deep Dive</li><li>✅ Section 6: Guided Practice Exercises</li></ul>
+  <div class="lesson-nav"><a href="lesson_34.html" class="ln-btn">← Lesson 34</a><a href="lesson_36.html" class="ln-btn primary">Lesson 36 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 35 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 35 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_35_phase';
+const TOTAL=9,KEY='techbase_css_l35';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

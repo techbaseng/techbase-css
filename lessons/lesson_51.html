@@ -2,293 +2,850 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 51: CSS Grid — Techbase CSS Course</title>
-<meta name="description" content="Master the two-dimensional CSS Grid layout system">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 51: CSS Shadow Effects — Text Shadows and Box Shadows — Techbase CSS</title>
+<meta name="description" content="CSS Shadow Effects — Text Shadows and Box Shadows">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
-}
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
+/* HERO */
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
+/* TASK BOX */
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
+/* GITHUB ACCORDION */
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
-  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
-  <span class="l-nav-lesson">Lesson 51 of 73</span>
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 51 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
 <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
 <div class="l-hero">
   <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 51 </div>
-    <h1>CSS Grid</h1>
-    <div class="l-hero-tag">Master the two-dimensional CSS Grid layout system</div>
-    <div class="l-hero-build"><strong>🏗️ Build:</strong> My Grid Magazine Layout</div>
+    <div class="l-badge">CSS · Lesson 51</div>
+    <h1>CSS Shadow Effects — Text Shadows and Box Shadows</h1>
+    <div class="l-hero-sub">6 phases · Build: Project Goal</div>
   </div>
 </div>
-<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
-    <div class="welcome-box">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
   <h2>👋 Welcome to Lesson 51</h2>
-  <p>Master the two-dimensional CSS Grid layout system</p>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever looked at a professional website and noticed how text seems to glow, or how buttons and cards appear to float above the page with a soft shadow underneath? That three-dimensional, polished feel is created using <strong>CSS Shadow Effects</strong>.</p>
+<p class="v2-p">In this lesson you will learn two powerful CSS tools:</p>
+<ul class="v2-ul"><li><strong><code>text-shadow</code></strong> — adds a shadow behind text characters</li><li><strong><code>box-shadow</code></strong> — adds a shadow around any HTML element (a box, a card, a button, an image)</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to build beautiful, professional-looking components like raised cards, glowing headings, layered buttons, and depth-rich profile boxes — all with just a few lines of CSS.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use cases:</strong> Shadows are used on almost every modern website — product cards on e-commerce sites, dashboard widgets, chat message bubbles, login form panels, blog post thumbnails, and navigation buttons all commonly use shadow effects to create visual depth and hierarchy.</p></blockquote>
+<hr class="v2-hr"></div>
   <div class="welcome-meta">
-    <span>📚 2 phases</span>
-    <span>🏗️ Build: My Grid Magazine Layout</span>
-    
+    <span>📚 6 phases</span>
+    <span>🏗️ Project Goal</span>
   </div>
-</div>
-  </div>
+</div></div>
 </section>
-<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
 <div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">Grid Container Basics</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 6</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>display: grid</code> makes a container a grid. <code>grid-template-columns: repeat(3, 1fr)</code> creates 3 equal columns. <code>gap</code> adds gutters. <code>fr</code> = fractional unit. <code>repeat(auto-fill, minmax(220px,1fr))</code> = responsive columns with no media queries.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.auto  { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Create a grid with <code>repeat(3,1fr)</code> and 6 divs. Then switch to <code>auto-fill, minmax(200px,1fr)</code> and resize the browser to see responsive magic.</p></div>
-    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+    <p class="v2-p">Have you ever looked at a professional website and noticed how text seems to glow, or how buttons and cards appear to float above the page with a soft shadow underneath? That three-dimensional, polished feel is created using <strong>CSS Shadow Effects</strong>.</p>
+<p class="v2-p">In this lesson you will learn two powerful CSS tools:</p>
+<ul class="v2-ul"><li><strong><code>text-shadow</code></strong> — adds a shadow behind text characters</li><li><strong><code>box-shadow</code></strong> — adds a shadow around any HTML element (a box, a card, a button, an image)</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to build beautiful, professional-looking components like raised cards, glowing headings, layered buttons, and depth-rich profile boxes — all with just a few lines of CSS.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use cases:</strong> Shadows are used on almost every modern website — product cards on e-commerce sites, dashboard widgets, chat message bubbles, login form panels, blog post thumbnails, and navigation buttons all commonly use shadow effects to create visual depth and hierarchy.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
 </div>
 <div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">Spanning Items</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 6</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>grid-column: span 2</code> spans 2 cols. <code>grid-column: 1/-1</code> spans all cols. <code>grid-row: span 2</code> spans 2 rows. Negative values count from the end.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.full  { grid-column: 1 / -1; }
-.wide  { grid-column: span 2; }
-.tall  { grid-row: span 2; }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Make the first item span all 3 columns with <code>grid-column: 1/-1</code>. Make another span 2 rows. This is magazine layout!</p></div>
-    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+    <p class="v2-p">Before we dive in, let's make sure you understand a few terms that will appear throughout this lesson. If you already know these, feel free to skim.</p>
+<h3 class="v2-h3">What is CSS?</h3>
+<p class="v2-p"><strong>CSS</strong> stands for <strong>Cascading Style Sheets</strong>. It is the language used to style and decorate HTML elements on a webpage. While HTML creates the structure (headings, paragraphs, images), CSS controls how those elements look — their colours, sizes, fonts, and shadows.</p>
+<h3 class="v2-h3">What is a CSS Property?</h3>
+<p class="v2-p">A <strong>property</strong> is the specific aspect of an element you want to change. Examples: <code>color</code>, <code>font-size</code>, <code>background-color</code>. In this lesson our two properties are <code>text-shadow</code> and <code>box-shadow</code>.</p>
+<h3 class="v2-h3">What is a CSS Value?</h3>
+<p class="v2-p">A <strong>value</strong> is what you set that property to. For example, if the property is <code>color</code>, a value might be <code>red</code> or <code>#ff0000</code>.</p>
+<h3 class="v2-h3">What is a pixel (px)?</h3>
+<p class="v2-p">A <strong>pixel</strong> is the smallest unit of display on a screen. When we write <code>5px</code>, we mean "5 pixels". Pixels are used to set sizes, distances, and blur amounts in shadow effects.</p>
+<h3 class="v2-h3">What is an HTML element?</h3>
+<p class="v2-p">An <strong>HTML element</strong> is any building block of a webpage — a paragraph <code>&lt;p&gt;</code>, a heading <code>&lt;h1&gt;</code>, a div <code>&lt;div&gt;</code>, a button <code>&lt;button&gt;</code>, an image <code>&lt;img&gt;</code>, etc.</p>
+<h3 class="v2-h3">What is rgba() colour?</h3>
+<p class="v2-p"><code>rgba(red, green, blue, alpha)</code> is a way to specify a colour in CSS where:</p>
+<ul class="v2-ul"><li><code>red</code>, <code>green</code>, <code>blue</code> are numbers from 0–255 controlling colour intensity</li><li><code>alpha</code> is a number from 0 (completely transparent) to 1 (completely opaque)</li></ul>
+<p class="v2-p">Example: <code>rgba(0, 0, 0, 0.5)</code> is a semi-transparent black shadow.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It</div>
-  <div class="project-name">Grid Magazine</div>
-  <div class="project-desc">A 3-column magazine layout with spanning items.</div>
-  <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
-<div class="code-body"><pre>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;CSS Grid&lt;/title&gt;
-&lt;style&gt;*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:960px;margin:0 auto}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:160px;gap:14px}
-.cell{background:#0284c7;color:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13px;text-align:center;padding:12px}
-.full{grid-column:1/-1;background:linear-gradient(135deg,#0284c7,#0369a1)}
-.wide{grid-column:span 2;background:#ea4f21}
-.tall{grid-row:span 2;background:#7c3aed}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;h1 style=&quot;color:#0284c7;margin-bottom:16px&quot;&gt;CSS Grid Magazine Layout&lt;/h1&gt;
-&lt;div class=&quot;grid&quot;&gt;
-&lt;div class=&quot;cell full&quot;&gt;🏆 Full-width hero (grid-column: 1/-1)&lt;/div&gt;
-&lt;div class=&quot;cell tall&quot;&gt;📸 Tall&lt;br&gt;grid-row: span 2&lt;/div&gt;
-&lt;div class=&quot;cell&quot;&gt;Normal&lt;/div&gt;
-&lt;div class=&quot;cell&quot;&gt;Normal&lt;/div&gt;
-&lt;div class=&quot;cell wide&quot;&gt;Wide — grid-column: span 2&lt;/div&gt;
-&lt;div class=&quot;cell&quot;&gt;Normal&lt;/div&gt;
-&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 6</div>
+    <div class="phase-title">Part 1 — CSS Text Shadow</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is Text Shadow?</h3>
+<p class="v2-p">Imagine shining a light on the letters of a sign. The light hits the front of each letter and casts a shadow behind it. That is exactly what <code>text-shadow</code> does in CSS — it projects a copy of the text slightly offset behind the original, creating a shadow effect.</p>
+<p class="v2-p"><strong>Why is this useful?</strong></p>
+<ul class="v2-ul"><li>It makes text easier to read on busy or colourful backgrounds</li><li>It gives headings a dramatic, eye-catching style</li><li>It can simulate glowing neon text (popular in gaming and entertainment sites)</li><li>It adds depth and professionalism to a design</li></ul>
+<h3 class="v2-h3">The text-shadow Property: Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>selector {
+  text-shadow: horizontal-offset vertical-offset blur-radius color;
+}</code></pre></div></div>
+<p class="v2-p">Let's break down each part:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Part</th><th>What It Means</th><th>Example</th></tr></thead><tbody><tr><td><code>horizontal-offset</code></td><td>How far the shadow moves <strong>left or right</strong> (positive = right, negative = left)</td><td><code>2px</code></td></tr><tr><td><code>vertical-offset</code></td><td>How far the shadow moves <strong>up or down</strong> (positive = down, negative = up)</td><td><code>2px</code></td></tr><tr><td><code>blur-radius</code></td><td>How blurry/soft the shadow edges are (0 = sharp, larger = softer)</td><td><code>5px</code></td></tr><tr><td><code>color</code></td><td>The colour of the shadow</td><td><code>grey</code></td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Analogy:</strong> Think of <code>horizontal-offset</code> and <code>vertical-offset</code> as moving a torch (flashlight) to the right and downward — the shadow it casts on a wall moves left and upward from the object. In CSS, positive values move the shadow right and down.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 1 — Basic Text Shadow</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    h1 {
+      text-shadow: 2px 2px grey;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello World&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>What each line does:</strong></p>
+<ul class="v2-ul"><li><code>text-shadow:</code> — tells the browser we want a text shadow</li><li><code>2px</code> (first value) — move the shadow <strong>2 pixels to the right</strong></li><li><code>2px</code> (second value) — move the shadow <strong>2 pixels downward</strong></li><li><code>grey</code> — the shadow colour is grey</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> The heading "Hello World" appears with a grey shadow slightly to the right and below the letters, making the text look slightly raised.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What happens if you change both values to <code>0px</code>? Try to predict before you test. (The shadow sits directly behind the text — you would barely see it unless it's a different colour!)</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 2 — Text Shadow with Blur</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  h1 {
+    text-shadow: 2px 2px 5px red;
+  }
+&lt;/style&gt;
+&lt;h1&gt;Warning Message&lt;/h1&gt;</code></pre></div></div>
+<p class="v2-p"><strong>What's new: the third value <code>5px</code></strong> This is the <strong>blur radius</strong>. The higher this number, the more spread out and soft the shadow becomes.</p>
+<ul class="v2-ul"><li><code>0px</code> blur = a sharp, crisp shadow (like a shadow on a sunny day)</li><li><code>5px</code> blur = a soft, feathered shadow (like a shadow on a cloudy day)</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> "Warning Message" with a soft, blurry red shadow extending 2px to the right and 2px down, with edges fading out.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 3 — White Text with Dark Shadow (Classic Readable Style)</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: white;
+  text-shadow: 2px 2px 4px black;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected Output:</strong> White text with a sharp black shadow — this combination is very common in website headers placed over images, because it makes the text readable no matter what the background looks like.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Real-world use:</strong> News websites and blog hero sections frequently use white text with a black text-shadow on top of background images.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 4 — Neon Glow Effect</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: white;
+  text-shadow: 0 0 3px #ff0000, 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 40px #ff0000;
+  background-color: black;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What's happening here?</strong></p>
+<ul class="v2-ul"><li>Both offset values are <code>0 0</code> — the shadow sits directly behind the text, not shifted</li><li>Multiple shadows are stacked (separated by commas — we'll learn this shortly)</li><li>Each layer has a larger blur, creating a glowing halo effect</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> White text on a black background with a red glow radiating outward — like a neon sign.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Multiple Text Shadows</h3>
+<p class="v2-p">You can stack as many shadows as you want on the same text by separating them with <strong>commas</strong>.</p>
+<p class="v2-p"><strong>Syntax:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>selector {
+  text-shadow: shadow1, shadow2, shadow3;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Example — Text with Two Shadows:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  h1 {
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+  }
+&lt;/style&gt;
+&lt;h1&gt;CSS Shadows&lt;/h1&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Breaking down each shadow:</strong></p>
+<ul class="v2-ul"><li><code>1px 1px 2px black</code> → a small dark offset shadow for depth</li><li><code>0 0 25px blue</code> → a wide blue glow around the whole text</li><li><code>0 0 5px darkblue</code> → a tighter dark blue inner glow for richness</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> White text with a layered combination of a dark drop shadow plus a vivid blue-purple glow effect.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The text-shadow Property — Full Reference</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>Description</th><th>Example</th></tr></thead><tbody><tr><td><code>h-shadow</code></td><td>Horizontal offset (required). Positive = right, Negative = left</td><td><code>3px</code> or <code>-3px</code></td></tr><tr><td><code>v-shadow</code></td><td>Vertical offset (required). Positive = down, Negative = up</td><td><code>3px</code> or <code>-3px</code></td></tr><tr><td><code>blur-radius</code></td><td>Optional. 0 = sharp edges. Higher = softer. Default is 0.</td><td><code>5px</code></td></tr><tr><td><code>color</code></td><td>Optional. Default is the text colour.</td><td><code>grey</code>, <code>rgba(0,0,0,0.5)</code></td></tr><tr><td><code>none</code></td><td>No shadow (default)</td><td><code>text-shadow: none;</code></td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Tip:</strong> The blur-radius and color values are optional. The minimum valid text-shadow only needs <code>h-shadow</code> and <code>v-shadow</code>. However, always include a colour so your shadow is intentional and predictable.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>CSS Text Shadow</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
 </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
-    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 6</div>
+    <div class="phase-title">Part 2 — CSS Box Shadow</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is Box Shadow?</h3>
+<p class="v2-p">Every HTML element in CSS is treated as a rectangle — a <strong>box</strong>. The <code>box-shadow</code> property adds a shadow around the outside (or inside) of that box.</p>
+<p class="v2-p"><strong>Why is box-shadow so powerful?</strong></p>
+<ul class="v2-ul"><li>It makes cards, panels, and modals appear to "float" above the page</li><li>It adds depth to buttons so they look clickable and physical</li><li>It can draw the user's attention to an important element</li><li>It can simulate a pressed/clicked effect on buttons</li><li>Combined with <code>:hover</code>, it creates smooth interactive animations</li></ul>
+<h3 class="v2-h3">The box-shadow Property: Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>selector {
+  box-shadow: horizontal-offset vertical-offset blur-radius spread-radius color;
+}</code></pre></div></div>
+<p class="v2-p">There are <strong>5 values</strong> for box-shadow — two more than text-shadow:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>Description</th><th>Example</th></tr></thead><tbody><tr><td><code>h-shadow</code></td><td>Horizontal offset. Positive = right, Negative = left (Required)</td><td><code>2px</code></td></tr><tr><td><code>v-shadow</code></td><td>Vertical offset. Positive = down, Negative = up (Required)</td><td><code>2px</code></td></tr><tr><td><code>blur-radius</code></td><td>How blurry the shadow edges are. Optional. Default 0 = sharp.</td><td><code>5px</code></td></tr><tr><td><code>spread-radius</code></td><td>How much larger/smaller the shadow is than the element. Optional. Default 0.</td><td><code>3px</code></td></tr><tr><td><code>color</code></td><td>The colour of the shadow. Optional but recommended.</td><td><code>grey</code></td></tr><tr><td><code>inset</code></td><td>Optional keyword. Makes shadow appear <strong>inside</strong> the element instead of outside.</td><td><code>inset</code></td></tr><tr><td><code>none</code></td><td>Removes all shadows.</td><td><code>box-shadow: none;</code></td></tr></tbody></table></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 1 — Basic Box Shadow</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    div {
+      width: 300px;
+      height: 100px;
+      background-color: lightblue;
+      box-shadow: 10px 10px grey;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div&gt;I have a shadow!&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>What each value does:</strong></p>
+<ul class="v2-ul"><li><code>10px</code> — shadow is <strong>10 pixels to the right</strong> of the box</li><li><code>10px</code> — shadow is <strong>10 pixels below</strong> the box</li><li><code>grey</code> — the shadow colour is grey</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> A light blue rectangle with a solid grey shadow visible on the bottom-right, like the box is floating over a grey surface beneath it.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 2 — Box Shadow with Blur</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  box-shadow: 10px 10px 8px grey;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What's new:</strong> The third value <code>8px</code> is the blur radius. The shadow edges become soft and feathered.</p>
+<p class="v2-p"><strong>Expected Output:</strong> A box with a blurry, diffused grey shadow — much more natural and realistic looking than the sharp version.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Analogy:</strong> A sharp shadow (<code>blur: 0</code>) looks like you're outside at high noon with harsh sunlight. A blurry shadow looks like indirect or indoor lighting — softer and more natural.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 3 — Box Shadow with Spread</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  box-shadow: 0px 0px 0px 10px red;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Understanding spread radius:</strong></p>
+<ul class="v2-ul"><li>The fourth value <code>10px</code> is the <strong>spread radius</strong></li><li>A positive spread makes the shadow <strong>expand larger</strong> than the element</li><li>A negative spread makes the shadow <strong>contract smaller</strong> than the element</li><li>With <code>0 0 0</code> for offsets and blur, but a large spread, you get a <strong>solid colour border-like effect</strong> all around</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> A box surrounded by a thick red border-like shadow on all sides — without any offset or blur, just a uniform expansion.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 4 — Realistic Card Shadow</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+  width: 280px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.2);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Breaking this down:</strong></p>
+<ul class="v2-ul"><li><code>2px</code> horizontal offset — shadow shifts slightly right</li><li><code>4px</code> vertical offset — shadow shifts slightly down</li><li><code>15px</code> blur — very soft, spread-out shadow</li><li><code>rgba(0, 0, 0, 0.2)</code> — a semi-transparent black (20% opacity), which looks more natural than solid grey</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> A white card that appears to hover gently above the background — the standard "material design" card effect used by Google, Twitter, and most modern web apps.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Simple Example 5 — Inset Shadow</h3>
+<p class="v2-p">The keyword <code>inset</code> turns the shadow <strong>inward</strong> — it appears inside the element rather than outside it.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  background-color: lightblue;
+  box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.3);
+}</code></pre></div></div>
+<p class="v2-p"><strong>What inset does:</strong></p>
+<ul class="v2-ul"><li>Without <code>inset</code> → shadow is outside the box (appears to float above the page)</li><li>With <code>inset</code> → shadow is inside the box (appears to be a depression or recessed area)</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> A light blue box that looks like it is sunken into the page — as if it were a pit rather than a raised surface. This is commonly used for text inputs, search bars, and pressed button states.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Multiple Box Shadows</h3>
+<p class="v2-p">Like text-shadow, you can stack multiple box shadows on one element using commas.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  box-shadow: 5px 5px 10px grey, -5px -5px 10px blue;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What this does:</strong></p>
+<ul class="v2-ul"><li>First shadow: grey, bottom-right</li><li>Second shadow: blue, top-left</li><li>Combined: the element appears lit from two directions at once</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> A box glowing grey on its bottom-right and blue on its top-left simultaneously.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Practical Example — Hover Effect on a Button</h3>
+<p class="v2-p">This is one of the most common real-world uses of box-shadow: making buttons look interactive.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    .btn {
+      padding: 12px 24px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;button class=&quot;btn&quot;&gt;Click Me&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<ul class="v2-ul"><li><code>.btn { box-shadow: 0 4px 6px rgba(0,0,0,0.3); }</code> — the button has a gentle shadow at rest, making it look slightly raised</li><li><code>transition: box-shadow 0.3s ease;</code> — any change to the box-shadow will animate smoothly over 0.3 seconds</li><li><code>.btn:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.4); }</code> — when you hover, the shadow gets bigger and more intense, making the button appear to lift up</li></ul>
+<p class="v2-p"><strong>Expected Output:</strong> A green button. When your mouse hovers over it, the shadow expands smoothly, giving the illusion the button is rising toward you.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Multiple Box Shadows — Advanced Technique</h3>
+<p class="v2-p">You can create very elaborate shadow effects by layering shadows. Each layer adds to the visual complexity.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+  width: 300px;
+  padding: 20px;
+  background: white;
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.12),
+    0 1px 2px rgba(0,0,0,0.24);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.25),
+    0 10px 10px rgba(0,0,0,0.22);
+}</code></pre></div></div>
+<p class="v2-p"><strong>What this achieves:</strong></p>
+<ul class="v2-ul"><li>At rest: a subtle, natural-looking shadow (2 layers, very subtle)</li><li>On hover: a dramatic, high-elevation shadow (the card appears to float much higher)</li></ul>
+<p class="v2-p">This technique is directly inspired by <strong>Google's Material Design</strong> system, which defines specific shadow layers for each "elevation level" from 0 (flat) to 24 (dialog/modal).</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>CSS Box Shadow</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 6</div>
+    <div class="phase-title">Part 3 — Code Challenges &amp; Guided Practice</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — Add a Basic Text Shadow</h3>
+<p class="v2-p"><strong>Objective:</strong> Practice the fundamentals of <code>text-shadow</code>.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a website for a music event. The main heading needs a dramatic dark shadow to make it pop.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an HTML file with the following structure:</li></ol>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* Your CSS goes here */
+    body {
+      background-color: #1a1a2e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    h1 {
+      color: white;
+      font-size: 48px;
+      /* ADD YOUR TEXT SHADOW HERE */
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;NIGHT FESTIVAL 2025&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<ol class="v2-ol"><li>Add a <code>text-shadow</code> to the <code>h1</code> that:</li></ol>
+<p class="v2-p">- Moves the shadow 3 pixels right    - Moves the shadow 3 pixels down    - Has a blur radius of 10 pixels    - Is coloured <code>rgba(0, 200, 255, 0.8)</code> (a glowing cyan)</p>
+<p class="v2-p"><strong>Hint:</strong> The syntax is <code>text-shadow: h v blur color;</code></p>
+<p class="v2-p"><strong>Expected Output:</strong> White heading text on a dark navy background, with a soft glowing cyan shadow — an effect typical of event/festival websites.</p>
+<p class="v2-p"><strong>Answer:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  color: white;
+  font-size: 48px;
+  text-shadow: 3px 3px 10px rgba(0, 200, 255, 0.8);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>What happens if you increase the blur from 10px to 50px? (The glow spreads much wider, text feels hazier)</li><li>What happens if you use a negative horizontal value like <code>-3px</code>? (The shadow moves to the left)</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Create a Floating Product Card</h3>
+<p class="v2-p"><strong>Objective:</strong> Build a product card using <code>box-shadow</code> to make it look elevated.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building an online shop. Product cards should look clean and professional, as if they are floating above the page.</p>
+<p class="v2-p"><strong>Starter code:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    body {
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .product-card {
+      width: 250px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      /* ADD YOUR BOX SHADOW HERE */
+    }
+    .product-card h2 {
+      margin: 0 0 10px 0;
+    }
+    .product-card p {
+      color: #666;
+    }
+    .product-card .price {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;product-card&quot;&gt;
+    &lt;h2&gt;Wireless Headphones&lt;/h2&gt;
+    &lt;p&gt;Premium sound quality with active noise cancellation.&lt;/p&gt;
+    &lt;div class=&quot;price&quot;&gt;$89.99&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Task:</strong> Add a <code>box-shadow</code> to <code>.product-card</code> that:</p>
+<ul class="v2-ul"><li>Has no horizontal or vertical offset (centered shadow)</li><li>Has a blur of 20px</li><li>Has a spread of 0</li><li>Is a semi-transparent black at 15% opacity</li></ul>
+<p class="v2-p"><strong>Hint:</strong> Use <code>rgba(0, 0, 0, 0.15)</code> for the colour.</p>
+<p class="v2-p"><strong>Expected Output:</strong> A white card centered on a grey background with a soft shadow around all sides, looking professional and elevated.</p>
+<p class="v2-p"><strong>Answer:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.product-card {
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Optional challenge:</strong> Add a <code>:hover</code> state that increases the shadow to <code>0 8px 30px rgba(0,0,0,0.25)</code> with a smooth transition. What does the card feel like when you hover?</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Inset Shadow for a Search Bar</h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>inset</code> box-shadow to make a text input look like a recessed field.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  input[type=&quot;text&quot;] {
+    width: 300px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    /* ADD INSET SHADOW HERE */
+  }
+
+  input[type=&quot;text&quot;]:focus {
+    /* ADD FOCUSED INSET SHADOW HERE */
+    border-color: #4A90E2;
+  }
+&lt;/style&gt;
+
+&lt;input type=&quot;text&quot; placeholder=&quot;Search...&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Task:</strong></p>
+<ol class="v2-ol"><li>Add <code>box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.15);</code> to the normal state</li><li>Add <code>box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.2);</code> to the <code>:focus</code> state</li></ol>
+<p class="v2-p"><strong>Expected Output:</strong> A rounded search bar that looks slightly sunken. When you click inside it, it deepens slightly and gets a blue border — a polished, modern UI element.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">1. Add box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.15); to the normal state
+2. Add box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.2); to the :focus state
+
+Expected Output:
+A rounded search bar that looks slightly sunken. When you click inside it, it deepens slightly and gets a blue border — a polished, modern UI element.
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 6</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 — Missing Required Values</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — color provided but both offsets are missing */
+h1 {
+  text-shadow: grey;
+}
+
+/* ✅ CORRECT — both horizontal and vertical offsets are required */
+h1 {
+  text-shadow: 2px 2px grey;
+}</code></pre></div></div>
+<p class="v2-p"><code>text-shadow</code> and <code>box-shadow</code> both require at least the two offset values. Providing only a colour will not work.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Wrong Value Order</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — color listed before blur */
+div {
+  box-shadow: 5px 5px grey 10px;
+}
+
+/* ✅ CORRECT — order is: h-offset v-offset blur spread color */
+div {
+  box-shadow: 5px 5px 10px 0px grey;
+}</code></pre></div></div>
+<p class="v2-p">CSS properties are position-sensitive. The values must appear in the correct order.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Using text-shadow on a div Instead of text-shadow on Text Elements</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ Applies shadow to the box, not the text */
+div {
+  text-shadow: 2px 2px black; /* This affects text INSIDE the div */
+  box-shadow: 2px 2px black; /* This affects the BOX itself */
+}</code></pre></div></div>
+<p class="v2-p"><code>text-shadow</code> does affect text inside any element (paragraphs, divs, buttons), but remember the difference:</p>
+<ul class="v2-ul"><li><code>text-shadow</code> → shadows the <strong>characters/letters</strong></li><li><code>box-shadow</code> → shadows the <strong>rectangular container</strong></li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Forgetting <code>inset</code> Goes First</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — inset is at the end */
+div {
+  box-shadow: 5px 5px 10px rgba(0,0,0,0.3) inset;
+}
+
+/* ✅ CORRECT — inset keyword goes at the beginning or end, but conventionally first */
+div {
+  box-shadow: inset 5px 5px 10px rgba(0,0,0,0.3);
+}</code></pre></div></div>
+<p class="v2-p">While <code>inset</code> technically works at either end, it is conventional and most readable at the start.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Too Many Heavy Shadows Slow Down Performance</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ⚠️ Avoid on many elements — each shadow is re-rendered on every repaint */
+.many-cards {
+  box-shadow:
+    0 1px 2px black,
+    0 2px 4px black,
+    0 4px 8px black,
+    0 8px 16px black,
+    0 16px 32px black,
+    0 32px 64px black;
+}</code></pre></div></div>
+<p class="v2-p">Multiple heavy shadows on many elements can affect page scroll performance, especially on mobile. Use 1–3 shadow layers maximum for best practice.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6 — Using Harsh Opaque Black Instead of Transparent Shadow</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ Looks unnatural — harsh and heavy */
+.card {
+  box-shadow: 5px 5px 10px black;
+}
+
+/* ✅ Natural and subtle — semi-transparent */
+.card {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}</code></pre></div></div>
+<p class="v2-p">Real-world shadows are never fully opaque. Using <code>rgba</code> with 10–30% opacity creates much more professional and natural-looking results.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 7 — Confusing blur and spread</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* blur-radius = how fuzzy the edges are */
+/* spread-radius = how large the shadow is */
+
+div {
+  box-shadow: 0 0 20px 0 red;  /* Large blur, normal size shadow */
+}
+
+div {
+  box-shadow: 0 0 0 20px red;  /* No blur, very large shadow (like a border) */
+}</code></pre></div></div>
+<p class="v2-p">These two values do very different things. Blur makes edges soft. Spread makes the shadow physically larger.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Goal</div>
+  <div class="build-desc">Build a user profile card that includes:</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Profile Card&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;avatar&quot;&gt;AJ&lt;/div&gt;
+    &lt;h2 class=&quot;name&quot;&gt;Amara Johnson&lt;/h2&gt;
+    &lt;p class=&quot;role&quot;&gt;Senior UI Designer&lt;/p&gt;
+    &lt;p class=&quot;bio&quot;&gt;Crafting beautiful digital experiences with 6 years of expertise in user-centred design.&lt;/p&gt;
+    &lt;button class=&quot;btn&quot;&gt;View Portfolio&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Card</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <div class="avatar">AJ</div>
+    <h2 class="name">Amara Johnson</h2>
+    <p class="role">Senior UI Designer</p>
+    <p class="bio">Crafting beautiful digital experiences with 6 years of expertise in user-centred design.</p>
+    <button class="btn">View Portfolio</button>
+  </div>
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
       ⬇ Download starter.html
     </button>
-    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
       🐙 Push to GitHub →
     </button>
   </div>
-  <script>
-  const __code = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSS Grid</title>
-<style>*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:960px;margin:0 auto}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:160px;gap:14px}
-.cell{background:#0284c7;color:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13px;text-align:center;padding:12px}
-.full{grid-column:1/-1;background:linear-gradient(135deg,#0284c7,#0369a1)}
-.wide{grid-column:span 2;background:#ea4f21}
-.tall{grid-row:span 2;background:#7c3aed}
-</style></head><body>
-<h1 style="color:#0284c7;margin-bottom:16px">CSS Grid Magazine Layout</h1>
-<div class="grid">
-<div class="cell full">🏆 Full-width hero (grid-column: 1/-1)</div>
-<div class="cell tall">📸 Tall<br>grid-row: span 2</div>
-<div class="cell">Normal</div>
-<div class="cell">Normal</div>
-<div class="cell wide">Wide — grid-column: span 2</div>
-<div class="cell">Normal</div>
-</div></body></html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
 </div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-51-css_grid</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 51 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-51-css_grid/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-51-project-goal</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 51 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-51-project-goal/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 51 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Grid Container Basics</li><li>✅ Spanning Items</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_50.html" class="ln-btn">← Lesson 50</a>
-    <a href="lesson_52.html" class="ln-btn primary">Lesson 52 →</a>
-  </div>
+  <h2>🎉 Lesson 51 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — CSS Text Shadow</li><li>✅ Part 2 — CSS Box Shadow</li><li>✅ Part 3 — Code Challenges & Guided Practice</li><li>✅ Common Beginner Mistakes</li></ul>
+  <div class="lesson-nav"><a href="lesson_50.html" class="ln-btn">← Lesson 50</a><a href="lesson_52.html" class="ln-btn primary">Lesson 52 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 51 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 51 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_css_51_phase';
+const TOTAL=6,KEY='techbase_css_l51';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

@@ -2,339 +2,869 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 66: CSS 2D Transforms — Techbase CSS Course</title>
-<meta name="description" content="Translate, rotate, scale and skew elements without affecting layout">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 66: CSS @property Rule – Defining and Animating Custom CSS Properties — Techbase CSS</title>
+<meta name="description" content="CSS @property Rule – Defining and Animating Custom CSS Properties">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
-}
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
+/* HERO */
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
+/* TASK BOX */
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
+/* GITHUB ACCORDION */
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
-  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
-  <span class="l-nav-lesson">Lesson 66 of 73</span>
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 66 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
 <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
 <div class="l-hero">
   <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 66 </div>
-    <h1>CSS 2D Transforms</h1>
-    <div class="l-hero-tag">Translate, rotate, scale and skew elements without affecting layout</div>
-    <div class="l-hero-build"><strong>🏗️ Build:</strong> My 2D Transform Gallery</div>
+    <div class="l-badge">CSS · Lesson 66</div>
+    <h1>CSS @property Rule – Defining and Animating Custom CSS Properties</h1>
+    <div class="l-hero-sub">9 phases · Build: Stage 1 – Setup the HTML Structure</div>
   </div>
 </div>
-<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
-    <div class="welcome-box">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
   <h2>👋 Welcome to Lesson 66</h2>
-  <p>Translate, rotate, scale and skew elements without affecting layout</p>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Imagine you are painting a room and you want to be able to smoothly fade the wall colour from white to deep blue at the click of a button. With normal CSS variables (which you may have learned before), that smooth fade — called an <strong>animation</strong> — is impossible. The colour would just jump instantly.</p>
+<p class="v2-p">The <strong>CSS <code>@property</code> rule</strong> was invented to solve exactly this problem. It lets you create your own custom CSS properties that the browser fully understands: what type of value they hold, what their default is, and whether they can be smoothly animated. This makes your pages far more dynamic, readable, and powerful.</p>
+<p class="v2-p">By the end of this lesson you will be able to:</p>
+<ul class="v2-ul"><li>Explain what the <code>@property</code> rule is and why it was created.</li><li>Write a complete <code>@property</code> declaration with all required fields.</li><li>Use your registered custom property anywhere in your CSS.</li><li>Animate custom properties smoothly using CSS transitions and keyframe animations.</li><li>Apply <code>@property</code> to real-world design tasks like animated gradients, colour themes, and UI effects.</li></ul>
+<hr class="v2-hr"></div>
   <div class="welcome-meta">
-    <span>📚 2 phases</span>
-    <span>🏗️ Build: My 2D Transform Gallery</span>
-    
+    <span>📚 9 phases</span>
+    <span>🏗️ Stage 1 – Setup the HTML Structure</span>
   </div>
-</div>
-  </div>
+</div></div>
 </section>
-<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
 <div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">translate, rotate and scale</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 9</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>transform</code> moves elements visually WITHOUT affecting layout flow. <code>translate(x,y)</code> moves, <code>rotate(deg)</code> spins, <code>scale(n)</code> resizes, <code>scaleX(-1)</code> mirrors. Chain: <code>rotate(30deg) scale(1.1)</code>. Order matters — applied right to left.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.move   { transform: translateX(50px); }
-.rotate { transform: rotate(45deg); }
-.big    { transform: scale(1.5); }
-.mirror { transform: scaleX(-1); }
-.combo  { transform: rotate(15deg) scale(1.1); }
-.card:hover { transform: translateY(-8px) scale(1.02); transition: transform .25s ease; }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Show 5 boxes: translate, rotate 45deg, scale 1.5, scaleX(-1) mirror, and rotate+scale combo. Add hover transitions so they animate smoothly.</p></div>
-    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+    <p class="v2-p">Imagine you are painting a room and you want to be able to smoothly fade the wall colour from white to deep blue at the click of a button. With normal CSS variables (which you may have learned before), that smooth fade — called an <strong>animation</strong> — is impossible. The colour would just jump instantly.</p>
+<p class="v2-p">The <strong>CSS <code>@property</code> rule</strong> was invented to solve exactly this problem. It lets you create your own custom CSS properties that the browser fully understands: what type of value they hold, what their default is, and whether they can be smoothly animated. This makes your pages far more dynamic, readable, and powerful.</p>
+<p class="v2-p">By the end of this lesson you will be able to:</p>
+<ul class="v2-ul"><li>Explain what the <code>@property</code> rule is and why it was created.</li><li>Write a complete <code>@property</code> declaration with all required fields.</li><li>Use your registered custom property anywhere in your CSS.</li><li>Animate custom properties smoothly using CSS transitions and keyframe animations.</li><li>Apply <code>@property</code> to real-world design tasks like animated gradients, colour themes, and UI effects.</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
 </div>
 <div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">skew and diagonal sections</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 9</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p><code>skewX(20deg)</code> slants horizontally. Diagonal sections: <code>skewY(-3deg)</code> on wrapper, counter-rotate content with <code>skewY(3deg)</code> so text stays straight.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.skew-x { transform: skewX(20deg); }
-.diagonal { transform: skewY(-3deg); overflow: hidden; }
-.diagonal .inner { transform: skewY(3deg); } /* un-skew text */</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Create a diagonal section using skewY(-3deg) on the outer div. Counter-rotate the inner content with skewY(3deg). This is a popular landing-page design trick!</p></div>
-    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+    <p class="v2-p">Before diving in, you need to be comfortable with a few ideas. If any of these are new, read the short explanation given here — then carry on.</p>
+<h3 class="v2-h3">What is a CSS Variable (Custom Property)?</h3>
+<p class="v2-p">A CSS variable is a name you create yourself, starting with two dashes <code>--</code>, that stores a value you can reuse.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Storing a colour in a variable */
+:root {
+  --brand-colour: tomato;
+}
+
+/* Using it */
+h1 {
+  color: var(--brand-colour);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Output (visual):</strong> The <code>&lt;h1&gt;</code> heading appears in the colour tomato (a vivid red-orange).</p>
+<p class="v2-p">The problem: The browser treats regular CSS variables as <strong>plain text strings</strong> — it just does a find-and-replace. It has no idea the value is a colour, a number, or a length. This means it cannot smoothly transition between two variable values during an animation.</p>
+<h3 class="v2-h3">What is a CSS Transition?</h3>
+<p class="v2-p">A CSS transition smoothly changes a property from one value to another over a set time.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  background-color: blue;
+  transition: background-color 1s ease;
+}
+
+div:hover {
+  background-color: red;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Output (visual):</strong> When you hover over the <code>div</code>, the background slowly fades from blue to red over 1 second.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Key idea:</strong> Transitions only work when the browser understands the <em>type</em> of value (colour, length, number, etc.). CSS variables without <code>@property</code> are opaque text — the browser cannot animate them.</p></blockquote>
+<h3 class="v2-h3">What is a CSS Animation (Keyframes)?</h3>
+<p class="v2-p">An animation plays a sequence of style changes automatically.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+p {
+  animation: fadeIn 2s ease;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Output (visual):</strong> The paragraph fades in from invisible to fully visible over 2 seconds.</p>
+<p class="v2-p">Now you are ready for <code>@property</code>.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It</div>
-  <div class="project-name">2D Transform Gallery</div>
-  <div class="project-desc">Transform functions demo, hover effects and a diagonal section.</div>
-  <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
-<div class="code-body"><pre>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;2D Transforms&lt;/title&gt;
-&lt;style&gt;*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a;overflow-x:hidden}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.area{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;background:#e0f2fe;border-radius:14px;padding:30px 16px;margin-bottom:20px}
-.box{width:90px;height:90px;background:#0284c7;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:bold;text-align:center;cursor:pointer;transition:transform .3s ease,background .2s;padding:6px}
-.box:hover{background:#0369a1}
-.hover-grid{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
-.hcard{flex:1;min-width:150px;background:white;border:1.5px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease}
-.hcard h3{color:#0284c7;margin:0 0 6px;font-size:14px}.hcard p{color:#64748b;font-size:12px;margin:0}
-.hc-lift:hover{transform:translateY(-10px);box-shadow:0 16px 40px rgba(2,132,199,.2)}
-.hc-scale:hover{transform:scale(1.06);box-shadow:0 8px 20px rgba(2,132,199,.15)}
-.hc-rotate:hover{transform:rotate(3deg) scale(1.04)}
-.hc-combo:hover{transform:translateY(-6px) rotate(-2deg) scale(1.03)}
-.skew-wrap{background:#0284c7;transform:skewY(-3deg);margin:30px -24px;padding:56px 24px}
-.skew-inner{transform:skewY(3deg);text-align:center}
-.skew-inner h2{color:white;border-bottom-color:rgba(255,255,255,.3)}
-.skew-inner p{color:rgba(255,255,255,.8);max-width:480px;margin:0 auto}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;h1 style=&quot;color:#0284c7;margin-bottom:4px&quot;&gt;CSS 2D Transforms&lt;/h1&gt;
-&lt;h2&gt;Transform Functions&lt;/h2&gt;
-&lt;div class=&quot;area&quot;&gt;
-&lt;div class=&quot;box&quot; style=&quot;transform:none&quot;&gt;none&lt;/div&gt;
-&lt;div class=&quot;box&quot; style=&quot;transform:translateX(12px)&quot;&gt;translateX&lt;br&gt;+12px&lt;/div&gt;
-&lt;div class=&quot;box&quot; style=&quot;transform:rotate(45deg)&quot;&gt;rotate&lt;br&gt;45deg&lt;/div&gt;
-&lt;div class=&quot;box&quot; style=&quot;transform:scale(1.3)&quot;&gt;scale&lt;br&gt;1.3&lt;/div&gt;
-&lt;div class=&quot;box&quot; style=&quot;transform:scaleX(-1)&quot;&gt;scaleX(-1)&lt;br&gt;mirror&lt;/div&gt;
-&lt;div class=&quot;box&quot; style=&quot;transform:skewX(20deg)&quot;&gt;skewX&lt;br&gt;20deg&lt;/div&gt;
-&lt;div class=&quot;box&quot; style=&quot;transform:rotate(15deg) scale(1.1)&quot;&gt;rotate+&lt;br&gt;scale&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2&gt;Interactive Hover Effects&lt;/h2&gt;
-&lt;div class=&quot;hover-grid&quot;&gt;
-&lt;div class=&quot;hcard hc-lift&quot;&gt;&lt;h3&gt;Lift&lt;/h3&gt;&lt;p&gt;translateY(-10px)&lt;/p&gt;&lt;/div&gt;
-&lt;div class=&quot;hcard hc-scale&quot;&gt;&lt;h3&gt;Scale&lt;/h3&gt;&lt;p&gt;scale(1.06)&lt;/p&gt;&lt;/div&gt;
-&lt;div class=&quot;hcard hc-rotate&quot;&gt;&lt;h3&gt;Rotate&lt;/h3&gt;&lt;p&gt;rotate(3deg)&lt;/p&gt;&lt;/div&gt;
-&lt;div class=&quot;hcard hc-combo&quot;&gt;&lt;h3&gt;Combo&lt;/h3&gt;&lt;p&gt;translate+rotate+scale&lt;/p&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;skew-wrap&quot;&gt;&lt;div class=&quot;skew-inner&quot;&gt;&lt;h2&gt;Diagonal Section&lt;/h2&gt;&lt;p&gt;transform:skewY(-3deg) on wrapper, skewY(3deg) on content to keep text straight.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 9</div>
+    <div class="phase-title">Conceptual Understanding</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What is the <code>@property</code> Rule?</h3>
+<p class="v2-p">The <code>@property</code> rule is a special CSS instruction that lets you <strong>register</strong> a custom CSS property (a variable) with the browser. When you register a property, you tell the browser three important things:</p>
+<ol class="v2-ol"><li><strong>What type of value it holds</strong> — for example, is it a colour, a length, a number, or a percentage?</li><li><strong>Whether it inherits</strong> from parent elements — like how <code>font-size</code> passes down to children.</li><li><strong>What its initial (default) value is</strong> — so if no value is set, the browser still knows what to display.</li></ol>
+<p class="v2-p"><strong>Analogy:</strong> Think of a CSS variable as an unmarked box. The browser does not know if the box contains a colour, a word, or a number — it just passes the box around. <code>@property</code> is like labelling the box: "This box contains a COLOUR. Its default is red. It passes down to children." Now the browser can treat the contents intelligently — including animating between values.</p>
+<h3 class="v2-h3">Why Does <code>@property</code> Exist?</h3>
+<p class="v2-p">The problem it solves is <strong>animating custom properties</strong>. Before <code>@property</code>, you could not smoothly animate a CSS variable value because the browser treated it as plain text. With <code>@property</code>, the browser understands the value type and can smoothly interpolate (calculate intermediate steps) between two values during an animation.</p>
+<p class="v2-p">This was a feature that previously required JavaScript to achieve. Now it is pure CSS.</p>
+<h3 class="v2-h3">The Syntax of <code>@property</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --property-name {
+  syntax: &#x27;&lt;type&gt;&#x27;;
+  inherits: true | false;
+  initial-value: value;
+}</code></pre></div></div>
+<p class="v2-p">Let's break down every single part of this:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Part</th><th>What it means</th></tr></thead><tbody><tr><td><code>@property</code></td><td>The at-rule keyword that starts a custom property registration.</td></tr><tr><td><code>--property-name</code></td><td>The name of your custom property. Must start with two dashes <code>--</code>.</td></tr><tr><td><code>syntax</code></td><td>The <strong>type</strong> of value this property holds, written as a CSS data type string.</td></tr><tr><td><code>inherits</code></td><td>Whether child elements automatically receive this property's value from a parent. <code>true</code> = yes, <code>false</code> = no.</td></tr><tr><td><code>initial-value</code></td><td>The default value used when no other value is set.</td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Important:</strong> All three descriptors — <code>syntax</code>, <code>inherits</code>, and <code>initial-value</code> — are <strong>required</strong>. If any one is missing, the <code>@property</code> rule is invalid.</p></blockquote>
+<h3 class="v2-h3">The <code>syntax</code> Descriptor — Data Types</h3>
+<p class="v2-p">The <code>syntax</code> field tells the browser what kind of data the property holds. Here are the most common types:</p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Syntax value</th><th>What it means</th><th>Example value</th></tr></thead><tbody><tr><td><code>'&lt;color&gt;'</code></td><td>A CSS colour</td><td><code>red</code>, <code>#ff0000</code>, <code>rgb(255,0,0)</code></td></tr><tr><td><code>'&lt;length&gt;'</code></td><td>A CSS measurement</td><td><code>20px</code>, <code>3rem</code>, <code>50%</code></td></tr><tr><td><code>'&lt;number&gt;'</code></td><td>A plain number (no unit)</td><td><code>0.5</code>, <code>10</code>, <code>-3</code></td></tr><tr><td><code>'&lt;percentage&gt;'</code></td><td>A percentage value</td><td><code>50%</code>, <code>100%</code></td></tr><tr><td><code>'&lt;integer&gt;'</code></td><td>A whole number</td><td><code>0</code>, <code>5</code>, <code>100</code></td></tr><tr><td><code>'&lt;angle&gt;'</code></td><td>A rotation angle</td><td><code>45deg</code>, <code>1.5rad</code></td></tr><tr><td><code>'&lt;length-percentage&gt;'</code></td><td>Either a length or percentage</td><td><code>20px</code> or <code>50%</code></td></tr><tr><td><code>'*'</code></td><td>Any value (no type checking)</td><td>anything</td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Conceptual Understanding</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
 </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
-    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 9</div>
+    <div class="phase-title">Simple Standalone Examples</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Example 1 – Registering a Simple Colour Property</h3>
+<p class="v2-p">This is the most minimal, isolated example. We register a custom colour property, give it a default value, and use it on a box.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Step 1: Register the property */
+@property --box-colour {
+  syntax: &#x27;&lt;color&gt;&#x27;;
+  inherits: false;
+  initial-value: lightblue;
+}
+
+/* Step 2: Use the property */
+div {
+  background-color: var(--box-colour);
+  width: 200px;
+  height: 100px;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div&gt;&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A rectangle 200px wide and 100px tall with a light blue background.</p>
+<p class="v2-p"><strong>What happened:</strong></p>
+<ul class="v2-ul"><li><code>@property --box-colour</code> registered a new custom property named <code>--box-colour</code>.</li><li><code>syntax: '&lt;color&gt;'</code> told the browser it holds a colour value.</li><li><code>inherits: false</code> means child elements inside the <code>div</code> do not automatically get this value.</li><li><code>initial-value: lightblue</code> sets the default — so even without a <code>--box-colour</code> value anywhere in the CSS, the box shows light blue.</li><li><code>var(--box-colour)</code> reads the variable value just like a normal CSS variable.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What happens if you remove the <code>initial-value</code> line? The <code>@property</code> rule becomes invalid and the property is ignored entirely!</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 2 – Overriding the Registered Property's Value</h3>
+<p class="v2-p">Now we set a different value on an element, overriding the <code>initial-value</code>.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --box-colour {
+  syntax: &#x27;&lt;color&gt;&#x27;;
+  inherits: false;
+  initial-value: lightblue;
+}
+
+.card {
+  --box-colour: coral;   /* Override the default */
+  background-color: var(--box-colour);
+  width: 200px;
+  height: 100px;
+}
+
+.plain {
+  background-color: var(--box-colour);
+  width: 200px;
+  height: 100px;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;card&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;plain&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<ul class="v2-ul"><li><code>.card</code> shows a <strong>coral</strong> (salmon-orange) background.</li><li><code>.plain</code> shows a <strong>light blue</strong> background (falls back to <code>initial-value</code>).</li></ul>
+<p class="v2-p"><strong>Why this matters:</strong> The <code>.plain</code> div never sets <code>--box-colour</code>, so the browser uses the registered <code>initial-value</code> of <code>lightblue</code>. This is much safer than a regular CSS variable which would produce nothing (invalid value) if not set.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What would <code>.plain</code> look like if <code>--box-colour</code> were a regular CSS variable with no default? It would have no background colour at all — transparent!</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 3 – Registering a Number Property</h3>
+<p class="v2-p">Numbers (without units) are useful for controlling transparency, scale, or counters.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --opacity-level {
+  syntax: &#x27;&lt;number&gt;&#x27;;
+  inherits: false;
+  initial-value: 1;
+}
+
+.box {
+  background-color: steelblue;
+  width: 150px;
+  height: 150px;
+  opacity: var(--opacity-level);
+}
+
+.faded {
+  --opacity-level: 0.3;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;box&quot;&gt;Normal&lt;/div&gt;
+&lt;div class=&quot;box faded&quot;&gt;Faded&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<ul class="v2-ul"><li>First box: Fully opaque steelblue square.</li><li>Second box: Same square at 30% opacity (very light/transparent).</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 4 – The Power of <code>@property</code>: Animating a Custom Colour (The Big Moment!)</h3>
+<p class="v2-p">This is the key example — the reason <code>@property</code> exists. Notice how the colour smoothly animates. Without <code>@property</code>, this would <strong>not</strong> work.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Register with @property so the browser can animate it */
+@property --bg-colour {
+  syntax: &#x27;&lt;color&gt;&#x27;;
+  inherits: false;
+  initial-value: orange;
+}
+
+.animated-box {
+  --bg-colour: orange;
+  background-color: var(--bg-colour);
+  width: 200px;
+  height: 200px;
+  transition: --bg-colour 1s ease;   /* Animate the custom property */
+}
+
+.animated-box:hover {
+  --bg-colour: purple;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;animated-box&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<ul class="v2-ul"><li>Box starts as <strong>orange</strong>.</li><li>When you hover over it, the colour <strong>smoothly transitions</strong> to purple over 1 second.</li><li>When you move the mouse away, it smoothly returns to orange.</li></ul>
+<p class="v2-p"><strong>Why this is remarkable:</strong> The <code>transition</code> is applied directly to the custom property <code>--bg-colour</code>. Because <code>@property</code> registered it as a <code>&lt;color&gt;</code> type, the browser can calculate all the intermediate colour steps during the 1-second animation. Without <code>@property</code>, the box would just <strong>jump</strong> instantly from orange to purple — no smooth transition.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Thinking prompt:</strong> What if you changed <code>syntax: '&lt;color&gt;'</code> to <code>syntax: '<em>'</code> (any value)? Try it — the transition would break and the colour would jump again, because <code>'</em>'</code> means no type information.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 5 – Animating a Number Property (Gradient Rotation)</h3>
+<p class="v2-p">A very popular real-world use of <code>@property</code> is animating the angle of a gradient.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --gradient-angle {
+  syntax: &#x27;&lt;angle&gt;&#x27;;
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes spin-gradient {
+  to {
+    --gradient-angle: 360deg;
+  }
+}
+
+.gradient-box {
+  width: 250px;
+  height: 250px;
+  background: linear-gradient(var(--gradient-angle), red, blue);
+  animation: spin-gradient 4s linear infinite;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;gradient-box&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A box with a red-to-blue gradient that <strong>continuously rotates</strong> in a 360° loop every 4 seconds.</p>
+<p class="v2-p"><strong>Line-by-line explanation:</strong></p>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Line</th><th>Explanation</th></tr></thead><tbody><tr><td><code>@property --gradient-angle</code></td><td>Register a custom property named <code>--gradient-angle</code>.</td></tr><tr><td><code>syntax: '&lt;angle&gt;'</code></td><td>Tell the browser this is a CSS angle (like <code>45deg</code>, <code>360deg</code>).</td></tr><tr><td><code>initial-value: 0deg</code></td><td>Default starting angle is 0 degrees.</td></tr><tr><td><code>@keyframes spin-gradient</code></td><td>Define a named animation.</td></tr><tr><td><code>to { --gradient-angle: 360deg; }</code></td><td>At the end of the animation, the angle is 360 degrees.</td></tr><tr><td><code>linear-gradient(var(--gradient-angle), red, blue)</code></td><td>The gradient uses the angle from the variable.</td></tr><tr><td><code>animation: spin-gradient 4s linear infinite</code></td><td>Play the animation continuously, 4 seconds per loop.</td></tr></tbody></table></div>
+<p class="v2-p">Because <code>--gradient-angle</code> is registered as <code>&lt;angle&gt;</code>, the browser smoothly steps through 0°, 45°, 90°, 180°... all the way to 360°, creating a smooth spin effect.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 6 – Animating a Percentage (Animated Progress Bar)</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --progress {
+  syntax: &#x27;&lt;percentage&gt;&#x27;;
+  inherits: false;
+  initial-value: 0%;
+}
+
+@keyframes load {
+  to { --progress: 80%; }
+}
+
+.progress-bar {
+  width: var(--progress);
+  height: 20px;
+  background-color: green;
+  animation: load 2s ease forwards;
+}
+
+.track {
+  width: 300px;
+  background-color: lightgrey;
+  border-radius: 10px;
+  overflow: hidden;
+}</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;track&quot;&gt;
+  &lt;div class=&quot;progress-bar&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A grey track bar. Inside it, a green bar animates from 0% width to 80% width over 2 seconds — like a loading bar filling up.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Simple Standalone Examples</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 9</div>
+    <div class="phase-title">Complete `@property` Reference Table</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Descriptor</th><th>Required?</th><th>Allowed values</th><th>Purpose</th></tr></thead><tbody><tr><td><code>syntax</code></td><td>Yes</td><td><code>'&lt;color&gt;'</code>, <code>'&lt;length&gt;'</code>, <code>'&lt;number&gt;'</code>, <code>'&lt;percentage&gt;'</code>, <code>'&lt;angle&gt;'</code>, <code>'&lt;integer&gt;'</code>, <code>'&lt;length-percentage&gt;'</code>, <code>'*'</code></td><td>Declares the value type</td></tr><tr><td><code>inherits</code></td><td>Yes</td><td><code>true</code> or <code>false</code></td><td>Controls value inheritance to child elements</td></tr><tr><td><code>initial-value</code></td><td>Yes (if syntax is not <code>'*'</code>)</td><td>Any valid value matching the declared syntax</td><td>Sets the default/fallback value</td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Complete <code>@property</code> Reference Table</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 9</div>
+    <div class="phase-title">Guided Practice Exercises</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 – Register and Use a Length Property</h3>
+<p class="v2-p"><strong>Objective:</strong> Practice registering a <code>&lt;length&gt;</code> type custom property and using it to control a box's border radius.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a UI card. You want to control the corner roundness with a custom property so it can be easily changed or animated.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Open a new HTML file and add a <code>&lt;div class="card"&gt;Hello!&lt;/div&gt;</code>.</li><li>In your CSS, register a property called <code>--corner-round</code> of type <code>&lt;length&gt;</code> with a default of <code>0px</code>.</li><li>Apply it to <code>.card</code> as <code>border-radius: var(--corner-round)</code>.</li><li>Add a width of <code>200px</code>, height of <code>100px</code>, and a background colour of <code>salmon</code>.</li><li>Override the variable on <code>.card</code> to <code>20px</code> and observe the rounded corners.</li></ol>
+<p class="v2-p"><strong>Hint:</strong> The <code>@property</code> block goes at the top of your stylesheet, before any selectors.</p>
+<p class="v2-p"><strong>Expected output:</strong> A salmon-coloured card with 20px rounded corners.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --corner-round {
+  syntax: &#x27;&lt;length&gt;&#x27;;
+  inherits: false;
+  initial-value: 0px;
+}
+
+.card {
+  --corner-round: 20px;
+  border-radius: var(--corner-round);
+  width: 200px;
+  height: 100px;
+  background-color: salmon;
+  padding: 10px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>What would happen if you removed <code>--corner-round: 20px</code> from <code>.card</code>? (It falls back to <code>0px</code> — no rounding.)</li><li>What would happen if you wrote <code>initial-value: hello</code> — is <code>hello</code> a valid length? (No — the <code>@property</code> would be invalid.)</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 – Create a Hover Colour Transition Using <code>@property</code></h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>@property</code> to enable a smooth colour transition on hover.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a button for a web app. The button should smoothly change colour when hovered.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a <code>&lt;button class="btn"&gt;Click Me&lt;/button&gt;</code>.</li><li>Register <code>--btn-bg</code> as a <code>&lt;color&gt;</code> type with initial value <code>royalblue</code>.</li><li>Style <code>.btn</code> with <code>background-color: var(--btn-bg)</code>, some padding, white text, and <code>transition: --btn-bg 0.5s ease</code>.</li><li>On <code>.btn:hover</code>, set <code>--btn-bg: crimson</code>.</li><li>Hover over the button — observe the smooth fade.</li></ol>
+<p class="v2-p"><strong>Expected output:</strong> A blue button that smoothly fades to crimson red on hover.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --btn-bg {
+  syntax: &#x27;&lt;color&gt;&#x27;;
+  inherits: false;
+  initial-value: royalblue;
+}
+
+.btn {
+  --btn-bg: royalblue;
+  background-color: var(--btn-bg);
+  transition: --btn-bg 0.5s ease;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  --btn-bg: crimson;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>Why do you also write <code>--btn-bg: royalblue</code> in <code>.btn</code> even though the initial-value is already <code>royalblue</code>? (This ensures the transition starts from this value correctly on the element level.)</li><li>What if you removed the <code>@property</code> block entirely? (The transition would fail — the colour would jump instead of fade.)</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 – Animate a Number to Control Scale</h3>
+<p class="v2-p"><strong>Objective:</strong> Use <code>@property</code> with a <code>&lt;number&gt;</code> to animate an element's scale via a CSS custom property.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Register <code>--scale-factor</code> as <code>&lt;number&gt;</code> with initial value <code>1</code>.</li><li>Create <code>@keyframes grow</code> going from the default to <code>--scale-factor: 1.5</code>.</li><li>Apply the animation to a <code>.icon</code> box — use <code>transform: scale(var(--scale-factor))</code>.</li><li>Run the animation on hover.</li></ol>
+<p class="v2-p"><strong>Expected output:</strong> On hover, the element smoothly grows to 1.5× its size.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --scale-factor {
+  syntax: &#x27;&lt;number&gt;&#x27;;
+  inherits: false;
+  initial-value: 1;
+}
+
+@keyframes grow {
+  to { --scale-factor: 1.5; }
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  background-color: gold;
+  border-radius: 50%;
+}
+
+.icon:hover {
+  animation: grow 0.4s ease forwards;
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 9</div>
+    <div class="phase-title">`@property` vs Regular CSS Variables — Side-by-Side Comparison</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Feature</th><th>Regular CSS Variable</th><th><code>@property</code> Registered Variable</th></tr></thead><tbody><tr><td>Syntax</td><td><code>--name: value</code> in a ruleset</td><td><code>@property --name { ... }</code> at-rule</td></tr><tr><td>Type checking</td><td>No — it's just text</td><td>Yes — you declare the type</td></tr><tr><td>Can be animated/transitioned</td><td>No — jumps instantly</td><td>Yes — smooth interpolation</td></tr><tr><td>Inheritance control</td><td>Always inherits by default</td><td>You choose <code>true</code> or <code>false</code></td></tr><tr><td>Default value</td><td>Not guaranteed</td><td>Guaranteed via <code>initial-value</code></td></tr><tr><td>Browser support</td><td>Universal</td><td>Modern browsers (Chrome 85+, Firefox 128+, Safari 16.4+)</td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong><code>@property</code> vs Regular CSS Variables — Side-by-Side Comparison</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 9</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 – Missing a Required Descriptor</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --my-colour {
+  syntax: &#x27;&lt;color&gt;&#x27;;
+  initial-value: red;
+  /* MISSING: inherits */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> All three descriptors are required. Missing <code>inherits</code> makes the entire <code>@property</code> block invalid and ignored.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --my-colour {
+  syntax: &#x27;&lt;color&gt;&#x27;;
+  inherits: false;
+  initial-value: red;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 – Wrong Syntax Value Format (Forgetting Quotes)</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --my-colour {
+  syntax: &lt;color&gt;;       /* Missing quotes! */
+  inherits: false;
+  initial-value: red;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> The <code>syntax</code> value MUST be inside single quotes <code>'&lt;color&gt;'</code>. Without quotes, it is invalid.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --my-colour {
+  syntax: &#x27;&lt;color&gt;&#x27;;
+  inherits: false;
+  initial-value: red;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 – <code>initial-value</code> Doesn't Match the <code>syntax</code> Type</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --my-size {
+  syntax: &#x27;&lt;length&gt;&#x27;;
+  inherits: false;
+  initial-value: blue;   /* &#x27;blue&#x27; is a colour, not a length! */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> The initial value must be a valid value for the declared syntax type. <code>blue</code> is not a CSS length.</p>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --my-size {
+  syntax: &#x27;&lt;length&gt;&#x27;;
+  inherits: false;
+  initial-value: 0px;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 – Forgetting to Set the Variable on the Element Before Transitioning</h3>
+<p class="v2-p"><strong>Wrong (transition may not work as expected):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --bg {
+  syntax: &#x27;&lt;color&gt;&#x27;;
+  inherits: false;
+  initial-value: blue;
+}
+
+.box {
+  background-color: var(--bg);
+  transition: --bg 1s ease;
+}
+
+.box:hover {
+  --bg: red;
+}</code></pre></div></div>
+<p class="v2-p">The transition from <code>initial-value</code> to the hover value may work, but it is best practice to explicitly set the starting value on the element itself for predictable results.</p>
+<p class="v2-p"><strong>Better:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.box {
+  --bg: blue;              /* Explicitly set */
+  background-color: var(--bg);
+  transition: --bg 1s ease;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 – Trying to Animate with <code>syntax: '*'</code></h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@property --my-value {
+  syntax: &#x27;*&#x27;;             /* No type info */
+  inherits: false;
+  initial-value: red;
+}
+
+.box {
+  background-color: var(--my-value);
+  transition: --my-value 1s ease;   /* Will NOT animate */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Problem:</strong> <code>syntax: '*'</code> means "any type" — the browser still cannot interpolate (animate) because it does not know if it is a colour, number, or something else.</p>
+<p class="v2-p"><strong>Correct:</strong> Use a specific type like <code>syntax: '&lt;color&gt;'</code>.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6 – Using <code>@property</code> Without Browser Support Fallback</h3>
+<p class="v2-p"><code>@property</code> is a newer feature. Older browsers (especially older Firefox and Safari) may not support it.</p>
+<p class="v2-p"><strong>Safe approach — always provide a fallback:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Fallback for browsers that don&#x27;t support @property */
+.box {
+  background-color: orange;
+}
+
+/* Modern browsers will use @property + var() */
+@property --box-bg {
+  syntax: &#x27;&lt;color&gt;&#x27;;
+  inherits: false;
+  initial-value: orange;
+}
+
+.box {
+  background-color: var(--box-bg);
+  transition: --box-bg 0.5s ease;
+}
+
+.box:hover {
+  --box-bg: purple;
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Better:
+`css
+.box {
+  --bg: blue;              /* Explicitly set */
+  background-color: var(--bg);
+  transition: --bg 1s ease;
+}
+`
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 9</div>
+    <div class="phase-title">Real-World Use Cases</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p"><code>@property</code> is used in professional web development for:</p>
+<ul class="v2-ul"><li><strong>Animated gradient backgrounds</strong> — rotating or shifting gradients on hero banners (as in the mini project).</li><li><strong>Theme switchers</strong> — smoothly transitioning between light and dark themes.</li><li><strong>Animated loaders and progress bars</strong> — using <code>&lt;percentage&gt;</code> or <code>&lt;length&gt;</code> types.</li><li><strong>Hover effects on buttons and cards</strong> — smooth colour transitions on interactive components.</li><li><strong>Data visualisations</strong> — animating chart bars, pie segments, or gauges using custom numeric properties.</li><li><strong>CSS-only animations</strong> that previously required JavaScript to achieve.</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Real-World Use Cases</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Stage 1 – Setup the HTML Structure</div>
+  <div class="build-desc"><strong>Milestone output:</strong> A plain page with a heading, paragraph, and link.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Animated Hero&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;section class=&quot;hero&quot;&gt;
+    &lt;h1&gt;Welcome to My Site&lt;/h1&gt;
+    &lt;p&gt;Built with the power of CSS @property&lt;/p&gt;
+    &lt;a href=&quot;#&quot; class=&quot;cta-btn&quot;&gt;Get Started&lt;/a&gt;
+  &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Animated Hero</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section class="hero">
+    <h1>Welcome to My Site</h1>
+    <p>Built with the power of CSS @property</p>
+    <a href="#" class="cta-btn">Get Started</a>
+  </section>
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
       ⬇ Download starter.html
     </button>
-    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
       🐙 Push to GitHub →
     </button>
   </div>
-  <script>
-  const __code = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>2D Transforms</title>
-<style>*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:900px;margin:0 auto;color:#0f172a;overflow-x:hidden}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.area{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;background:#e0f2fe;border-radius:14px;padding:30px 16px;margin-bottom:20px}
-.box{width:90px;height:90px;background:#0284c7;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:bold;text-align:center;cursor:pointer;transition:transform .3s ease,background .2s;padding:6px}
-.box:hover{background:#0369a1}
-.hover-grid{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
-.hcard{flex:1;min-width:150px;background:white;border:1.5px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease}
-.hcard h3{color:#0284c7;margin:0 0 6px;font-size:14px}.hcard p{color:#64748b;font-size:12px;margin:0}
-.hc-lift:hover{transform:translateY(-10px);box-shadow:0 16px 40px rgba(2,132,199,.2)}
-.hc-scale:hover{transform:scale(1.06);box-shadow:0 8px 20px rgba(2,132,199,.15)}
-.hc-rotate:hover{transform:rotate(3deg) scale(1.04)}
-.hc-combo:hover{transform:translateY(-6px) rotate(-2deg) scale(1.03)}
-.skew-wrap{background:#0284c7;transform:skewY(-3deg);margin:30px -24px;padding:56px 24px}
-.skew-inner{transform:skewY(3deg);text-align:center}
-.skew-inner h2{color:white;border-bottom-color:rgba(255,255,255,.3)}
-.skew-inner p{color:rgba(255,255,255,.8);max-width:480px;margin:0 auto}
-</style></head><body>
-<h1 style="color:#0284c7;margin-bottom:4px">CSS 2D Transforms</h1>
-<h2>Transform Functions</h2>
-<div class="area">
-<div class="box" style="transform:none">none</div>
-<div class="box" style="transform:translateX(12px)">translateX<br>+12px</div>
-<div class="box" style="transform:rotate(45deg)">rotate<br>45deg</div>
-<div class="box" style="transform:scale(1.3)">scale<br>1.3</div>
-<div class="box" style="transform:scaleX(-1)">scaleX(-1)<br>mirror</div>
-<div class="box" style="transform:skewX(20deg)">skewX<br>20deg</div>
-<div class="box" style="transform:rotate(15deg) scale(1.1)">rotate+<br>scale</div>
 </div>
-<h2>Interactive Hover Effects</h2>
-<div class="hover-grid">
-<div class="hcard hc-lift"><h3>Lift</h3><p>translateY(-10px)</p></div>
-<div class="hcard hc-scale"><h3>Scale</h3><p>scale(1.06)</p></div>
-<div class="hcard hc-rotate"><h3>Rotate</h3><p>rotate(3deg)</p></div>
-<div class="hcard hc-combo"><h3>Combo</h3><p>translate+rotate+scale</p></div>
-</div>
-<div class="skew-wrap"><div class="skew-inner"><h2>Diagonal Section</h2><p>transform:skewY(-3deg) on wrapper, skewY(3deg) on content to keep text straight.</p></div></div>
-</body></html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-66-css_2d_transforms</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 66 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-66-css_2d_transforms/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-66-stage-1-setup-the-html-structure</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 66 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-66-stage-1-setup-the-html-structure/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 66 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ translate, rotate and scale</li><li>✅ skew and diagonal sections</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_65.html" class="ln-btn">← Lesson 65</a>
-    <a href="lesson_67.html" class="ln-btn primary">Lesson 67 →</a>
-  </div>
+  <h2>🎉 Lesson 66 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Conceptual Understanding</li><li>✅ Simple Standalone Examples</li><li>✅ Complete `@property` Reference Table</li><li>✅ Guided Practice Exercises</li><li>✅ `@property` vs Regular CSS Variables — Side-by-Side Comparison</li><li>✅ Common Beginner Mistakes</li></ul>
+  <div class="lesson-nav"><a href="lesson_65.html" class="ln-btn">← Lesson 65</a><a href="lesson_67.html" class="ln-btn primary">Lesson 67 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 66 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 66 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_css_66_phase';
+const TOTAL=9,KEY='techbase_css_l66';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

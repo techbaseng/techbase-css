@@ -2,666 +2,1019 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 38: CSS Website Layout — Techbase CSS Course</title>
-<meta name="description" content="Build a complete multi-section website layout combining all CSS techniques learned so far">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 38: CSS Units — Absolute and Relative — Techbase CSS</title>
+<meta name="description" content="CSS Units — Absolute and Relative">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 38 of 73 &nbsp;·&nbsp; CSS Website Layout</span>
-  <div class="nav-actions"><a href="lesson_37.html" class="ln-btn">← Lesson 37</a><a href="lesson_39.html" class="ln-btn primary">Lesson 39 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 38 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 38</div>
-    <h1>CSS Website Layout</h1>
-    <p class="lesson-tagline">Build a complete multi-section website layout combining all CSS techniques learned so far</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My Complete Website Layout</span>
-      
-    </div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 38</div>
+    <h1>CSS Units — Absolute and Relative</h1>
+    <div class="l-hero-sub">8 phases · Build: Project Overview</div>
   </div>
+</div>
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 38</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Imagine you are decorating a room. You need to decide how big the furniture should be. You might say "this sofa is exactly 2 metres long" — that is a fixed, absolute measurement. Or you might say "this table should be half the width of the room" — that is a relative measurement, because it depends on the room size.</p>
+<p class="v2-p">CSS units work exactly the same way. When you write CSS to style a webpage, you often need to say how wide something should be, how tall, how far apart, or how big the text should be. To do that, you must use <strong>CSS units</strong> — special codes that tell the browser how to measure things.</p>
+<p class="v2-p">This lesson will teach you:</p>
+<ul class="v2-ul"><li>What CSS units are and why they exist</li><li>The difference between <strong>absolute units</strong> (fixed sizes) and <strong>relative units</strong> (flexible sizes)</li><li>Every important unit in detail, with real examples</li><li>When to use each unit and why</li><li>How to build a real mini-project using multiple units together</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to confidently size any element on a webpage using the right unit for the job.</p>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 8 phases</span>
+    <span>🏗️ Project Overview</span>
+  </div>
+</div></div>
 </section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 38!</div>
-  <h2>CSS Website Layout</h2>
-  <p>Build a complete multi-section website layout combining all CSS techniques learned so far. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
-</div>
-<div class="phase " id="phase1" data-phase="1">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">Header, Main and Footer Layout</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 8</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>A standard website layout: fixed <code>&lt;header&gt;</code> at top, <code>&lt;main&gt;</code> in the middle (taking remaining height with <code>min-height: 100vh</code>), sticky or fixed <code>&lt;footer&gt;</code> at the bottom. For multi-column layouts inside main: use Flexbox (for 1D rows/columns) or Grid (for 2D). The sidebar+content pattern uses <code>display: flex; gap: 24px;</code>.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Full-page layout */
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-header { position: sticky; top: 0; z-index: 100; }
-main   { flex: 1; }    /* grows to fill remaining space */
-footer { margin-top: auto; }
-
-/* Three-section inner layout */
-.page-body {
-  display: flex;
-  gap: 28px;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 32px 24px;
-}
-
-.sidebar  { width: 240px; flex-shrink: 0; }
-.content  { flex: 1; min-width: 0; } /* min-width prevents overflow */
-.right-col { width: 200px; flex-shrink: 0; }</pre></div>
-</div>
+    <p class="v2-p">Imagine you are decorating a room. You need to decide how big the furniture should be. You might say "this sofa is exactly 2 metres long" — that is a fixed, absolute measurement. Or you might say "this table should be half the width of the room" — that is a relative measurement, because it depends on the room size.</p>
+<p class="v2-p">CSS units work exactly the same way. When you write CSS to style a webpage, you often need to say how wide something should be, how tall, how far apart, or how big the text should be. To do that, you must use <strong>CSS units</strong> — special codes that tell the browser how to measure things.</p>
+<p class="v2-p">This lesson will teach you:</p>
+<ul class="v2-ul"><li>What CSS units are and why they exist</li><li>The difference between <strong>absolute units</strong> (fixed sizes) and <strong>relative units</strong> (flexible sizes)</li><li>Every important unit in detail, with real examples</li><li>When to use each unit and why</li><li>How to build a real mini-project using multiple units together</li></ul>
+<p class="v2-p">By the end of this lesson, you will be able to confidently size any element on a webpage using the right unit for the job.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Build a page with a sticky header, a three-column layout (sidebar + main content + aside), and a footer. The main content area should grow to fill available space. Use <code>min-width: 0</code> on flex children to prevent overflow with long content.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
+</div>
+<div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">Section Patterns and Full-bleed</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 8</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>Common section patterns: <code>full-bleed</code> (background goes edge to edge), <code>boxed</code> (content constrained by max-width inside a full-width section). Hero sections often use <code>min-height: 100vh; display: flex; align-items: center;</code>. Alternating section backgrounds create visual rhythm. A card grid inside a section uses <code>display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));</code></p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Full-bleed with centred content */
-.section { padding: 72px 24px; }
-.section .inner { max-width: 1000px; margin: 0 auto; }
-
-/* Alternating backgrounds */
-.section:nth-child(even) { background: #f0f9ff; }
-.section:nth-child(odd)  { background: white; }
-
-/* Hero */
-.hero {
-  min-height: 100vh;
-  display: flex; align-items: center;
-  background: linear-gradient(135deg, #0f172a, #0369a1);
-  padding: 60px 24px;
-}
-
-/* Feature card grid */
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
-}</pre></div>
-</div>
+    <p class="v2-p">Before diving into CSS units, you need to understand a few very basic ideas. If you already know CSS properties like <code>width</code>, <code>font-size</code>, <code>margin</code>, and <code>padding</code>, you are ready. If not, here is a quick summary:</p>
+<p class="v2-p"><strong>What is a CSS property?</strong> A CSS property is an instruction you give to a browser, like "make this element red" or "make this element 200 pixels wide." Properties always need a <strong>value</strong>, and many values require a <strong>unit</strong>. For example:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  font-size: 16px;   /* &#x27;font-size&#x27; is the property, &#x27;16px&#x27; is the value+unit */
+  width: 300px;      /* &#x27;width&#x27; is the property, &#x27;300px&#x27; is the value+unit */
+}</code></pre></div></div>
+<p class="v2-p"><strong>What is an element?</strong> An element is any piece of content on your page: a heading, a paragraph, a box, a button, an image — anything you see inside your HTML.</p>
+<p class="v2-p"><strong>What is a parent element?</strong> Elements can be nested inside each other. The element that contains another element is called the <strong>parent</strong>. This matters a lot for relative units, as you will see.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div&gt;          &lt;!-- This is the PARENT element --&gt;
+  &lt;p&gt;Hello&lt;/p&gt; &lt;!-- This is the CHILD element --&gt;
+&lt;/div&gt;</code></pre></div></div>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Add three full-bleed sections to your page: a hero, a features section, and a call-to-action. Alternate background colours between sections. The hero should be full-viewport height with centred content. The features section should have a responsive card grid.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My Complete Website Layout</div>
-  <p class="project-desc">Build a complete multi-section website: sticky header, hero, features grid, sidebar, and footer.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
-    </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;Complete Website Layout&lt;/title&gt;
-    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
-    &lt;link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"&gt;
-    &lt;style&gt;
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      html { scroll-behavior: smooth; }
-      body { font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #0f172a; display: flex; flex-direction: column; min-height: 100vh; }
-      /* HEADER */
-      header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; }
-      .nav { max-width: 1100px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; height: 62px; }
-      .brand { font-weight: 800; color: #0284c7; font-size: 1.05rem; margin-right: auto; }
-      .nav-links { display: flex; gap: 4px; }
-      .nav-links a { color: #64748b; text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 14px; border-radius: 8px; }
-      .nav-links a:hover { color: #0284c7; background: #f0f9ff; }
-      .nav-links .cta { background: #0284c7; color: white; border-radius: 8px; }
-      .nav-links .cta:hover { background: #0369a1; }
-      /* MAIN */
-      main { flex: 1; }
-      /* HERO */
-      .hero { min-height: 100vh; background: linear-gradient(135deg, #0f172a 0%, #0c4a6e 100%); display: flex; align-items: center; padding: 80px 28px; }
-      .hero-inner { max-width: 1100px; margin: 0 auto; }
-      .hero-tag { background: rgba(56,189,248,.15); color: #38bdf8; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; display: inline-block; margin-bottom: 20px; }
-      .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; color: white; letter-spacing: -.03em; margin-bottom: 16px; line-height: 1.1; }
-      .hero h1 span { color: #38bdf8; }
-      .hero p { color: rgba(255,255,255,.75); font-size: 1.1rem; max-width: 520px; margin-bottom: 28px; line-height: 1.7; }
-      .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-      .btn-p { background: #0284c7; color: white; text-decoration: none; padding: 13px 28px; border-radius: 11px; font-weight: 700; font-size: 15px; transition: .2s; }
-      .btn-p:hover { background: #0369a1; transform: translateY(-2px); }
-      .btn-o { border: 2px solid rgba(255,255,255,.3); color: white; text-decoration: none; padding: 12px 26px; border-radius: 11px; font-weight: 700; font-size: 15px; }
-      /* SECTIONS */
-      .section { padding: 72px 28px; }
-      .section.alt { background: #f0f9ff; }
-      .inner { max-width: 1100px; margin: 0 auto; }
-      .sec-tag { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #0284c7; margin-bottom: 8px; }
-      .sec-h { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
-      .sec-p { color: #64748b; margin-bottom: 32px; font-size: 1rem; }
-      /* FEATURE GRID */
-      .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-      .feature-card { background: white; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 24px; transition: .2s; }
-      .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(2,132,199,.1); border-color: #bae6fd; }
-      .feature-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
-      .feature-card h3 { color: #0f172a; margin: 0 0 8px; font-size: 15px; }
-      .feature-card p { color: #64748b; font-size: 13px; line-height: 1.7; margin: 0; }
-      /* SIDEBAR LAYOUT */
-      .page-body { display: flex; gap: 28px; }
-      .content-area { flex: 1; min-width: 0; }
-      .sidebar { width: 240px; flex-shrink: 0; }
-      .sidebar-card { background: white; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 20px; position: sticky; top: 78px; }
-      .sidebar-card h3 { color: #0284c7; margin: 0 0 12px; font-size: 14px; }
-      .sidebar-card ul { list-style: none; padding: 0; }
-      .sidebar-card li a { display: block; padding: 8px 0; font-size: 13px; color: #475569; text-decoration: none; border-bottom: 1px solid #f1f5f9; }
-      .sidebar-card li:last-child a { border: none; }
-      .sidebar-card li a:hover { color: #0284c7; }
-      /* CTA BANNER */
-      .cta-banner { background: linear-gradient(135deg, #0284c7, #0369a1); border-radius: 20px; padding: 48px; text-align: center; color: white; }
-      .cta-banner h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
-      .cta-banner p  { opacity: .85; margin-bottom: 24px; }
-      .cta-banner a  { background: white; color: #0284c7; font-weight: 800; padding: 13px 32px; border-radius: 11px; text-decoration: none; }
-      /* FOOTER */
-      footer { background: #0f172a; color: rgba(255,255,255,.5); padding: 32px 28px; font-size: 13px; }
-      .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-      footer a { color: rgba(255,255,255,.65); text-decoration: none; }
-      @media (max-width: 768px) { .page-body { flex-direction: column; } .sidebar { width: 100%; } .nav-links a:not(.cta) { display: none; } }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;header&gt;
-      &lt;div class="nav"&gt;
-        &lt;span class="brand"&gt;⚡ Techbase Academy&lt;/span&gt;
-        &lt;div class="nav-links"&gt;
-          &lt;a href="#features"&gt;Courses&lt;/a&gt;
-          &lt;a href="#about"&gt;About&lt;/a&gt;
-          &lt;a href="#cta" class="cta"&gt;Get Started →&lt;/a&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/header&gt;
-    &lt;main&gt;
-      &lt;!-- HERO --&gt;
-      &lt;div class="hero"&gt;
-        &lt;div class="hero-inner"&gt;
-          &lt;span class="hero-tag"&gt;🇳🇬 Ibadan, Nigeria&lt;/span&gt;
-          &lt;h1&gt;Learn to Code&lt;br&gt;&lt;span&gt;Build the Future&lt;/span&gt;&lt;/h1&gt;
-          &lt;p&gt;Techbase Academy offers hands-on STEM education — HTML, CSS, JavaScript, Python, Scratch and Robotics for students across Nigeria.&lt;/p&gt;
-          &lt;div class="hero-btns"&gt;
-            &lt;a href="#features" class="btn-p"&gt;Explore Courses →&lt;/a&gt;
-            &lt;a href="#cta" class="btn-o"&gt;Get Started Free&lt;/a&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;!-- FEATURES --&gt;
-      &lt;div class="section" id="features"&gt;
-        &lt;div class="inner"&gt;
-          &lt;div class="sec-tag"&gt;What we teach&lt;/div&gt;
-          &lt;h2 class="sec-h"&gt;Our Courses&lt;/h2&gt;
-          &lt;p class="sec-p"&gt;Six complete courses for beginners to advanced learners.&lt;/p&gt;
-          &lt;div class="feature-grid"&gt;
-            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🌐&lt;/span&gt;&lt;h3&gt;HTML&lt;/h3&gt;&lt;p&gt;Structure the web with semantic HTML — 34 lessons, 3 capstone projects.&lt;/p&gt;&lt;/div&gt;
-            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🎨&lt;/span&gt;&lt;h3&gt;CSS&lt;/h3&gt;&lt;p&gt;Style everything beautifully — 73 lessons, Flexbox, Grid and animations.&lt;/p&gt;&lt;/div&gt;
-            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;⚡&lt;/span&gt;&lt;h3&gt;JavaScript&lt;/h3&gt;&lt;p&gt;Make pages interactive — 46 lessons from variables to DOM manipulation.&lt;/p&gt;&lt;/div&gt;
-            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🐍&lt;/span&gt;&lt;h3&gt;Python&lt;/h3&gt;&lt;p&gt;Data, automation and AI basics — 45 lessons from print() to machine learning.&lt;/p&gt;&lt;/div&gt;
-            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🐱&lt;/span&gt;&lt;h3&gt;Scratch&lt;/h3&gt;&lt;p&gt;Visual programming for beginners — 35 projects with sprites and animations.&lt;/p&gt;&lt;/div&gt;
-            &lt;div class="feature-card"&gt;&lt;span class="feature-icon"&gt;🤖&lt;/span&gt;&lt;h3&gt;Robotics&lt;/h3&gt;&lt;p&gt;Hands-on micro:bit projects — 123 lessons from beginner to advanced.&lt;/p&gt;&lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;!-- SIDEBAR LAYOUT --&gt;
-      &lt;div class="section alt" id="about"&gt;
-        &lt;div class="inner"&gt;
-          &lt;div class="page-body"&gt;
-            &lt;div class="content-area"&gt;
-              &lt;div class="sec-tag"&gt;About Techbase&lt;/div&gt;
-              &lt;h2 class="sec-h"&gt;Our Mission&lt;/h2&gt;
-              &lt;p style="color:#334155;line-height:1.8;margin-bottom:14px"&gt;Techbase Consultant Services was founded in Ibadan, Oyo State, Nigeria with the mission to make quality STEM education accessible to every student across the country.&lt;/p&gt;
-              &lt;p style="color:#334155;line-height:1.8"&gt;Our curriculum is built around project-based learning — students build real, deployable web projects at the end of every lesson and push their work to GitHub Pages.&lt;/p&gt;
-            &lt;/div&gt;
-            &lt;aside class="sidebar"&gt;
-              &lt;div class="sidebar-card"&gt;
-                &lt;h3&gt;📌 Quick Links&lt;/h3&gt;
-                &lt;ul&gt;
-                  &lt;li&gt;&lt;a href="#"&gt;HTML Course&lt;/a&gt;&lt;/li&gt;
-                  &lt;li&gt;&lt;a href="#"&gt;CSS Course&lt;/a&gt;&lt;/li&gt;
-                  &lt;li&gt;&lt;a href="#"&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
-                  &lt;li&gt;&lt;a href="#"&gt;GitHub Portfolio&lt;/a&gt;&lt;/li&gt;
-                  &lt;li&gt;&lt;a href="#"&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
-                &lt;/ul&gt;
-              &lt;/div&gt;
-            &lt;/aside&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;!-- CTA --&gt;
-      &lt;div class="section" id="cta"&gt;
-        &lt;div class="inner"&gt;
-          &lt;div class="cta-banner"&gt;
-            &lt;h2&gt;Ready to Start Coding?&lt;/h2&gt;
-            &lt;p&gt;Join hundreds of students already building with Techbase Academy.&lt;/p&gt;
-            &lt;a href="#"&gt;Start Learning Free →&lt;/a&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/main&gt;
-    &lt;footer&gt;
-      &lt;div class="footer-inner"&gt;
-        &lt;span&gt;© 2025 Techbase Consultant Services · Ibadan, Nigeria&lt;/span&gt;
-        &lt;div style="display:flex;gap:16px"&gt;
-          &lt;a href="#"&gt;Privacy&lt;/a&gt;
-          &lt;a href="#"&gt;Terms&lt;/a&gt;
-          &lt;a href="#"&gt;Contact&lt;/a&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/footer&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 8</div>
+    <div class="phase-title">Conceptual Understanding</div>
+    <div class="phase-check" id="chk3"></div>
   </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Website Layout</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      html { scroll-behavior: smooth; }
-      body { font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #0f172a; display: flex; flex-direction: column; min-height: 100vh; }
-      /* HEADER */
-      header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; }
-      .nav { max-width: 1100px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; height: 62px; }
-      .brand { font-weight: 800; color: #0284c7; font-size: 1.05rem; margin-right: auto; }
-      .nav-links { display: flex; gap: 4px; }
-      .nav-links a { color: #64748b; text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 14px; border-radius: 8px; }
-      .nav-links a:hover { color: #0284c7; background: #f0f9ff; }
-      .nav-links .cta { background: #0284c7; color: white; border-radius: 8px; }
-      .nav-links .cta:hover { background: #0369a1; }
-      /* MAIN */
-      main { flex: 1; }
-      /* HERO */
-      .hero { min-height: 100vh; background: linear-gradient(135deg, #0f172a 0%, #0c4a6e 100%); display: flex; align-items: center; padding: 80px 28px; }
-      .hero-inner { max-width: 1100px; margin: 0 auto; }
-      .hero-tag { background: rgba(56,189,248,.15); color: #38bdf8; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; display: inline-block; margin-bottom: 20px; }
-      .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; color: white; letter-spacing: -.03em; margin-bottom: 16px; line-height: 1.1; }
-      .hero h1 span { color: #38bdf8; }
-      .hero p { color: rgba(255,255,255,.75); font-size: 1.1rem; max-width: 520px; margin-bottom: 28px; line-height: 1.7; }
-      .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-      .btn-p { background: #0284c7; color: white; text-decoration: none; padding: 13px 28px; border-radius: 11px; font-weight: 700; font-size: 15px; transition: .2s; }
-      .btn-p:hover { background: #0369a1; transform: translateY(-2px); }
-      .btn-o { border: 2px solid rgba(255,255,255,.3); color: white; text-decoration: none; padding: 12px 26px; border-radius: 11px; font-weight: 700; font-size: 15px; }
-      /* SECTIONS */
-      .section { padding: 72px 28px; }
-      .section.alt { background: #f0f9ff; }
-      .inner { max-width: 1100px; margin: 0 auto; }
-      .sec-tag { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #0284c7; margin-bottom: 8px; }
-      .sec-h { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
-      .sec-p { color: #64748b; margin-bottom: 32px; font-size: 1rem; }
-      /* FEATURE GRID */
-      .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-      .feature-card { background: white; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 24px; transition: .2s; }
-      .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(2,132,199,.1); border-color: #bae6fd; }
-      .feature-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
-      .feature-card h3 { color: #0f172a; margin: 0 0 8px; font-size: 15px; }
-      .feature-card p { color: #64748b; font-size: 13px; line-height: 1.7; margin: 0; }
-      /* SIDEBAR LAYOUT */
-      .page-body { display: flex; gap: 28px; }
-      .content-area { flex: 1; min-width: 0; }
-      .sidebar { width: 240px; flex-shrink: 0; }
-      .sidebar-card { background: white; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 20px; position: sticky; top: 78px; }
-      .sidebar-card h3 { color: #0284c7; margin: 0 0 12px; font-size: 14px; }
-      .sidebar-card ul { list-style: none; padding: 0; }
-      .sidebar-card li a { display: block; padding: 8px 0; font-size: 13px; color: #475569; text-decoration: none; border-bottom: 1px solid #f1f5f9; }
-      .sidebar-card li:last-child a { border: none; }
-      .sidebar-card li a:hover { color: #0284c7; }
-      /* CTA BANNER */
-      .cta-banner { background: linear-gradient(135deg, #0284c7, #0369a1); border-radius: 20px; padding: 48px; text-align: center; color: white; }
-      .cta-banner h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
-      .cta-banner p  { opacity: .85; margin-bottom: 24px; }
-      .cta-banner a  { background: white; color: #0284c7; font-weight: 800; padding: 13px 32px; border-radius: 11px; text-decoration: none; }
-      /* FOOTER */
-      footer { background: #0f172a; color: rgba(255,255,255,.5); padding: 32px 28px; font-size: 13px; }
-      .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-      footer a { color: rgba(255,255,255,.65); text-decoration: none; }
-      @media (max-width: 768px) { .page-body { flex-direction: column; } .sidebar { width: 100%; } .nav-links a:not(.cta) { display: none; } }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="nav">
-        <span class="brand">⚡ Techbase Academy</span>
-        <div class="nav-links">
-          <a href="#features">Courses</a>
-          <a href="#about">About</a>
-          <a href="#cta" class="cta">Get Started →</a>
-        </div>
-      </div>
-    </header>
-    <main>
-      <!-- HERO -->
-      <div class="hero">
-        <div class="hero-inner">
-          <span class="hero-tag">🇳🇬 Ibadan, Nigeria</span>
-          <h1>Learn to Code<br><span>Build the Future</span></h1>
-          <p>Techbase Academy offers hands-on STEM education — HTML, CSS, JavaScript, Python, Scratch and Robotics for students across Nigeria.</p>
-          <div class="hero-btns">
-            <a href="#features" class="btn-p">Explore Courses →</a>
-            <a href="#cta" class="btn-o">Get Started Free</a>
-          </div>
-        </div>
-      </div>
-      <!-- FEATURES -->
-      <div class="section" id="features">
-        <div class="inner">
-          <div class="sec-tag">What we teach</div>
-          <h2 class="sec-h">Our Courses</h2>
-          <p class="sec-p">Six complete courses for beginners to advanced learners.</p>
-          <div class="feature-grid">
-            <div class="feature-card"><span class="feature-icon">🌐</span><h3>HTML</h3><p>Structure the web with semantic HTML — 34 lessons, 3 capstone projects.</p></div>
-            <div class="feature-card"><span class="feature-icon">🎨</span><h3>CSS</h3><p>Style everything beautifully — 73 lessons, Flexbox, Grid and animations.</p></div>
-            <div class="feature-card"><span class="feature-icon">⚡</span><h3>JavaScript</h3><p>Make pages interactive — 46 lessons from variables to DOM manipulation.</p></div>
-            <div class="feature-card"><span class="feature-icon">🐍</span><h3>Python</h3><p>Data, automation and AI basics — 45 lessons from print() to machine learning.</p></div>
-            <div class="feature-card"><span class="feature-icon">🐱</span><h3>Scratch</h3><p>Visual programming for beginners — 35 projects with sprites and animations.</p></div>
-            <div class="feature-card"><span class="feature-icon">🤖</span><h3>Robotics</h3><p>Hands-on micro:bit projects — 123 lessons from beginner to advanced.</p></div>
-          </div>
-        </div>
-      </div>
-      <!-- SIDEBAR LAYOUT -->
-      <div class="section alt" id="about">
-        <div class="inner">
-          <div class="page-body">
-            <div class="content-area">
-              <div class="sec-tag">About Techbase</div>
-              <h2 class="sec-h">Our Mission</h2>
-              <p style="color:#334155;line-height:1.8;margin-bottom:14px">Techbase Consultant Services was founded in Ibadan, Oyo State, Nigeria with the mission to make quality STEM education accessible to every student across the country.</p>
-              <p style="color:#334155;line-height:1.8">Our curriculum is built around project-based learning — students build real, deployable web projects at the end of every lesson and push their work to GitHub Pages.</p>
-            </div>
-            <aside class="sidebar">
-              <div class="sidebar-card">
-                <h3>📌 Quick Links</h3>
-                <ul>
-                  <li><a href="#">HTML Course</a></li>
-                  <li><a href="#">CSS Course</a></li>
-                  <li><a href="#">JavaScript</a></li>
-                  <li><a href="#">GitHub Portfolio</a></li>
-                  <li><a href="#">Contact Us</a></li>
-                </ul>
-              </div>
-            </aside>
-          </div>
-        </div>
-      </div>
-      <!-- CTA -->
-      <div class="section" id="cta">
-        <div class="inner">
-          <div class="cta-banner">
-            <h2>Ready to Start Coding?</h2>
-            <p>Join hundreds of students already building with Techbase Academy.</p>
-            <a href="#">Start Learning Free →</a>
-          </div>
-        </div>
-      </div>
-    </main>
-    <footer>
-      <div class="footer-inner">
-        <span>© 2025 Techbase Consultant Services · Ibadan, Nigeria</span>
-        <div style="display:flex;gap:16px">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Contact</a>
-        </div>
-      </div>
-    </footer>
-  </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
+  <div class="phase-body">
+    <h3 class="v2-h3">What Are CSS Units?</h3>
+<p class="v2-p">A <strong>CSS unit</strong> is a code that comes immediately after a number in a CSS value. It tells the browser <em>what kind of measurement</em> the number represents.</p>
+<p class="v2-p">For example:</p>
+<ul class="v2-ul"><li><code>16px</code> — the number <code>16</code>, measured in <strong>pixels</strong></li><li><code>2em</code> — the number <code>2</code>, measured in <strong>em</strong> (relative to font size)</li><li><code>50%</code> — the number <code>50</code>, measured as a <strong>percentage</strong></li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Rule to remember:</strong> There must be NO space between the number and the unit. <code>16px</code> is correct. <code>16 px</code> is wrong and will be ignored by the browser.</p>
+<p class="v2-p"><strong>Special exception:</strong> If the value is <code>0</code>, you do not need to write a unit at all. <code>margin: 0;</code> is perfectly valid.</p></blockquote>
+<h3 class="v2-h3">The Two Big Categories of CSS Units</h3>
+<p class="v2-p">CSS units are divided into exactly two categories:</p>
+<p class="v2-p"><strong>1. Absolute Units</strong> — These are fixed. They do not change no matter what screen, window, or device you use. Think of them like measuring in centimetres with a ruler — 2cm is always 2cm.</p>
+<p class="v2-p"><strong>2. Relative Units</strong> — These are flexible. They calculate their actual size based on something else, such as the parent element's font size, the viewport (screen) size, or the root element's font size. Think of them like percentages — "50% of whatever the parent's width is."</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Conceptual Understanding</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 8</div>
+    <div class="phase-title">Part 1: Absolute CSS Units</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Are Absolute Units?</h3>
+<p class="v2-p">Absolute units are <strong>fixed and unchanging</strong>. If you set something to <code>100px</code>, it will always be exactly 100 pixels wide — whether viewed on a giant desktop monitor or a small phone screen.</p>
+<p class="v2-p">The most important thing to understand: <strong>absolute units do not respond to the user's screen or preferences.</strong> They are locked in place.</p>
+<p class="v2-p"><strong>When should you use absolute units?</strong></p>
+<ul class="v2-ul"><li>For <strong>print stylesheets</strong> (printing a document to paper, where you know exactly the size of the paper)</li><li>For <strong>fine decorative details</strong> where you want pixel-perfect control</li><li>When the output device size is completely known in advance</li></ul>
+<p class="v2-p"><strong>When should you NOT use absolute units?</strong></p>
+<ul class="v2-ul"><li>For responsive web design (making websites that look good on all screen sizes)</li><li>For font sizes on screens (because it prevents users from scaling text with their browser's zoom)</li></ul>
+<h3 class="v2-h3">The Complete Table of Absolute CSS Units</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Unit</th><th>Full Name</th><th>Definition</th><th>Equivalent</th></tr></thead><tbody><tr><td><code>px</code></td><td>Pixels</td><td>1px = 1/96th of 1 inch</td><td>Most common absolute unit</td></tr><tr><td><code>pt</code></td><td>Points</td><td>1pt = 1/72nd of 1 inch</td><td>Common in print/word processors</td></tr><tr><td><code>cm</code></td><td>Centimetres</td><td>Real-world centimetres</td><td>1cm = 37.8px</td></tr><tr><td><code>mm</code></td><td>Millimetres</td><td>Real-world millimetres</td><td>10mm = 1cm</td></tr><tr><td><code>in</code></td><td>Inches</td><td>Real-world inches</td><td>1in = 96px = 2.54cm</td></tr><tr><td><code>pc</code></td><td>Picas</td><td>Typographic unit</td><td>1pc = 12pt</td></tr></tbody></table></div>
+<h3 class="v2-h3">Deep Dive: The <code>px</code> Unit (Pixels)</h3>
+<p class="v2-p"><code>px</code> stands for <strong>pixel</strong>. On a screen, pixels are the tiny dots of light that make up what you see. Your screen might be 1920 pixels wide and 1080 pixels tall.</p>
+<p class="v2-p">In CSS, <strong>1px is defined as 1/96th of one inch</strong>. This is a CSS standard, not the literal physical pixel on the screen.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Analogy:</strong> Think of a pixel as one tiny square tile on a mosaic. The more tiles (pixels) you use, the bigger and higher-quality the picture looks.</p></blockquote>
+<p class="v2-p"><strong>Simple Example 1: Setting a box width with px</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  width: 200px;
+  height: 100px;
+  background-color: lightblue;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What this does:</strong></p>
+<ul class="v2-ul"><li><code>width: 200px;</code> — Makes the box exactly 200 pixels wide</li><li><code>height: 100px;</code> — Makes the box exactly 100 pixels tall</li><li>The box will always be 200×100 px no matter what</li></ul>
+<p class="v2-p"><strong>Expected output:</strong> A light blue rectangle, always the same size regardless of the screen.</p>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Simple Example 2: Setting font size with px</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  font-size: 60px;
+}
+
+p {
+  font-size: 16px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>What this does:</strong></p>
+<ul class="v2-ul"><li>The <code>h1</code> heading will be exactly 60 pixels tall as text</li><li>The <code>p</code> paragraph will be exactly 16 pixels tall as text</li></ul>
+<p class="v2-p"><strong>Expected output:</strong> A very large heading followed by small, normal-sized paragraph text.</p>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> What happens if a user has poor eyesight and zooms their browser to make text bigger? With <code>px</code> set on fonts, this can sometimes cause issues. This is one reason relative units like <code>em</code> and <code>rem</code> are preferred for text.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>pt</code> Unit (Points)</h3>
+<p class="v2-p"><code>pt</code> stands for <strong>point</strong>, a measurement system used in typography (the art of arranging text) and word processing software (like Microsoft Word).</p>
+<p class="v2-p"><strong>1pt = 1/72nd of one inch</strong></p>
+<p class="v2-p">If you open Microsoft Word and set your font size to 12pt, that is the same system CSS uses with <code>pt</code>.</p>
+<p class="v2-p"><strong>When to use <code>pt</code>:</strong> Mostly in <strong>print stylesheets</strong>. If you are designing how a webpage will look when printed on paper, <code>pt</code> makes sense because printers understand points well.</p>
+<p class="v2-p"><strong>Simple Example:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@media print {
+  body {
+    font-size: 12pt;  /* Standard print size — like a Word document */
   }
-  </script>
-</div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> When the user prints the page, text will appear at 12pt (normal print size).</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>cm</code>, <code>mm</code>, <code>in</code>, and <code>pc</code> Units</h3>
+<p class="v2-p">These units are all based on <strong>real-world physical measurements</strong>. Here is how they relate to each other:</p>
+<ul class="v2-ul"><li>1 inch (<code>in</code>) = 2.54 centimetres = 96 pixels in CSS</li><li>1 centimetre (<code>cm</code>) = 10 millimetres = about 37.8 pixels</li><li>1 millimetre (<code>mm</code>) = about 3.78 pixels</li><li>1 pica (<code>pc</code>) = 12 points = 16 pixels</li></ul>
+<p class="v2-p"><strong>Example using real-world measurements:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.print-box {
+  width: 10cm;        /* 10 centimetres wide */
+  height: 5cm;        /* 5 centimetres tall */
+  border: 1mm solid black;  /* 1 millimetre thick border */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output on screen:</strong> A box that approximates the physical measurements, though it will look slightly different depending on the monitor's pixel density.</p>
+<blockquote class="v2-bq"><p class="v2-p">⚠️ <strong>Important note:</strong> On screens, <code>cm</code>, <code>mm</code>, and <code>in</code> are converted to pixels by the browser. They are NOT literally physical centimetres on the screen. Physical accuracy is only reliable when printing. On a screen, <code>1cm</code> might not actually be 1 real centimetre because monitors have different pixel densities.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Absolute Units — Side-by-Side Comparison</h3>
+<p class="v2-p">Here is how all absolute units compare to each other in CSS:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>1in = 96px = 2.54cm = 25.4mm = 72pt = 6pc</code></pre></div></div>
+<p class="v2-p"><strong>Quick demo — all measuring the same width:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.box-px { width: 96px; }    /* same visual width */
+.box-pt { width: 72pt; }    /* same visual width */
+.box-cm { width: 2.54cm; }  /* same visual width */
+.box-in { width: 1in; }     /* same visual width */</code></pre></div></div>
+<p class="v2-p">All four boxes above will appear the same width on screen because they all equal 1 inch in CSS.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Absolute CSS Units</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-38-css_website_layout</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 38 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-38-css_website_layout/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 8</div>
+    <div class="phase-title">Part 2: Relative CSS Units</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Are Relative Units?</h3>
+<p class="v2-p">Relative units are <strong>flexible</strong> — their actual size depends on something else. That "something else" might be:</p>
+<ul class="v2-ul"><li>The <strong>parent element's</strong> font size (for <code>em</code>)</li><li>The <strong>root element's</strong> font size (for <code>rem</code>)</li><li>The <strong>viewport's</strong> width or height (for <code>vw</code>, <code>vh</code>)</li><li>The <strong>parent element's</strong> width or height (for <code>%</code>)</li></ul>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Analogy:</strong> A relative unit is like saying "I want my coffee cup to be twice as tall as my teacup." The actual height changes depending on how tall the teacup is. Change the teacup, and the coffee cup height automatically changes too.</p></blockquote>
+<p class="v2-p"><strong>Why are relative units so powerful?</strong></p>
+<ul class="v2-ul"><li>They automatically adapt to different screen sizes</li><li>They respect the user's browser zoom and accessibility settings</li><li>They make responsive design much easier</li><li>Changing one value can cascade and resize many elements at once</li></ul>
+<h3 class="v2-h3">Complete Table of Relative CSS Units</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Unit</th><th>Based On</th><th>Description</th></tr></thead><tbody><tr><td><code>em</code></td><td>Parent element's font size</td><td>2em = twice the parent's font size</td></tr><tr><td><code>rem</code></td><td>Root element's font size</td><td>2rem = twice the <code>&lt;html&gt;</code> element's font size</td></tr><tr><td><code>%</code></td><td>Parent element's size</td><td>50% = half the parent's width (or height)</td></tr><tr><td><code>vw</code></td><td>Viewport width</td><td>50vw = 50% of the screen width</td></tr><tr><td><code>vh</code></td><td>Viewport height</td><td>50vh = 50% of the screen height</td></tr><tr><td><code>vmin</code></td><td>Smaller of vw or vh</td><td>10vmin = 10% of the smaller screen dimension</td></tr><tr><td><code>vmax</code></td><td>Larger of vw or vh</td><td>10vmax = 10% of the larger screen dimension</td></tr><tr><td><code>ch</code></td><td>Width of the "0" character</td><td>Useful for setting text line widths</td></tr><tr><td><code>ex</code></td><td>Height of the lowercase "x"</td><td>Based on the font's x-height</td></tr><tr><td><code>lh</code></td><td>Line height of the element</td><td>Useful for spacing based on text line height</td></tr></tbody></table></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>em</code> Unit — Relative to Parent Font Size</h3>
+<p class="v2-p"><code>em</code> is one of the most commonly used relative units. It is relative to the <strong>font size of the current element's parent</strong>.</p>
+<p class="v2-p"><strong>1em = the font size of the parent element</strong></p>
+<p class="v2-p">So if the parent element has <code>font-size: 20px</code>, then <code>1em = 20px</code>, and <code>2em = 40px</code>.</p>
+<p class="v2-p"><strong>Simple Example 1: <code>em</code> for font sizes</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;parent&quot;&gt;
+  &lt;p class=&quot;child&quot;&gt;Hello, world!&lt;/p&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.parent {
+  font-size: 20px;  /* Parent is 20px */
+}
+
+.child {
+  font-size: 1.5em;  /* 1.5 × 20px = 30px */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> The paragraph text appears at 30px (1.5 times the parent's 20px).</p>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Simple Example 2: <code>em</code> for spacing</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  font-size: 16px;
+  margin-bottom: 2em;  /* 2 × 16px = 32px gap below each paragraph */
+  padding: 1em;        /* 1 × 16px = 16px padding on all sides */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> Each paragraph has a 32px gap below it and 16px of breathing room inside.</p>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> What happens if you change <code>font-size: 16px</code> to <code>font-size: 24px</code>? The margin and padding will also change automatically! <code>margin-bottom</code> becomes 48px, and <code>padding</code> becomes 24px. This is the power of <code>em</code> — everything scales together.</p></blockquote>
+<hr class="v2-hr">
+<p class="v2-p"><strong>⚠️ The em compounding problem:</strong></p>
+<p class="v2-p"><code>em</code> has a famous quirk — it compounds (multiplies) when elements are nested inside each other.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;ul&gt;
+  &lt;li&gt;Item 1
+    &lt;ul&gt;
+      &lt;li&gt;Sub item 1
+        &lt;ul&gt;
+          &lt;li&gt;Sub-sub item 1&lt;/li&gt;  &lt;!-- Gets very large! --&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>ul {
+  font-size: 1.2em;  /* Each nested ul is 1.2× its parent */
+}</code></pre></div></div>
+<p class="v2-p">If the root is 16px:</p>
+<ul class="v2-ul"><li>First level: 1.2 × 16 = 19.2px</li><li>Second level: 1.2 × 19.2 = 23.04px</li><li>Third level: 1.2 × 23.04 = 27.65px</li></ul>
+<p class="v2-p">The text keeps getting bigger with every level of nesting! This is why <code>rem</code> was invented.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>rem</code> Unit — Relative to Root Font Size</h3>
+<p class="v2-p"><code>rem</code> stands for <strong>root em</strong>. It works just like <code>em</code>, but instead of being relative to the parent element, it is ALWAYS relative to the <strong>root element</strong> — the <code>&lt;html&gt;</code> element.</p>
+<p class="v2-p"><strong>This means <code>rem</code> NEVER compounds.</strong> It always refers back to the same base size.</p>
+<p class="v2-p"><strong>1rem = the font size of the <code>&lt;html&gt;</code> element (usually 16px by default)</strong></p>
+<p class="v2-p"><strong>Simple Example 1: rem stays consistent</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>html {
+  font-size: 16px;  /* Root size = 16px */
+}
+
+h1 { font-size: 3rem; }    /* 3 × 16px = 48px */
+h2 { font-size: 2rem; }    /* 2 × 16px = 32px */
+h3 { font-size: 1.5rem; }  /* 1.5 × 16px = 24px */
+p  { font-size: 1rem; }    /* 1 × 16px = 16px */</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<ul class="v2-ul"><li><code>h1</code> text appears at 48px</li><li><code>h2</code> text appears at 32px</li><li><code>h3</code> text appears at 24px</li><li><code>p</code> text appears at 16px</li></ul>
+<p class="v2-p">No matter how deeply nested these elements are, the sizes will ALWAYS be what is shown above.</p>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Simple Example 2: The real power of rem — global scaling</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>html {
+  font-size: 16px;  /* Change this ONE value... */
+}
+
+h1 { font-size: 3rem; }   /* ...and ALL these change automatically */
+h2 { font-size: 2rem; }
+p  { font-size: 1rem; }</code></pre></div></div>
+<p class="v2-p">If you change <code>font-size: 16px</code> to <code>font-size: 20px</code>, suddenly:</p>
+<ul class="v2-ul"><li><code>h1</code> becomes 60px (3 × 20)</li><li><code>h2</code> becomes 40px (2 × 20)</li><li><code>p</code> becomes 20px (1 × 20)</li></ul>
+<p class="v2-p"><strong>By changing just ONE number, you resize your entire website's typography.</strong> This is extremely powerful for design systems.</p>
+<blockquote class="v2-bq"><p class="v2-p">🌍 <strong>Real-world use:</strong> Professional CSS design systems (like Google's Material Design) use <code>rem</code> for all font sizes so that the entire typography scale can be adjusted by changing just one root font-size value.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>%</code> Unit — Percentage</h3>
+<p class="v2-p">The percentage unit <code>%</code> is one of the most intuitive relative units. It calculates a size <strong>as a percentage of the parent element's size</strong>.</p>
+<p class="v2-p">For <code>width</code> and <code>height</code>: <code>%</code> is relative to the <strong>parent's width or height</strong>. For <code>font-size</code>: <code>%</code> is relative to the <strong>parent's font size</strong>. For <code>margin</code> and <code>padding</code>: <code>%</code> is always relative to the <strong>parent's width</strong> (even for top/bottom margin).</p>
+<p class="v2-p"><strong>Simple Example 1: Width as percentage</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;container&quot;&gt;
+  &lt;div class=&quot;box&quot;&gt;I am 50% wide&lt;/div&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+  width: 800px;
+}
+
+.box {
+  width: 50%;  /* 50% of 800px = 400px */
+  background-color: coral;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> The box is 400px wide (half the container).</p>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Simple Example 2: Font size as percentage</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+  font-size: 16px;  /* Base size */
+}
+
+p {
+  font-size: 150%;  /* 150% of 16px = 24px */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> Paragraph text appears at 24px.</p>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Simple Example 3: Percentage responding to resize</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.sidebar {
+  width: 25%;   /* Always a quarter of its parent */
+}
+
+.main-content {
+  width: 75%;   /* Always three-quarters of its parent */
+}</code></pre></div></div>
+<p class="v2-p">If the parent is 1200px wide: sidebar = 300px, main content = 900px. If the parent is 800px wide: sidebar = 200px, main content = 600px.</p>
+<p class="v2-p">This is the foundation of <strong>responsive design</strong> — layouts that automatically adjust.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>vw</code> and <code>vh</code> Units — Viewport Width and Height</h3>
+<p class="v2-p">The <strong>viewport</strong> is the visible area of the browser window. Think of it as the "window" through which you see the webpage.</p>
+<ul class="v2-ul"><li><code>vw</code> stands for <strong>viewport width</strong>. <code>1vw = 1% of the viewport width</code></li><li><code>vh</code> stands for <strong>viewport height</strong>. <code>1vh = 1% of the viewport height</code></li><li><code>100vw</code> = full viewport width</li><li><code>100vh</code> = full viewport height</li></ul>
+<p class="v2-p"><strong>Simple Example 1: Full-screen hero section</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+  width: 100vw;   /* Exactly as wide as the browser window */
+  height: 100vh;  /* Exactly as tall as the browser window */
+  background-color: navy;
+  color: white;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A full-screen navy blue section that fills the entire browser window, no matter what size the window is.</p>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Simple Example 2: Responsive heading with vw</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+  font-size: 5vw;  /* Font size = 5% of viewport width */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<ul class="v2-ul"><li>On a 1000px-wide screen: <code>5% × 1000 = 50px</code> font size</li><li>On a 600px-wide screen: <code>5% × 600 = 30px</code> font size</li><li>On a 400px-wide screen: <code>5% × 400 = 20px</code> font size</li></ul>
+<p class="v2-p">The font automatically gets smaller on smaller screens — no media queries needed!</p>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> What happens if someone resizes their browser window while looking at a heading set with <code>vw</code>? Try it — the heading will smoothly grow and shrink in real time!</p></blockquote>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Simple Example 3: Side-by-side panels taking up the full screen</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.left-panel {
+  width: 30vw;
+  height: 100vh;
+  background-color: #2c3e50;
+}
+
+.right-panel {
+  width: 70vw;
+  height: 100vh;
+  background-color: #ecf0f1;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> Two panels that together fill the entire screen: left panel takes 30% of the width, right takes 70% — always, on any screen size.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>vmin</code> and <code>vmax</code> Units</h3>
+<p class="v2-p">These two units are special — they pick between <code>vw</code> and <code>vh</code> based on which is smaller or larger.</p>
+<ul class="v2-ul"><li><code>vmin</code> — 1% of the <strong>smaller</strong> dimension (width or height)</li><li><code>vmax</code> — 1% of the <strong>larger</strong> dimension (width or height)</li></ul>
+<p class="v2-p"><strong>When to use them:</strong> For elements that should look good on both landscape and portrait orientations of a device.</p>
+<p class="v2-p"><strong>Example:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.square {
+  width: 50vmin;   /* 50% of the SMALLER of vw or vh */
+  height: 50vmin;
+  background-color: gold;
+}</code></pre></div></div>
+<p class="v2-p">On a screen that is 1000px wide and 700px tall:</p>
+<ul class="v2-ul"><li><code>vmin = 1% of 700px = 7px</code></li><li><code>50vmin = 350px</code></li></ul>
+<p class="v2-p">If you rotate the device so it is 700px wide and 1000px tall:</p>
+<ul class="v2-ul"><li><code>vmin = 1% of 700px = 7px</code> (still the smaller dimension)</li><li><code>50vmin = 350px</code> (the square stays the same size!)</li></ul>
+<p class="v2-p"><strong>Expected output:</strong> A square that maintains its size regardless of device orientation.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>ch</code> Unit — Character Width</h3>
+<p class="v2-p"><code>ch</code> is based on the <strong>width of the "0" (zero) character</strong> in the current font.</p>
+<p class="v2-p"><strong>When to use it:</strong> For setting the <strong>maximum line length of text</strong>. Readability research shows that text is easiest to read at around 45–75 characters per line. You can enforce this with <code>ch</code>.</p>
+<p class="v2-p"><strong>Example:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  max-width: 65ch;  /* No more than 65 characters wide */
+  font-size: 1rem;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> Each paragraph will wrap at approximately 65 characters wide, creating optimal reading line length regardless of the font size.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>ex</code> Unit — X-Height</h3>
+<p class="v2-p"><code>ex</code> is based on the <strong>height of the lowercase letter "x"</strong> in the current font. This is called the "x-height."</p>
+<p class="v2-p">Different fonts have different x-heights even at the same <code>font-size</code>. <code>ex</code> captures this difference.</p>
+<p class="v2-p"><strong>Example:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>sup {
+  font-size: 0.8em;
+  vertical-align: 1ex;  /* Raise superscript one x-height above baseline */
+}</code></pre></div></div>
+<p class="v2-p">This is mostly used in very fine typographic adjustments. You will not use <code>ex</code> very often as a beginner, but it is good to know it exists.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>lh</code> Unit — Line Height</h3>
+<p class="v2-p"><code>lh</code> is a newer CSS unit that equals the <strong>computed line-height</strong> of the element.</p>
+<p class="v2-p"><strong>Example:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1lh;  /* Bottom margin = exactly one line height */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> Perfect vertical spacing where the gap below each paragraph equals exactly the space between two lines of text.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">---
+
+Simple Example 3: Side-by-side panels taking up the full screen
+
+`css
+.left-panel {
+  width: 30vw;
+  height: 100vh;
+  background-color: #2c3e50;
+}
+
+.right-panel {
+  width: 70vw;
+  height: 100vh;
+  background-color: #ecf0f1;
+}
+`
+
+Expected output: Two panels that together fill the entire screen: left panel takes 30% of the width, right takes 70% — always, on any screen size.
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 8</div>
+    <div class="phase-title">Part 3: `em` vs `rem` — Side-by-Side Comparison</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">This is one of the most important distinctions to understand. Let us see both in action:</p>
+<p class="v2-p"><strong>Scenario:</strong> Both use the same HTML structure, but different units.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;html&gt;
+  &lt;body&gt;
+    &lt;div class=&quot;outer&quot;&gt;
+      Outer text
+      &lt;div class=&quot;inner&quot;&gt;
+        Inner text
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Using em:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>html { font-size: 16px; }
+
+.outer { font-size: 1.5em; }   /* 1.5 × 16px = 24px */
+.inner { font-size: 1.5em; }   /* 1.5 × 24px = 36px ← compounds! */</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<ul class="v2-ul"><li>Outer text: 24px</li><li>Inner text: 36px (not 24px!)</li></ul>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Using rem:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>html { font-size: 16px; }
+
+.outer { font-size: 1.5rem; }  /* 1.5 × 16px = 24px */
+.inner { font-size: 1.5rem; }  /* 1.5 × 16px = 24px ← always root! */</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong></p>
+<ul class="v2-ul"><li>Outer text: 24px</li><li>Inner text: 24px (same! No compounding!)</li></ul>
+<hr class="v2-hr">
+<blockquote class="v2-bq"><p class="v2-p"><strong>Key rule of thumb:</strong></p>
+<ul class="v2-ul"><li>Use <code>rem</code> for font sizes (safe, predictable, no compounding)</li><li>Use <code>em</code> for margins and padding (so spacing scales with the element's own font size)</li><li>Use <code>%</code> and <code>vw/vh</code> for layout widths and heights</li></ul></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: <code>em</code> vs <code>rem</code> — Side-by-Side Comparison</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 8</div>
+    <div class="phase-title">Guided Practice Exercises</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1: Warm-Up — Absolute Sizing</h3>
+<p class="v2-p"><strong>Objective:</strong> Practice using <code>px</code> for layout sizing.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a simple business card layout.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an HTML file with this structure:</li></ol>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* YOUR CSS GOES HERE */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;h2&gt;Ada Okafor&lt;/h2&gt;
+    &lt;p&gt;Web Developer&lt;/p&gt;
+    &lt;p&gt;ada@example.com&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<ol class="v2-ol"><li>Add CSS using only <code>px</code> units to make the card look like a business card:</li></ol>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+  width: 350px;
+  height: 200px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+h2 {
+  font-size: 24px;
+  margin: 0 0 8px 0;
+}
+
+p {
+  font-size: 14px;
+  margin: 4px 0;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A dark blue card, 350×200px, with a name in 24px and details in 14px.</p>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>What happens if you change <code>width: 350px</code> to <code>width: 500px</code>?</li><li>What happens if you make the browser window very narrow? Does the card fit?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2: Relative Sizing with <code>rem</code></h3>
+<p class="v2-p"><strong>Objective:</strong> Build a typography scale using only <code>rem</code> units.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are creating the text hierarchy for a news website.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>html {
+  font-size: 16px;  /* Root size — try changing this! */
+}
+
+.headline {
+  font-size: 3rem;        /* 48px */
+  margin-bottom: 0.5rem;  /* 8px */
+}
+
+.subheadline {
+  font-size: 2rem;        /* 32px */
+  margin-bottom: 0.5rem;  /* 8px */
+}
+
+.article-body {
+  font-size: 1rem;        /* 16px */
+  line-height: 1.6;
+  max-width: 65ch;        /* About 65 characters wide */
+}
+
+.caption {
+  font-size: 0.75rem;     /* 12px */
+  color: grey;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A clear typographic hierarchy: very large headline → large subheadline → readable body text → small caption.</p>
+<p class="v2-p"><strong>Challenge:</strong> Change <code>html { font-size: 16px; }</code> to <code>html { font-size: 20px; }</code>. Watch how EVERY text element scales up automatically!</p>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>What is <code>1.5rem</code> when the root is 16px?</li><li>What is <code>1.5rem</code> when the root is 20px?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3: Responsive Layout with <code>%</code> and <code>vw</code></h3>
+<p class="v2-p"><strong>Objective:</strong> Create a two-column layout that responds to screen size.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a blog layout with a sidebar and main content area.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;page&quot;&gt;
+  &lt;aside class=&quot;sidebar&quot;&gt;Navigation links&lt;/aside&gt;
+  &lt;main class=&quot;content&quot;&gt;Article content here&lt;/main&gt;
+&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.page {
+  display: flex;
+  width: 100vw;    /* Full viewport width */
+  min-height: 100vh;  /* Full viewport height */
+}
+
+.sidebar {
+  width: 25%;          /* Quarter of the page */
+  background-color: #34495e;
+  color: white;
+  padding: 2rem;
+}
+
+.content {
+  width: 75%;          /* Three-quarters of the page */
+  padding: 2rem;
+  font-size: 1rem;
+  max-width: 70ch;     /* Optimal reading width */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A full-screen two-column layout that adjusts proportionally to any screen width.</p>
+<p class="v2-p"><strong>What-if challenges:</strong></p>
+<ul class="v2-ul"><li>What if you change sidebar to <code>width: 20%</code> and content to <code>width: 80%</code>?</li><li>What if you change the root font-size? Does the <code>rem</code> padding change?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 4: Viewport-based Full-Screen Section</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a full-screen banner using <code>vw</code> and <code>vh</code>.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 6vw;     /* Scales with viewport width */
+  color: white;
+  margin: 0;
+}
+
+.hero p {
+  font-size: 2vw;
+  color: rgba(255, 255, 255, 0.85);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A full-screen purple gradient banner. The text automatically scales with the browser window.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 8</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1: Putting a space between the number and the unit</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — space breaks it */
+font-size: 16 px;
+
+/* ✅ CORRECT — no space */
+font-size: 16px;</code></pre></div></div>
+<p class="v2-p"><strong>Why this matters:</strong> The browser will simply ignore the broken value. The element will have no font-size, or fall back to the default.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2: Forgetting that <code>em</code> compounds with nesting</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ RISKY — em will compound in nested lists */
+ul { font-size: 1.1em; }
+
+/* ✅ SAFER — rem never compounds */
+ul { font-size: 1.1rem; }</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3: Using <code>px</code> for font sizes on accessible websites</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ LESS ACCESSIBLE — user browser zoom may not work properly */
+body { font-size: 14px; }
+
+/* ✅ BETTER — respects user preferences */
+body { font-size: 0.875rem; }  /* Still 14px at default, but scalable */</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4: Using <code>px</code> for layouts instead of flexible units</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ BREAKS on small screens */
+.main-content { width: 960px; }
+
+/* ✅ FLEXIBLE — adapts to any screen */
+.main-content {
+  width: 90%;
+  max-width: 960px;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5: Using <code>vw</code> for font sizes without a minimum</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ TEXT BECOMES TINY on very small screens */
+h1 { font-size: 5vw; }
+
+/* ✅ BETTER — use clamp() to set a minimum and maximum */
+h1 { font-size: clamp(1.5rem, 5vw, 4rem); }</code></pre></div></div>
+<p class="v2-p">The <code>clamp()</code> function means: "never smaller than 1.5rem, scale with 5vw, never bigger than 4rem."</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6: Mixing incompatible unit systems</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ CONFUSING — mixing px and rem unpredictably */
+.card {
+  width: 400px;
+  padding: 2rem;
+  margin: 30px auto;
+  font-size: 1rem;
+}
+
+/* ✅ CLEANER — consistent system */
+.card {
+  width: 25rem;     /* 400px equivalent, scales with root */
+  padding: 2rem;
+  margin: 1.875rem auto;
+  font-size: 1rem;
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Overview</div>
+  <div class="build-desc">You will build a profile card component — the kind you see on social media or portfolio websites. It will use:</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Profile Card&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;page-wrapper&quot;&gt;
+    &lt;div class=&quot;profile-card&quot;&gt;
+      &lt;div class=&quot;avatar&quot;&gt;🧑‍💻&lt;/div&gt;
+      &lt;h1 class=&quot;name&quot;&gt;Chioma Nwachukwu&lt;/h1&gt;
+      &lt;p class=&quot;title&quot;&gt;Frontend Developer&lt;/p&gt;
+      &lt;p class=&quot;bio&quot;&gt;
+        Passionate about creating beautiful, accessible user interfaces.
+        Based in Lagos, Nigeria.
+      &lt;/p&gt;
+      &lt;div class=&quot;stats&quot;&gt;
+        &lt;div class=&quot;stat&quot;&gt;
+          &lt;span class=&quot;stat-number&quot;&gt;48&lt;/span&gt;
+          &lt;span class=&quot;stat-label&quot;&gt;Projects&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;stat&quot;&gt;
+          &lt;span class=&quot;stat-number&quot;&gt;3.2k&lt;/span&gt;
+          &lt;span class=&quot;stat-label&quot;&gt;Followers&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;stat&quot;&gt;
+          &lt;span class=&quot;stat-number&quot;&gt;127&lt;/span&gt;
+          &lt;span class=&quot;stat-label&quot;&gt;Following&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button class=&quot;follow-btn&quot;&gt;Follow&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Card</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="profile-card">
+      <div class="avatar">🧑‍💻</div>
+      <h1 class="name">Chioma Nwachukwu</h1>
+      <p class="title">Frontend Developer</p>
+      <p class="bio">
+        Passionate about creating beautiful, accessible user interfaces.
+        Based in Lagos, Nigeria.
+      </p>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-number">48</span>
+          <span class="stat-label">Projects</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">3.2k</span>
+          <span class="stat-label">Followers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">127</span>
+          <span class="stat-label">Following</span>
+        </div>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+  </div>
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
+  </div>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-38-project-overview</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 38 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-38-project-overview/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 38 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Header, Main and Footer Layout</li><li>✅ Section Patterns and Full-bleed</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_37.html" class="ln-btn">← Lesson 37</a>
-    <a href="lesson_39.html" class="ln-btn primary">Lesson 39 →</a>
-  </div>
+  <h2>🎉 Lesson 38 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Conceptual Understanding</li><li>✅ Part 1: Absolute CSS Units</li><li>✅ Part 2: Relative CSS Units</li><li>✅ Part 3: `em` vs `rem` — Side-by-Side Comparison</li><li>✅ Guided Practice Exercises</li><li>✅ Common Beginner Mistakes</li></ul>
+  <div class="lesson-nav"><a href="lesson_37.html" class="ln-btn">← Lesson 37</a><a href="lesson_39.html" class="ln-btn primary">Lesson 39 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 38 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 38 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_38_phase';
+const TOTAL=8,KEY='techbase_css_l38';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

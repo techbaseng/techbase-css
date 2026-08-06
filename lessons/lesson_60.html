@@ -2,325 +2,1292 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 60: CSS Pagination — Techbase CSS Course</title>
-<meta name="description" content="Style pagination controls for navigating multi-page content">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 60: CSS Masking — PNG Images, Gradients, and SVG Masks — Techbase CSS</title>
+<meta name="description" content="CSS Masking — PNG Images, Gradients, and SVG Masks">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
-}
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
+/* HERO */
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
+/* WELCOME BOX */
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
+/* PHASE */
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-.concept-box code{background:rgba(2,132,199,.12);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em;color:#0284c7}
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
+/* TASK BOX */
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
+/* GITHUB ACCORDION */
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
+/* SESSION END */
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
-  <a href="../index.html" class="l-nav-logo"><em>⚡</em> Techbase CSS</a>
-  <span class="l-nav-lesson">Lesson 60 of 73</span>
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 60 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
 <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
 <div class="l-hero">
   <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 60 </div>
-    <h1>CSS Pagination</h1>
-    <div class="l-hero-tag">Style pagination controls for navigating multi-page content</div>
-    <div class="l-hero-build"><strong>🏗️ Build:</strong> My Pagination Component</div>
+    <div class="l-badge">CSS · Lesson 60</div>
+    <h1>CSS Masking — PNG Images, Gradients, and SVG Masks</h1>
+    <div class="l-hero-sub">9 phases · Build: Stage 1 — HTML Structure</div>
   </div>
 </div>
-<section style="background:var(--hero-bg);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:820px;margin:0 auto;padding:0 1.5rem">
-    <div class="welcome-box">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
   <h2>👋 Welcome to Lesson 60</h2>
-  <p>Style pagination controls for navigating multi-page content</p>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever seen a photo on a website where part of it fades softly into the page background, or where the image is cut out into a star shape, or where text appears to be "carved out" of a colourful photograph? These stunning effects are created using a CSS technique called <strong>masking</strong>.</p>
+<p class="v2-p">CSS masking is one of the most powerful and creative tools available to a web designer. It lets you control exactly which parts of an element are visible and which parts are hidden — and you can do this using an image, a gradient, or a special shape called an SVG.</p>
+<p class="v2-p">Think of it like this: imagine you have a photograph printed on a piece of paper. Now you place a stencil on top of it. Where the stencil has holes, you can see the photo through. Where the stencil is solid, the photo is hidden. In CSS masking, the stencil is called a <strong>mask layer</strong>, and it is applied using the <code>mask-image</code> property.</p>
+<p class="v2-p">In this lesson, you will learn:</p>
+<ul class="v2-ul"><li>What CSS masking is and why it exists</li><li>How <code>mask-image</code> works and what controls it</li><li>How to use a <strong>PNG image</strong> as a mask</li><li>How to use a <strong>CSS gradient</strong> as a mask</li><li>How to use an <strong>SVG shape</strong> as a mask</li><li>Supporting CSS mask properties: <code>mask-size</code>, <code>mask-repeat</code>, <code>mask-position</code>, and <code>mask-mode</code></li><li>How to handle browser compatibility (the <code>-webkit-</code> prefix)</li><li>Guided practice exercises and a complete creative mini-project</li></ul>
+<p class="v2-p">No prior knowledge of masking is assumed. We start from the very beginning.</p>
+<hr class="v2-hr"></div>
   <div class="welcome-meta">
-    <span>📚 2 phases</span>
-    <span>🏗️ Build: My Pagination Component</span>
-    
+    <span>📚 9 phases</span>
+    <span>🏗️ Stage 1 — HTML Structure</span>
   </div>
-</div>
-  </div>
+</div></div>
 </section>
-<main class="lesson-main" style="max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem">
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
 <div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1 of 2</div><div class="phase-title">Basic pagination</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 9</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p>Flex row of equal-size links. Active: filled accent. Disabled: opacity 0.4 + pointer-events:none. Use <code>&lt;nav aria-label='Pagination'&gt;</code> for accessibility.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.pagination { display:flex; gap:4px; align-items:center; }
-.pi { display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:8px; font-size:14px; font-weight:600; border:1.5px solid #e2e8f0; color:#334155; text-decoration:none; transition:.15s; }
-.pi:hover  { border-color:#0284c7; color:#0284c7; background:#f0f9ff; }
-.pi.active { background:#0284c7; color:white; border-color:#0284c7; }
-.pi.disabled { opacity:.4; pointer-events:none; }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Build: disabled Previous, pages 1-5 (page 2 active), Next button.</p></div>
-    <button class="next-btn" onclick="unlockNext(1)">Start Coding ✓</button>
+    <p class="v2-p">Have you ever seen a photo on a website where part of it fades softly into the page background, or where the image is cut out into a star shape, or where text appears to be "carved out" of a colourful photograph? These stunning effects are created using a CSS technique called <strong>masking</strong>.</p>
+<p class="v2-p">CSS masking is one of the most powerful and creative tools available to a web designer. It lets you control exactly which parts of an element are visible and which parts are hidden — and you can do this using an image, a gradient, or a special shape called an SVG.</p>
+<p class="v2-p">Think of it like this: imagine you have a photograph printed on a piece of paper. Now you place a stencil on top of it. Where the stencil has holes, you can see the photo through. Where the stencil is solid, the photo is hidden. In CSS masking, the stencil is called a <strong>mask layer</strong>, and it is applied using the <code>mask-image</code> property.</p>
+<p class="v2-p">In this lesson, you will learn:</p>
+<ul class="v2-ul"><li>What CSS masking is and why it exists</li><li>How <code>mask-image</code> works and what controls it</li><li>How to use a <strong>PNG image</strong> as a mask</li><li>How to use a <strong>CSS gradient</strong> as a mask</li><li>How to use an <strong>SVG shape</strong> as a mask</li><li>Supporting CSS mask properties: <code>mask-size</code>, <code>mask-repeat</code>, <code>mask-position</code>, and <code>mask-mode</code></li><li>How to handle browser compatibility (the <code>-webkit-</code> prefix)</li><li>Guided practice exercises and a complete creative mini-project</li></ul>
+<p class="v2-p">No prior knowledge of masking is assumed. We start from the very beginning.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">No prior knowledge of masking is assumed. We start from the very beginning.
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
 </div>
 <div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2 of 2</div><div class="phase-title">Dots and truncated</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 9</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box"><div class="concept-label">📖 Concept</div><p>Dots: small circles where active widens to a pill. Truncated: 1 2 3 … 18 19 20. Ellipsis uses <code>pointer-events:none</code>.</p></div>
-    <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">style.css</span></div>
-<div class="code-body"><pre>.dot { width:10px; height:10px; border-radius:50%; background:#e2e8f0; transition:.3s; }
-.dot.active { width:28px; border-radius:100px; background:#0284c7; }</pre></div>
-</div>
-    <div class="task-box"><div class="task-label">✏️ Your Task</div><p>Build 6 dot indicators. Active dot is wide and blue — others are small circles.</p></div>
-    <button class="next-btn" onclick="unlockNext(2)">Next Phase ✓</button>
+    <p class="v2-p">Before we study masking, let us quickly understand the building blocks we will be using. Do not skip this section — these ideas are the foundation of everything that follows.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">What is <code>opacity</code>?</h3>
+<p class="v2-p"><code>opacity</code> makes an entire element uniformly transparent. A value of <code>1</code> means fully visible. A value of <code>0</code> means fully invisible. A value like <code>0.5</code> means 50% see-through.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>img {
+  opacity: 0.5; /* The whole image is 50% transparent */
+}</code></pre></div></div>
+<p class="v2-p"><strong>The problem:</strong> <code>opacity</code> affects the <em>entire</em> element uniformly. You cannot make part of an image fully visible while another part fades out. That is exactly what masking solves.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">What is alpha transparency (the "alpha channel")?</h3>
+<p class="v2-p">When you see a PNG image file, it can have four channels of information for each pixel: Red, Green, Blue, and <strong>Alpha</strong>. The Alpha channel controls how transparent that pixel is. <code>alpha = 1</code> means fully opaque (visible). <code>alpha = 0</code> means fully transparent (invisible).</p>
+<p class="v2-p">A PNG with transparency looks like a photo with the background "cut out" — common for logos, icons, and graphics designers work with daily.</p>
+<p class="v2-p"><strong>This alpha channel idea is central to CSS masking.</strong> The mask reads the alpha values of the mask image and uses them to decide how much of the original element to show.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">What is a CSS gradient?</h3>
+<p class="v2-p">A CSS gradient is a smooth colour transition that goes from one colour to another. You have probably seen them before:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Goes from black on the left to white on the right */
+background: linear-gradient(to right, black, white);</code></pre></div></div>
+<p class="v2-p">Gradients can also go from a colour to <strong>transparent</strong>, which is how we use them as masks to create beautiful fade effects.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">What is an SVG?</h3>
+<p class="v2-p">SVG stands for <strong>Scalable Vector Graphics</strong>. Unlike regular images (which are made of pixels), SVG images are described with mathematical shapes — circles, rectangles, polygons, paths. They can be scaled to any size without becoming blurry. We can write SVG shapes directly inside our HTML, and CSS can use them as masks.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It</div>
-  <div class="project-name">Pagination Component</div>
-  <div class="project-desc">Standard, pill, minimal, dot carousel and prev/next variants.</div>
-  <div class="code-wrap">
-<div class="code-bar"><span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span><span class="code-filename">index.html</span></div>
-<div class="code-body"><pre>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;Pagination&lt;/title&gt;
-&lt;style&gt;*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:860px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.demo{background:white;border:1.5px solid #bae6fd;border-radius:12px;padding:18px;margin-bottom:12px}
-.pagination{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
-.pi{display:flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 4px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid #e2e8f0;color:#334155;text-decoration:none;transition:.15s;user-select:none}
-.pi:hover{border-color:#0284c7;color:#0284c7;background:#f0f9ff}
-.pi.active{background:#0284c7;color:white;border-color:#0284c7}
-.pi.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
-.pi.dots{border:none;color:#94a3b8;cursor:default}
-.pill .pi{border-radius:100px}
-.minimal .pi{border:none}.minimal .pi.active{background:#0284c7;color:white;border-radius:8px}
-.dots-pg{display:flex;gap:8px;align-items:center}
-.dot{width:10px;height:10px;border-radius:50%;background:#e2e8f0;cursor:pointer;transition:.3s}
-.dot.active{width:28px;border-radius:100px;background:#0284c7}
-.dot:hover{background:#bae6fd}
-.nav-pages{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:9px;border:1.5px solid #e2e8f0;color:#334155;text-decoration:none;font-weight:600;font-size:13px;transition:.15s}
-.nav-btn:hover{border-color:#0284c7;color:#0284c7}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;h1 style=&quot;color:#0284c7;margin-bottom:4px&quot;&gt;CSS Pagination&lt;/h1&gt;
-&lt;h2&gt;Standard Numbered&lt;/h2&gt;
-&lt;div class=&quot;demo&quot;&gt;&lt;nav class=&quot;pagination&quot;&gt;&lt;a class=&quot;pi disabled&quot;&gt;‹&lt;/a&gt;&lt;a class=&quot;pi active&quot;&gt;1&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;2&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;3&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;4&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;5&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;›&lt;/a&gt;&lt;/nav&gt;&lt;/div&gt;
-&lt;h2&gt;Truncated&lt;/h2&gt;
-&lt;div class=&quot;demo&quot;&gt;&lt;nav class=&quot;pagination&quot;&gt;&lt;a class=&quot;pi&quot;&gt;‹&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;1&lt;/a&gt;&lt;a class=&quot;pi active&quot;&gt;2&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;3&lt;/a&gt;&lt;a class=&quot;pi dots&quot;&gt;…&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;18&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;19&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;20&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;›&lt;/a&gt;&lt;/nav&gt;&lt;/div&gt;
-&lt;h2&gt;Pill Variant&lt;/h2&gt;
-&lt;div class=&quot;demo&quot;&gt;&lt;nav class=&quot;pagination pill&quot;&gt;&lt;a class=&quot;pi&quot;&gt;‹&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;1&lt;/a&gt;&lt;a class=&quot;pi active&quot;&gt;2&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;3&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;4&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;5&lt;/a&gt;&lt;a class=&quot;pi&quot;&gt;›&lt;/a&gt;&lt;/nav&gt;&lt;/div&gt;
-&lt;h2&gt;Dot Carousel&lt;/h2&gt;
-&lt;div class=&quot;demo&quot;&gt;&lt;div class=&quot;dots-pg&quot;&gt;&lt;div class=&quot;dot active&quot;&gt;&lt;/div&gt;&lt;div class=&quot;dot&quot;&gt;&lt;/div&gt;&lt;div class=&quot;dot&quot;&gt;&lt;/div&gt;&lt;div class=&quot;dot&quot;&gt;&lt;/div&gt;&lt;div class=&quot;dot&quot;&gt;&lt;/div&gt;&lt;div class=&quot;dot&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h2&gt;Prev / Next with Labels&lt;/h2&gt;
-&lt;div class=&quot;demo&quot;&gt;&lt;div class=&quot;nav-pages&quot;&gt;&lt;a class=&quot;nav-btn&quot; href=&quot;#&quot;&gt;← CSS Transitions&lt;/a&gt;&lt;span style=&quot;color:#64748b;font-size:13px&quot;&gt;Lesson 60 of 73&lt;/span&gt;&lt;a class=&quot;nav-btn&quot; href=&quot;#&quot;&gt;CSS Columns →&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;/body&gt;&lt;/html&gt;</pre></div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 9</div>
+    <div class="phase-title">Part 1 — What Is CSS Masking?</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">The Core Idea</h3>
+<p class="v2-p">A <strong>mask</strong> is an invisible layer that sits on top of an element. It determines, pixel by pixel, how visible that element is underneath.</p>
+<p class="v2-p">The rule is simple:</p>
+<ul class="v2-ul"><li>Where the mask is <strong>white (or fully opaque)</strong> → the element shows through fully</li><li>Where the mask is <strong>black (or fully transparent)</strong> → the element is hidden</li><li>Where the mask is <strong>grey (or semi-transparent)</strong> → the element is partially visible</li></ul>
+<p class="v2-p">Think of the mask as a dimmer switch for different parts of your element — some areas can be fully bright, some fully dark, and some anywhere in between.</p>
+<h3 class="v2-h3">Why Does Masking Exist?</h3>
+<p class="v2-p">Before CSS masking, creating shaped images or fade effects required photo-editing software. You had to open Photoshop, apply a mask, export a PNG, and then use that pre-processed image on your website. If you wanted to change the effect, you had to go back to Photoshop.</p>
+<p class="v2-p">CSS masking moves this creative power directly into your stylesheet. The original image stays untouched. The shape, fade, or reveal effect lives purely in CSS and can be changed, animated, or made responsive without touching a single image file.</p>
+<p class="v2-p"><strong>Real-world uses of CSS masking:</strong></p>
+<ul class="v2-ul"><li>Hero images that fade softly into the page background (gradient masks)</li><li>Profile photos cropped into custom shapes — hexagons, stars, speech bubbles</li><li>Text effects where words are "cut out" of photographs</li><li>Decorative section dividers between different page areas</li><li>Creative image galleries where each photo has a unique shape</li><li>Animated reveal effects where an image gradually becomes visible</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>mask-image</code> Property</h3>
+<p class="v2-p">The single most important CSS masking property is <code>mask-image</code>. It sets the image (or gradient, or SVG shape) to be used as the mask layer.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>element {
+  mask-image: url(&quot;mask.png&quot;);
+}</code></pre></div></div>
+<p class="v2-p">Everything we learn in this lesson builds on this one property.</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Browser note:</strong> Most browsers require you to write the property twice — once with a <code>-webkit-</code> prefix and once without — to ensure the widest possible compatibility. You will see this throughout all the examples:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>-webkit-mask-image: url(&quot;mask.png&quot;); /* Safari, older Chrome */
+mask-image: url(&quot;mask.png&quot;); /* Modern standard */</code></pre></div></div>
+<p class="v2-p">Always include both lines. This is not a mistake — it is intentional and necessary.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>What Is CSS Masking?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
 </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem">
-    <button class="next-btn" onclick="downloadStarter()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 9</div>
+    <div class="phase-title">Part 2 — Masking with PNG Images</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Why Use a PNG as a Mask?</h3>
+<p class="v2-p">A PNG image can have an alpha (transparency) channel. This makes it the perfect mask: the transparent parts of the PNG will hide the element underneath, and the opaque parts will reveal it.</p>
+<p class="v2-p">You can create complex shapes, artistic cutouts, and decorative frames — all from a single PNG file.</p>
+<h3 class="v2-h3">How It Works — Step by Step</h3>
+<ol class="v2-ol"><li>You have an element (like a photo or a coloured div).</li><li>You have a PNG file where some pixels are opaque (white) and some are transparent.</li><li>You apply the PNG as a <code>mask-image</code> to your element.</li><li>The browser reads each pixel of the PNG: where it is opaque → show the element; where it is transparent → hide the element.</li></ol>
+<h3 class="v2-h3">Simple Example — Circle Mask Using a PNG</h3>
+<p class="v2-p">Suppose you have a PNG file called <code>circle-mask.png</code> that is a solid white circle on a transparent background. When applied as a mask to a photo, only the circular area will show — everything outside the circle is hidden.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+  .masked-image {
+    width: 300px;
+    height: 300px;
+
+    /* The image we want to mask */
+    background-image: url(&quot;photo.jpg&quot;);
+    background-size: cover;
+
+    /* Apply the PNG mask */
+    -webkit-mask-image: url(&quot;circle-mask.png&quot;);
+            mask-image: url(&quot;circle-mask.png&quot;);
+
+    /* Make the mask cover the whole element */
+    -webkit-mask-size: cover;
+            mask-size: cover;
+
+    /* Do not tile/repeat the mask */
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;masked-image&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The photo appears only inside the circular area defined by the PNG mask. Everything outside the circle is completely invisible.</p>
+<p class="v2-p">Let us understand every CSS line:</p>
+<ul class="v2-ul"><li><code>background-image: url("photo.jpg")</code> — loads the photo we want to display</li><li><code>background-size: cover</code> — makes the photo fill the entire div</li><li><code>mask-image: url("circle-mask.png")</code> — sets the PNG as the mask layer</li><li><code>mask-size: cover</code> — stretches the mask to cover the entire element</li><li><code>mask-repeat: no-repeat</code> — prevents the mask from tiling/repeating</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Using a PNG Mask on an <code>&lt;img&gt;</code> Element</h3>
+<p class="v2-p">You are not limited to using masks on <code>div</code> elements with background images. You can apply masks directly to <code>&lt;img&gt;</code> tags too:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  img.circle-crop {
+    width: 250px;
+    height: 250px;
+    object-fit: cover; /* Crops the image to fit without distortion */
+
+    -webkit-mask-image: url(&quot;circle-mask.png&quot;);
+            mask-image: url(&quot;circle-mask.png&quot;);
+    -webkit-mask-size: cover;
+            mask-size: cover;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+  }
+&lt;/style&gt;
+
+&lt;img class=&quot;circle-crop&quot; src=&quot;portrait.jpg&quot; alt=&quot;Profile photo&quot;&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The portrait photograph appears as a perfect circle, with everything outside the circle hidden.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> What would happen if the circle PNG mask was smaller than the image? The mask would tile (repeat) across the image, creating multiple circles — unless you add <code>mask-repeat: no-repeat</code>.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>mask-size</code> Property</h3>
+<p class="v2-p"><code>mask-size</code> controls how large the mask image is rendered, just like <code>background-size</code> for backgrounds.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Stretch mask to cover the whole element (may crop) */
+mask-size: cover;
+
+/* Fit mask inside element (may leave gaps) */
+mask-size: contain;
+
+/* Exact pixel size */
+mask-size: 200px 200px;
+
+/* Percentage of the element&#x27;s size */
+mask-size: 100% 100%;</code></pre></div></div>
+<p class="v2-p"><strong>Example — same mask, different sizes:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Mask fills the entire element */
+.example-a {
+  -webkit-mask-image: url(&quot;star-mask.png&quot;);
+          mask-image: url(&quot;star-mask.png&quot;);
+  -webkit-mask-size: cover;
+          mask-size: cover;
+}
+
+/* Mask is 50% of the element size */
+.example-b {
+  -webkit-mask-image: url(&quot;star-mask.png&quot;);
+          mask-image: url(&quot;star-mask.png&quot;);
+  -webkit-mask-size: 50%;
+          mask-size: 50%;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> In <code>.example-a</code>, the star mask covers the whole element. In <code>.example-b</code>, the star is half the size of the element, and if <code>mask-repeat</code> is not disabled, you will see multiple stars tiling across it.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>mask-repeat</code> Property</h3>
+<p class="v2-p"><code>mask-repeat</code> controls whether the mask image tiles (repeats) when it is smaller than the element.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Default — mask tiles in both directions */
+mask-repeat: repeat;
+
+/* Tiles only horizontally */
+mask-repeat: repeat-x;
+
+/* Tiles only vertically */
+mask-repeat: repeat-y;
+
+/* No tiling — mask appears exactly once */
+mask-repeat: no-repeat;
+
+/* Tiles as many times as fits, with spacing */
+mask-repeat: space;
+
+/* Tiles as many times as fits, stretched to fill exactly */
+mask-repeat: round;</code></pre></div></div>
+<p class="v2-p"><strong>Most common use:</strong> <code>no-repeat</code> — because you usually want one mask covering the entire element.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>mask-position</code> Property</h3>
+<p class="v2-p"><code>mask-position</code> controls where the mask image is positioned within the element, just like <code>background-position</code>.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Centre the mask */
+mask-position: center;
+
+/* Position at top-right corner */
+mask-position: top right;
+
+/* Exact pixel offset from top-left */
+mask-position: 50px 20px;
+
+/* Percentage-based position */
+mask-position: 50% 50%;</code></pre></div></div>
+<p class="v2-p"><strong>Example — centred mask:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.centred-mask {
+  width: 400px;
+  height: 300px;
+  background-image: url(&quot;landscape.jpg&quot;);
+  background-size: cover;
+
+  -webkit-mask-image: url(&quot;diamond-mask.png&quot;);
+          mask-image: url(&quot;diamond-mask.png&quot;);
+  -webkit-mask-size: 200px 200px;   /* Smaller than the element */
+          mask-size: 200px 200px;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;    /* Centre the mask on the element */
+          mask-position: center;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The landscape photo is only visible through a diamond-shaped window centred in the middle of the element. Everything outside the diamond is hidden.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">The <code>mask-mode</code> Property</h3>
+<p class="v2-p"><code>mask-mode</code> controls what channel of the mask image is used to determine transparency.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Uses the alpha channel of the mask image (default) */
+mask-mode: alpha;
+
+/* Uses the luminance (brightness) of the mask image */
+mask-mode: luminance;
+
+/* Automatically chooses based on mask type */
+mask-mode: match-source;</code></pre></div></div>
+<p class="v2-p"><strong>What does this mean in practice?</strong></p>
+<ul class="v2-ul"><li><code>alpha</code> mode: White/opaque parts of the mask = element is fully visible. Transparent parts = hidden. This is the most intuitive mode and the default for PNG masks.</li><li><code>luminance</code> mode: <strong>Bright (white)</strong> parts of the mask = element is visible. <strong>Dark (black)</strong> parts = hidden. Gradients between black and white create smooth transitions. This mode is often used when the mask image does not have an alpha channel (like a JPEG, which cannot be transparent).</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.luminance-mask {
+  -webkit-mask-image: url(&quot;greyscale-mask.jpg&quot;);
+          mask-image: url(&quot;greyscale-mask.jpg&quot;);
+  -webkit-mask-mode: luminance; /* Use brightness, not transparency */
+          mask-mode: luminance;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Full PNG Masking Reference Table</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>What It Controls</th><th>Common Values</th></tr></thead><tbody><tr><td><code>mask-image</code></td><td>Which image to use as the mask</td><td><code>url("file.png")</code>, <code>none</code></td></tr><tr><td><code>mask-size</code></td><td>How large the mask is</td><td><code>cover</code>, <code>contain</code>, <code>100%</code>, <code>200px</code></td></tr><tr><td><code>mask-repeat</code></td><td>Whether the mask tiles</td><td><code>no-repeat</code>, <code>repeat</code>, <code>repeat-x</code></td></tr><tr><td><code>mask-position</code></td><td>Where the mask is placed</td><td><code>center</code>, <code>top right</code>, <code>50% 50%</code></td></tr><tr><td><code>mask-mode</code></td><td>Which channel determines visibility</td><td><code>alpha</code>, <code>luminance</code></td></tr></tbody></table></div>
+<blockquote class="v2-bq"><p class="v2-p">Always prefix all properties with <code>-webkit-</code> for Safari compatibility.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Masking with PNG Images</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 9</div>
+    <div class="phase-title">Part 3 — Masking with CSS Gradients</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Why Use a Gradient as a Mask?</h3>
+<p class="v2-p">Using a gradient as a mask is one of the most elegant and commonly used techniques in modern web design. It creates effects like:</p>
+<ul class="v2-ul"><li>An image that softly <strong>fades to transparent</strong> at one edge — instead of stopping sharply</li><li>An image that is <strong>fully visible in the centre</strong> and fades out toward the edges</li><li>A <strong>text reveal effect</strong> where words gradually appear from left to right</li><li>A <strong>section divider</strong> where one background colour smoothly blends into the next</li></ul>
+<p class="v2-p">There is no PNG file involved at all — the mask is generated entirely in CSS using the <code>linear-gradient()</code> or <code>radial-gradient()</code> functions.</p>
+<h3 class="v2-h3">The Golden Rule of Gradient Masks</h3>
+<p class="v2-p">Remember this rule and you will never be confused:</p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>Where the gradient is WHITE (or opaque) → the element is VISIBLE</strong> <strong>Where the gradient is BLACK (or transparent) → the element is HIDDEN</strong></p></blockquote>
+<p class="v2-p">So a gradient that goes from <code>black</code> to <code>white</code> (left to right) creates a mask where the left side is hidden and the right side is fully visible. A gradient from <code>white</code> to <code>black</code> does the opposite.</p>
+<p class="v2-p">The easiest way to write this is to go from <code>transparent</code> to a colour (or any opaque value), because browsers understand <code>transparent</code> as "hide this" regardless of mask mode:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* From transparent (hidden) on left → black (visible) on right */
+mask-image: linear-gradient(to right, transparent, black);</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 1 — Image Fades to Transparent on the Right</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  .fade-right {
+    width: 400px;
+    height: 250px;
+    background-image: url(&quot;forest.jpg&quot;);
+    background-size: cover;
+
+    /* Gradient mask: fully visible on left, fades to hidden on right */
+    -webkit-mask-image: linear-gradient(to right, black, transparent);
+            mask-image: linear-gradient(to right, black, transparent);
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;fade-right&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The forest photo is fully visible on the left side. As you move toward the right, it becomes increasingly transparent, fading into the page background completely by the right edge.</p>
+<p class="v2-p">This is the exact effect you see on many websites where a photo blends seamlessly into a white or coloured background — no hard edge, just a smooth fade.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 2 — Image Fades to Transparent on the Left</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.fade-left {
+  width: 400px;
+  height: 250px;
+  background-image: url(&quot;city.jpg&quot;);
+  background-size: cover;
+
+  /* Fully visible on right, fades to hidden on left */
+  -webkit-mask-image: linear-gradient(to left, black, transparent);
+          mask-image: linear-gradient(to left, black, transparent);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The city photo is fully visible on the right and fades to transparent on the left.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 3 — Image Fades from Top</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.fade-top {
+  width: 400px;
+  height: 250px;
+  background-image: url(&quot;mountains.jpg&quot;);
+  background-size: cover;
+
+  /* Fully visible at bottom, fades to hidden at top */
+  -webkit-mask-image: linear-gradient(to top, black, transparent);
+          mask-image: linear-gradient(to top, black, transparent);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The mountain photo is fully visible at the bottom and fades upward into transparency. Useful for text overlays on hero sections.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 4 — Visible in the Centre, Fades on Both Sides</h3>
+<p class="v2-p">This uses a gradient with three colour stops:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.fade-edges {
+  width: 500px;
+  height: 200px;
+  background-image: url(&quot;beach.jpg&quot;);
+  background-size: cover;
+
+  /* Transparent on left → black in centre → transparent on right */
+  -webkit-mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+          mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Decoding the gradient stops:</strong></p>
+<ul class="v2-ul"><li><code>transparent</code> — starts at 0%, element is hidden</li><li><code>black 30%</code> — by 30% of the width, element is fully visible</li><li><code>black 70%</code> — stays fully visible until 70%</li><li><code>transparent</code> — by 100% (right edge), element is hidden again</li></ul>
+<p class="v2-p"><strong>Expected result:</strong> The beach photo is hidden at both left and right edges, but fully visible in the central 40% of the image. This creates a natural vignette effect.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 5 — Radial Gradient Mask (Spotlight Effect)</h3>
+<p class="v2-p">You can also use <code>radial-gradient()</code> to create a circular reveal effect, as if a spotlight is shining on part of the image:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.spotlight {
+  width: 400px;
+  height: 400px;
+  background-image: url(&quot;portrait.jpg&quot;);
+  background-size: cover;
+
+  /* Fully visible in the centre circle, fades out toward edges */
+  -webkit-mask-image: radial-gradient(circle, black 40%, transparent 70%);
+          mask-image: radial-gradient(circle, black 40%, transparent 70%);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Decoding this:</strong></p>
+<ul class="v2-ul"><li><code>circle</code> — the gradient is circular, not elliptical</li><li><code>black 40%</code> — fully visible out to 40% radius from centre</li><li><code>transparent 70%</code> — fades to fully hidden by 70% radius</li></ul>
+<p class="v2-p"><strong>Expected result:</strong> The portrait is clearly visible in the centre of the image. Toward the edges, it gradually fades to invisible, as if illuminated by a spotlight from directly above.</p>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> What happens if you swap <code>black</code> and <code>transparent</code> in the radial gradient? The centre would be hidden and the edges visible — the opposite of a spotlight, more like a ring cutout!</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example 6 — Text with Gradient Mask (Fading Text Effect)</h3>
+<p class="v2-p">Masking is not limited to images. You can apply a gradient mask to any HTML element, including paragraphs:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.fading-text {
+  font-size: 48px;
+  font-weight: bold;
+  color: navy;
+  width: 400px;
+
+  /* Text starts opaque and fades to invisible on the right */
+  -webkit-mask-image: linear-gradient(to right, black 50%, transparent);
+          mask-image: linear-gradient(to right, black 50%, transparent);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The first half of the text is fully visible (navy blue). The text then gradually fades to invisible across the second half. This is often used for "read more" truncation effects or decorative headings.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Gradient Mask Direction Quick Reference</h3>
+<div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Gradient Direction</th><th>Visible Side</th><th>Hidden Side</th></tr></thead><tbody><tr><td><code>linear-gradient(to right, black, transparent)</code></td><td>Left</td><td>Right</td></tr><tr><td><code>linear-gradient(to left, black, transparent)</code></td><td>Right</td><td>Left</td></tr><tr><td><code>linear-gradient(to bottom, black, transparent)</code></td><td>Top</td><td>Bottom</td></tr><tr><td><code>linear-gradient(to top, black, transparent)</code></td><td>Bottom</td><td>Top</td></tr><tr><td><code>radial-gradient(circle, black, transparent)</code></td><td>Centre</td><td>Edges</td></tr><tr><td><code>radial-gradient(circle, transparent, black)</code></td><td>Edges</td><td>Centre</td></tr></tbody></table></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Masking with CSS Gradients</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 9</div>
+    <div class="phase-title">Part 4 — Masking with SVG</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Why Use an SVG as a Mask?</h3>
+<p class="v2-p">SVG masks are the most powerful and flexible masking technique. Unlike a PNG image (which is a fixed set of pixels) or a gradient (which is always smooth), an SVG mask lets you define <strong>any shape imaginable</strong> using mathematical descriptions. You can create:</p>
+<ul class="v2-ul"><li>Perfect geometric shapes: stars, hexagons, pentagons, arrows</li><li>Complex organic shapes: speech bubbles, waves, clouds, country outlines</li><li>Text-shaped cutouts where the image appears through the letters</li><li>Combined shapes with holes, overlaps, and curves</li></ul>
+<p class="v2-p">And because SVG is vector-based, it scales perfectly to any screen size or resolution — critical for responsive design and high-DPI (Retina) displays.</p>
+<h3 class="v2-h3">Two Ways to Use SVG Masks</h3>
+<p class="v2-p">There are two approaches:</p>
+<ol class="v2-ol"><li><strong>Reference an external SVG file</strong> using <code>mask-image: url("mask.svg")</code></li><li><strong>Embed the SVG directly in HTML</strong> and reference a <code>&lt;mask&gt;</code> element using its <code>id</code></li></ol>
+<p class="v2-p">We will cover both.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Method 1 — Using an External SVG File as the Mask Image</h3>
+<p class="v2-p">If you have an SVG file that contains a solid white shape on a transparent background, you can use it exactly like a PNG:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+  .svg-masked {
+    width: 300px;
+    height: 300px;
+    background-image: url(&quot;cityscape.jpg&quot;);
+    background-size: cover;
+
+    /* Use an SVG file as the mask */
+    -webkit-mask-image: url(&quot;hexagon-mask.svg&quot;);
+            mask-image: url(&quot;hexagon-mask.svg&quot;);
+    -webkit-mask-size: cover;
+            mask-size: cover;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+            mask-position: center;
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;svg-masked&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p">The <code>hexagon-mask.svg</code> file would contain a white hexagon shape on a transparent background:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">xml</span></div><div class="v2-code-body"><pre><code>&lt;!-- hexagon-mask.svg --&gt;
+&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;&gt;
+  &lt;polygon
+    fill=&quot;white&quot;
+    points=&quot;50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5&quot;
+  /&gt;
+&lt;/svg&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The city photo appears only within the hexagon shape. Everything outside the hexagon is hidden.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Method 2 — Inline SVG <code>&lt;mask&gt;</code> Element (The Most Powerful Approach)</h3>
+<p class="v2-p">This is the most flexible technique. You write the SVG shape directly inside your HTML document, give it an <code>id</code>, and then reference it in your CSS <code>mask-image</code>.</p>
+<p class="v2-p"><strong>The structure:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Step 1: Define the SVG mask inside the HTML (can be hidden, zero-size) --&gt;
+&lt;svg width=&quot;0&quot; height=&quot;0&quot;&gt;
+  &lt;defs&gt;
+    &lt;mask id=&quot;my-mask&quot;&gt;
+      &lt;!-- White = visible, black = hidden --&gt;
+      &lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;white&quot;/&gt;
+      &lt;circle cx=&quot;150&quot; cy=&quot;150&quot; r=&quot;100&quot; fill=&quot;black&quot;/&gt;
+    &lt;/mask&gt;
+  &lt;/defs&gt;
+&lt;/svg&gt;
+
+&lt;!-- Step 2: Apply the mask to your element --&gt;
+&lt;div class=&quot;masked-element&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Step 3: Reference the SVG mask by its ID */
+.masked-element {
+  width: 300px;
+  height: 300px;
+  background-image: url(&quot;abstract.jpg&quot;);
+  background-size: cover;
+
+  mask-image: url(#my-mask);
+  /* Note: inline SVG masks usually do not need -webkit- prefix */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The entire abstract photo is visible except for a circular hole cut out of the centre (because we drew a black circle inside a white rectangle — black hides, white reveals).</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Understanding How SVG <code>&lt;mask&gt;</code> Elements Work</h3>
+<p class="v2-p">Inside an SVG <code>&lt;mask&gt;</code>, the colours you draw determine visibility:</p>
+<ul class="v2-ul"><li><strong>White fill</strong> (<code>fill="white"</code>) → that area of the masked element is <strong>fully visible</strong></li><li><strong>Black fill</strong> (<code>fill="black"</code>) → that area is <strong>fully hidden</strong></li><li><strong>Grey fill</strong> (<code>fill="grey"</code>) → that area is <strong>partially visible</strong></li></ul>
+<p class="v2-p">This is the opposite of what you might expect from transparency! In SVG masks, colour brightness controls visibility, not actual transparency.</p>
+<p class="v2-p"><strong>Example — Text Cutout Mask:</strong></p>
+<p class="v2-p">Create an effect where your background image is only visible through the shapes of letters:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Define the SVG text mask --&gt;
+&lt;svg width=&quot;0&quot; height=&quot;0&quot;&gt;
+  &lt;defs&gt;
+    &lt;mask id=&quot;text-mask&quot;&gt;
+      &lt;!-- Black background = everything hidden by default --&gt;
+      &lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;black&quot;/&gt;
+      &lt;!-- White text = image shows through the letters --&gt;
+      &lt;text
+        x=&quot;50%&quot;
+        y=&quot;60%&quot;
+        text-anchor=&quot;middle&quot;
+        font-family=&quot;Arial Black, sans-serif&quot;
+        font-size=&quot;72&quot;
+        font-weight=&quot;900&quot;
+        fill=&quot;white&quot;&gt;
+        NATURE
+      &lt;/text&gt;
+    &lt;/mask&gt;
+  &lt;/defs&gt;
+&lt;/svg&gt;
+
+&lt;!-- Apply to a div with a background image --&gt;
+&lt;div class=&quot;text-reveal&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.text-reveal {
+  width: 500px;
+  height: 150px;
+  background-image: url(&quot;forest-sunset.jpg&quot;);
+  background-size: cover;
+  background-position: center;
+  mask-image: url(#text-mask);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The forest sunset photo is only visible through the letters "NATURE". Outside the letters, nothing is visible — the background is hidden. This creates a striking typographic image effect often seen in modern editorial design.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example — Star Shape SVG Mask</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;svg width=&quot;0&quot; height=&quot;0&quot;&gt;
+  &lt;defs&gt;
+    &lt;mask id=&quot;star-mask&quot;&gt;
+      &lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;black&quot;/&gt;
+      &lt;!-- A five-pointed star drawn as a polygon --&gt;
+      &lt;polygon
+        fill=&quot;white&quot;
+        points=&quot;150,20 180,110 270,110 200,165 225,255 150,200 75,255 100,165 30,110 120,110&quot;
+      /&gt;
+    &lt;/mask&gt;
+  &lt;/defs&gt;
+&lt;/svg&gt;
+
+&lt;div class=&quot;star-photo&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.star-photo {
+  width: 300px;
+  height: 300px;
+  background-image: url(&quot;fireworks.jpg&quot;);
+  background-size: cover;
+  mask-image: url(#star-mask);
+  -webkit-mask-image: url(#star-mask);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The fireworks photo is only visible inside the star polygon. Everything outside the star shape is hidden.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Example — Multiple Shapes in One SVG Mask</h3>
+<p class="v2-p">You can combine multiple shapes in a single mask for complex effects:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;svg width=&quot;0&quot; height=&quot;0&quot;&gt;
+  &lt;defs&gt;
+    &lt;mask id=&quot;circles-mask&quot;&gt;
+      &lt;!-- White background — everything visible by default --&gt;
+      &lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;white&quot;/&gt;
+      &lt;!-- Three black circles cut holes in the image --&gt;
+      &lt;circle cx=&quot;80&quot;  cy=&quot;80&quot;  r=&quot;60&quot; fill=&quot;black&quot;/&gt;
+      &lt;circle cx=&quot;220&quot; cy=&quot;80&quot;  r=&quot;60&quot; fill=&quot;black&quot;/&gt;
+      &lt;circle cx=&quot;150&quot; cy=&quot;200&quot; r=&quot;60&quot; fill=&quot;black&quot;/&gt;
+    &lt;/mask&gt;
+  &lt;/defs&gt;
+&lt;/svg&gt;
+
+&lt;div class=&quot;holey-image&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.holey-image {
+  width: 300px;
+  height: 280px;
+  background-image: url(&quot;abstract-art.jpg&quot;);
+  background-size: cover;
+  mask-image: url(#circles-mask);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The abstract art photo fills the element, but three circular holes are punched through it — you see the page background through those circles.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Combining SVG Masks with Gradients (Advanced)</h3>
+<p class="v2-p">You can even combine gradient fills inside SVG mask shapes for partially transparent edges:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;svg width=&quot;0&quot; height=&quot;0&quot;&gt;
+  &lt;defs&gt;
+    &lt;!-- A gradient that goes from white to black --&gt;
+    &lt;linearGradient id=&quot;fade-gradient&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;1&quot; y2=&quot;0&quot;&gt;
+      &lt;stop offset=&quot;0%&quot; stop-color=&quot;white&quot;/&gt;
+      &lt;stop offset=&quot;100%&quot; stop-color=&quot;black&quot;/&gt;
+    &lt;/linearGradient&gt;
+
+    &lt;mask id=&quot;gradient-rect-mask&quot;&gt;
+      &lt;!-- Rectangle filled with the fade gradient --&gt;
+      &lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;url(#fade-gradient)&quot;/&gt;
+    &lt;/mask&gt;
+  &lt;/defs&gt;
+&lt;/svg&gt;
+
+&lt;div class=&quot;fade-div&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.fade-div {
+  width: 400px;
+  height: 200px;
+  background-image: url(&quot;landscape.jpg&quot;);
+  background-size: cover;
+  mask-image: url(#gradient-rect-mask);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected result:</strong> The landscape is fully visible on the left (where the gradient is white) and fully hidden on the right (where the gradient is black) — the same visual result as a CSS <code>linear-gradient</code> mask, but defined as SVG.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Masking with SVG</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 9</div>
+    <div class="phase-title">Part 5 — Code Challenges (From the W3Schools Challenge Page)</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">The W3Schools CSS Masking challenge page covers the following types of tasks. Here are those challenge types, explained fully with worked solutions.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge Type 1: Apply a Gradient Mask to Fade an Image</h3>
+<p class="v2-p"><strong>Task:</strong> Make a <code>div</code> with a background image that fades from visible to transparent from left to right.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.challenge-1 {
+  width: 400px;
+  height: 250px;
+  background-image: url(&quot;landscape.jpg&quot;);
+  background-size: cover;
+
+  -webkit-mask-image: linear-gradient(to right, black, transparent);
+          mask-image: linear-gradient(to right, black, transparent);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Key point:</strong> <code>black</code> = visible, <code>transparent</code> = hidden. The gradient runs from left (black = visible) to right (transparent = hidden).</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge Type 2: Apply a PNG Mask with <code>mask-size</code> and <code>mask-repeat</code></h3>
+<p class="v2-p"><strong>Task:</strong> Apply a star-shaped PNG mask to an image, make the mask fill the entire element, and prevent it from repeating.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.challenge-2 {
+  width: 300px;
+  height: 300px;
+  background-image: url(&quot;photo.jpg&quot;);
+  background-size: cover;
+
+  -webkit-mask-image: url(&quot;star.png&quot;);
+          mask-image: url(&quot;star.png&quot;);
+  -webkit-mask-size: cover;
+          mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge Type 3: Create a Circular Fade Using Radial Gradient</h3>
+<p class="v2-p"><strong>Task:</strong> Make a photo fully visible in the centre, fading to transparent at the edges.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.challenge-3 {
+  width: 350px;
+  height: 350px;
+  background-image: url(&quot;portrait.jpg&quot;);
+  background-size: cover;
+
+  -webkit-mask-image: radial-gradient(circle, black 50%, transparent 75%);
+          mask-image: radial-gradient(circle, black 50%, transparent 75%);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Decoding:</strong> Fully visible from centre to 50% radius, then fades to hidden by 75% radius. Outside 75% — completely hidden.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge Type 4: SVG Mask Applied via <code>mask-image</code></h3>
+<p class="v2-p"><strong>Task:</strong> Use an SVG circle as a mask on a photo element.</p>
+<p class="v2-p"><strong>Solution (inline SVG + CSS reference):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;svg width=&quot;0&quot; height=&quot;0&quot;&gt;
+  &lt;defs&gt;
+    &lt;mask id=&quot;circle-cut&quot;&gt;
+      &lt;circle cx=&quot;150&quot; cy=&quot;150&quot; r=&quot;150&quot; fill=&quot;white&quot;/&gt;
+    &lt;/mask&gt;
+  &lt;/defs&gt;
+&lt;/svg&gt;
+
+&lt;div class=&quot;challenge-4&quot;&gt;&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.challenge-4 {
+  width: 300px;
+  height: 300px;
+  background-image: url(&quot;photo.jpg&quot;);
+  background-size: cover;
+  mask-image: url(#circle-cut);
+  -webkit-mask-image: url(#circle-cut);
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Challenge Type 5: Multi-stop Gradient Mask (Visible Only in Centre)</h3>
+<p class="v2-p"><strong>Task:</strong> Create an image that is hidden at both left and right edges, with a visible band in the middle.</p>
+<p class="v2-p"><strong>Solution:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.challenge-5 {
+  width: 500px;
+  height: 200px;
+  background-image: url(&quot;banner.jpg&quot;);
+  background-size: cover;
+
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 25%,
+    black 75%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 25%,
+    black 75%,
+    transparent 100%
+  );
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Solution:
+
+`css
+.challenge-5 {
+  width: 500px;
+  height: 200px;
+  background-image: url("banner.jpg");
+  background-size: cover;
+
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 25%,
+    black 75%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 25%,
+    black 75%,
+    transparent 100%
+  );
+}
+`
+
+---</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 9</div>
+    <div class="phase-title">Part 6 — Guided Practice Exercises</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — Fade-Out Social Media Header</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a wide hero banner image that fades from visible on the left to transparent on the right, so it blends seamlessly into a white page.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are designing a photography portfolio. The header has a wide landscape photo. Instead of a hard edge on the right, you want it to fade gently into the white background.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a <code>div</code> with <code>width: 600px</code> and <code>height: 200px</code>.</li><li>Set a landscape <code>background-image</code> and <code>background-size: cover</code>.</li><li>Apply a <code>linear-gradient</code> mask going from <code>black</code> on the left to <code>transparent</code> on the right.</li><li>Remember to include both the <code>-webkit-</code> prefix and the standard property.</li></ol>
+<p class="v2-p"><strong>Expected Output:</strong> A wide photo that is fully visible on the left half and gradually fades to nothing on the right half.</p>
+<p class="v2-p"><strong>Self-check Questions:</strong></p>
+<ul class="v2-ul"><li>Is the right edge of the image completely invisible (no hard line)?</li><li>Does the photo fill the div correctly?</li><li>Have you included both the <code>-webkit-mask-image</code> and <code>mask-image</code> lines?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Profile Photo in a Hexagon</h3>
+<p class="v2-p"><strong>Objective:</strong> Crop a profile photo into a hexagonal shape using an SVG mask.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a team members page for a tech company. Each team member's photo should appear inside a hexagon shape for a modern, geometric look.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an inline <code>&lt;svg&gt;</code> with <code>width="0" height="0"</code> containing a <code>&lt;defs&gt;</code> block.</li><li>Inside <code>&lt;defs&gt;</code>, define a <code>&lt;mask id="hex-mask"&gt;</code>.</li><li>Inside the mask, draw a white <code>&lt;polygon&gt;</code> hexagon (use the points: <code>"50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5"</code> on a viewBox of 0 0 100 100).</li><li>Apply the mask to a <code>div</code> with a <code>background-image</code>.</li></ol>
+<p class="v2-p"><strong>Expected Output:</strong> A team member photo visible only inside a hexagonal shape.</p>
+<p class="v2-p"><strong>Hint:</strong> The SVG polygon coordinate system is separate from your CSS pixel layout. Use <code>mask-size: cover</code> to stretch the SVG mask to fit your element.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Spotlight Reveal</h3>
+<p class="v2-p"><strong>Objective:</strong> Apply a radial gradient mask so that the centre of an image is clearly visible while the edges fade away.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are showcasing a product photo on an e-commerce site. You want a soft spotlight effect that draws the viewer's eye to the product in the centre, with the surroundings fading into the background.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create a square <code>div</code> (e.g., <code>350px × 350px</code>) with a product background image.</li><li>Apply a <code>radial-gradient</code> mask: fully visible at centre, fading to transparent at the outer edge.</li><li>Tune the gradient stops until the transition feels natural.</li></ol>
+<p class="v2-p"><strong>Expected Output:</strong> Product photo fully visible in the centre, fading softly toward transparent at the edges — a professional spotlight look.</p>
+<p class="v2-p"><strong>What-if Challenge:</strong> What if you set the first stop to <code>transparent</code> and the second to <code>black</code>? You would get the opposite effect: a ring of visibility at the edges and a hole in the centre — like looking through a porthole.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 4 — Text Carved from a Photo (SVG Text Mask)</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a bold heading that is "filled" with a photograph — so the image shows through the letters.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are designing a landing page for a travel agency. The hero section will have the word "TRAVEL" in massive letters, with a beautiful aerial ocean photo visible only through the letters.</p>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Create an inline <code>&lt;svg&gt;</code> with a <code>&lt;mask id="word-mask"&gt;</code>.</li><li>Inside the mask: fill the background with <code>black</code> (a full-size <code>&lt;rect fill="black"/&gt;</code>).</li><li>Add <code>&lt;text&gt;</code> with <code>fill="white"</code>, a very bold font, and the word "TRAVEL".</li><li>Apply the mask to a wide, short <code>div</code> with a background photo.</li><li>Ensure the text coordinates are centred within the SVG viewBox.</li></ol>
+<p class="v2-p"><strong>Expected Output:</strong> A striking headline where the ocean photo shines through the letters "TRAVEL" against a hidden/transparent background.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 9</div>
+    <div class="phase-title">Part 8 — Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1: Forgetting the <code>-webkit-</code> Prefix</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.masked {
+  mask-image: url(&quot;mask.png&quot;); /* Works in Chrome/Firefox but not Safari */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.masked {
+  -webkit-mask-image: url(&quot;mask.png&quot;); /* Safari */
+          mask-image: url(&quot;mask.png&quot;); /* Standard */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Rule:</strong> Always write both. Apply the same rule to <code>mask-size</code>, <code>mask-repeat</code>, <code>mask-position</code>, and <code>mask-mode</code>.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2: Confusing Black and White in Masks</h3>
+<p class="v2-p">Many beginners expect white in the mask to mean "hide" (like a white wall blocking the view). The opposite is true.</p>
+<p class="v2-p"><strong>Wrong mental model:</strong></p>
+<blockquote class="v2-bq"><p class="v2-p">"White = blocked/hidden, black = visible through"</p></blockquote>
+<p class="v2-p"><strong>Correct mental model:</strong></p>
+<blockquote class="v2-bq"><p class="v2-p"><strong>White = fully visible. Black = fully hidden.</strong></p></blockquote>
+<p class="v2-p">Think of it as "white light reveals" — where light shines (white), you can see. Where there is darkness (black), you cannot.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3: Applying a Gradient Mask in the Wrong Direction</h3>
+<p class="v2-p"><strong>Wrong (hides left side, reveals right — often not what you want):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>mask-image: linear-gradient(to right, transparent, black);
+/* Transparent on left = hidden, black on right = visible */</code></pre></div></div>
+<p class="v2-p"><strong>Correct (if you want to reveal left and hide right):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>mask-image: linear-gradient(to right, black, transparent);
+/* Black on left = visible, transparent on right = hidden */</code></pre></div></div>
+<p class="v2-p"><strong>Trick:</strong> Always spell out which side should be <code>black</code> (visible) and which should be <code>transparent</code> (hidden). The gradient direction <code>to right</code> just tells CSS which way to travel.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4: Forgetting <code>mask-repeat: no-repeat</code></h3>
+<p class="v2-p">When <code>mask-size</code> is smaller than the element, the mask will tile by default — creating a repeating pattern of shapes.</p>
+<p class="v2-p"><strong>Wrong (mask tiles unintentionally):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.masked {
+  mask-image: url(&quot;circle.png&quot;);
+  mask-size: 100px 100px; /* Small mask, big element → many circles! */
+  /* Missing mask-repeat: no-repeat */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.masked {
+  mask-image: url(&quot;circle.png&quot;);
+  mask-size: cover;         /* OR keep small and add: */
+  mask-repeat: no-repeat;   /* Prevent tiling */
+  -webkit-mask-image: url(&quot;circle.png&quot;);
+  -webkit-mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5: Writing SVG Mask IDs Incorrectly in <code>mask-image</code></h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Missing the # (hash) — CSS thinks it is a URL to a file called &quot;star-mask&quot; */
+mask-image: url(star-mask);</code></pre></div></div>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* # means &quot;look for an element with this ID in the current document&quot; */
+mask-image: url(#star-mask);</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6: Using Colours in SVG Masks Instead of White/Black</h3>
+<p class="v2-p"><strong>Wrong:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Using blue for &quot;visible&quot; — this does not work as expected --&gt;
+&lt;mask id=&quot;my-mask&quot;&gt;
+  &lt;circle cx=&quot;150&quot; cy=&quot;150&quot; r=&quot;100&quot; fill=&quot;blue&quot;/&gt;
+&lt;/mask&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Correct:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- SVG masks use WHITE for visible and BLACK for hidden --&gt;
+&lt;mask id=&quot;my-mask&quot;&gt;
+  &lt;circle cx=&quot;150&quot; cy=&quot;150&quot; r=&quot;100&quot; fill=&quot;white&quot;/&gt;
+&lt;/mask&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Why?</strong> In SVG masks, the browser calculates visibility from the luminance (brightness) of each pixel. Blue is dark → it will mostly hide. White is fully bright → it fully reveals.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 7: Placing SVG Mask Definitions After the Elements That Use Them</h3>
+<p class="v2-p">Browsers generally require that an element referenced by <code>id</code> (like a <code>&lt;mask&gt;</code>) be defined in the document before or alongside the element that uses it. Placing the <code>&lt;svg&gt;</code> block at the end of the <code>&lt;body&gt;</code> can cause the mask not to apply.</p>
+<p class="v2-p"><strong>Best practice:</strong> Place the <code>&lt;svg&gt;</code> with <code>&lt;defs&gt;</code> at the <strong>very top of the <code>&lt;body&gt;</code></strong>, before any content elements.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Stage 1 — HTML Structure</div>
+  <div class="build-desc"><!-- SVG mask definitions (invisible, zero-size) --></div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;CSS Masking Gallery&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;gallery.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- SVG mask definitions (invisible, zero-size) --&gt;
+  &lt;svg width=&quot;0&quot; height=&quot;0&quot; style=&quot;position:absolute&quot;&gt;
+    &lt;defs&gt;
+
+      &lt;!-- Mask 1: Circle --&gt;
+      &lt;mask id=&quot;mask-circle&quot;&gt;
+        &lt;circle cx=&quot;150&quot; cy=&quot;150&quot; r=&quot;145&quot; fill=&quot;white&quot;/&gt;
+      &lt;/mask&gt;
+
+      &lt;!-- Mask 2: Star --&gt;
+      &lt;mask id=&quot;mask-star&quot;&gt;
+        &lt;polygon
+          fill=&quot;white&quot;
+          points=&quot;150,15 180,105 275,105 200,162 225,255 150,200 75,255 100,162 25,105 120,105&quot;
+        /&gt;
+      &lt;/mask&gt;
+
+      &lt;!-- Mask 3: Diamond --&gt;
+      &lt;mask id=&quot;mask-diamond&quot;&gt;
+        &lt;polygon fill=&quot;white&quot; points=&quot;150,10 290,150 150,290 10,150&quot;/&gt;
+      &lt;/mask&gt;
+
+      &lt;!-- Mask 4: Speech bubble (rectangle + triangle) --&gt;
+      &lt;mask id=&quot;mask-speech&quot;&gt;
+        &lt;rect x=&quot;5&quot; y=&quot;5&quot; width=&quot;260&quot; height=&quot;200&quot; rx=&quot;20&quot; ry=&quot;20&quot; fill=&quot;white&quot;/&gt;
+        &lt;polygon fill=&quot;white&quot; points=&quot;40,205 80,205 40,270&quot;/&gt;
+      &lt;/mask&gt;
+
+    &lt;/defs&gt;
+  &lt;/svg&gt;
+
+  &lt;h1&gt;CSS Masking Gallery&lt;/h1&gt;
+
+  &lt;div class=&quot;gallery&quot;&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;photo circle-mask&quot; style=&quot;background-image: url(&#x27;forest.jpg&#x27;)&quot;&gt;&lt;/div&gt;
+      &lt;p&gt;Circle — PNG / SVG Mask&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;photo gradient-fade&quot; style=&quot;background-image: url(&#x27;mountains.jpg&#x27;)&quot;&gt;&lt;/div&gt;
+      &lt;p&gt;Gradient Fade — Right&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;photo star-mask&quot; style=&quot;background-image: url(&#x27;beach.jpg&#x27;)&quot;&gt;&lt;/div&gt;
+      &lt;p&gt;Star — SVG Mask&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;photo spotlight&quot; style=&quot;background-image: url(&#x27;cityscape.jpg&#x27;)&quot;&gt;&lt;/div&gt;
+      &lt;p&gt;Spotlight — Radial Gradient&lt;/p&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Masking Gallery</title>
+  <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+
+  <!-- SVG mask definitions (invisible, zero-size) -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+
+      <!-- Mask 1: Circle -->
+      <mask id="mask-circle">
+        <circle cx="150" cy="150" r="145" fill="white"/>
+      </mask>
+
+      <!-- Mask 2: Star -->
+      <mask id="mask-star">
+        <polygon
+          fill="white"
+          points="150,15 180,105 275,105 200,162 225,255 150,200 75,255 100,162 25,105 120,105"
+        />
+      </mask>
+
+      <!-- Mask 3: Diamond -->
+      <mask id="mask-diamond">
+        <polygon fill="white" points="150,10 290,150 150,290 10,150"/>
+      </mask>
+
+      <!-- Mask 4: Speech bubble (rectangle + triangle) -->
+      <mask id="mask-speech">
+        <rect x="5" y="5" width="260" height="200" rx="20" ry="20" fill="white"/>
+        <polygon fill="white" points="40,205 80,205 40,270"/>
+      </mask>
+
+    </defs>
+  </svg>
+
+  <h1>CSS Masking Gallery</h1>
+
+  <div class="gallery">
+
+    <div class="card">
+      <div class="photo circle-mask" style="background-image: url('forest.jpg')"></div>
+      <p>Circle — PNG / SVG Mask</p>
+    </div>
+
+    <div class="card">
+      <div class="photo gradient-fade" style="background-image: url('mountains.jpg')"></div>
+      <p>Gradient Fade — Right</p>
+    </div>
+
+    <div class="card">
+      <div class="photo star-mask" style="background-image: url('beach.jpg')"></div>
+      <p>Star — SVG Mask</p>
+    </div>
+
+    <div class="card">
+      <div class="photo spotlight" style="background-image: url('cityscape.jpg')"></div>
+      <p>Spotlight — Radial Gradient</p>
+    </div>
+
+  </div>
+
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
       ⬇ Download starter.html
     </button>
-    <button class="next-btn" onclick="showGithub()" style="background:#0f172a;box-shadow:none">
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
       🐙 Push to GitHub →
     </button>
   </div>
-  <script>
-  const __code = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Pagination</title>
-<style>*,*::before,*::after{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f0f9ff;padding:24px;max-width:860px;margin:0 auto;color:#0f172a}
-h2{color:#0369a1;margin:20px 0 12px;border-bottom:2px solid #bae6fd;padding-bottom:6px}
-.demo{background:white;border:1.5px solid #bae6fd;border-radius:12px;padding:18px;margin-bottom:12px}
-.pagination{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
-.pi{display:flex;align-items:center;justify-content:center;min-width:38px;height:38px;padding:0 4px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid #e2e8f0;color:#334155;text-decoration:none;transition:.15s;user-select:none}
-.pi:hover{border-color:#0284c7;color:#0284c7;background:#f0f9ff}
-.pi.active{background:#0284c7;color:white;border-color:#0284c7}
-.pi.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
-.pi.dots{border:none;color:#94a3b8;cursor:default}
-.pill .pi{border-radius:100px}
-.minimal .pi{border:none}.minimal .pi.active{background:#0284c7;color:white;border-radius:8px}
-.dots-pg{display:flex;gap:8px;align-items:center}
-.dot{width:10px;height:10px;border-radius:50%;background:#e2e8f0;cursor:pointer;transition:.3s}
-.dot.active{width:28px;border-radius:100px;background:#0284c7}
-.dot:hover{background:#bae6fd}
-.nav-pages{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:9px;border:1.5px solid #e2e8f0;color:#334155;text-decoration:none;font-weight:600;font-size:13px;transition:.15s}
-.nav-btn:hover{border-color:#0284c7;color:#0284c7}
-</style></head><body>
-<h1 style="color:#0284c7;margin-bottom:4px">CSS Pagination</h1>
-<h2>Standard Numbered</h2>
-<div class="demo"><nav class="pagination"><a class="pi disabled">‹</a><a class="pi active">1</a><a class="pi">2</a><a class="pi">3</a><a class="pi">4</a><a class="pi">5</a><a class="pi">›</a></nav></div>
-<h2>Truncated</h2>
-<div class="demo"><nav class="pagination"><a class="pi">‹</a><a class="pi">1</a><a class="pi active">2</a><a class="pi">3</a><a class="pi dots">…</a><a class="pi">18</a><a class="pi">19</a><a class="pi">20</a><a class="pi">›</a></nav></div>
-<h2>Pill Variant</h2>
-<div class="demo"><nav class="pagination pill"><a class="pi">‹</a><a class="pi">1</a><a class="pi active">2</a><a class="pi">3</a><a class="pi">4</a><a class="pi">5</a><a class="pi">›</a></nav></div>
-<h2>Dot Carousel</h2>
-<div class="demo"><div class="dots-pg"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-<h2>Prev / Next with Labels</h2>
-<div class="demo"><div class="nav-pages"><a class="nav-btn" href="#">← CSS Transitions</a><span style="color:#64748b;font-size:13px">Lesson 60 of 73</span><a class="nav-btn" href="#">CSS Columns →</a></div></div>
-</body></html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
 </div>
-
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-60-css_pagination</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 60 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-60-css_pagination/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-60-stage-1-html-structure</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 60 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-60-stage-1-html-structure/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 60 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Basic pagination</li><li>✅ Dots and truncated</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_59.html" class="ln-btn">← Lesson 59</a>
-    <a href="lesson_61.html" class="ln-btn primary">Lesson 61 →</a>
-  </div>
+  <h2>🎉 Lesson 60 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — What Is CSS Masking?</li><li>✅ Part 2 — Masking with PNG Images</li><li>✅ Part 3 — Masking with CSS Gradients</li><li>✅ Part 4 — Masking with SVG</li><li>✅ Part 5 — Code Challenges (From the W3Schools Challenge Page)</li><li>✅ Part 6 — Guided Practice Exercises</li></ul>
+  <div class="lesson-nav"><a href="lesson_59.html" class="ln-btn">← Lesson 59</a><a href="lesson_61.html" class="ln-btn primary">Lesson 61 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 60 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 60 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_css_60_phase';
+const TOTAL=9,KEY='techbase_css_l60';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>

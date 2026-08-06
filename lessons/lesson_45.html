@@ -2,528 +2,1779 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 45: CSS Media Queries — Techbase CSS Course</title>
-<meta name="description" content="Make your pages adapt to any screen size using @media rules and breakpoints">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lesson 45: CSS Website Layout — Techbase CSS</title>
+<meta name="description" content="CSS Website Layout">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root { 
-  --accent:#0284c7;--accent-pale:#f0f9ff;--accent-dark:#0369a1;
-  --accent-border:rgba(2,132,199,.3);--accent-shadow:rgba(2,132,199,.28);
-  --hero-bg:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);
-  --s2:#f1f5f9;
- }
 :root{
+  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
+  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
   --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
   --text:#0f172a;--t2:#334155;--muted:#64748b;
   --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.7;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+
 /* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.88rem;color:var(--text);text-decoration:none}
-.l-nav-logo em{font-style:normal}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
 .l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
-.l-nav-back:hover{color:var(--accent)}
-.l-nav-lesson{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-/* PROGRESS BAR */
+.l-nav-back:hover{color:var(--acc)}
+.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
+
+/* PROGRESS */
 .progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--accent);transition:width .4s ease;width:0%}
+.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
+
 /* HERO */
-.l-hero{padding:88px 1.5rem 2rem;background:var(--hero-bg);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:820px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .8rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border:1px solid;color:var(--accent);background:var(--accent-pale);border-color:var(--accent-border);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-tag{font-size:.95rem;color:var(--muted);margin-bottom:1.2rem}
-.l-hero-build{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;font-size:.88rem;max-width:520px}
-.l-hero-build strong{color:var(--accent)}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
+.l-hero-inner{max-width:860px;margin:0 auto}
+.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
+  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
+
 /* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;max-width:820px;margin:2rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.6rem}
-.welcome-box p{font-size:.9rem;line-height:1.75;opacity:.92}
-.welcome-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.15);border-radius:6px;padding:.25rem .8rem;font-family:var(--M);font-size:.7rem;font-weight:500}
-/* MAIN CONTENT */
-main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem}
+.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
+.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
+.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
+.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
+  font-family:var(--M);font-size:.68rem;font-weight:500}
+
 /* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s}
-.phase.locked{opacity:.4;pointer-events:none;filter:blur(1px)}
-.phase-header{padding:1rem 1.4rem;background:var(--s2,#f1f5f9);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:1rem;color:var(--text)}
-.phase-check{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:background .3s}
+.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
+.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
+.phase-header{padding:1rem 1.4rem;background:#f5fbff;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
+.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc)}
+.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
+  flex:1;margin:0 .8rem}
+.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
+  transition:background .3s,color .3s}
 .phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.4rem}
-/* CONCEPT BOX */
-.concept-box{background:#f0f9ff;border-left:4px solid #0284c7;border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
-.concept-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0284c7;margin-bottom:.4rem}
-.concept-box p{font-size:.92rem;color:#0c4a6e;line-height:1.75}
-/* CODE BLOCK */
-.code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
-.code-bar{background:#1e293b;padding:.6rem 1rem;display:flex;align-items:center;gap:.4rem}
-.code-dot{width:8px;height:8px;border-radius:50%}
-.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
-.code-filename{margin-left:.5rem;font-family:var(--M);font-size:.65rem;color:#64748b}
-.code-body{background:#0f172a;padding:1.2rem 1.4rem;overflow-x:auto}
-.code-body pre{font-family:var(--M);font-size:.78rem;line-height:1.9;color:#e2e8f0;margin:0;white-space:pre}
-.code-body pre .cm{color:#64748b} /* comment */
-.code-body pre .tg{color:#38bdf8} /* tag */
-.code-body pre .at{color:#c084fc} /* attribute */
-.code-body pre .vl{color:#86efac} /* value */
-.code-body pre .tx{color:#e2e8f0} /* text */
+.phase-body{padding:1.6rem 1.8rem}
+
+/* RICH CONTENT STYLES */
+.v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
+  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
+.v2-ul li,.v2-ol li{margin-bottom:.3rem}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
+  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq p{margin:0;color:inherit}
+.v2-bq strong{font-style:normal}
+.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
+.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
+  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
+.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
+.v2-table tr:nth-child(even) td{background:#f8fafc}
+.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
+  padding:1px 5px;font-family:var(--M);font-size:.8em}
+.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.phase-body strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
+.v2-dot{width:10px;height:10px;border-radius:50%}
+.v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
+.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
+.v2-code-body pre{margin:0}
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
+  white-space:pre;background:transparent;padding:0;border-radius:0}
+
 /* TASK BOX */
-.task-box{background:#fffbeb;border:1.5px dashed #d97706;border-radius:12px;padding:1rem 1.2rem;margin:1.2rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b45309;margin-bottom:.4rem}
-.task-box p{font-size:.92rem;color:#78350f;line-height:1.75}
-.task-box code{background:rgba(180,83,9,.1);border-radius:4px;padding:.1rem .4rem;font-family:var(--M);font-size:.82em}
-/* NEXT BUTTON */
-.next-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.5rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px var(--accent-shadow);margin-top:1rem}
-.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--accent-shadow)}
-.next-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.next-tip{font-family:var(--M);font-size:.72rem;color:var(--muted);margin-top:.6rem}
-/* PROJECT BOX */
-.project-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.5rem;margin:2rem 0}
-.project-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.project-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.project-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.7}
-/* CAPSTONE BOX */
-.capstone-box{background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:16px;padding:1.5rem;margin:2rem 0;color:#fff}
-.capstone-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5b4fc;margin-bottom:.4rem}
-.capstone-name{font-family:var(--D);font-weight:700;font-size:1.2rem;margin-bottom:.5rem}
-.capstone-desc{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:1.2rem;line-height:1.7}
-/* FILE TABS */
-.file-tabs{display:flex;gap:.5rem;margin-bottom:0;flex-wrap:wrap}
-.file-tab{font-family:var(--M);font-size:.72rem;padding:.35rem .8rem;background:#1e293b;color:#94a3b8;border-radius:6px 6px 0 0;cursor:pointer;border:1px solid #334155;border-bottom:none;transition:background .15s}
-.file-tab.active{background:#0f172a;color:#e2e8f0}
-.file-content{display:none}.file-content.active{display:block}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;
+  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
+.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
+.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
+  font-family:var(--M);font-size:.82em}
+
+/* UNLOCK BUTTON */
+.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
+  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
+  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
+.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
+
+/* BUILD IT */
+.build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
+.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
+.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
+.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-desc strong{color:#14532d}
+
 /* GITHUB ACCORDION */
-.github-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.github-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.github-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.github-acc-body.open{display:block}
-.github-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.github-step-n{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.github-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
+.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
+.gh-acc-body.open{display:block}
+.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
+  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
+  padding:1px 6px;font-family:var(--M);font-size:.82em}
+
 /* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:16px;padding:1.5rem 1.8rem;margin:2rem 0;display:none}
+.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
+  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
 .session-end.visible{display:block}
 .session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
 .session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.92;display:flex;align-items:center;gap:.5rem}
-/* LESSON NAV */
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border);margin-top:2rem;flex-wrap:wrap;gap:.75rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s,color .2s}
-.ln-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ln-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
+  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
+  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
+  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.ln-btn:hover{border-color:var(--acc);color:var(--acc)}
+.ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-/* UTILS */
-code{font-family:var(--M);font-size:.85em;background:#f1f5f9;border-radius:4px;padding:.1rem .35rem;color:var(--accent)}
-.emoji{font-style:normal}
-@media(max-width:600px){.l-hero h1{font-size:1.5rem}.welcome-meta{gap:.75rem}}
-
+.lesson-nav{display:flex;align-items:center;justify-content:space-between;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
+  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
 </style>
 </head>
 <body>
-<nav class="lesson-nav-bar">
-  <a href="../index.html" class="nav-back">← CSS Course</a>
-  <span class="nav-lesson">Lesson 45 of 73 &nbsp;·&nbsp; CSS Media Queries</span>
-  <div class="nav-actions"><a href="lesson_44.html" class="ln-btn">← Lesson 44</a><a href="lesson_46.html" class="ln-btn primary">Lesson 46 →</a></div>
+<nav class="l-nav">
+  <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
+  <span class="l-nav-label">Lesson 45 of 73</span>
+  <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div id="progress-wrap"><div id="pbar" style="width:5%;background:var(--accent);height:4px;border-radius:2px;transition:width .4s ease;"></div></div>
-<section class="lesson-hero">
-  <div class="hero-inner">
-    <div class="lesson-num-badge">Lesson 45</div>
-    <h1>CSS Media Queries</h1>
-    <p class="lesson-tagline">Make your pages adapt to any screen size using @media rules and breakpoints</p>
-    <div class="lesson-meta">
-      <span>📚 2 phases</span>
-      <span>🏗️ Build: My Responsive Layout</span>
-      
-    </div>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<div class="l-hero">
+  <div class="l-hero-inner">
+    <div class="l-badge">CSS · Lesson 45</div>
+    <h1>CSS Website Layout</h1>
+    <div class="l-hero-sub">11 phases · Build: Project Description</div>
   </div>
-</section>
-<main class="lesson-main">
-<div class="welcome-box">
-  <div class="welcome-label">👋 Welcome to Lesson 45!</div>
-  <h2>CSS Media Queries</h2>
-  <p>Make your pages adapt to any screen size using @media rules and breakpoints. Work through <strong>2 phases</strong> — complete each task before clicking <em>Next Phase</em>.
-  </p>
 </div>
-<div class="phase " id="phase1" data-phase="1">
+
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
+  <h2>👋 Welcome to Lesson 45</h2>
+  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever looked at a professional website and wondered: how did they put the logo at the top, the navigation menu beside it, a sidebar on the left, the main content in the middle, and a footer stretched across the bottom — all perfectly arranged? That arrangement is called a <strong>website layout</strong>, and CSS is the tool that makes it happen.</p>
+<p class="v2-p">In this lesson, you will learn how to take a blank web page and organise it into a real, structured layout — just like the websites you use every day. You will understand every single zone of a typical webpage, why each zone exists, how CSS positions and sizes each one, and how to combine them all into one complete working design.</p>
+<p class="v2-p">By the end of this lesson you will be able to:</p>
+<ul class="v2-ul"><li>Identify and name every major section of a standard website layout</li><li>Write CSS to style a full webpage with a header, navigation bar, content area, sidebar, and footer</li><li>Use <code>float</code>, <code>flexbox</code>, and CSS Grid approaches to arrange sections side by side</li><li>Make layouts responsive so they work on both wide desktop screens and narrow phone screens</li><li>Build a complete personal blog homepage as a mini project</li></ul>
+<p class="v2-p">This is one of the most practical and exciting CSS lessons because you are finally assembling all your CSS knowledge into something that looks like a real website.</p>
+<hr class="v2-hr"></div>
+  <div class="welcome-meta">
+    <span>📚 11 phases</span>
+    <span>🏗️ Project Description</span>
+  </div>
+</div></div>
+</section>
+
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 1</div><div class="phase-title">Media Query Syntax and Breakpoints</div></div>
-    <div class="phase-check" id="check1"></div>
+    <div class="phase-num">Phase 1 of 11</div>
+    <div class="phase-title">Lesson Introduction</div>
+    <div class="phase-check" id="chk1"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p><code>@media (condition) { rules }</code>. Common conditions: <code>max-width: 768px</code> (tablet and below), <code>min-width: 768px</code> (tablet and above). Mobile-first approach: write base styles for mobile, add <code>min-width</code> queries for larger screens. Standard breakpoints: 480px (phone), 768px (tablet), 1024px (laptop), 1280px (desktop). Media type: <code>@media screen and (max-width: 768px)</code>.</p>
-    </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
-  </div>
-  <div class="code-body"><pre>/* Mobile-first: base = mobile */
-.container { padding: 16px; }
-.card { width: 100%; }
-nav  { flex-direction: column; }
-
-/* Tablet — 768px and up */
-@media (min-width: 768px) {
-  .container { padding: 28px; }
-  .card { width: calc(50% - 8px); }
-  nav  { flex-direction: row; }
-}
-
-/* Desktop — 1024px and up */
-@media (min-width: 1024px) {
-  .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
-  .card { width: calc(33.33% - 11px); }
-}
-
-/* Desktop-first approach (alternative) */
-.card { width: 33.33%; }
-@media (max-width: 1024px) { .card { width: 50%; } }
-@media (max-width: 768px)  { .card { width: 100%; } }</pre></div>
-</div>
+    <p class="v2-p">Have you ever looked at a professional website and wondered: how did they put the logo at the top, the navigation menu beside it, a sidebar on the left, the main content in the middle, and a footer stretched across the bottom — all perfectly arranged? That arrangement is called a <strong>website layout</strong>, and CSS is the tool that makes it happen.</p>
+<p class="v2-p">In this lesson, you will learn how to take a blank web page and organise it into a real, structured layout — just like the websites you use every day. You will understand every single zone of a typical webpage, why each zone exists, how CSS positions and sizes each one, and how to combine them all into one complete working design.</p>
+<p class="v2-p">By the end of this lesson you will be able to:</p>
+<ul class="v2-ul"><li>Identify and name every major section of a standard website layout</li><li>Write CSS to style a full webpage with a header, navigation bar, content area, sidebar, and footer</li><li>Use <code>float</code>, <code>flexbox</code>, and CSS Grid approaches to arrange sections side by side</li><li>Make layouts responsive so they work on both wide desktop screens and narrow phone screens</li><li>Build a complete personal blog homepage as a mini project</li></ul>
+<p class="v2-p">This is one of the most practical and exciting CSS lessons because you are finally assembling all your CSS knowledge into something that looks like a real website.</p>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Write a mobile-first stylesheet: base styles for one column, then add a 768px breakpoint for two columns, and a 1024px breakpoint for three columns. Resize the browser to see the layout shift between one, two and three columns.</p>
+      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(1)">
-      Next Phase → <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
   </div>
-</div><div class="phase locked" id="phase2" data-phase="2">
+</div>
+<div class="phase locked" id="phase2">
   <div class="phase-header">
-    <div><div class="phase-num">Phase 2</div><div class="phase-title">Media Features Beyond Width</div></div>
-    <div class="phase-check" id="check2"></div>
+    <div class="phase-num">Phase 2 of 11</div>
+    <div class="phase-title">Prerequisite Concepts</div>
+    <div class="phase-check" id="chk2"></div>
   </div>
   <div class="phase-body">
-    <div class="concept-box">
-      <div class="concept-label">💡 Concept</div>
-      <p>Media queries can target more than screen width: <code>prefers-color-scheme: dark</code> (user's OS dark mode), <code>prefers-reduced-motion: reduce</code> (user has motion sensitivity), <code>orientation: landscape</code> (device is horizontal), <code>print</code> (print stylesheet). Always respect <code>prefers-reduced-motion</code> — some users get dizzy from animations.</p>
+    <p class="v2-p">Before you begin, make sure you are comfortable with these foundational ideas. Read through each one — they will be used constantly throughout this lesson.</p>
+<h3 class="v2-h3">What Is an HTML Element?</h3>
+<p class="v2-p">An HTML element is a piece of content wrapped in a tag. For example:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div&gt;This is a block of content&lt;/div&gt;
+&lt;p&gt;This is a paragraph&lt;/p&gt;
+&lt;header&gt;This is a header section&lt;/header&gt;</code></pre></div></div>
+<h3 class="v2-h3">What Is a Block-Level Element?</h3>
+<p class="v2-p">A <strong>block-level element</strong> automatically takes up the full width of its parent container and starts on a new line. Examples: <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;h1&gt;</code>.</p>
+<h3 class="v2-h3">What Is the CSS Box Model?</h3>
+<p class="v2-p">Every HTML element is a box. The box has:</p>
+<ul class="v2-ul"><li><strong>Content</strong> — the actual text or image inside</li><li><strong>Padding</strong> — space between the content and the border</li><li><strong>Border</strong> — a line around the padding</li><li><strong>Margin</strong> — space outside the border, pushing other elements away</li></ul>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+  width: 300px;
+  padding: 20px;
+  border: 2px solid black;
+  margin: 10px;
+}</code></pre></div></div>
+<h3 class="v2-h3">What Is <code>width</code> and <code>height</code>?</h3>
+<p class="v2-p"><code>width</code> sets how wide an element is. <code>height</code> sets how tall it is. You can use <code>px</code> (fixed pixels) or <code>%</code> (percentage of the parent's width).</p>
+<h3 class="v2-h3">What Is <code>float</code>?</h3>
+<p class="v2-p"><code>float</code> moves an element to the left or right of its container, letting other content flow around it — like how text wraps around a photo in a magazine.</p>
+<h3 class="v2-h3">What Is Flexbox?</h3>
+<p class="v2-p">Flexbox is a CSS layout system that places child elements in a row or column automatically, with powerful alignment controls. You activate it with <code>display: flex</code> on the parent element.</p>
+<h3 class="v2-h3">What Is CSS Grid?</h3>
+<p class="v2-p">CSS Grid is a two-dimensional layout system. It lets you define rows AND columns simultaneously, creating grid-like structures. You activate it with <code>display: grid</code> on the parent element.</p>
+<h3 class="v2-h3">What Is a Media Query?</h3>
+<p class="v2-p">A media query checks the size of the screen and applies different CSS rules depending on the result:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>@media (max-width: 768px) {
+  /* CSS rules for screens 768px wide or narrower */
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <div class="code-wrap">
-  <div class="code-bar">
-    <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-    <span class="code-filename">style.css</span>
+    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
   </div>
-  <div class="code-body"><pre>/* Dark mode — OS-level preference */
-@media (prefers-color-scheme: dark) {
-  :root { --bg: #0f172a; --text: #f1f5f9; }
-  body  { background: var(--bg); color: var(--text); }
+</div>
+<div class="phase locked" id="phase3">
+  <div class="phase-header">
+    <div class="phase-num">Phase 3 of 11</div>
+    <div class="phase-title">Part 1: Understanding the Anatomy of a Website Layout</div>
+    <div class="phase-check" id="chk3"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Does "Website Layout" Mean?</h3>
+<p class="v2-p">A website layout is the organised structure of all the visual zones on a webpage. Think of building a house: before you put up walls and furniture, you draw a floor plan showing which room goes where. A website layout is the floor plan of your webpage.</p>
+<p class="v2-p">Almost every website in the world — news sites, social media platforms, government pages, online stores — follows a similar layout blueprint with these major zones:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌─────────────────────────────────────┐
+│              HEADER                 │  ← logo, site name
+├─────────────────────────────────────┤
+│            NAVIGATION BAR           │  ← links menu
+├──────────────────────┬──────────────┤
+│                      │              │
+│    MAIN CONTENT      │   SIDEBAR    │  ← article + extras
+│                      │              │
+├─────────────────────────────────────┤
+│               FOOTER                │  ← copyright, links
+└─────────────────────────────────────┘</code></pre></div></div>
+<p class="v2-p">Let's understand each zone before writing any code.</p>
+<h3 class="v2-h3">Zone 1 — The Header</h3>
+<p class="v2-p">The <strong>header</strong> sits at the very top of the page. It typically contains:</p>
+<ul class="v2-ul"><li>The website logo or brand name</li><li>A tagline or subtitle</li><li>Sometimes a search bar</li></ul>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Real-world analogy:</strong> The header is like the front cover of a magazine — it identifies what you are reading immediately.</p></blockquote>
+<p class="v2-p">The HTML element for this is <code>&lt;header&gt;</code>.</p>
+<h3 class="v2-h3">Zone 2 — The Navigation Bar (Navbar)</h3>
+<p class="v2-p">The <strong>navbar</strong> contains a list of links — Home, About, Blog, Contact, etc. It can be:</p>
+<ul class="v2-ul"><li>Horizontal (sitting below the header, spanning full width)</li><li>Vertical (running down the left side of the page as a sidebar)</li><li>Sticky (staying fixed at the top as you scroll)</li></ul>
+<p class="v2-p">The HTML element for this is <code>&lt;nav&gt;</code>.</p>
+<h3 class="v2-h3">Zone 3 — The Main Content Area</h3>
+<p class="v2-p">The <strong>main content</strong> area is the largest zone — it is where the actual articles, products, forms, or page content lives. This is what users came to your site to read.</p>
+<p class="v2-p">The HTML element for this is <code>&lt;main&gt;</code> or a <code>&lt;section&gt;</code>.</p>
+<h3 class="v2-h3">Zone 4 — The Sidebar</h3>
+<p class="v2-p">The <strong>sidebar</strong> is a narrower column beside the main content. It often contains:</p>
+<ul class="v2-ul"><li>Related articles</li><li>Advertisements</li><li>A category list</li><li>A search widget</li><li>A social media feed</li></ul>
+<p class="v2-p">The HTML element is typically <code>&lt;aside&gt;</code>.</p>
+<h3 class="v2-h3">Zone 5 — The Footer</h3>
+<p class="v2-p">The <strong>footer</strong> sits at the very bottom of the page. It typically contains:</p>
+<ul class="v2-ul"><li>Copyright notice</li><li>Secondary links (Privacy Policy, Terms of Service)</li><li>Contact information</li><li>Social media icons</li></ul>
+<p class="v2-p">The HTML element for this is <code>&lt;footer&gt;</code>.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Understanding the Anatomy of a Website Layout</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase4">
+  <div class="phase-header">
+    <div class="phase-num">Phase 4 of 11</div>
+    <div class="phase-title">Part 2: Setting Up the HTML Structure</div>
+    <div class="phase-check" id="chk4"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Before writing any CSS, you always need the HTML skeleton. This is the foundation every CSS layout rule will be built on.</p>
+<h3 class="v2-h3">The Complete HTML Skeleton</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;My Website&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- Zone 1: Header --&gt;
+  &lt;header class=&quot;site-header&quot;&gt;
+    &lt;h1&gt;My Awesome Website&lt;/h1&gt;
+    &lt;p&gt;Welcome to my little corner of the internet&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;!-- Zone 2: Navigation Bar --&gt;
+  &lt;nav class=&quot;navbar&quot;&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Blog&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+
+  &lt;!-- Zone 3 + 4: Content and Sidebar wrapper --&gt;
+  &lt;div class=&quot;content-wrapper&quot;&gt;
+
+    &lt;!-- Zone 3: Main Content --&gt;
+    &lt;main class=&quot;main-content&quot;&gt;
+      &lt;h2&gt;Latest Articles&lt;/h2&gt;
+      &lt;p&gt;This is where your main page content goes. Articles, images, videos, and more all live here in the main content area.&lt;/p&gt;
+      &lt;p&gt;You can have multiple paragraphs, sections, and subsections here.&lt;/p&gt;
+    &lt;/main&gt;
+
+    &lt;!-- Zone 4: Sidebar --&gt;
+    &lt;aside class=&quot;sidebar&quot;&gt;
+      &lt;h3&gt;Categories&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Technology&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Design&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Science&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Travel&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/aside&gt;
+
+  &lt;/div&gt;&lt;!-- end content-wrapper --&gt;
+
+  &lt;!-- Zone 5: Footer --&gt;
+  &lt;footer class=&quot;site-footer&quot;&gt;
+    &lt;p&gt;&amp;copy; 2026 My Awesome Website. All rights reserved.&lt;/p&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Line-by-line breakdown of important parts:</strong></p>
+<ul class="v2-ul"><li><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> — this tells mobile browsers to display the page at the correct width. Without this, your layout will look tiny on phones.</li><li><code>&lt;link rel="stylesheet" href="style.css"&gt;</code> — connects your CSS file to the HTML.</li><li><code>class="site-header"</code> — gives this element a class name so CSS can target it.</li><li><code>&lt;div class="content-wrapper"&gt;</code> — wraps the main content and sidebar together. This wrapper is what you will make into a two-column layout.</li><li><code>&amp;copy;</code> — the HTML code for the © copyright symbol.</li></ul>
+<p class="v2-p"><strong>Milestone output (no CSS yet):</strong> A plain unstyled page where all five zones stack vertically one after another — a tall single column of text. This is correct! CSS will arrange them properly.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Setting Up the HTML Structure</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase5">
+  <div class="phase-header">
+    <div class="phase-num">Phase 5 of 11</div>
+    <div class="phase-title">Part 3: Styling Each Zone — Step by Step</div>
+    <div class="phase-check" id="chk5"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Now let's style each zone individually before combining them.</p>
+<h3 class="v2-h3">Step 1 — The Universal Reset</h3>
+<p class="v2-p">Before styling anything, add a reset to ensure consistent behaviour across all browsers:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* style.css */
+
+/* === RESET === */
+* {
+  box-sizing: border-box;  /* padding and border are included IN the width */
+  margin: 0;
+  padding: 0;
 }
 
-/* Reduced motion — accessibility */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+  background-color: #f0f0f0;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Why <code>box-sizing: border-box</code>?</strong></p>
+<p class="v2-p">Without it, adding padding to a <code>300px</code> wide element makes it wider than <code>300px</code>, because the padding is added <em>outside</em> the specified width. With <code>border-box</code>, the padding is included <em>inside</em> the <code>300px</code>, so the element stays exactly <code>300px</code>. This prevents many confusing layout bugs.</p>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> What happens if you forget <code>box-sizing: border-box</code> on a sidebar that is supposed to be exactly <code>25%</code> wide? Try removing it and see if it overflows.</p></blockquote>
+<hr class="v2-hr">
+<h3 class="v2-h3">Step 2 — The Header</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* === HEADER === */
+.site-header {
+  background-color: #2c3e50;   /* dark blue-grey background */
+  color: #ffffff;               /* white text */
+  padding: 30px 20px;           /* 30px top/bottom, 20px left/right */
+  text-align: center;
+}
+
+.site-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.site-header p {
+  font-size: 1rem;
+  color: #bdc3c7;               /* slightly dimmed subtitle text */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A wide, dark blue-grey banner stretched across the full top of the page. Inside it, a large white site title and a smaller grey subtitle, all centred.</p>
+<p class="v2-p"><strong>Understanding each line:</strong></p>
+<ul class="v2-ul"><li><code>background-color: #2c3e50</code> — sets a rich dark background. The header will stand out strongly.</li><li><code>padding: 30px 20px</code> — shorthand for: <code>padding-top: 30px; padding-right: 20px; padding-bottom: 30px; padding-left: 20px</code>.</li><li><code>color: #ffffff</code> — sets text colour to white. This applies to all text inside <code>.site-header</code> unless overridden.</li><li><code>.site-header h1</code> — this is a <strong>descendant selector</strong> — it targets only <code>&lt;h1&gt;</code> elements that are inside <code>.site-header</code>.</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Step 3 — The Navigation Bar</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* === NAVBAR === */
+.navbar {
+  background-color: #34495e;   /* slightly lighter than header */
+  overflow: hidden;             /* contains floated children */
+}
+
+.navbar ul {
+  list-style: none;             /* removes bullet points */
+  display: flex;                /* arranges links in a row */
+  padding: 0;
+  margin: 0;
+}
+
+.navbar ul li a {
+  display: block;               /* makes the entire cell clickable */
+  color: #ecf0f1;               /* off-white link colour */
+  text-decoration: none;        /* removes underline */
+  padding: 14px 20px;           /* comfortable click area */
+  font-size: 1rem;
+  transition: background-color 0.2s ease;  /* smooth hover effect */
+}
+
+.navbar ul li a:hover {
+  background-color: #2c3e50;   /* darkens on hover */
+  color: #ffffff;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A horizontal dark bar below the header, containing four links in a row: Home | About | Blog | Contact. Each link has padding making it a comfortable size to click. Hovering over a link darkens it.</p>
+<p class="v2-p"><strong>Understanding each line:</strong></p>
+<ul class="v2-ul"><li><code>list-style: none</code> — removes the bullet points (•) from the <code>&lt;ul&gt;</code>.</li><li><code>display: flex</code> on the <code>&lt;ul&gt;</code> — turns the list into a horizontal flex container, so all <code>&lt;li&gt;</code> items sit side by side in a row instead of stacking vertically.</li><li><code>display: block</code> on the <code>&lt;a&gt;</code> — makes the link fill its entire <code>&lt;li&gt;</code> cell, so users can click anywhere in the cell, not just on the text.</li><li><code>transition: background-color 0.2s ease</code> — animates the background colour change over 0.2 seconds when hovering.</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Step 4 — The Two-Column Content Layout</h3>
+<p class="v2-p">This is the most important part: making the main content and sidebar sit <strong>side by side</strong> in two columns.</p>
+<p class="v2-p">There are three approaches taught across web development:</p>
+<p class="v2-p"><strong>Approach A — Using Float (Classic Method)</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* === CONTENT WRAPPER (float approach) === */
+.content-wrapper {
+  overflow: hidden;            /* clearfix: collapses around floated children */
+  max-width: 1100px;           /* prevents content spreading too wide */
+  margin: 20px auto;           /* centres the wrapper on the page */
+  padding: 0 20px;
+}
+
+.main-content {
+  float: left;                 /* float to the LEFT */
+  width: 70%;                  /* takes up 70% of the wrapper */
+  background-color: #ffffff;
+  padding: 25px;
+  min-height: 400px;
+}
+
+.sidebar {
+  float: right;                /* float to the RIGHT */
+  width: 28%;                  /* takes up 28% (2% gap between them) */
+  background-color: #ffffff;
+  padding: 20px;
+  min-height: 400px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> Main content takes up about 70% of the page width on the left. Sidebar takes up about 28% on the right. A 2% visual gap separates them. Both columns sit at the same height.</p>
+<p class="v2-p"><strong>Understanding floats:</strong></p>
+<ul class="v2-ul"><li><code>float: left</code> pulls the element to the left and lets content flow to its right.</li><li><code>float: right</code> pulls it to the right and lets content flow to its left.</li><li>Together, the two floated elements sit beside each other.</li><li><code>overflow: hidden</code> on the parent is a <strong>clearfix technique</strong> — without it, the parent collapses to zero height because floated elements are taken out of the normal document flow.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>What if you remove <code>overflow: hidden</code> from <code>.content-wrapper</code>?</strong> The footer will slide up and overlap the content — because the parent doesn't know how tall its floated children are.</p></blockquote>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Approach B — Using Flexbox (Modern Recommended Method)</strong></p>
+<p class="v2-p">Flexbox is the modern standard. It is simpler, more powerful, and avoids the clearfix problem entirely.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* === CONTENT WRAPPER (flexbox approach) === */
+.content-wrapper {
+  display: flex;               /* activates flexbox */
+  flex-direction: row;         /* children go in a row (left to right) */
+  gap: 20px;                   /* 20px gap between main content and sidebar */
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.main-content {
+  flex: 3;                     /* takes 3 parts of available space */
+  background-color: #ffffff;
+  padding: 25px;
+  min-height: 400px;
+}
+
+.sidebar {
+  flex: 1;                     /* takes 1 part of available space */
+  background-color: #ffffff;
+  padding: 20px;
+  min-height: 400px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Understanding <code>flex: 3</code> and <code>flex: 1</code>:</strong></p>
+<ul class="v2-ul"><li>These are <strong>flex grow values</strong>. They define the ratio of space each child gets.</li><li><code>flex: 3</code> means: give this element 3 units of the available space.</li><li><code>flex: 1</code> means: give this element 1 unit of the available space.</li><li>Together: 3 + 1 = 4 total units. Main content gets 3/4 (75%) of the space. Sidebar gets 1/4 (25%).</li><li><code>gap: 20px</code> automatically creates a 20px space between the children.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Analogy:</strong> Imagine a pizza cut into 4 slices. With <code>flex: 3</code> and <code>flex: 1</code>, main content gets 3 slices and the sidebar gets 1 slice. The pizza is shared in a 3:1 ratio.</p></blockquote>
+<hr class="v2-hr">
+<p class="v2-p"><strong>Approach C — Using CSS Grid (Most Powerful Method)</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* === CONTENT WRAPPER (CSS Grid approach) === */
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 3fr 1fr;  /* two columns: 3 parts and 1 part */
+  gap: 20px;
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.main-content {
+  background-color: #ffffff;
+  padding: 25px;
+  min-height: 400px;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  padding: 20px;
+  min-height: 400px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Understanding <code>grid-template-columns: 3fr 1fr</code>:</strong></p>
+<ul class="v2-ul"><li><code>fr</code> stands for <strong>fraction unit</strong> — it divides the available space into fractions.</li><li><code>3fr 1fr</code> creates two columns: the first gets 3 fractions, the second gets 1 fraction — a 75%/25% split.</li><li>The first child (<code>.main-content</code>) automatically goes in column 1. The second child (<code>.sidebar</code>) automatically goes in column 2.</li><li><code>gap: 20px</code> creates space between the grid cells.</li></ul>
+<p class="v2-p">For the rest of this lesson we will use the <strong>Flexbox approach</strong> as it is the most widely used modern method.</p>
+<hr class="v2-hr">
+<h3 class="v2-h3">Step 5 — Styling the Main Content Area</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* === MAIN CONTENT === */
+.main-content {
+  flex: 3;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.main-content h2 {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  border-bottom: 3px solid #3498db;   /* a coloured underline */
+  padding-bottom: 10px;
+}
+
+.main-content p {
+  color: #555555;
+  margin-bottom: 15px;
+  line-height: 1.7;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A white card with a light drop shadow. Inside it, a heading with a blue underline, followed by readable paragraphs with comfortable spacing.</p>
+<p class="v2-p"><strong>Understanding each new property:</strong></p>
+<ul class="v2-ul"><li><code>border-radius: 6px</code> — rounds the corners of the white card slightly.</li><li><code>box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08)</code> — adds a subtle shadow beneath the card.</li></ul>
+<p class="v2-p">- <code>0</code> = no horizontal shadow offset   - <code>2px</code> = 2px downward vertical offset   - <code>6px</code> = blur radius (how soft the shadow is)   - <code>rgba(0, 0, 0, 0.08)</code> = very faint black (8% opacity)</p>
+<ul class="v2-ul"><li><code>border-bottom: 3px solid #3498db</code> — draws a 3px thick solid blue line only at the bottom of the <code>&lt;h2&gt;</code>.</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Step 6 — Styling the Sidebar</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* === SIDEBAR === */
+.sidebar {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  align-self: flex-start;     /* prevents sidebar from stretching to match content height */
+}
+
+.sidebar h3 {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 8px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin-bottom: 8px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #3498db;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.sidebar ul li a:hover {
+  color: #2c3e50;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A narrower white card on the right. Inside, a bold "CATEGORIES" heading (in small caps style) and a list of blue links that darken on hover.</p>
+<p class="v2-p"><strong>Understanding new properties:</strong></p>
+<ul class="v2-ul"><li><code>align-self: flex-start</code> — in a flexbox row, by default all children stretch to the same height as the tallest sibling. <code>align-self: flex-start</code> tells the sidebar to only be as tall as its own content, not stretch to match the main content column.</li><li><code>text-transform: uppercase</code> — converts the heading text to ALL CAPITALS in CSS (the HTML text stays unchanged).</li><li><code>letter-spacing: 1px</code> — adds 1px of space between each letter, creating a spread-out uppercase look.</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Step 7 — The Footer</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* === FOOTER === */
+.site-footer {
+  background-color: #2c3e50;
+  color: #bdc3c7;
+  text-align: center;
+  padding: 25px 20px;
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.site-footer a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A dark footer at the bottom of the page matching the header's colour scheme, with centred copyright text in a muted grey colour.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Styling Each Zone — Step by Step</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase6">
+  <div class="phase-header">
+    <div class="phase-num">Phase 6 of 11</div>
+    <div class="phase-title">Part 4: Putting the Complete CSS Together</div>
+    <div class="phase-check" id="chk6"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">Here is the full <code>style.css</code> with all zones styled, using the Flexbox approach:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ============================================================
+   COMPLETE WEBSITE LAYOUT — style.css
+   ============================================================ */
+
+/* === RESET === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* === BODY === */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333333;
+  background-color: #f0f0f0;
+}
+
+/* === HEADER === */
+.site-header {
+  background-color: #2c3e50;
+  color: #ffffff;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.site-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.site-header p {
+  font-size: 1rem;
+  color: #bdc3c7;
+}
+
+/* === NAVBAR === */
+.navbar {
+  background-color: #34495e;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar ul li a {
+  display: block;
+  color: #ecf0f1;
+  text-decoration: none;
+  padding: 14px 20px;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.navbar ul li a:hover {
+  background-color: #2c3e50;
+  color: #ffffff;
+}
+
+/* === CONTENT WRAPPER (Flexbox) === */
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+/* === MAIN CONTENT === */
+.main-content {
+  flex: 3;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.main-content h2 {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 10px;
+}
+
+.main-content p {
+  color: #555555;
+  margin-bottom: 15px;
+  line-height: 1.7;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  align-self: flex-start;
+}
+
+.sidebar h3 {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 8px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin-bottom: 8px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #3498db;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.sidebar ul li a:hover {
+  color: #2c3e50;
+}
+
+/* === FOOTER === */
+.site-footer {
+  background-color: #2c3e50;
+  color: #bdc3c7;
+  text-align: center;
+  padding: 25px 20px;
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.site-footer a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Full expected output:</strong> A complete webpage with a dark blue header, dark horizontal navigation bar with hoverable links, two-column content area (70% main / 25% sidebar), and a matching dark footer. The content area is centred on the page with a max-width, sitting on a light grey background.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Putting the Complete CSS Together</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase7">
+  <div class="phase-header">
+    <div class="phase-num">Phase 7 of 11</div>
+    <div class="phase-title">Part 5: Making the Layout Responsive</div>
+    <div class="phase-check" id="chk7"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">What Is Responsive Design?</h3>
+<p class="v2-p">A <strong>responsive</strong> layout adjusts itself to look good on different screen sizes. A layout that works on a wide desktop screen but looks broken on a narrow phone screen is not responsive.</p>
+<p class="v2-p">On a phone, a two-column layout is too narrow — both columns become tiny slivers of content. The solution is to <strong>stack the columns vertically</strong> on small screens.</p>
+<h3 class="v2-h3">Using Media Queries</h3>
+<p class="v2-p">A <strong>media query</strong> is CSS code that only applies when a specific condition is true — in this case, when the screen is narrower than a certain width.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* === RESPONSIVE LAYOUT === */
+
+/* Tablets and smaller screens (768px wide or less) */
+@media (max-width: 768px) {
+
+  /* Stack columns vertically instead of side by side */
+  .content-wrapper {
+    flex-direction: column;    /* change from row to column */
+  }
+
+  /* Both sections now take full width */
+  .main-content,
+  .sidebar {
+    flex: none;                /* remove flex ratio */
+    width: 100%;               /* take full width */
+  }
+
+  /* Stack navbar links vertically */
+  .navbar ul {
+    flex-direction: column;    /* stack links vertically */
+  }
+
+  /* Make header text a bit smaller on phones */
+  .site-header h1 {
+    font-size: 1.8rem;
   }
 }
 
-/* Landscape phone */
-@media (orientation: landscape) and (max-height: 500px) {
-  .hero { min-height: auto; padding: 40px 0; }
-}
+/* Very small phones (480px wide or less) */
+@media (max-width: 480px) {
+  .site-header {
+    padding: 20px 15px;
+  }
 
-/* Print */
-@media print {
-  .navbar, .sidebar, .cookie-banner { display: none; }
-  body { font-size: 12pt; color: black; background: white; }
-  a::after { content: ' (' attr(href) ')'; }
-}</pre></div>
-</div>
+  .main-content,
+  .sidebar {
+    padding: 15px;
+  }
+
+  .navbar ul li a {
+    padding: 12px 15px;
+  }
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output on a phone (screen ≤ 768px):</strong></p>
+<ul class="v2-ul"><li>The header still spans the full width with slightly smaller text.</li><li>Navbar links stack vertically — each link on its own row.</li><li>The main content area takes full width on top.</li><li>The sidebar sits below it, also full width.</li><li>No horizontal scrolling needed.</li></ul>
+<p class="v2-p"><strong>Expected output on a tablet/desktop (screen &gt; 768px):</strong></p>
+<ul class="v2-ul"><li>The original two-column layout is shown — main content left, sidebar right.</li><li>Navbar links are horizontal.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Thinking prompt:</strong> Why do we put the responsive rules AFTER the main CSS? Because CSS cascades — later rules override earlier ones when conditions are met. The mobile styles override the desktop styles when the screen is narrow.</p></blockquote>
+<hr class="v2-hr">
     <div class="task-box">
       <div class="task-label">✏️ Your Task</div>
-      <p>Add a <code>@media (prefers-color-scheme: dark)</code> block to your CSS. Open your OS settings, switch to dark mode, and reload the page — it should automatically switch! Also add <code>@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }</code> for accessibility.</p>
+      <div class="task-body">Now practise what you just learned about <strong>: Making the Layout Responsive</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <button class="next-btn" onclick="unlockNext(2)">
-      Build It! 🚀 <span>→</span>
-    </button>
-    <p class="next-tip">Try the task first, then click to continue!</p>
+    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
   </div>
 </div>
-<div class="project-box" id="build-it" style="display:none">
-  <div class="project-label">🏗️ Build It!</div>
-  <div class="project-name">My Responsive Layout</div>
-  <p class="project-desc">Build a fully responsive page with mobile/tablet/desktop breakpoints and dark mode support.</p>
-  <div class="code-wrap">
-    <div class="code-bar">
-      <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
-      <span class="code-filename">starter.html — copy this into a new file!</span>
+<div class="phase locked" id="phase8">
+  <div class="phase-header">
+    <div class="phase-num">Phase 8 of 11</div>
+    <div class="phase-title">Part 6: Layout Variations</div>
+    <div class="phase-check" id="chk8"></div>
+  </div>
+  <div class="phase-body">
+    <p class="v2-p">The basic layout we built is just one pattern. Real websites use many variations. Let's look at the most common ones.</p>
+<h3 class="v2-h3">Variation 1 — No Sidebar (Full-Width Content)</h3>
+<p class="v2-p">Sometimes a page doesn't need a sidebar — for example, a blog post page that focuses entirely on reading.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* No sidebar — content takes full width */
+.content-wrapper-full {
+  display: flex;
+  max-width: 800px;       /* narrower max-width for better readability */
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.main-content-full {
+  flex: 1;                /* single column takes all available space */
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A single centred white content card that is narrower than the viewport, with comfortable reading width.</p>
+<h3 class="v2-h3">Variation 2 — Left Sidebar Instead of Right</h3>
+<p class="v2-p">The sidebar can also appear on the LEFT side of the content. In Flexbox, you control order with the HTML order of elements — the first element in HTML is on the left.</p>
+<p class="v2-p">Simply swap the HTML order:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Sidebar first in HTML = sidebar on the LEFT --&gt;
+&lt;div class=&quot;content-wrapper&quot;&gt;
+  &lt;aside class=&quot;sidebar&quot;&gt;...&lt;/aside&gt;    &lt;!-- this comes first → LEFT column --&gt;
+  &lt;main class=&quot;main-content&quot;&gt;...&lt;/main&gt; &lt;!-- this comes second → RIGHT column --&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p">Or keep the HTML order and use CSS <code>order</code>:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Force sidebar to appear first (left) regardless of HTML order */
+.sidebar {
+  order: -1;    /* -1 means &quot;go before everything else&quot; */
+}</code></pre></div></div>
+<h3 class="v2-h3">Variation 3 — Three-Column Layout</h3>
+<p class="v2-p">For complex pages like dashboards, you might need three columns.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.three-column-wrapper {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.left-sidebar  { flex: 1; background: #fff; padding: 20px; }
+.center-content { flex: 3; background: #fff; padding: 25px; }
+.right-sidebar { flex: 1; background: #fff; padding: 20px; }</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;three-column-wrapper&quot;&gt;
+  &lt;aside class=&quot;left-sidebar&quot;&gt;Left nav&lt;/aside&gt;
+  &lt;main class=&quot;center-content&quot;&gt;Main content&lt;/main&gt;
+  &lt;aside class=&quot;right-sidebar&quot;&gt;Right widgets&lt;/aside&gt;
+&lt;/div&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> Three columns in a 1:3:1 ratio. The centre is the widest (main content), flanked by two equal narrow sidebars.</p>
+<h3 class="v2-h3">Variation 4 — Sticky Header (Fixed Navigation)</h3>
+<p class="v2-p">A <strong>sticky header</strong> stays visible at the top of the screen as the user scrolls down — very useful for navigation.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.navbar {
+  background-color: #34495e;
+  position: sticky;    /* stays in place as you scroll */
+  top: 0;              /* stuck to the very top of the viewport */
+  z-index: 100;        /* sits on top of all other page content */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Understanding these properties:</strong></p>
+<ul class="v2-ul"><li><code>position: sticky</code> — the element behaves normally until it would scroll off screen, then it "sticks" at the specified offset.</li><li><code>top: 0</code> — the sticking position is 0px from the top of the viewport.</li><li><code>z-index: 100</code> — ensures the navbar visually floats above any page content that would scroll underneath it.</li></ul>
+<h3 class="v2-h3">Variation 5 — Hero Section</h3>
+<p class="v2-p">A <strong>hero section</strong> is a large, visually striking banner at the top of a homepage — often with a background image, a large headline, and a call-to-action button.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;section class=&quot;hero&quot;&gt;
+  &lt;div class=&quot;hero-content&quot;&gt;
+    &lt;h1&gt;Build Something Amazing&lt;/h1&gt;
+    &lt;p&gt;Start your coding journey today with our beginner-friendly courses.&lt;/p&gt;
+    &lt;a href=&quot;#&quot; class=&quot;hero-btn&quot;&gt;Get Started&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+  background-color: #1a252f;
+  background-image: linear-gradient(135deg, #1a252f 0%, #2c3e50 50%, #3498db 100%);
+  color: #ffffff;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #bdc3c7;
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+.hero-btn {
+  display: inline-block;
+  background-color: #3498db;
+  color: #ffffff;
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.hero-btn:hover {
+  background-color: #2980b9;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A tall, dramatic banner with a dark gradient background transitioning from dark blue-grey to bright blue. Inside, a huge white headline, a short subtitle paragraph, and a bright blue button. Hovering the button darkens it slightly.</p>
+<p class="v2-p"><strong>Understanding <code>linear-gradient</code>:</strong></p>
+<ul class="v2-ul"><li><code>linear-gradient(135deg, #1a252f, #2c3e50, #3498db)</code> creates a smooth colour transition at a 135-degree diagonal angle.</li><li>The first colour is in the top-left, the last is in the bottom-right.</li></ul>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: Layout Variations</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
     </div>
-    <div class="code-body"><pre id="starter-code">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;CSS Media Queries&lt;/title&gt;
-    &lt;style&gt;
-      :root { --primary: #0284c7; --bg: #f0f9ff; --surface: white; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; }
-      @media (prefers-color-scheme: dark) {
-        :root { --bg: #0f172a; --surface: #1e293b; --text: #f1f5f9; --muted: #94a3b8; --border: #334155; }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { animation: none !important; transition: none !important; }
-      }
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; }
-      /* Mobile-first nav */
-      .navbar { background: var(--primary); padding: 14px 20px; }
-      .nav-inner { display: flex; flex-direction: column; gap: 8px; max-width: 1100px; margin: 0 auto; }
-      .brand  { color: white; font-weight: 800; font-size: 1.05rem; }
-      .nav-links { display: none; }
-      @media (min-width: 640px) {
-        .nav-inner { flex-direction: row; align-items: center; }
-        .nav-links { display: flex; gap: 4px; margin-left: auto; }
-        .nav-links a { color: rgba(255,255,255,.85); text-decoration: none; font-weight: 600; font-size: 13px; padding: 7px 12px; border-radius: 7px; }
-        .nav-links a:hover { background: rgba(255,255,255,.15); color: white; }
-      }
-      /* Hero */
-      .hero { padding: 48px 20px; text-align: center; background: linear-gradient(135deg, var(--primary), #0369a1); color: white; }
-      .hero h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 800; margin-bottom: 12px; }
-      .hero p  { opacity: .85; font-size: clamp(.95rem, 2vw, 1.1rem); max-width: 500px; margin: 0 auto 20px; }
-      .hero .badge { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 100px; padding: 5px 14px; font-size: 12px; font-weight: 700; }
-      /* Content */
-      .content { max-width: 1100px; margin: 0 auto; padding: 32px 20px; }
-      .sec-h { color: var(--primary); font-size: 1.4rem; margin-bottom: 16px; }
-      /* Card grid — mobile first */
-      .cards { display: flex; flex-direction: column; gap: 16px; }
-      .card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 22px; }
-      .card h3 { color: var(--primary); margin: 0 0 8px; font-size: 15px; }
-      .card p  { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 0; }
-      /* Tablet — 2 columns */
-      @media (min-width: 640px) {
-        .cards { flex-direction: row; flex-wrap: wrap; }
-        .card  { flex: 1 1 calc(50% - 8px); }
-      }
-      /* Desktop — 3 columns */
-      @media (min-width: 1024px) {
-        .card { flex: 1 1 calc(33.33% - 11px); }
-      }
-      /* Breakpoint indicator */
-      .bp { position: fixed; bottom: 16px; right: 16px; background: var(--primary); color: white; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; }
-      .bp::before { content: "📱 Mobile"; }
-      @media (min-width: 640px)  { .bp::before { content: "📱 → Tablet 640+"; } }
-      @media (min-width: 1024px) { .bp::before { content: "🖥️ Desktop 1024+"; } }
-      /* Print */
-      @media print {
-        .navbar, .bp { display: none; }
-        body { color: black; background: white; }
-      }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;nav class="navbar"&gt;
-      &lt;div class="nav-inner"&gt;
-        &lt;span class="brand"&gt;⚡ Techbase&lt;/span&gt;
-        &lt;div class="nav-links"&gt;
-          &lt;a href="#"&gt;Home&lt;/a&gt;&lt;a href="#"&gt;Courses&lt;/a&gt;&lt;a href="#"&gt;About&lt;/a&gt;
+    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase9">
+  <div class="phase-header">
+    <div class="phase-num">Phase 9 of 11</div>
+    <div class="phase-title">Part 7: The Role of `max-width` and Centring</div>
+    <div class="phase-check" id="chk9"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Why <code>max-width</code> Matters</h3>
+<p class="v2-p">Without a <code>max-width</code>, content stretches to fill the entire browser window. On a very wide monitor (1920px+), text lines become so long they are exhausting to read — your eyes have to travel all the way across the screen. A <code>max-width</code> limits how wide content can grow.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Without max-width — content spreads across entire screen */
+.content-wrapper {
+  display: flex;
+  padding: 0 20px;
+}
+
+/* With max-width — content has a comfortable maximum width */
+.content-wrapper {
+  display: flex;
+  max-width: 1100px;   /* never wider than 1100px */
+  margin: 0 auto;      /* centres the wrapper horizontally */
+  padding: 0 20px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Understanding <code>margin: 0 auto</code>:</strong></p>
+<ul class="v2-ul"><li><code>margin: 0 auto</code> means: <code>margin-top: 0; margin-bottom: 0; margin-left: auto; margin-right: auto</code>.</li><li><code>auto</code> on both left and right tells the browser to distribute the remaining space equally — which centres the element.</li><li>This only works when the element has a defined <code>width</code> or <code>max-width</code>.</li></ul>
+<blockquote class="v2-bq"><p class="v2-p">💡 <strong>Analogy:</strong> Think of it like centering a book on a desk. The book (content) has a fixed width. Placing equal margins on both sides (equal amounts of desk space on left and right) centres the book on the desk.</p></blockquote>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>: The Role of <code>max-width</code> and Centring</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase10">
+  <div class="phase-header">
+    <div class="phase-num">Phase 10 of 11</div>
+    <div class="phase-title">Guided Practice Exercises</div>
+    <div class="phase-check" id="chk10"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Exercise 1 — Build a Two-Column News Layout</h3>
+<p class="v2-p"><strong>Objective:</strong> Create a news website layout with a wide main content area and a narrow sidebar.</p>
+<p class="v2-p"><strong>Scenario:</strong> You are building a technology news website called "TechDaily."</p>
+<p class="v2-p"><strong>HTML to use:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;header class=&quot;site-header&quot;&gt;
+  &lt;h1&gt;TechDaily&lt;/h1&gt;
+  &lt;p&gt;Your source for the latest in technology&lt;/p&gt;
+&lt;/header&gt;
+
+&lt;nav class=&quot;navbar&quot;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;AI&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Gadgets&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Science&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Business&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+
+&lt;div class=&quot;content-wrapper&quot;&gt;
+  &lt;main class=&quot;main-content&quot;&gt;
+    &lt;h2&gt;Breaking: New AI Model Surpasses Human Performance&lt;/h2&gt;
+    &lt;p&gt;Researchers at a leading AI laboratory have announced a breakthrough model that demonstrates superhuman performance on a wide range of reasoning and problem-solving tasks.&lt;/p&gt;
+    &lt;p&gt;The model was trained on a massive dataset and uses a novel architecture that significantly improves efficiency compared to previous generations.&lt;/p&gt;
+
+    &lt;h2&gt;Smartphone Sales Hit Record High in Q1 2026&lt;/h2&gt;
+    &lt;p&gt;Global smartphone shipments reached an all-time high in the first quarter of 2026, driven by strong demand in emerging markets and a new wave of foldable devices.&lt;/p&gt;
+  &lt;/main&gt;
+
+  &lt;aside class=&quot;sidebar&quot;&gt;
+    &lt;h3&gt;Trending Topics&lt;/h3&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Artificial Intelligence&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Electric Vehicles&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Space Exploration&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Quantum Computing&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;h3 style=&quot;margin-top: 20px;&quot;&gt;Newsletter&lt;/h3&gt;
+    &lt;p style=&quot;font-size: 0.9rem; color: #666;&quot;&gt;Get the latest tech news delivered to your inbox every morning.&lt;/p&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;
+
+&lt;footer class=&quot;site-footer&quot;&gt;
+  &lt;p&gt;&amp;copy; 2026 TechDaily. All rights reserved.&lt;/p&gt;
+&lt;/footer&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Steps:</strong></p>
+<ol class="v2-ol"><li>Apply the complete CSS from Part 4 of this lesson.</li><li>Change the header background to a deep red (<code>#c0392b</code>) and the navbar to a slightly lighter red (<code>#e74c3c</code>).</li><li>Change the <code>border-bottom</code> on main content headings to red (<code>#c0392b</code>).</li><li>Add the responsive media query from Part 5.</li></ol>
+<p class="v2-p"><strong>Expected output:</strong> A professional-looking red-themed tech news site with a two-column layout that collapses to single column on mobile.</p>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>On a desktop, is the main content wider than the sidebar?</li><li>On a narrow window (less than 768px), do the columns stack vertically?</li><li>Does hovering over navbar links show a visual colour change?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 2 — Add a Hero Section</h3>
+<p class="v2-p"><strong>Objective:</strong> Add a hero section between the navbar and the content area.</p>
+<p class="v2-p"><strong>Scenario:</strong> Your news site needs a featured story hero at the top.</p>
+<p class="v2-p"><strong>HTML to add (insert between <code>&lt;/nav&gt;</code> and <code>&lt;div class="content-wrapper"&gt;</code>):</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;section class=&quot;hero&quot;&gt;
+  &lt;div class=&quot;hero-content&quot;&gt;
+    &lt;h2&gt;Featured: The Future of Renewable Energy&lt;/h2&gt;
+    &lt;p&gt;An in-depth look at how solar, wind, and hydrogen technologies are reshaping global energy markets in 2026.&lt;/p&gt;
+    &lt;a href=&quot;#&quot; class=&quot;hero-btn&quot;&gt;Read Full Story&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div></div>
+<p class="v2-p"><strong>CSS to add:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+  background-image: linear-gradient(135deg, #c0392b, #8e44ad);
+  color: #ffffff;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.hero h2 {
+  font-size: 2.2rem;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 25px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero-btn {
+  display: inline-block;
+  background-color: #ffffff;
+  color: #c0392b;
+  padding: 12px 28px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.hero-btn:hover {
+  background-color: #c0392b;
+  color: #ffffff;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A dramatic red-to-purple gradient banner below the navbar, with a large headline, short description, and a white button that inverts colours on hover.</p>
+<p class="v2-p"><strong>Self-check questions:</strong></p>
+<ul class="v2-ul"><li>Does the gradient flow diagonally?</li><li>Does the button invert its colours when hovered?</li><li>Is the description text narrower than the full hero width?</li></ul>
+<hr class="v2-hr">
+<h3 class="v2-h3">Exercise 3 — Make the Footer Multi-Column</h3>
+<p class="v2-p"><strong>Objective:</strong> Transform the footer into a three-column layout with links, social media, and a tagline.</p>
+<p class="v2-p"><strong>New HTML for footer:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;footer class=&quot;site-footer&quot;&gt;
+  &lt;div class=&quot;footer-inner&quot;&gt;
+    &lt;div class=&quot;footer-col&quot;&gt;
+      &lt;h4&gt;TechDaily&lt;/h4&gt;
+      &lt;p&gt;Your trusted source for technology news since 2015.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;footer-col&quot;&gt;
+      &lt;h4&gt;Quick Links&lt;/h4&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About Us&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Privacy Policy&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Terms of Service&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;footer-col&quot;&gt;
+      &lt;h4&gt;Follow Us&lt;/h4&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Twitter / X&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;LinkedIn&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;YouTube&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;footer-bottom&quot;&gt;
+    &lt;p&gt;&amp;copy; 2026 TechDaily. All rights reserved.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;</code></pre></div></div>
+<p class="v2-p"><strong>CSS for multi-column footer:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.site-footer {
+  background-color: #1a252f;
+  color: #bdc3c7;
+  margin-top: 30px;
+  padding-bottom: 0;
+}
+
+.footer-inner {
+  display: flex;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.footer-col {
+  flex: 1;
+}
+
+.footer-col h4 {
+  color: #ffffff;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #2c3e50;
+  padding-bottom: 8px;
+}
+
+.footer-col p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col ul li {
+  margin-bottom: 8px;
+}
+
+.footer-col ul li a {
+  color: #95a5a6;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.footer-col ul li a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  background-color: #111a22;
+  text-align: center;
+  padding: 15px 20px;
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+/* Responsive footer */
+@media (max-width: 768px) {
+  .footer-inner {
+    flex-direction: column;
+    gap: 25px;
+  }
+}</code></pre></div></div>
+<p class="v2-p"><strong>Expected output:</strong> A rich dark footer with three equal columns. Left: site description. Middle: quick links. Right: social links. Below that, a very dark strip with the copyright line. On mobile, the three columns stack vertically.</p>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="phase locked" id="phase11">
+  <div class="phase-header">
+    <div class="phase-num">Phase 11 of 11</div>
+    <div class="phase-title">Common Beginner Mistakes</div>
+    <div class="phase-check" id="chk11"></div>
+  </div>
+  <div class="phase-body">
+    <h3 class="v2-h3">Mistake 1 — Forgetting <code>overflow: hidden</code> on a Float Container</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ BAD: float children collapse the parent to zero height */
+.content-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  /* missing overflow: hidden */
+}
+
+.main-content { float: left; width: 70%; }
+.sidebar { float: right; width: 28%; }</code></pre></div></div>
+<p class="v2-p"><strong>Result:</strong> The footer slides up and overlaps the content — the parent <code>div</code> has no height because its floated children are invisible to it.</p>
+<p class="v2-p"><strong>Fix:</strong> Add <code>overflow: hidden</code> to the parent, or switch to Flexbox (which doesn't have this problem):</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ✅ FIX 1: clearfix */
+.content-wrapper { overflow: hidden; }
+
+/* ✅ FIX 2: use flexbox instead */
+.content-wrapper { display: flex; gap: 20px; }</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 2 — Using <code>width: 100%</code> Without <code>box-sizing: border-box</code></h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ BAD: padding causes overflow */
+.main-content {
+  float: left;
+  width: 70%;
+  padding: 30px;   /* adds 60px (30+30) to the element&#x27;s width — total &gt; 70% */
+}</code></pre></div></div>
+<p class="v2-p"><strong>Result:</strong> The element overflows beyond 70% because the padding is added <em>outside</em> the 70% width. This pushes the sidebar down to the next row.</p>
+<p class="v2-p"><strong>Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ✅ GOOD: with box-sizing, padding is included IN the 70% */
+* {
+  box-sizing: border-box;
+}
+
+.main-content {
+  float: left;
+  width: 70%;
+  padding: 30px;    /* now safely contained within 70% */
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 3 — Missing the Viewport Meta Tag</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- ❌ BAD: no viewport meta tag --&gt;
+&lt;head&gt;
+  &lt;title&gt;My Site&lt;/title&gt;
+&lt;/head&gt;</code></pre></div></div>
+<p class="v2-p"><strong>Result:</strong> On mobile phones, the browser renders the page as if it were a desktop (980px wide), then shrinks the whole page down. Your layout appears tiny and unreadable.</p>
+<p class="v2-p"><strong>Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- ✅ GOOD: always include this --&gt;
+&lt;head&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;My Site&lt;/title&gt;
+&lt;/head&gt;</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 4 — Not Using <code>max-width</code> on Content</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ BAD: on a 2500px wide monitor, lines stretch impossibly long */
+.content-wrapper {
+  display: flex;
+  width: 100%;
+  padding: 0 20px;
+}</code></pre></div></div>
+<p class="v2-p"><strong>Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ✅ GOOD: content has a sensible maximum width */
+.content-wrapper {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 5 — Setting the Sidebar to Exactly 30% With a Gap</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ BAD: 70% + 30% = 100%, leaving no room for the gap */
+.main-content { width: 70%; }
+.sidebar { width: 30%; }
+/* A 20px gap makes the total width 100% + 20px = overflow */</code></pre></div></div>
+<p class="v2-p"><strong>Fix with Flexbox — use <code>flex</code> ratios instead of fixed percentages:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ✅ GOOD: flexbox handles gaps and proportions automatically */
+.content-wrapper { display: flex; gap: 20px; }
+.main-content { flex: 3; }   /* 3/4 of available space after gap */
+.sidebar { flex: 1; }         /* 1/4 of available space after gap */</code></pre></div></div>
+<hr class="v2-hr">
+<h3 class="v2-h3">Mistake 6 — Forgetting Responsive Styles</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ BAD: two-column layout breaks on mobile */
+.content-wrapper {
+  display: flex;
+}
+/* no media query for small screens */</code></pre></div></div>
+<p class="v2-p"><strong>Result:</strong> On a 375px phone, the main content column is about 280px wide and the sidebar is about 95px wide — both too narrow to be readable.</p>
+<p class="v2-p"><strong>Fix:</strong></p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ✅ GOOD: add a media query */
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;  /* stack vertically */
+  }
+}</code></pre></div></div>
+<hr class="v2-hr">
+    <div class="task-box">
+      <div class="task-label">✏️ Your Task</div>
+      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
+    </div>
+    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
+  </div>
+</div>
+<div class="build-box" id="build-it">
+  <div class="build-label">🏗️ Build It</div>
+  <div class="build-name">Project Description</div>
+  <div class="build-desc">Build a complete personal blog homepage from scratch. This project combines everything learned in this lesson into one polished, professional design.</div>
+  <div class="v2-code-wrap">
+    <div class="v2-code-bar">
+      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+      <span class="v2-code-lang">starter.html</span>
+    </div>
+    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;The Curious Mind — A Personal Blog&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;blog.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- HEADER --&gt;
+  &lt;header class=&quot;site-header&quot;&gt;
+    &lt;div class=&quot;header-inner&quot;&gt;
+      &lt;h1&gt;The Curious Mind&lt;/h1&gt;
+      &lt;p&gt;Exploring ideas at the intersection of science, technology, and everyday life&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- NAVBAR (sticky) --&gt;
+  &lt;nav class=&quot;navbar&quot;&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Science&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Technology&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Philosophy&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+
+  &lt;!-- HERO --&gt;
+  &lt;section class=&quot;hero&quot;&gt;
+    &lt;div class=&quot;hero-content&quot;&gt;
+      &lt;span class=&quot;hero-label&quot;&gt;Featured Article&lt;/span&gt;
+      &lt;h2&gt;Why Curiosity Is the Most Important Skill of the 21st Century&lt;/h2&gt;
+      &lt;p&gt;In an age of artificial intelligence and rapid change, the ability to ask good questions may matter more than knowing the answers.&lt;/p&gt;
+      &lt;a href=&quot;#&quot; class=&quot;hero-btn&quot;&gt;Read Article&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- MAIN CONTENT + SIDEBAR --&gt;
+  &lt;div class=&quot;content-wrapper&quot;&gt;
+
+    &lt;main class=&quot;main-content&quot;&gt;
+      &lt;h2 class=&quot;section-title&quot;&gt;Recent Posts&lt;/h2&gt;
+
+      &lt;!-- Blog Post 1 --&gt;
+      &lt;article class=&quot;blog-post&quot;&gt;
+        &lt;span class=&quot;post-category&quot;&gt;Science&lt;/span&gt;
+        &lt;h3 class=&quot;post-title&quot;&gt;&lt;a href=&quot;#&quot;&gt;The Hidden World of Mycorrhizal Networks&lt;/a&gt;&lt;/h3&gt;
+        &lt;div class=&quot;post-meta&quot;&gt;
+          &lt;span&gt;By Amara Osei&lt;/span&gt;
+          &lt;span class=&quot;meta-divider&quot;&gt;·&lt;/span&gt;
+          &lt;span&gt;April 18, 2026&lt;/span&gt;
+          &lt;span class=&quot;meta-divider&quot;&gt;·&lt;/span&gt;
+          &lt;span&gt;6 min read&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;p class=&quot;post-excerpt&quot;&gt;Beneath every forest floor lies an extraordinary network of fungal threads connecting trees and plants in a communication system scientists are only beginning to understand...&lt;/p&gt;
+        &lt;a href=&quot;#&quot; class=&quot;read-more&quot;&gt;Read More →&lt;/a&gt;
+      &lt;/article&gt;
+
+      &lt;!-- Blog Post 2 --&gt;
+      &lt;article class=&quot;blog-post&quot;&gt;
+        &lt;span class=&quot;post-category&quot;&gt;Technology&lt;/span&gt;
+        &lt;h3 class=&quot;post-title&quot;&gt;&lt;a href=&quot;#&quot;&gt;What I Learned Building My First Mechanical Keyboard&lt;/a&gt;&lt;/h3&gt;
+        &lt;div class=&quot;post-meta&quot;&gt;
+          &lt;span&gt;By Amara Osei&lt;/span&gt;
+          &lt;span class=&quot;meta-divider&quot;&gt;·&lt;/span&gt;
+          &lt;span&gt;April 10, 2026&lt;/span&gt;
+          &lt;span class=&quot;meta-divider&quot;&gt;·&lt;/span&gt;
+          &lt;span&gt;8 min read&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;p class=&quot;post-excerpt&quot;&gt;Building a mechanical keyboard from scratch turned out to be one of the most satisfying weekend projects I&#x27;ve ever attempted — and also one of the most unexpectedly educational...&lt;/p&gt;
+        &lt;a href=&quot;#&quot; class=&quot;read-more&quot;&gt;Read More →&lt;/a&gt;
+      &lt;/article&gt;
+
+      &lt;!-- Blog Post 3 --&gt;
+      &lt;article class=&quot;blog-post&quot;&gt;
+        &lt;span class=&quot;post-category&quot;&gt;Philosophy&lt;/span&gt;
+        &lt;h3 class=&quot;post-title&quot;&gt;&lt;a href=&quot;#&quot;&gt;The Stoic Approach to Dealing with Uncertainty&lt;/a&gt;&lt;/h3&gt;
+        &lt;div class=&quot;post-meta&quot;&gt;
+          &lt;span&gt;By Amara Osei&lt;/span&gt;
+          &lt;span class=&quot;meta-divider&quot;&gt;·&lt;/span&gt;
+          &lt;span&gt;March 30, 2026&lt;/span&gt;
+          &lt;span class=&quot;meta-divider&quot;&gt;·&lt;/span&gt;
+          &lt;span&gt;5 min read&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;p class=&quot;post-excerpt&quot;&gt;Ancient Stoic philosophy offers surprisingly practical tools for navigating a world of constant change and unpredictability — wisdom that feels more relevant than ever...&lt;/p&gt;
+        &lt;a href=&quot;#&quot; class=&quot;read-more&quot;&gt;Read More →&lt;/a&gt;
+      &lt;/article&gt;
+    &lt;/main&gt;
+
+    &lt;!-- SIDEBAR --&gt;
+    &lt;aside class=&quot;sidebar&quot;&gt;
+      &lt;div class=&quot;sidebar-widget&quot;&gt;
+        &lt;h3&gt;About Me&lt;/h3&gt;
+        &lt;div class=&quot;author-bio&quot;&gt;
+          &lt;div class=&quot;author-avatar&quot;&gt;AM&lt;/div&gt;
+          &lt;p&gt;Hi! I&#x27;m Amara — a writer, tinkerer, and lifelong student of everything fascinating about the world.&lt;/p&gt;
         &lt;/div&gt;
       &lt;/div&gt;
-    &lt;/nav&gt;
-    &lt;div class="hero"&gt;
-      &lt;span class="badge"&gt;📱 Resize the browser!&lt;/span&gt;
-      &lt;h1&gt;Responsive Design&lt;/h1&gt;
-      &lt;p&gt;This page uses mobile-first media queries and automatically switches to dark mode based on your OS preference.&lt;/p&gt;
-    &lt;/div&gt;
-    &lt;div class="content"&gt;
-      &lt;h2 class="sec-h"&gt;Responsive Cards&lt;/h2&gt;
-      &lt;div class="cards"&gt;
-        &lt;div class="card"&gt;&lt;h3&gt;📱 Mobile&lt;/h3&gt;&lt;p&gt;Single column. Full-width cards. Compact navigation. Base styles — no media query needed.&lt;/p&gt;&lt;/div&gt;
-        &lt;div class="card"&gt;&lt;h3&gt;📟 Tablet 640px+&lt;/h3&gt;&lt;p&gt;Two-column card grid. Navigation links appear. More breathing room.&lt;/p&gt;&lt;/div&gt;
-        &lt;div class="card"&gt;&lt;h3&gt;🖥️ Desktop 1024px+&lt;/h3&gt;&lt;p&gt;Three-column layout. Full navigation. Max-width container centred.&lt;/p&gt;&lt;/div&gt;
-        &lt;div class="card"&gt;&lt;h3&gt;🌙 Dark Mode&lt;/h3&gt;&lt;p&gt;@media (prefers-color-scheme: dark) — detected from your OS settings automatically.&lt;/p&gt;&lt;/div&gt;
-        &lt;div class="card"&gt;&lt;h3&gt;♿ Motion&lt;/h3&gt;&lt;p&gt;@media (prefers-reduced-motion) — disables animations for users who need it.&lt;/p&gt;&lt;/div&gt;
-        &lt;div class="card"&gt;&lt;h3&gt;🖨️ Print&lt;/h3&gt;&lt;p&gt;@media print — hides nav and UI elements when you print this page.&lt;/p&gt;&lt;/div&gt;
+
+      &lt;div class=&quot;sidebar-widget&quot;&gt;
+        &lt;h3&gt;Categories&lt;/h3&gt;
+        &lt;ul class=&quot;category-list&quot;&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Science &lt;span&gt;(12)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Technology &lt;span&gt;(8)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Philosophy &lt;span&gt;(6)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Travel &lt;span&gt;(4)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;sidebar-widget&quot;&gt;
+        &lt;h3&gt;Newsletter&lt;/h3&gt;
+        &lt;p class=&quot;widget-text&quot;&gt;New posts every Thursday. No spam, ever.&lt;/p&gt;
+        &lt;input type=&quot;email&quot; class=&quot;widget-input&quot; placeholder=&quot;your@email.com&quot;&gt;
+        &lt;button class=&quot;widget-btn&quot;&gt;Subscribe&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/aside&gt;
+
+  &lt;/div&gt;&lt;!-- end content-wrapper --&gt;
+
+  &lt;!-- FOOTER --&gt;
+  &lt;footer class=&quot;site-footer&quot;&gt;
+    &lt;div class=&quot;footer-inner&quot;&gt;
+      &lt;div class=&quot;footer-col&quot;&gt;
+        &lt;h4&gt;The Curious Mind&lt;/h4&gt;
+        &lt;p&gt;Independent writing about science, technology, and the examined life.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;footer-col&quot;&gt;
+        &lt;h4&gt;Navigate&lt;/h4&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;All Articles&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;footer-col&quot;&gt;
+        &lt;h4&gt;Connect&lt;/h4&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Twitter / X&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Mastodon&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;RSS Feed&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-    &lt;div class="bp"&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></div>
+    &lt;div class=&quot;footer-bottom&quot;&gt;
+      &lt;p&gt;&amp;copy; 2026 The Curious Mind · Made with CSS and coffee&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
   </div>
-  <button class="next-btn" onclick="downloadStarter()" style="margin-right:.75rem">
-    ⬇️ Download starter.html
-  </button>
-  <button class="next-btn" onclick="showGithub()" style="background:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.3)">
-    Show GitHub Steps →
-  </button>
-  <script>
-  const __code = `<!DOCTYPE html>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
+    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Media Queries</title>
-    <style>
-      :root { --primary: #0284c7; --bg: #f0f9ff; --surface: white; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; }
-      @media (prefers-color-scheme: dark) {
-        :root { --bg: #0f172a; --surface: #1e293b; --text: #f1f5f9; --muted: #94a3b8; --border: #334155; }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { animation: none !important; transition: none !important; }
-      }
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; }
-      /* Mobile-first nav */
-      .navbar { background: var(--primary); padding: 14px 20px; }
-      .nav-inner { display: flex; flex-direction: column; gap: 8px; max-width: 1100px; margin: 0 auto; }
-      .brand  { color: white; font-weight: 800; font-size: 1.05rem; }
-      .nav-links { display: none; }
-      @media (min-width: 640px) {
-        .nav-inner { flex-direction: row; align-items: center; }
-        .nav-links { display: flex; gap: 4px; margin-left: auto; }
-        .nav-links a { color: rgba(255,255,255,.85); text-decoration: none; font-weight: 600; font-size: 13px; padding: 7px 12px; border-radius: 7px; }
-        .nav-links a:hover { background: rgba(255,255,255,.15); color: white; }
-      }
-      /* Hero */
-      .hero { padding: 48px 20px; text-align: center; background: linear-gradient(135deg, var(--primary), #0369a1); color: white; }
-      .hero h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 800; margin-bottom: 12px; }
-      .hero p  { opacity: .85; font-size: clamp(.95rem, 2vw, 1.1rem); max-width: 500px; margin: 0 auto 20px; }
-      .hero .badge { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 100px; padding: 5px 14px; font-size: 12px; font-weight: 700; }
-      /* Content */
-      .content { max-width: 1100px; margin: 0 auto; padding: 32px 20px; }
-      .sec-h { color: var(--primary); font-size: 1.4rem; margin-bottom: 16px; }
-      /* Card grid — mobile first */
-      .cards { display: flex; flex-direction: column; gap: 16px; }
-      .card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 22px; }
-      .card h3 { color: var(--primary); margin: 0 0 8px; font-size: 15px; }
-      .card p  { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 0; }
-      /* Tablet — 2 columns */
-      @media (min-width: 640px) {
-        .cards { flex-direction: row; flex-wrap: wrap; }
-        .card  { flex: 1 1 calc(50% - 8px); }
-      }
-      /* Desktop — 3 columns */
-      @media (min-width: 1024px) {
-        .card { flex: 1 1 calc(33.33% - 11px); }
-      }
-      /* Breakpoint indicator */
-      .bp { position: fixed; bottom: 16px; right: 16px; background: var(--primary); color: white; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; }
-      .bp::before { content: "📱 Mobile"; }
-      @media (min-width: 640px)  { .bp::before { content: "📱 → Tablet 640+"; } }
-      @media (min-width: 1024px) { .bp::before { content: "🖥️ Desktop 1024+"; } }
-      /* Print */
-      @media print {
-        .navbar, .bp { display: none; }
-        body { color: black; background: white; }
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="nav-inner">
-        <span class="brand">⚡ Techbase</span>
-        <div class="nav-links">
-          <a href="#">Home</a><a href="#">Courses</a><a href="#">About</a>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Curious Mind — A Personal Blog</title>
+  <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <h1>The Curious Mind</h1>
+      <p>Exploring ideas at the intersection of science, technology, and everyday life</p>
+    </div>
+  </header>
+
+  <!-- NAVBAR (sticky) -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Science</a></li>
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Philosophy</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-label">Featured Article</span>
+      <h2>Why Curiosity Is the Most Important Skill of the 21st Century</h2>
+      <p>In an age of artificial intelligence and rapid change, the ability to ask good questions may matter more than knowing the answers.</p>
+      <a href="#" class="hero-btn">Read Article</a>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT + SIDEBAR -->
+  <div class="content-wrapper">
+
+    <main class="main-content">
+      <h2 class="section-title">Recent Posts</h2>
+
+      <!-- Blog Post 1 -->
+      <article class="blog-post">
+        <span class="post-category">Science</span>
+        <h3 class="post-title"><a href="#">The Hidden World of Mycorrhizal Networks</a></h3>
+        <div class="post-meta">
+          <span>By Amara Osei</span>
+          <span class="meta-divider">·</span>
+          <span>April 18, 2026</span>
+          <span class="meta-divider">·</span>
+          <span>6 min read</span>
+        </div>
+        <p class="post-excerpt">Beneath every forest floor lies an extraordinary network of fungal threads connecting trees and plants in a communication system scientists are only beginning to understand...</p>
+        <a href="#" class="read-more">Read More →</a>
+      </article>
+
+      <!-- Blog Post 2 -->
+      <article class="blog-post">
+        <span class="post-category">Technology</span>
+        <h3 class="post-title"><a href="#">What I Learned Building My First Mechanical Keyboard</a></h3>
+        <div class="post-meta">
+          <span>By Amara Osei</span>
+          <span class="meta-divider">·</span>
+          <span>April 10, 2026</span>
+          <span class="meta-divider">·</span>
+          <span>8 min read</span>
+        </div>
+        <p class="post-excerpt">Building a mechanical keyboard from scratch turned out to be one of the most satisfying weekend projects I've ever attempted — and also one of the most unexpectedly educational...</p>
+        <a href="#" class="read-more">Read More →</a>
+      </article>
+
+      <!-- Blog Post 3 -->
+      <article class="blog-post">
+        <span class="post-category">Philosophy</span>
+        <h3 class="post-title"><a href="#">The Stoic Approach to Dealing with Uncertainty</a></h3>
+        <div class="post-meta">
+          <span>By Amara Osei</span>
+          <span class="meta-divider">·</span>
+          <span>March 30, 2026</span>
+          <span class="meta-divider">·</span>
+          <span>5 min read</span>
+        </div>
+        <p class="post-excerpt">Ancient Stoic philosophy offers surprisingly practical tools for navigating a world of constant change and unpredictability — wisdom that feels more relevant than ever...</p>
+        <a href="#" class="read-more">Read More →</a>
+      </article>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-widget">
+        <h3>About Me</h3>
+        <div class="author-bio">
+          <div class="author-avatar">AM</div>
+          <p>Hi! I'm Amara — a writer, tinkerer, and lifelong student of everything fascinating about the world.</p>
         </div>
       </div>
-    </nav>
-    <div class="hero">
-      <span class="badge">📱 Resize the browser!</span>
-      <h1>Responsive Design</h1>
-      <p>This page uses mobile-first media queries and automatically switches to dark mode based on your OS preference.</p>
-    </div>
-    <div class="content">
-      <h2 class="sec-h">Responsive Cards</h2>
-      <div class="cards">
-        <div class="card"><h3>📱 Mobile</h3><p>Single column. Full-width cards. Compact navigation. Base styles — no media query needed.</p></div>
-        <div class="card"><h3>📟 Tablet 640px+</h3><p>Two-column card grid. Navigation links appear. More breathing room.</p></div>
-        <div class="card"><h3>🖥️ Desktop 1024px+</h3><p>Three-column layout. Full navigation. Max-width container centred.</p></div>
-        <div class="card"><h3>🌙 Dark Mode</h3><p>@media (prefers-color-scheme: dark) — detected from your OS settings automatically.</p></div>
-        <div class="card"><h3>♿ Motion</h3><p>@media (prefers-reduced-motion) — disables animations for users who need it.</p></div>
-        <div class="card"><h3>🖨️ Print</h3><p>@media print — hides nav and UI elements when you print this page.</p></div>
+
+      <div class="sidebar-widget">
+        <h3>Categories</h3>
+        <ul class="category-list">
+          <li><a href="#">Science <span>(12)</span></a></li>
+          <li><a href="#">Technology <span>(8)</span></a></li>
+          <li><a href="#">Philosophy <span>(6)</span></a></li>
+          <li><a href="#">Travel <span>(4)</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-widget">
+        <h3>Newsletter</h3>
+        <p class="widget-text">New posts every Thursday. No spam, ever.</p>
+        <input type="email" class="widget-input" placeholder="your@email.com">
+        <button class="widget-btn">Subscribe</button>
+      </div>
+    </aside>
+
+  </div><!-- end content-wrapper -->
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>The Curious Mind</h4>
+        <p>Independent writing about science, technology, and the examined life.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">All Articles</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">Mastodon</a></li>
+          <li><a href="#">RSS Feed</a></li>
+        </ul>
       </div>
     </div>
-    <div class="bp"></div>
-  </body>
-</html>`;
-  function downloadStarter(){
-    const a=document.createElement('a');
-    a.href='data:text/html;charset=utf-8,'+encodeURIComponent(__code);
-    a.download='starter.html'; a.click();
-  }
-  </script>
-</div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 The Curious Mind · Made with CSS and coffee</p>
+    </div>
+  </footer>
 
-<div class="github-acc" id="github-steps" style="display:none">
-  <div class="github-acc-head" onclick="this.nextElementSibling.classList.toggle('open')">
-    🐙 GitHub Setup — Push your project online &nbsp;<span>▼</span>
+</body>
+</html>`)"
+      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
+      ⬇ Download starter.html
+    </button>
+    <button class="unlock-btn" onclick="showGithub()"
+      style="background:#0f172a;box-shadow:none">
+      🐙 Push to GitHub →
+    </button>
   </div>
-  <div class="github-acc-body">
-    <div class="github-step"><div class="github-step-n">1</div><p>Go to <strong>github.com</strong> → New repository → name it <code>css-lesson-45-css_media_queries</code>.</p></div>
-    <div class="github-step"><div class="github-step-n">2</div><p>Leave it <strong>Public</strong>, tick <strong>Add a README</strong>, click <strong>Create repository</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">3</div><p>Click <strong>Add file → Upload files</strong>. Rename your starter file to <code>index.html</code> and upload it.</p></div>
-    <div class="github-step"><div class="github-step-n">4</div><p>Add commit message <em>"Add CSS lesson 45 project"</em> and click <strong>Commit changes</strong>.</p></div>
-    <div class="github-step"><div class="github-step-n">5</div><p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Live at <code>https://YOUR-NAME.github.io/css-lesson-45-css_media_queries/</code> in ~1 minute! 🎉</p></div>
-    <button class="next-btn" onclick="showEnd()" style="margin-top:.5rem">I'm done! Finish session ✅</button>
+</div>
+<div class="gh-acc" id="gh-steps" style="display:none">
+  <div class="gh-acc-head" onclick="toggleGh(this)">
+    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
+  </div>
+  <div class="gh-acc-body">
+    <div class="gh-step"><div class="gh-step-n">1</div>
+    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-45-project-description</code>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">2</div>
+    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">3</div>
+    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
+    <div class="gh-step"><div class="gh-step-n">4</div>
+    <p>Commit message: <em>"Add CSS lesson 45 project"</em> → click <strong>Commit changes</strong>.</p></div>
+    <div class="gh-step"><div class="gh-step-n">5</div>
+    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-45-project-description/</code> in about 1 minute! 🎉</p></div>
+    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
   </div>
 </div>
 <div class="session-end" id="session-end">
-  <h2>🎉 Great work! Lesson 45 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">Today you learned:</p>
-  <ul><li>✅ Media Query Syntax and Breakpoints</li><li>✅ Media Features Beyond Width</li></ul>
-  <div class="lesson-nav" style="margin-top:1.5rem;border-color:rgba(255,255,255,.2)">
-    <a href="lesson_44.html" class="ln-btn">← Lesson 44</a>
-    <a href="lesson_46.html" class="ln-btn primary">Lesson 46 →</a>
-  </div>
+  <h2>🎉 Lesson 45 complete!</h2>
+  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
+  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1: Understanding the Anatomy of a Website Layout</li><li>✅ Part 2: Setting Up the HTML Structure</li><li>✅ Part 3: Styling Each Zone — Step by Step</li><li>✅ Part 4: Putting the Complete CSS Together</li><li>✅ Part 5: Making the Layout Responsive</li><li>✅ Part 6: Layout Variations</li></ul>
+  <div class="lesson-nav"><a href="lesson_44.html" class="ln-btn">← Lesson 44</a><a href="lesson_46.html" class="ln-btn primary">Lesson 46 →</a></div>
 </div>
 </main>
+
 <footer class="lesson-footer">
-  <p>Techbase Code Coach &nbsp;·&nbsp; CSS Course Lesson 45 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</p>
+  Techbase Code Coach · CSS Course · Lesson 45 · © 2025 Techbase Consultant Services, Ibadan
 </footer>
 <script>
-const TOTAL=2, KEY='techbase_html_45_phase';
+const TOTAL=11,KEY='techbase_css_l45';
 let current=parseInt(localStorage.getItem(KEY)||'1');
-
 function init(){
-  for(let i=1;i<=current;i++) if(i>1) unlockPhase(i,false);
+  for(let i=2;i<=current;i++) unlockPhase(i,false);
   updateBar();
 }
-
 function unlockNext(n){
-  document.getElementById('check'+n).classList.add('done');
-  document.getElementById('check'+n).textContent='✓';
-  localStorage.setItem(KEY,n+1);
-  current=n+1;
+  const chk=document.getElementById('chk'+n);
+  if(chk){chk.classList.add('done');chk.textContent='✓';}
+  localStorage.setItem(KEY,n+1); current=n+1;
   if(n===TOTAL){
     document.getElementById('build-it').style.display='block';
-    const cap=document.getElementById('capstone');
-    if(cap) cap.style.display='block';
     updateBar(100);
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  } else {
-    unlockPhase(n+1,true);
-    updateBar();
+  }else{
+    unlockPhase(n+1,true); updateBar();
   }
 }
-
 function unlockPhase(n,scroll){
   const el=document.getElementById('phase'+n);
-  if(el){ el.classList.remove('locked'); if(scroll) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150); }
+  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
 }
-
 function updateBar(pct){
-  const p=pct||Math.round((current-1)/TOTAL*95);
+  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
   document.getElementById('pbar').style.width=p+'%';
 }
-
 function showGithub(){
-  const g=document.getElementById('github-steps');
-  if(g){ g.style.display='block'; setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150); }
+  const g=document.getElementById('gh-steps');
+  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
 }
-
 function showEnd(){
   const e=document.getElementById('session-end');
-  if(e){ e.classList.add('visible'); setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150); }
+  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
 }
-
+function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
+function downloadStarter(code){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
+  a.download='starter.html';a.click();
+}
 init();
 </script>
 </body>
