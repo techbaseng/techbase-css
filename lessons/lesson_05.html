@@ -1,283 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lesson 05: CSS Colors — Named Colors, RGB, RGBA, HEX, HSL, and HSLA — Techbase CSS</title>
-<meta name="description" content="CSS Colors — Named Colors, RGB, RGBA, HEX, HSL, and HSLA">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{
-  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
-  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
-  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
-  --text:#0f172a;--t2:#334155;--muted:#64748b;
-  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--acc:#0284c7;--acd:#0369a1;--acp:#f0f9ff;--acb:rgba(2,132,199,.22);--acs:rgba(2,132,199,.28);--bg:#f8fafc;--sf:#fff;--br:#e2e8f0;--tx:#0f172a;--t2:#334155;--mu:#64748b;--D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
-
-/* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
-  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
-  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
-.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+body{background:var(--bg);color:var(--tx);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--br);height:58px;display:flex;align-items:center;padding:0 1.5rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--tx);text-decoration:none}
+.l-nav-back{font-size:.8rem;color:var(--mu);text-decoration:none;font-weight:500;transition:color .2s}
 .l-nav-back:hover{color:var(--acc)}
-.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-
-/* PROGRESS */
-.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
-
-/* HERO */
-.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:860px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
-  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
-  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
-  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
-
-/* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
-.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
-.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
-.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
-  font-family:var(--M);font-size:.68rem;font-weight:500}
-
-/* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
-  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
-.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
-.phase-header{padding:1rem 1.4rem;background:#f5fbff;
-  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--acc)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
-  flex:1;margin:0 .8rem}
-.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
-  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
-  transition:background .3s,color .3s}
-.phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.6rem 1.8rem}
-
-/* RICH CONTENT STYLES */
+.l-nav-lbl{font-family:var(--M);font-size:.68rem;color:var(--mu)}
+.pw{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--br)}
+.pb{height:100%;background:linear-gradient(90deg,var(--acc),var(--acd));transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;position:relative}
+.pb::after{content:'';position:absolute;right:0;top:0;bottom:0;width:20px;background:inherit;filter:brightness(1.4);animation:pg 1.5s ease-in-out infinite}
+@keyframes pg{0%,100%{opacity:1}50%{opacity:.35}}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--br)}
+.l-hero-in{max-width:860px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;border-radius:100px;padding:.22rem .9rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--acc);background:var(--acp);border:1.5px solid var(--acb);margin-bottom:.85rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.9rem;color:var(--mu)}
+.wb{background:#fff;border:1.5px solid var(--acb);border-left:5px solid var(--acc);border-radius:14px;padding:1.4rem 1.6rem;max-width:860px;margin:1.5rem auto 0;box-shadow:0 2px 12px var(--acs)}
+.wb h2{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--acd);margin-bottom:.6rem}
+.wb p,.wb li{font-size:.92rem;line-height:1.85;color:var(--t2)}
+.wb ul{margin-left:1.2rem;margin-top:.4rem}
+.wm{display:flex;gap:.65rem;margin-top:1rem;flex-wrap:wrap}
+.wm span{background:var(--acp);color:var(--acd);border:1px solid var(--acb);border-radius:7px;padding:.22rem .7rem;font-family:var(--M);font-size:.68rem;font-weight:600}
+.phase{background:var(--sf);border:1.5px solid var(--br);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .35s,filter .35s,transform .35s}
+.phase.locked{opacity:.28;pointer-events:none;filter:blur(2px);transform:scale(.99)}
+.ph{padding:1rem 1.4rem;background:#f5fbff;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:.8rem}
+.pn{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);white-space:nowrap}
+.pt{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--tx);flex:1}
+.pc{width:26px;height:26px;border-radius:50%;background:var(--br);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:background .3s,transform .4s}
+.pc.done{background:#10b981;color:#fff;transform:scale(1.15) rotate(360deg)}
+.pb2{padding:1.6rem 1.8rem}
 .v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
-.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
-  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
-.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
-.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--tx);margin:1.6rem 0 .5rem;border-top:2px solid var(--acp);padding-top:.4rem}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1rem 0 .35rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.88rem;color:var(--mu);margin:.7rem 0 .3rem}
 .v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
 .v2-ul li,.v2-ol li{margin-bottom:.3rem}
-.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
-  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acp);border-radius:0 10px 10px 0;padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
 .v2-bq p{margin:0;color:inherit}
-.v2-bq strong{font-style:normal}
-.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
-.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-hr{border:none;border-top:1px solid var(--br);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0;border-radius:10px;border:1px solid var(--br)}
 .v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
-.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
-  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
-.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
-.v2-table tr:nth-child(even) td{background:#f8fafc}
-.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
-  padding:1px 5px;font-family:var(--M);font-size:.8em}
-.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
-.phase-body strong{color:var(--text)}
-
-/* CODE BLOCKS */
-.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-table th{background:var(--acp);color:#0c4a6e;font-family:var(--D);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--acb)}
+.v2-table td{padding:8px 12px;border-bottom:1px solid var(--br);color:var(--t2);vertical-align:top}
+.v2-table tr:last-child td{border:none}
+.v2-table tr:hover td{background:var(--acp)}
+.pb2 code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.pb2 a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.pb2 strong{color:var(--tx)}
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 18px rgba(0,0,0,.18)}
 .v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
 .v2-dot{width:10px;height:10px;border-radius:50%}
 .v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
-.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-lang{margin-left:.5rem;font-family:var(--M);font-size:.62rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em;flex:1}
+.copy-btn{background:rgba(255,255,255,.08);color:#94a3b8;border:none;border-radius:6px;padding:.25rem .65rem;font-family:var(--M);font-size:.65rem;cursor:pointer;transition:background .2s,color .2s}
+.copy-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+.copy-btn.copied{background:#10b981;color:#fff}
 .v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
 .v2-code-body pre{margin:0}
-.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
-  white-space:pre;background:transparent;padding:0;border-radius:0}
-
-/* TASK BOX */
-.task-box{background:#e0f2fe;border:2px dashed #0284c7;
-  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
-.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
-.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
-  font-family:var(--M);font-size:.82em}
-
-/* UNLOCK BUTTON */
-.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
-  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
-  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
-  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
-.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
-
-/* BUILD IT */
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.95;color:#e2e8f0;white-space:pre;background:transparent;padding:0;border-radius:0}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0}
+.task-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-body{font-size:.93rem;color:#0c4a6e;line-height:1.85}
+.task-body code{background:rgba(0,0,0,.1);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.chal-box{background:linear-gradient(135deg,#f0f9ff 0%,#fff 100%);border:2px solid var(--acc);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.2rem}
+.chal-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acd);margin-bottom:.6rem}
+.chal-body{font-size:.95rem;color:var(--tx);line-height:1.85}
+.chal-body code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 5px;font-family:var(--M);font-size:.82em}
+.reveal-btn{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--acd);font-family:var(--D);font-weight:700;font-size:.85rem;padding:.6rem 1.2rem;border-radius:8px;border:2px solid var(--acc);cursor:pointer;transition:background .2s,color .2s;margin:.6rem 0}
+.reveal-btn:hover{background:var(--acc);color:#fff}
+.reveal-content{display:none;margin-top:.6rem;animation:fi .3s ease}
+.reveal-content.open{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
-.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
-.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
-.build-desc strong{color:#14532d}
-
-/* GITHUB ACCORDION */
-.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.gh-acc-body.open{display:block}
-.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
-  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;margin-top:2px}
-.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-
-/* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
-.session-end.visible{display:block}
-.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
-.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
-  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
-  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
-  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.build-box.visible{display:block;animation:fi .4s ease}
+.build-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.15rem;color:#14532d;margin-bottom:.6rem}
+.build-req{font-size:.93rem;color:#166534;line-height:1.8;margin-bottom:.8rem}
+.build-req code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-req strong{color:#14532d}
+.gh-acc{border:1.5px solid var(--br);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-hd{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none;transition:background .2s}
+.gh-hd:hover{background:#f1f5f9}
+.gh-bd{display:none;padding:1.2rem;border-top:1px solid var(--br)}
+.gh-bd.open{display:block;animation:fi .25s ease}
+.gh-st{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-st p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-st code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.gh-nop{background:#fef3c7;border:1.5px solid #fde68a;border-radius:10px;padding:1rem 1.2rem;font-size:.9rem;color:#78350f;line-height:1.75;margin-bottom:1rem}
+.se{background:linear-gradient(135deg,var(--acc),var(--acd));color:#fff;border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
+.se.visible{display:block;animation:fi .4s ease}
+.se h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.se ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.se li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--sf);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--br);transition:border-color .2s,color .2s}
 .ln-btn:hover{border-color:var(--acc);color:var(--acc)}
 .ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;
-  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
-  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.ln{display:flex;align-items:center;justify-content:space-between;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.ub{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acs);margin-top:1.2rem}
+.ub:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acs)}
+.ub:active{transform:scale(.97)}
+#toast{position:fixed;bottom:90px;right:1.5rem;z-index:999;background:#1e293b;color:#fff;border-radius:10px;padding:.75rem 1.2rem;font-family:var(--D);font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+#toast.show{transform:translateY(0);opacity:1}
+#go-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;border:none;cursor:pointer;font-size:1.15rem;box-shadow:0 4px 16px var(--acs);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,box-shadow .2s;pointer-events:none}
+#go-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#go-top:hover{box-shadow:0 8px 24px var(--acs);transform:translateY(-2px)}
+#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none}
+.lf{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--mu);border-top:1px solid var(--br);background:var(--sf)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
   <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
-  <span class="l-nav-label">Lesson 05 of 73</span>
+  <span class="l-nav-lbl">Lesson 05 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
-
-<div class="l-hero">
-  <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 05</div>
-    <h1>CSS Colors — Named Colors, RGB, RGBA, HEX, HSL, and HSLA</h1>
-    <div class="l-hero-sub">14 phases · Build: Project Brief</div>
-  </div>
-</div>
-
-<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
-  <h2>👋 Welcome to Lesson 05</h2>
-  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Color is one of the most powerful tools you have as a web designer. The right colors can make a webpage feel professional, welcoming, exciting, or calm. Without color, every webpage would look exactly the same — plain black text on a white background.</p>
-<p class="v2-p">In this lesson, you will learn <strong>every way CSS allows you to specify color</strong>. There are five main color systems in CSS, and by the end of this lesson you will be able to use all of them with confidence.</p>
-<p class="v2-p"><strong>By the end of this lesson you will be able to:</strong></p>
-<ul class="v2-ul"><li>Use color names like <code>red</code>, <code>DodgerBlue</code>, and <code>MediumSeaGreen</code></li><li>Use <code>rgb()</code> to mix colors from red, green, and blue light</li><li>Use <code>rgba()</code> to make colors transparent</li><li>Use <code>#hex</code> codes — the most common format in professional web work</li><li>Use <code>hsl()</code> to describe colors by hue, saturation, and lightness</li><li>Use <code>hsla()</code> for transparent HSL colors</li><li>Apply color to text, backgrounds, and borders</li><li>Choose the right color format for the right situation</li><li>Complete real design exercises using all four formats</li></ul>
-<hr class="v2-hr"></div>
-  <div class="welcome-meta">
-    <span>📚 14 phases</span>
-    <span>🏗️ Project Brief</span>
-  </div>
+<div class="pw"><div class="pb" id="pbar"></div></div>
+<div class="l-hero"><div class="l-hero-in">
+  <div class="badge">CSS · Lesson 05</div>
+  <h1>CSS Colors — Named Colors, RGB, RGBA, HEX, HSL, and HSLA</h1>
+  <div class="l-hero-sub">14 phases &nbsp;·&nbsp; Build: Project Brief</div>
 </div></div>
-</section>
-
-<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
-<div class="phase" id="phase1">
-  <div class="phase-header">
-    <div class="phase-num">Phase 1 of 14</div>
-    <div class="phase-title">Lesson Introduction</div>
-    <div class="phase-check" id="chk1"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Color is one of the most powerful tools you have as a web designer. The right colors can make a webpage feel professional, welcoming, exciting, or calm. Without color, every webpage would look exactly the same — plain black text on a white background.</p>
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--br)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="wb"><h2>👋 Welcome to Lesson 05</h2><div style="font-size:.92rem;line-height:1.85;color:var(--t2)"><p class="v2-p">Color is one of the most powerful tools you have as a web designer. The right colors can make a webpage feel professional, welcoming, exciting, or calm. Without color, every webpage would look exactly the same — plain black text on a white background.</p>
 <p class="v2-p">In this lesson, you will learn <strong>every way CSS allows you to specify color</strong>. There are five main color systems in CSS, and by the end of this lesson you will be able to use all of them with confidence.</p>
 <p class="v2-p"><strong>By the end of this lesson you will be able to:</strong></p>
 <ul class="v2-ul"><li>Use color names like <code>red</code>, <code>DodgerBlue</code>, and <code>MediumSeaGreen</code></li><li>Use <code>rgb()</code> to mix colors from red, green, and blue light</li><li>Use <code>rgba()</code> to make colors transparent</li><li>Use <code>#hex</code> codes — the most common format in professional web work</li><li>Use <code>hsl()</code> to describe colors by hue, saturation, and lightness</li><li>Use <code>hsla()</code> for transparent HSL colors</li><li>Apply color to text, backgrounds, and borders</li><li>Choose the right color format for the right situation</li><li>Complete real design exercises using all four formats</li></ul>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase2">
-  <div class="phase-header">
-    <div class="phase-num">Phase 2 of 14</div>
-    <div class="phase-title">Prerequisite Concepts — What You Need to Know First</div>
-    <div class="phase-check" id="chk2"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Before we dive in, let us quickly recap two things from earlier lessons:</p>
+<hr class="v2-hr"></div><div class="wm"><span>📚 14 phases</span><span>🏗️ Project Brief</span><span>🌐 GitHub Pages</span></div></div></div>
+</section>
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1"><div class="ph"><div class="pn">Phase 1/14</div><div class="pt">Lesson Introduction</div><div class="pc" id="chk1"></div></div><div class="pb2"><p class="v2-p">Color is one of the most powerful tools you have as a web designer. The right colors can make a webpage feel professional, welcoming, exciting, or calm. Without color, every webpage would look exactly the same — plain black text on a white background.</p>
+<p class="v2-p">In this lesson, you will learn <strong>every way CSS allows you to specify color</strong>. There are five main color systems in CSS, and by the end of this lesson you will be able to use all of them with confidence.</p>
+<p class="v2-p"><strong>By the end of this lesson you will be able to:</strong></p>
+<ul class="v2-ul"><li>Use color names like <code>red</code>, <code>DodgerBlue</code>, and <code>MediumSeaGreen</code></li><li>Use <code>rgb()</code> to mix colors from red, green, and blue light</li><li>Use <code>rgba()</code> to make colors transparent</li><li>Use <code>#hex</code> codes — the most common format in professional web work</li><li>Use <code>hsl()</code> to describe colors by hue, saturation, and lightness</li><li>Use <code>hsla()</code> for transparent HSL colors</li><li>Apply color to text, backgrounds, and borders</li><li>Choose the right color format for the right situation</li><li>Complete real design exercises using all four formats</li></ul>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(1)">Start Lesson ✓</button></div></div>
+<div class="phase locked" id="phase2"><div class="ph"><div class="pn">Phase 2/14</div><div class="pt">Prerequisite Concepts — What You Need to Know First</div><div class="pc" id="chk2"></div></div><div class="pb2"><p class="v2-p">Before we dive in, let us quickly recap two things from earlier lessons:</p>
 <h3 class="v2-h3">CSS Color Properties</h3>
 <p class="v2-p">In CSS, you have already seen the <code>color</code> property (controls text color) and the <code>background-color</code> property (controls element background). Both of these accept color values. In this lesson you will learn all the different ways to <em>write</em> those values.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>h1 {
   color: red;               /* text color */
   background-color: yellow; /* background color */
 }</code></pre></div></div>
 <h3 class="v2-h3">What Is a Color Value?</h3>
 <p class="v2-p">A <strong>color value</strong> is the specific code or name you write to tell CSS exactly which color to use. CSS supports several different formats for specifying color values — named keywords, RGB, HEX, and HSL. You can use any format in any color property. They are all equally valid.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts — What You Need to Know First</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase3">
-  <div class="phase-header">
-    <div class="phase-num">Phase 3 of 14</div>
-    <div class="phase-title">Section 1 — An Overview of CSS Color Formats</div>
-    <div class="phase-check" id="chk3"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">CSS offers five ways to specify colors. Think of them as five different "languages" for talking about the same colors:</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Prerequisite Concepts — What You Need to Know First</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase3"><div class="ph"><div class="pn">Phase 3/14</div><div class="pt">Section 1 — An Overview of CSS Color Formats</div><div class="pc" id="chk3"></div></div><div class="pb2"><p class="v2-p">CSS offers five ways to specify colors. Think of them as five different "languages" for talking about the same colors:</p>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Format</th><th>Example</th><th>What it uses</th></tr></thead><tbody><tr><td>Color Name</td><td><code>red</code></td><td>Plain English words</td></tr><tr><td>RGB</td><td><code>rgb(255, 99, 71)</code></td><td>Red, Green, Blue amounts (0–255)</td></tr><tr><td>RGBA</td><td><code>rgba(255, 99, 71, 0.5)</code></td><td>RGB + transparency level</td></tr><tr><td>HEX</td><td><code>#ff6347</code></td><td>Hexadecimal code</td></tr><tr><td>HSL</td><td><code>hsl(9, 100%, 64%)</code></td><td>Hue, Saturation, Lightness</td></tr><tr><td>HSLA</td><td><code>hsla(9, 100%, 64%, 0.5)</code></td><td>HSL + transparency level</td></tr></tbody></table></div>
 <p class="v2-p">All six entries in the table above produce the same color — the famous CSS color called <strong>Tomato</strong>. They are just different ways of writing the same thing.</p>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Key insight:</strong> The color format you choose does not change what the color looks like on screen. <code>red</code>, <code>rgb(255,0,0)</code>, <code>#ff0000</code>, and <code>hsl(0, 100%, 50%)</code> all display the same pure red color. The difference is only in <em>how</em> you write the code and <em>which situations</em> each format is best suited for.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>An Overview of CSS Color Formats</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase4">
-  <div class="phase-header">
-    <div class="phase-num">Phase 4 of 14</div>
-    <div class="phase-title">Section 2 — Where You Can Apply Color in CSS</div>
-    <div class="phase-check" id="chk4"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Before learning each format, let us understand the three main places you apply color on a webpage.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>An Overview of CSS Color Formats</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase4"><div class="ph"><div class="pn">Phase 4/14</div><div class="pt">Section 2 — Where You Can Apply Color in CSS</div><div class="pc" id="chk4"></div></div><div class="pb2"><p class="v2-p">Before learning each format, let us understand the three main places you apply color on a webpage.</p>
 <h3 class="v2-h3">2.1 — Text Color</h3>
 <p class="v2-p">The <code>color</code> property controls the color of text inside an element.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>h1 {
   color: Tomato;
 }</code></pre></div></div>
 <p class="v2-p"><strong>HTML:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;h1&gt;Hello World&lt;/h1&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;h1&gt;Hello World&lt;/h1&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> The heading "Hello World" appears in a reddish-orange Tomato color.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">2.2 — Background Color</h3>
 <p class="v2-p">The <code>background-color</code> property fills the background of any element with a color.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>h1 {
   background-color: DodgerBlue;
 }
 
@@ -290,7 +182,7 @@ p {
 <hr class="v2-hr">
 <h3 class="v2-h3">2.3 — Border Color</h3>
 <p class="v2-p">The <code>border</code> property can include a color value. The format is: <code>border: [thickness] [style] [color]</code></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>h1 {
   border: 2px solid Tomato;
 }
 
@@ -304,25 +196,11 @@ h3 {
 <p class="v2-p"><strong>Expected output:</strong></p>
 <ul class="v2-ul"><li>The first heading has a 2-pixel solid red-orange border</li><li>The second heading has a 2-pixel solid blue border</li><li>The third heading has a 2-pixel solid violet border</li></ul>
 <p class="v2-p">Now that you know <em>where</em> to apply colors, let us learn each color format in detail.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Where You Can Apply Color in CSS</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase5">
-  <div class="phase-header">
-    <div class="phase-num">Phase 5 of 14</div>
-    <div class="phase-title">Section 3 — CSS Named Colors (Color Keywords)</div>
-    <div class="phase-check" id="chk5"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What Are Named Colors?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Where You Can Apply Color in CSS</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase5"><div class="ph"><div class="pn">Phase 5/14</div><div class="pt">Section 3 — CSS Named Colors (Color Keywords)</div><div class="pc" id="chk5"></div></div><div class="pb2"><h3 class="v2-h3">What Are Named Colors?</h3>
 <p class="v2-p">CSS includes <strong>140 predefined color names</strong> — plain English words that you can type directly as a color value. These are the easiest format to use because they require no numbers or codes.</p>
 <h3 class="v2-h3">Examples of Named Colors</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p { color: Tomato; }
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>p { color: Tomato; }
 p { color: Orange; }
 p { color: DodgerBlue; }
 p { color: MediumSeaGreen; }
@@ -333,7 +211,7 @@ p { color: LightGray; }</code></pre></div></div>
 <p class="v2-p"><strong>Expected outputs (text colors):</strong></p>
 <ul class="v2-ul"><li><code>Tomato</code> → warm reddish-orange</li><li><code>Orange</code> → bright orange</li><li><code>DodgerBlue</code> → vivid medium blue</li><li><code>MediumSeaGreen</code> → soft medium green</li><li><code>Gray</code> → standard medium gray</li><li><code>SlateBlue</code> → blue-purple</li><li><code>Violet</code> → bright purple-pink</li><li><code>LightGray</code> → pale gray</li></ul>
 <h3 class="v2-h3">A Micro-Demo — Named Colors in Action</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color: LightGray;
 }
 
@@ -344,7 +222,7 @@ h1 {
 p {
   color: MediumSeaGreen;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;body&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;body&gt;
   &lt;h1&gt;Welcome to My Page&lt;/h1&gt;
   &lt;p&gt;This text is sea green on a light gray background.&lt;/p&gt;
 &lt;/body&gt;</code></pre></div></div>
@@ -358,32 +236,18 @@ p {
 <ul class="v2-ul"><li>Quick prototyping and testing</li><li>Simple projects where you do not need to match exact brand colors</li><li>Learning and experimenting</li></ul>
 <p class="v2-p">However, they are <strong>limited</strong> — 140 colors is far fewer than the 16+ million colors your screen can display. For precise control, you need RGB, HEX, or HSL.</p>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> Can you think of why a company like Coca-Cola would NOT want to use a color name like <code>red</code> for their brand? Because <code>red</code> is a generic color, not their specific shade of red. They need an exact code — which is where HEX and RGB come in.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>CSS Named Colors (Color Keywords)</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase6">
-  <div class="phase-header">
-    <div class="phase-num">Phase 6 of 14</div>
-    <div class="phase-title">Section 4 — RGB Colors</div>
-    <div class="phase-check" id="chk6"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What Does RGB Mean?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>CSS Named Colors (Color Keywords)</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase6"><div class="ph"><div class="pn">Phase 6/14</div><div class="pt">Section 4 — RGB Colors</div><div class="pc" id="chk6"></div></div><div class="pb2"><h3 class="v2-h3">What Does RGB Mean?</h3>
 <p class="v2-p"><strong>RGB</strong> stands for <strong>Red, Green, Blue</strong>. It is a color model based on mixing light. Your computer screen works by lighting up millions of tiny dots (pixels), and each pixel is made of three tiny lights — one red, one green, and one blue. By controlling how bright each of those three lights is, the screen can produce any color.</p>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Analogy:</strong> Think of a theatre spotlight. If you shine a red spotlight, a green spotlight, and a blue spotlight onto the same spot, you can mix them to create millions of different colors. RGB works exactly the same way — but with light from your screen's pixels.</p></blockquote>
 <h3 class="v2-h3">The RGB Syntax</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgb(red, green, blue);</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: rgb(red, green, blue);</code></pre></div></div>
 <p class="v2-p">Each number inside <code>rgb()</code> is a value from <strong>0 to 255</strong>:</p>
 <ul class="v2-ul"><li><code>0</code> means that light is completely OFF (none of that color)</li><li><code>255</code> means that light is completely ON (maximum of that color)</li></ul>
 <h3 class="v2-h3">Understanding the Scale: 0 to 255</h3>
 <p class="v2-p">Why 0 to 255? Because computers store color data in <strong>8 bits</strong> per channel. With 8 bits, you can represent 256 different values (0 through 255). This gives you 256 × 256 × 256 = <strong>16,777,216</strong> possible colors — more than 16 million!</p>
 <h3 class="v2-h3">The Three Primary RGB Colors</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Pure red — only red light is on */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Pure red — only red light is on */
 color: rgb(255, 0, 0);
 
 /* Pure green — only green light is on */
@@ -395,7 +259,7 @@ color: rgb(0, 0, 255);</code></pre></div></div>
 <ul class="v2-ul"><li><code>rgb(255, 0, 0)</code> → bright pure red</li><li><code>rgb(0, 255, 0)</code> → bright pure green (lime green)</li><li><code>rgb(0, 0, 255)</code> → bright pure blue</li></ul>
 <h3 class="v2-h3">Mixing Colors with RGB</h3>
 <p class="v2-p">The magic happens when you mix the channels together:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Mix red + green light → yellow */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Mix red + green light → yellow */
 color: rgb(255, 255, 0);
 
 /* Mix red + blue light → magenta (hot pink-purple) */
@@ -414,19 +278,19 @@ color: rgb(0, 0, 0);</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> What color would <code>rgb(128, 128, 128)</code> produce? All three channels are set to the halfway point (128 out of 255), so this produces a <strong>medium gray</strong>. Equal amounts of red, green, and blue light always create shades of gray.</p></blockquote>
 <h3 class="v2-h3">Creating Shades of Gray with RGB</h3>
 <p class="v2-p">This is one of the most useful patterns in RGB: <strong>any time all three values are equal, you get a shade of gray</strong>.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgb(0, 0, 0);     /* black */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: rgb(0, 0, 0);     /* black */
 color: rgb(64, 64, 64);  /* very dark gray */
 color: rgb(128, 128, 128); /* medium gray */
 color: rgb(192, 192, 192); /* light gray */
 color: rgb(255, 255, 255); /* white */</code></pre></div></div>
 <p class="v2-p"><strong>Expected outputs:</strong> A gradient from black through increasingly lighter grays to white.</p>
 <h3 class="v2-h3">Recognising Famous Colors in RGB</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgb(255, 99, 71);   /* Tomato */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: rgb(255, 99, 71);   /* Tomato */
 color: rgb(255, 165, 0);   /* Orange */
 color: rgb(30, 144, 255);  /* DodgerBlue */
 color: rgb(60, 179, 113);  /* MediumSeaGreen */</code></pre></div></div>
 <h3 class="v2-h3">A Complete RGB Example</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color: rgb(240, 240, 240); /* very light gray background */
 }
 
@@ -441,29 +305,15 @@ p {
 <h3 class="v2-h3">When to Use RGB</h3>
 <p class="v2-p">RGB is great when:</p>
 <ul class="v2-ul"><li>You are working with colors from a design tool that provides RGB values</li><li>You want precise programmatic control (especially when using JavaScript to change colors)</li><li>You need to generate colors mathematically (e.g., a data visualization where brightness represents a data value)</li></ul>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>RGB Colors</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase7">
-  <div class="phase-header">
-    <div class="phase-num">Phase 7 of 14</div>
-    <div class="phase-title">Section 5 — RGBA Colors (RGB with Transparency)</div>
-    <div class="phase-check" id="chk7"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What Is RGBA?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>RGB Colors</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase7"><div class="ph"><div class="pn">Phase 7/14</div><div class="pt">Section 5 — RGBA Colors (RGB with Transparency)</div><div class="pc" id="chk7"></div></div><div class="pb2"><h3 class="v2-h3">What Is RGBA?</h3>
 <p class="v2-p"><strong>RGBA</strong> is exactly like RGB, but with a fourth value: <strong>alpha</strong> (A). The alpha value controls the <strong>transparency</strong> (see-through-ness) of the color.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgba(red, green, blue, alpha);</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: rgba(red, green, blue, alpha);</code></pre></div></div>
 <p class="v2-p">The alpha value is a decimal number from <strong>0.0 to 1.0</strong>:</p>
 <ul class="v2-ul"><li><code>0</code> or <code>0.0</code> = completely transparent (invisible)</li><li><code>0.5</code> = 50% transparent (half see-through)</li><li><code>1</code> or <code>1.0</code> = completely solid (no transparency)</li></ul>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Analogy:</strong> Think of a stained-glass window. Solid stained glass is like <code>alpha: 1</code>. Frosted glass you can barely see through is like <code>alpha: 0.2</code>. And if the glass were completely clear (invisible), that would be <code>alpha: 0</code>. RGBA lets you put any level of transparency on your colors.</p></blockquote>
 <h3 class="v2-h3">RGBA in Action — Five Transparency Levels of Tomato</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* All five produce Tomato (rgb 255, 99, 71) at different transparencies */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* All five produce Tomato (rgb 255, 99, 71) at different transparencies */
 
 div.solid     { background-color: rgba(255, 99, 71, 1.0); }
 div.most      { background-color: rgba(255, 99, 71, 0.8); }
@@ -474,36 +324,22 @@ div.invisible { background-color: rgba(255, 99, 71, 0.0); }</code></pre></div></
 <ul class="v2-ul"><li><code>alpha: 1.0</code> → full solid tomato red-orange</li><li><code>alpha: 0.8</code> → tomato with a slight fade</li><li><code>alpha: 0.5</code> → tomato at half transparency — you can see what is behind it</li><li><code>alpha: 0.2</code> → very faint hint of tomato color</li><li><code>alpha: 0.0</code> → completely invisible (you see whatever is behind the element)</li></ul>
 <h3 class="v2-h3">A Practical Use Case for RGBA</h3>
 <p class="v2-p">RGBA transparency is widely used for overlays — a semi-transparent color layer placed on top of an image to make text more readable:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* An image with a dark semi-transparent overlay to make white text readable */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* An image with a dark semi-transparent overlay to make white text readable */
 .hero-section {
   background-color: rgba(0, 0, 0, 0.5); /* 50% black overlay */
   color: white;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> White text appears on top of a semi-transparent dark overlay, making it readable even over a bright background image.</p>
 <h3 class="v2-h3">Second Example — Blue with Various Transparencies</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>h1 { background-color: rgba(30, 144, 255, 1.0); }  /* solid DodgerBlue */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>h1 { background-color: rgba(30, 144, 255, 1.0); }  /* solid DodgerBlue */
 h2 { background-color: rgba(30, 144, 255, 0.6); }  /* 60% DodgerBlue */
 h3 { background-color: rgba(30, 144, 255, 0.3); }  /* 30% DodgerBlue */</code></pre></div></div>
 <p class="v2-p"><strong>Expected outputs:</strong> Three headings with progressively more transparent blue backgrounds.</p>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Thinking Prompt:</strong> What happens if you set <code>color: rgba(0, 0, 0, 0.0)</code> on your text? The text becomes completely invisible! This is a common mistake — be careful with low alpha values on text.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>RGBA Colors (RGB with Transparency)</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase8">
-  <div class="phase-header">
-    <div class="phase-num">Phase 8 of 14</div>
-    <div class="phase-title">Section 6 — HEX Colors (Hexadecimal)</div>
-    <div class="phase-check" id="chk8"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What Is a HEX Color?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>RGBA Colors (RGB with Transparency)</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase8"><div class="ph"><div class="pn">Phase 8/14</div><div class="pt">Section 6 — HEX Colors (Hexadecimal)</div><div class="pc" id="chk8"></div></div><div class="pb2"><h3 class="v2-h3">What Is a HEX Color?</h3>
 <p class="v2-p">A <strong>HEX color</strong> (short for hexadecimal color) is a color written as a 6-character code starting with a <code>#</code> symbol:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: #ff6347; /* This is Tomato in HEX */</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: #ff6347; /* This is Tomato in HEX */</code></pre></div></div>
 <p class="v2-p">HEX colors are the <strong>most widely used color format in professional web development</strong>. If you look at the CSS of any major website — Google, Amazon, Twitter — you will see HEX codes everywhere.</p>
 <h3 class="v2-h3">Why Does It Start With <code>#</code>?</h3>
 <p class="v2-p">The <code>#</code> symbol tells CSS "what follows is a hexadecimal color code". It is simply a required prefix — always include it.</p>
@@ -513,27 +349,27 @@ h3 { background-color: rgba(30, 144, 255, 0.3); }  /* 30% DodgerBlue */</code></
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Why use hex?</strong> Two hex digits can represent exactly 256 values (0–255), the same range as one RGB channel. So the 6-character HEX code <code>#RRGGBB</code> is simply a compact way to write the same information as <code>rgb(R, G, B)</code>. The hex code is shorter and more commonly used in design tools.</p></blockquote>
 <h3 class="v2-h3">The Structure of a HEX Code</h3>
 <p class="v2-p">A HEX color code has 6 characters after the <code>#</code>, always split into three pairs:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code># RR GG BB
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code># RR GG BB
   ↑  ↑  ↑
   |  |  └── Blue channel (00 to FF)
   |  └───── Green channel (00 to FF)
   └──────── Red channel (00 to FF)</code></pre></div></div>
 <p class="v2-p">Each pair is a two-digit hex number from <code>00</code> (= 0 in decimal = completely off) to <code>FF</code> (= 255 in decimal = completely on).</p>
 <p class="v2-p"><strong>Reading the Tomato HEX code <code>#ff6347</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code># ff  63  47
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code># ff  63  47
   ↑   ↑   ↑
   |   |   └── Blue = 47 hex = 71 decimal
   |   └─────  Green = 63 hex = 99 decimal
   └─────────  Red = ff hex = 255 decimal</code></pre></div></div>
 <p class="v2-p">So <code>#ff6347</code> = <code>rgb(255, 99, 71)</code> — they are the exact same color!</p>
 <h3 class="v2-h3">The Three Primary HEX Colors</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: #ff0000; /* pure red   — same as rgb(255, 0, 0) */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: #ff0000; /* pure red   — same as rgb(255, 0, 0) */
 color: #00ff00; /* pure green — same as rgb(0, 255, 0) */
 color: #0000ff; /* pure blue  — same as rgb(0, 0, 255) */</code></pre></div></div>
 <p class="v2-p"><strong>Expected outputs:</strong></p>
 <ul class="v2-ul"><li><code>#ff0000</code> → bright red</li><li><code>#00ff00</code> → bright green (lime)</li><li><code>#0000ff</code> → bright blue</li></ul>
 <h3 class="v2-h3">Black, White, and Grays in HEX</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: #000000; /* black — all channels off */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: #000000; /* black — all channels off */
 color: #ffffff; /* white — all channels full */
 color: #808080; /* medium gray — all channels at halfway (128 = 80 in hex) */
 color: #cccccc; /* light gray */
@@ -541,7 +377,7 @@ color: #333333; /* very dark gray (popular for body text) */</code></pre></div><
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Pattern:</strong> Just like in RGB, <strong>equal values in all three pairs produce gray shades</strong>. <code>#333333</code>, <code>#666666</code>, <code>#999999</code>, <code>#cccccc</code> are all grays of increasing lightness.</p></blockquote>
 <h3 class="v2-h3">Shorthand HEX — 3-Character Codes</h3>
 <p class="v2-p">When each pair of a HEX code has <strong>both characters the same</strong> (like <code>#ff0000</code>, <code>#aabbcc</code>, <code>#336699</code>), you can shorten it to just 3 characters by writing each pair once:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Full 6-digit form → Shortened 3-digit form */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Full 6-digit form → Shortened 3-digit form */
 #ff0000  →  #f00   /* red */
 #00ff00  →  #0f0   /* green */
 #0000ff  →  #00f   /* blue */
@@ -550,7 +386,7 @@ color: #333333; /* very dark gray (popular for body text) */</code></pre></div><
 #aabbcc  →  #abc   /* a dusty blue-gray */</code></pre></div></div>
 <p class="v2-p">The browser automatically doubles each digit: <code>#abc</code> becomes <code>#aabbcc</code>. <strong>You can only use 3-digit shorthand when both characters in each pair are the same.</strong> <code>#a1b2c3</code> cannot be shortened because <code>a1</code>, <code>b2</code>, and <code>c3</code> have different characters.</p>
 <h3 class="v2-h3">A Complete HEX Color Example</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color: #f4f4f4; /* very light gray — near white */
 }
 
@@ -572,30 +408,16 @@ a {
 <p class="v2-p">HEX is the best choice when:</p>
 <ul class="v2-ul"><li>You are copying a color from a design tool (like Figma, Adobe XD, or Canva — these all output HEX)</li><li>You are following a brand style guide (companies always specify brand colors in HEX)</li><li>You want to write color codes in the most compact, industry-standard way</li><li>You are reading tutorials, documentation, or design resources (HEX is the most commonly shown format)</li></ul>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Real-world tip:</strong> If you ever need to find a HEX code for a color you see on a website, you can right-click the element in your browser → "Inspect" → look in the CSS panel. Most browser developer tools show colors in HEX by default.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>HEX Colors (Hexadecimal)</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase9">
-  <div class="phase-header">
-    <div class="phase-num">Phase 9 of 14</div>
-    <div class="phase-title">Section 7 — HSL Colors</div>
-    <div class="phase-check" id="chk9"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What Does HSL Mean?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>HEX Colors (Hexadecimal)</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase9"><div class="ph"><div class="pn">Phase 9/14</div><div class="pt">Section 7 — HSL Colors</div><div class="pc" id="chk9"></div></div><div class="pb2"><h3 class="v2-h3">What Does HSL Mean?</h3>
 <p class="v2-p"><strong>HSL</strong> stands for <strong>Hue, Saturation, Lightness</strong>. It is a completely different way of thinking about color — instead of mixing light like RGB, HSL describes colors the way humans naturally think about them.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: hsl(hue, saturation%, lightness%);</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: hsl(hue, saturation%, lightness%);</code></pre></div></div>
 <h3 class="v2-h3">The Three HSL Components</h3>
 <h4 class="v2-h4">Hue — "Which Color?"</h4>
 <p class="v2-p"><strong>Hue</strong> is a number from <strong>0 to 360</strong> that selects your color from the color wheel. Imagine a circle (the color wheel) where all the colors of the rainbow are arranged around it:</p>
 <ul class="v2-ul"><li><strong>0 (or 360)</strong> = Red</li><li><strong>30</strong> = Orange</li><li><strong>60</strong> = Yellow</li><li><strong>120</strong> = Green</li><li><strong>180</strong> = Cyan</li><li><strong>240</strong> = Blue</li><li><strong>270</strong> = Purple</li><li><strong>300</strong> = Magenta</li><li><strong>360</strong> = Red again (full circle)</li></ul>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Analogy:</strong> Think of a clock. Instead of 12 hours, the color wheel has 360 degrees. Hue is like the hour hand position — it tells you which direction on the wheel to look, and that direction gives you your color family.</p></blockquote>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: hsl(0,   100%, 50%); /* Red */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: hsl(0,   100%, 50%); /* Red */
 color: hsl(30,  100%, 50%); /* Orange */
 color: hsl(60,  100%, 50%); /* Yellow */
 color: hsl(120, 100%, 50%); /* Green */
@@ -607,7 +429,7 @@ color: hsl(300, 100%, 50%); /* Magenta */</code></pre></div></div>
 <p class="v2-p"><strong>Saturation</strong> is a percentage from <strong>0% to 100%</strong> that controls how vivid or gray the color is:</p>
 <ul class="v2-ul"><li><code>100%</code> = fully vivid, pure color (maximum richness)</li><li><code>50%</code> = muted, somewhat washed out</li><li><code>0%</code> = completely gray (no color at all)</li></ul>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Analogy:</strong> Think of paint. If you squeeze pure red paint straight from the tube, that is 100% saturation. If you mix a little red into a bucket of gray paint, you get a muted, grayish red — lower saturation. If you just use straight gray paint with no red, that is 0% saturation.</p></blockquote>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Same hue (red = 0), different saturations */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Same hue (red = 0), different saturations */
 color: hsl(0, 100%, 50%);  /* vivid bright red */
 color: hsl(0, 75%,  50%);  /* slightly muted red */
 color: hsl(0, 50%,  50%);  /* noticeably muted, grayish-red */
@@ -619,7 +441,7 @@ color: hsl(0, 0%,   50%);  /* pure medium gray — no red at all */</code></pre>
 <p class="v2-p"><strong>Lightness</strong> is a percentage from <strong>0% to 100%</strong> that controls how light or dark the color is:</p>
 <ul class="v2-ul"><li><code>100%</code> = pure white (color disappears into white)</li><li><code>50%</code> = the "true" normal version of the color</li><li><code>0%</code> = pure black (color disappears into black)</li></ul>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Analogy:</strong> Think of a room with a dimmer switch on the lights. At 100% brightness (lightness), everything is washed out in brilliant white light. At 50%, you see colors normally. At 0%, the room is completely dark — everything looks black.</p></blockquote>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Same hue and saturation (blue), different lightness */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Same hue and saturation (blue), different lightness */
 color: hsl(240, 100%, 0%);   /* black */
 color: hsl(240, 100%, 25%);  /* very dark blue */
 color: hsl(240, 100%, 50%);  /* normal blue */
@@ -628,19 +450,19 @@ color: hsl(240, 100%, 100%); /* white */</code></pre></div></div>
 <p class="v2-p"><strong>Expected outputs:</strong> A series from black through dark blue, normal blue, light blue, to white.</p>
 <h3 class="v2-h3">Creating Grays with HSL</h3>
 <p class="v2-p">With HSL, creating gray is simple — just set saturation to 0%:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: hsl(0, 0%, 0%);    /* black */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: hsl(0, 0%, 0%);    /* black */
 color: hsl(0, 0%, 25%);   /* dark gray */
 color: hsl(0, 0%, 50%);   /* medium gray */
 color: hsl(0, 0%, 75%);   /* light gray */
 color: hsl(0, 0%, 100%);  /* white */</code></pre></div></div>
 <p class="v2-p">The hue value does not matter when saturation is 0%.</p>
 <h3 class="v2-h3">Recognising Famous Colors in HSL</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: hsl(9,   100%, 64%);  /* Tomato */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: hsl(9,   100%, 64%);  /* Tomato */
 color: hsl(39,  100%, 50%);  /* Orange */
 color: hsl(209, 100%, 56%);  /* DodgerBlue */
 color: hsl(146, 50%,  47%);  /* MediumSeaGreen */</code></pre></div></div>
 <h3 class="v2-h3">A Complete HSL Example</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color: hsl(0, 0%, 96%); /* very light gray — almost white */
 }
 
@@ -663,31 +485,17 @@ p {
 <p class="v2-p">With RGB or HEX, it is very hard to predict what you will get without a color picker tool. With HSL, you can reason about colors logically. This makes it especially powerful for:</p>
 <ul class="v2-ul"><li><strong>Creating color themes:</strong> Define one hue, then vary saturation and lightness to create lighter and darker versions</li><li><strong>Accessibility work:</strong> Adjusting lightness ensures sufficient contrast</li><li><strong>Dark mode design:</strong> Simply shift all lightness values up or down</li></ul>
 <p class="v2-p"><strong>Example — A button color family using the same hue:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* All three use hue 210 (blue) — only lightness changes */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* All three use hue 210 (blue) — only lightness changes */
 .btn-dark    { background-color: hsl(210, 80%, 30%); } /* dark blue */
 .btn-normal  { background-color: hsl(210, 80%, 50%); } /* normal blue */
 .btn-light   { background-color: hsl(210, 80%, 70%); } /* light blue */</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> Three buttons that are clearly the same "family" of blue, but at different brightness levels — very useful for hover states and disabled states.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>HSL Colors</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase10">
-  <div class="phase-header">
-    <div class="phase-num">Phase 10 of 14</div>
-    <div class="phase-title">Section 8 — HSLA Colors (HSL with Transparency)</div>
-    <div class="phase-check" id="chk10"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p"><strong>HSLA</strong> is HSL with a fourth alpha value for transparency — exactly the same concept as RGBA but written in the HSL format:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: hsla(hue, saturation%, lightness%, alpha);</code></pre></div></div>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>HSL Colors</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase10"><div class="ph"><div class="pn">Phase 10/14</div><div class="pt">Section 8 — HSLA Colors (HSL with Transparency)</div><div class="pc" id="chk10"></div></div><div class="pb2"><p class="v2-p"><strong>HSLA</strong> is HSL with a fourth alpha value for transparency — exactly the same concept as RGBA but written in the HSL format:</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: hsla(hue, saturation%, lightness%, alpha);</code></pre></div></div>
 <p class="v2-p">The alpha value works identically to RGBA: 0 is transparent, 1 is solid, and decimals between give partial transparency.</p>
 <h3 class="v2-h3">HSLA Examples</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Tomato at different transparencies in HSLA */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Tomato at different transparencies in HSLA */
 color: hsla(9, 100%, 64%, 1.0);   /* fully solid Tomato */
 color: hsla(9, 100%, 64%, 0.8);   /* mostly solid */
 color: hsla(9, 100%, 64%, 0.5);   /* half transparent */
@@ -695,7 +503,7 @@ color: hsla(9, 100%, 64%, 0.2);   /* very faint */
 color: hsla(9, 100%, 64%, 0.0);   /* completely invisible */</code></pre></div></div>
 <p class="v2-p"><strong>Expected outputs:</strong> Five versions of tomato red from fully visible to completely transparent.</p>
 <h3 class="v2-h3">A Practical HSLA Use Case — Card Overlay</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* A modal/card overlay using a semi-transparent dark background */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* A modal/card overlay using a semi-transparent dark background */
 .modal-backdrop {
   background-color: hsla(0, 0%, 0%, 0.6); /* 60% black overlay */
 }
@@ -706,43 +514,15 @@ color: hsla(9, 100%, 64%, 0.0);   /* completely invisible */</code></pre></div><
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong></p>
 <ul class="v2-ul"><li>The modal backdrop is a dark, 60% transparent black, allowing the page behind it to show through dimly</li><li>The frosted panel appears as a soft, slightly transparent light-blue panel</li></ul>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>HSLA Colors (HSL with Transparency)</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase11">
-  <div class="phase-header">
-    <div class="phase-num">Phase 11 of 14</div>
-    <div class="phase-title">Section 9 — Comparing All Color Formats</div>
-    <div class="phase-check" id="chk11"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">This table shows the same color — <strong>Tomato</strong> — written in every format:</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>HSLA Colors (HSL with Transparency)</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase11"><div class="ph"><div class="pn">Phase 11/14</div><div class="pt">Section 9 — Comparing All Color Formats</div><div class="pc" id="chk11"></div></div><div class="pb2"><p class="v2-p">This table shows the same color — <strong>Tomato</strong> — written in every format:</p>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Format</th><th>Code</th><th>Notes</th></tr></thead><tbody><tr><td>Color Name</td><td><code>Tomato</code></td><td>Easy to remember, limited options</td></tr><tr><td>RGB</td><td><code>rgb(255, 99, 71)</code></td><td>Good for programmatic use</td></tr><tr><td>RGBA</td><td><code>rgba(255, 99, 71, 0.5)</code></td><td>RGB + transparency</td></tr><tr><td>HEX</td><td><code>#ff6347</code></td><td>Most common in professional work</td></tr><tr><td>HEX (short)</td><td>Cannot shorten this one</td><td><code>f</code> ≠ <code>f6</code>, so no shorthand here</td></tr><tr><td>HSL</td><td><code>hsl(9, 100%, 64%)</code></td><td>Most intuitive for designers</td></tr><tr><td>HSLA</td><td><code>hsla(9, 100%, 64%, 0.5)</code></td><td>HSL + transparency</td></tr></tbody></table></div>
 <h3 class="v2-h3">Quick Decision Guide — Which Format Should I Use?</h3>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Situation</th><th>Best format</th></tr></thead><tbody><tr><td>Learning and experimenting</td><td>Color names</td></tr><tr><td>Copying from a design tool (Figma, Sketch, etc.)</td><td>HEX</td></tr><tr><td>Following a brand style guide</td><td>HEX</td></tr><tr><td>Building a data visualization or JS-controlled colors</td><td>RGB</td></tr><tr><td>Need transparency</td><td>RGBA or HSLA</td></tr><tr><td>Creating design systems / color themes</td><td>HSL</td></tr><tr><td>Making accessible color palettes</td><td>HSL</td></tr><tr><td>Writing code you want to be readable and maintainable</td><td>HSL</td></tr></tbody></table></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Comparing All Color Formats</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase12">
-  <div class="phase-header">
-    <div class="phase-num">Phase 12 of 14</div>
-    <div class="phase-title">Section 10 — Simple Standalone Examples</div>
-    <div class="phase-check" id="chk12"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Example 1 — Same Color, All Four Formats</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Comparing All Color Formats</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase12"><div class="ph"><div class="pn">Phase 12/14</div><div class="pt">Section 10 — Simple Standalone Examples</div><div class="pc" id="chk12"></div></div><div class="pb2"><h3 class="v2-h3">Example 1 — Same Color, All Four Formats</h3>
 <p class="v2-p">These four rules all produce the exact same result — DodgerBlue text:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Using a color name */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Using a color name */
 h1 { color: DodgerBlue; }
 
 /* Using RGB */
@@ -756,7 +536,7 @@ h1 { color: hsl(209, 100%, 56%); }</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> All four produce exactly the same vivid sky blue text.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Example 2 — Using Transparency on a Banner</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.banner {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.banner {
   background-color: rgba(30, 144, 255, 0.3); /* transparent light blue */
   padding: 20px;
 }
@@ -764,13 +544,13 @@ h1 { color: hsl(209, 100%, 56%); }</code></pre></div></div>
 .banner h2 {
   color: rgb(0, 50, 100); /* dark navy blue */
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;banner&quot;&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;banner&quot;&gt;
   &lt;h2&gt;Special Announcement&lt;/h2&gt;
 &lt;/div&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> A soft, transparent light-blue banner box with dark navy heading text inside it.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Example 3 — Building a Color Palette with HSL</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* A full color palette based on one hue: blue (hue = 210) */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* A full color palette based on one hue: blue (hue = 210) */
 .color-darkest  { background-color: hsl(210, 70%, 20%); } /* very dark navy */
 .color-dark     { background-color: hsl(210, 70%, 35%); } /* dark blue */
 .color-mid      { background-color: hsl(210, 70%, 50%); } /* standard blue */
@@ -779,33 +559,18 @@ h1 { color: hsl(209, 100%, 56%); }</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> Five harmonious shades of blue that form a coherent color scale — perfect for designing card shadows, hover states, and disabled buttons.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Example 4 — The Gray Scale in All Three Formats</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Three ways to write medium gray */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Three ways to write medium gray */
 p.rgb  { color: rgb(128, 128, 128); }
 p.hex  { color: #808080; }
 p.hsl  { color: hsl(0, 0%, 50%); }</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> All three paragraphs display text in identical medium gray.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Simple Standalone Examples</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(12)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase13">
-  <div class="phase-header">
-    <div class="phase-num">Phase 13 of 14</div>
-    <div class="phase-title">Section 11 — Guided Practice Exercises</div>
-    <div class="phase-check" id="chk13"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Exercise 1 — Named Colors Warm-Up</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Simple Standalone Examples</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(12)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase13"><div class="ph"><div class="pn">Phase 13/14</div><div class="pt">Section 11 — Guided Practice Exercises</div><div class="pc" id="chk13"></div></div><div class="pb2"><div class="chal-box"><div class="chal-lbl">🎯 Your Challenge</div><div class="chal-body"><h3 class="v2-h3">Exercise 1 — Named Colors Warm-Up</h3>
 <p class="v2-p"><strong>Objective:</strong> Style a simple business card page using only named colors.</p>
 <p class="v2-p"><strong>Scenario:</strong> You are creating a business card webpage for a florist shop. The design should feel fresh and natural.</p>
 <p class="v2-p"><strong>Specification:</strong></p>
 <ul class="v2-ul"><li>Page background: <code>LightGreen</code></li><li>Business name heading (<code>h1</code>): <code>DarkGreen</code> text</li><li>Tagline paragraph (<code>p</code>): <code>ForestGreen</code> text</li><li>A highlight box (<code>div.card</code>): <code>White</code> background</li></ul>
-<p class="v2-p"><strong>Your CSS:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<p class="v2-p"><strong>Your CSS:</strong></p></div></div><div class="task-box"><div class="task-lbl">✏️ Task</div><div class="task-body">Practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="reveal-btn" onclick="toggleReveal(this)">👁️ Reveal Answer</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color: LightGreen;
 }
 
@@ -829,7 +594,7 @@ div.card {
 <p class="v2-p"><strong>Part A — Work out the RGB values for these colors from memory:</strong></p>
 <ol class="v2-ol"><li>Pure yellow (hint: yellow = red + green light)</li><li>Pure cyan (hint: cyan = green + blue light)</li><li>Pure white</li><li>Pure black</li><li>Very dark gray (hint: use low equal values)</li></ol>
 <p class="v2-p"><strong>Answers:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Pure yellow */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Pure yellow */
 color: rgb(255, 255, 0);
 
 /* Pure cyan */
@@ -846,7 +611,7 @@ color: rgb(30, 30, 30);</code></pre></div></div>
 <p class="v2-p"><strong>Part B — Write CSS that gives a page:</strong></p>
 <ul class="v2-ul"><li>A very light gray background (<code>rgb</code> with all values at 240)</li><li>A heading in a warm medium red (<code>rgb</code> with red at 200, green at 50, blue at 50)</li><li>Paragraph text in dark gray (<code>rgb</code> with all values at 60)</li></ul>
 <p class="v2-p"><strong>Your CSS:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color: rgb(240, 240, 240);
 }
 
@@ -865,7 +630,7 @@ p {
 <p class="v2-p"><strong>Brand guide:</strong></p>
 <ul class="v2-ul"><li>Primary brand color: <code>#2563eb</code> (a medium-dark blue)</li><li>Secondary accent: <code>#f59e0b</code> (a warm amber/gold)</li><li>Background: <code>#f8fafc</code> (almost white, very light gray-blue)</li><li>Body text: <code>#1e293b</code> (very dark navy gray)</li><li>Muted text: <code>#64748b</code> (medium slate gray)</li></ul>
 <p class="v2-p"><strong>Write the CSS:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color: #f8fafc;
   color: #1e293b;
 }
@@ -891,7 +656,7 @@ h1, h2 {
 <p class="v2-p"><strong>Requirements:</strong></p>
 <ul class="v2-ul"><li>Page background: green, low saturation (20%), high lightness (95%) — very pale green</li><li>Main headings: green, high saturation (60%), dark (30%) — dark forest green</li><li>Sub-headings: green, medium saturation (50%), medium (45%) — medium green</li><li>Body text: gray (saturation 0%), dark (25%) — dark gray</li><li>Highlight color: orange (hue 30), high saturation (90%), medium lightness (55%) — warm orange</li></ul>
 <p class="v2-p"><strong>Your CSS:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color: hsl(130, 20%, 95%);
   color: hsl(0, 0%, 25%);
 }
@@ -917,7 +682,7 @@ h2 {
 <p class="v2-p"><strong>Requirements:</strong></p>
 <ul class="v2-ul"><li>Hero section background: 65% transparent black (<code>rgba</code>)</li><li>Hero heading color: white</li><li>Hero subtitle color: light gray (90% white in <code>rgba</code> so it is slightly softer)</li><li>A decorative button: 40% transparent white background with white text</li></ul>
 <p class="v2-p"><strong>Your CSS:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.hero {
   background-color: rgba(0, 0, 0, 0.65);
   padding: 60px 30px;
 }
@@ -936,74 +701,60 @@ h2 {
   border: 2px solid rgba(255, 255, 255, 0.7);
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> A dark, semi-transparent hero area with bright white heading, slightly softer white subtitle, and a frosted/glass-style button.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(13)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase14">
-  <div class="phase-header">
-    <div class="phase-num">Phase 14 of 14</div>
-    <div class="phase-title">Section 13 — Common Beginner Mistakes with CSS Colors</div>
-    <div class="phase-check" id="chk14"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Mistake 1 — Forgetting the <code>#</code> Before a HEX Code</h3>
+<hr class="v2-hr"></div><button class="ub" onclick="unlockNext(13)">Mark Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase14"><div class="ph"><div class="pn">Phase 14/14</div><div class="pt">Section 13 — Common Beginner Mistakes with CSS Colors</div><div class="pc" id="chk14"></div></div><div class="pb2"><h3 class="v2-h3">Mistake 1 — Forgetting the <code>#</code> Before a HEX Code</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: ff6347;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: ff6347;</code></pre></div></div>
 <p class="v2-p"><strong>Problem:</strong> CSS does not know this is a HEX code without the <code>#</code>.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: #ff6347;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: #ff6347;</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 2 — Writing a HEX Code With the Wrong Number of Characters</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: #ff63; /* only 4 characters — not valid */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: #ff63; /* only 4 characters — not valid */
 color: #ff63477a; /* 8 characters — valid only for HEX with alpha, but not standard CSS color */</code></pre></div></div>
 <p class="v2-p"><strong>Problem:</strong> HEX codes must be either <strong>3 or 6 characters</strong> (not counting the <code>#</code>).</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: #ff6347; /* 6 characters */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: #ff6347; /* 6 characters */
 color: #f64;    /* 3 characters (shorthand) */</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 3 — Putting <code>%</code> Signs on RGB Values</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgb(100%, 50%, 25%);</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: rgb(100%, 50%, 25%);</code></pre></div></div>
 <p class="v2-p"><strong>Problem:</strong> In the standard <code>rgb()</code> function, values are numbers 0–255, NOT percentages. (There is a lesser-known percentage form, but it is rarely used and easy to confuse.)</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgb(255, 128, 64);</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: rgb(255, 128, 64);</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 4 — Forgetting <code>%</code> Signs on HSL Values</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: hsl(120, 100, 50); /* missing % on saturation and lightness */</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: hsl(120, 100, 50); /* missing % on saturation and lightness */</code></pre></div></div>
 <p class="v2-p"><strong>Problem:</strong> Saturation and lightness in <code>hsl()</code> <strong>must</strong> include the <code>%</code> symbol.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: hsl(120, 100%, 50%);</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: hsl(120, 100%, 50%);</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 5 — Alpha Value Greater Than 1</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgba(255, 0, 0, 1.5); /* alpha greater than 1 */</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: rgba(255, 0, 0, 1.5); /* alpha greater than 1 */</code></pre></div></div>
 <p class="v2-p"><strong>Problem:</strong> The alpha value in <code>rgba()</code> and <code>hsla()</code> must be between 0 and 1. Values above 1 are treated as 1 by most browsers but are invalid.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: rgba(255, 0, 0, 1.0); /* fully solid */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: rgba(255, 0, 0, 1.0); /* fully solid */
 color: rgba(255, 0, 0, 0.5); /* half transparent */</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 6 — Using <code>colour</code> Instead of <code>color</code></h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p { colour: red; } /* British English spelling */</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>p { colour: red; } /* British English spelling */</code></pre></div></div>
 <p class="v2-p"><strong>Problem:</strong> CSS uses American English. <code>colour</code> is not a valid CSS property.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p { color: red; }</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>p { color: red; }</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 7 — Trying to Use a Color Name That Does Not Exist</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: lightnavy;     /* not a valid color name */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: lightnavy;     /* not a valid color name */
 color: darkblue2;     /* not a valid color name */
 color: #brandblue;    /* not a valid HEX code */</code></pre></div></div>
 <p class="v2-p"><strong>Problem:</strong> CSS only recognises 140 specific named colors. You cannot invent new names.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: navy;          /* a valid dark blue name */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: navy;          /* a valid dark blue name */
 color: #003366;       /* a custom dark blue in HEX */
 color: hsl(220, 80%, 20%); /* a custom dark blue in HSL */</code></pre></div></div>
 <hr class="v2-hr">
@@ -1011,29 +762,17 @@ color: hsl(220, 80%, 20%); /* a custom dark blue in HSL */</code></pre></div></d
 <p class="v2-p"><strong>Wrong thinking:</strong> "For HSL green, I should write <code>hsl(0, 255, 0)</code>"</p>
 <p class="v2-p"><strong>Problem:</strong> HSL and RGB work completely differently. HSL hue is a degree on the color wheel (0–360), not a channel value (0–255). Green in HSL is at hue <code>120</code>, not <code>0</code>.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Green in HSL */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Green in HSL */
 color: hsl(120, 100%, 50%);
 
 /* Green in RGB */
 color: rgb(0, 255, 0);</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes with CSS Colors</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(14)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="build-box" id="build-it">
-  <div class="build-label">🏗️ Build It</div>
-  <div class="build-name">Project Brief</div>
-  <div class="build-desc">You are designing the homepage for a fictional tech startup called <strong>"Lumina Tech"</strong>. The brand identity is:</div>
-  <div class="v2-code-wrap">
-    <div class="v2-code-bar">
-      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
-      <span class="v2-code-lang">starter.html</span>
-    </div>
-    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Common Beginner Mistakes with CSS Colors</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(14)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="build-box" id="build-it"><div class="build-lbl">🏗️ Build It — Mini Project</div><div class="build-name">Project Brief</div><div class="build-req"><p class="v2-p">Let us bring everything together in one complete project. You will apply all four color formats to style a full webpage.</p>
+<h3 class="v2-h3">Project Brief</h3>
+<p class="v2-p">You are designing the homepage for a fictional tech startup called <strong>"Lumina Tech"</strong>. The brand identity is:</p>
+<ul class="v2-ul"><li>Primary color: Blue (hue 220)</li><li>Style: Modern, clean, professional</li><li>Tone: Trustworthy but approachable</li></ul>
+<h3 class="v2-h3">Stage 1 — The HTML (Already Written For You)</h3></div><button class="reveal-btn" onclick="toggleCode(this)">💻 Reveal Starter Code</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">starter.html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;title&gt;Lumina Tech&lt;/title&gt;
@@ -1068,10 +807,7 @@ color: rgb(0, 255, 0);</code></pre></div></div>
     &lt;p&gt;© 2026 Lumina Tech. All rights reserved.&lt;/p&gt;
   &lt;/footer&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
-  </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
-    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+&lt;/html&gt;</code></pre></div></div><div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem"><button class="ub" onclick="downloadStarter(`<!DOCTYPE html>
 <html>
 <head>
   <title>Lumina Tech</title>
@@ -1106,87 +842,66 @@ color: rgb(0, 255, 0);</code></pre></div></div>
     <p>© 2026 Lumina Tech. All rights reserved.</p>
   </footer>
 </body>
-</html>`)"
-      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
-      ⬇ Download starter.html
-    </button>
-    <button class="unlock-btn" onclick="showGithub()"
-      style="background:#0f172a;box-shadow:none">
-      🐙 Push to GitHub →
-    </button>
-  </div>
-</div>
+</html>`)" style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">⬇ Download starter.html</button><button class="ub" onclick="showGithub()" style="background:#0f172a;box-shadow:none">🐙 Push to GitHub Pages →</button></div></div></div>
 <div class="gh-acc" id="gh-steps" style="display:none">
-  <div class="gh-acc-head" onclick="toggleGh(this)">
-    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
-  </div>
-  <div class="gh-acc-body">
-    <div class="gh-step"><div class="gh-step-n">1</div>
-    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-05-project-brief</code>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">2</div>
-    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">3</div>
-    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
-    <div class="gh-step"><div class="gh-step-n">4</div>
-    <p>Commit message: <em>"Add CSS lesson 05 project"</em> → click <strong>Commit changes</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">5</div>
-    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-05-project-brief/</code> in about 1 minute! 🎉</p></div>
-    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
-  </div>
-</div>
-<div class="session-end" id="session-end">
-  <h2>🎉 Lesson 05 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
-  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts — What You Need to Know First</li><li>✅ Section 1 — An Overview of CSS Color Formats</li><li>✅ Section 2 — Where You Can Apply Color in CSS</li><li>✅ Section 3 — CSS Named Colors (Color Keywords)</li><li>✅ Section 4 — RGB Colors</li><li>✅ Section 5 — RGBA Colors (RGB with Transparency)</li><li>✅ Section 6 — HEX Colors (Hexadecimal)</li></ul>
-  <div class="lesson-nav"><a href="lesson_04.html" class="ln-btn">← Lesson 04</a><a href="lesson_06.html" class="ln-btn primary">Lesson 06 →</a></div>
-</div>
+<div class="gh-hd" onclick="toggleGh(this)">🐙 Push to GitHub Pages &nbsp;<span>▼</span></div>
+<div class="gh-bd">
+<div class="gh-st"><div class="gh-n">1</div><p>Go to <strong>github.com → New repository</strong> → name it <code>css-lesson-05-project-brief</code>. Set <strong>Public</strong>, tick <strong>Add README</strong>, click <strong>Create</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">2</div><p>Click <strong>Add file → Upload files</strong>. Rename your file to <code>index.html</code> then upload it.</p></div>
+<div class="gh-st"><div class="gh-n">3</div><p>Commit message: <em>"Add CSS lesson 05 project"</em> → <strong>Commit changes</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">4</div><p>Go to <strong>Settings → Pages</strong> → Source: <strong>main</strong> → <strong>Save</strong>. Live in ~1 min at <code>https://YOUR-NAME.github.io/css-lesson-05-project-brief/</code> 🎉</p></div>
+<button class="ub" onclick="showEnd()" style="margin-top:.5rem">Done — Finish Session ✅</button>
+</div></div>
+<div class="se" id="session-end"><h2>🎉 Lesson 05 complete!</h2><p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p><ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts — What You Need to Know First</li><li>✅ Section 1 — An Overview of CSS Color Formats</li><li>✅ Section 2 — Where You Can Apply Color in CSS</li><li>✅ Section 3 — CSS Named Colors (Color Keywords)</li><li>✅ Section 4 — RGB Colors</li><li>✅ Section 5 — RGBA Colors (RGB with Transparency)</li><li>✅ Section 6 — HEX Colors (Hexadecimal)</li></ul><div class="ln"><a href="lesson_04.html" class="ln-btn">← Lesson 04</a><a href="lesson_06.html" class="ln-btn primary">Lesson 06 →</a></div></div>
 </main>
-
-<footer class="lesson-footer">
-  Techbase Code Coach · CSS Course · Lesson 05 · © 2025 Techbase Consultant Services, Ibadan
-</footer>
+<footer class="lf">Techbase Code Coach &nbsp;·&nbsp; CSS Course &nbsp;·&nbsp; Lesson 05 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</footer>
+<div id="toast"></div>
+<button id="go-top" title="Back to top">↑</button>
+<canvas id="cc"></canvas>
 <script>
 const TOTAL=14,KEY='techbase_css_l05';
-let current=parseInt(localStorage.getItem(KEY)||'1');
-function init(){
-  for(let i=2;i<=current;i++) unlockPhase(i,false);
-  updateBar();
-}
+let cur=parseInt(localStorage.getItem(KEY)||'1');
+function init(){for(let i=2;i<=cur;i++)unlock(i,false);bar();}
 function unlockNext(n){
-  const chk=document.getElementById('chk'+n);
-  if(chk){chk.classList.add('done');chk.textContent='✓';}
-  localStorage.setItem(KEY,n+1); current=n+1;
+  const c=document.getElementById('chk'+n);
+  if(c){c.classList.add('done');c.textContent='✓';}
+  localStorage.setItem(KEY,n+1);cur=n+1;
   if(n===TOTAL){
-    document.getElementById('build-it').style.display='block';
-    updateBar(100);
+    document.getElementById('build-it').classList.add('visible');
+    bar(100);toast('🏗️ Build It unlocked!');
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  }else{
-    unlockPhase(n+1,true); updateBar();
-  }
+    setTimeout(confetti,600);
+  }else{unlock(n+1,true);bar();toast(['✅ Phase complete!','🎯 Keep going!','💡 Nice work!','🚀 Nailed it!'][n%4]);}
 }
-function unlockPhase(n,scroll){
-  const el=document.getElementById('phase'+n);
-  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
+function unlock(n,scroll){
+  const el=document.getElementById('phase'+n);if(!el)return;
+  el.classList.remove('locked');
+  if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),180);
 }
-function updateBar(pct){
-  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
-  document.getElementById('pbar').style.width=p+'%';
+function bar(p){document.getElementById('pbar').style.width=(p!==undefined?p:Math.round((cur-1)/TOTAL*95))+'%';}
+function toggleReveal(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Answer':'👁️ Reveal Answer';}
+function toggleCode(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Starter Code':'💻 Reveal Starter Code';}
+function copyCode(btn){
+  const code=btn.closest('.v2-code-wrap').querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(()=>{btn.textContent='✓ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='⎘ Copy';btn.classList.remove('copied');},1800);}).catch(()=>{});
 }
-function showGithub(){
-  const g=document.getElementById('gh-steps');
-  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
-}
-function showEnd(){
-  const e=document.getElementById('session-end');
-  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
-}
+const tEl=document.getElementById('toast');let tT;
+function toast(msg){tEl.innerHTML=msg;tEl.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>tEl.classList.remove('show'),2400);}
+const gEl=document.getElementById('go-top');
+window.addEventListener('scroll',()=>gEl.classList.toggle('visible',scrollY>320),{passive:true});
+gEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
-function downloadStarter(code){
-  const a=document.createElement('a');
-  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
-  a.download='starter.html';a.click();
+function showGithub(){const g=document.getElementById('gh-steps');if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}}
+function showEnd(){const e=document.getElementById('session-end');if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}}
+function downloadStarter(code){const ext='css'==='python'?'py':'html';const a=document.createElement('a');a.href='data:text/'+(ext==='py'?'x-python':'html')+';charset=utf-8,'+encodeURIComponent(code);a.download='starter.'+ext;a.click();}
+function confetti(){
+  const cv=document.getElementById('cc');cv.style.display='block';const ctx=cv.getContext('2d');
+  cv.width=innerWidth;cv.height=innerHeight;
+  const ps=Array.from({length:130},()=>{return{x:Math.random()*cv.width,y:-10-Math.random()*120,r:4+Math.random()*6,d:2+Math.random()*3,c:['#e34c26','#0284c7','#d97706','#059669','#7c3aed','#ec4899'][Math.floor(Math.random()*6)],ta:0};}); 
+  let f=0;
+  function draw(){ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.ta+=.1;p.y+=p.d;p.x+=Math.sin(f/20);ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});f++;if(f<200)requestAnimationFrame(draw);else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}}
+  draw();toast('🎉 All phases done! Build It awaits!');
 }
 init();
 </script>
-</body>
-</html>
+</body></html>

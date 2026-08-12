@@ -1,258 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lesson 46: CSS Rounded Corners — Techbase CSS</title>
-<meta name="description" content="CSS Rounded Corners">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{
-  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
-  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
-  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
-  --text:#0f172a;--t2:#334155;--muted:#64748b;
-  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--acc:#0284c7;--acd:#0369a1;--acp:#f0f9ff;--acb:rgba(2,132,199,.22);--acs:rgba(2,132,199,.28);--bg:#f8fafc;--sf:#fff;--br:#e2e8f0;--tx:#0f172a;--t2:#334155;--mu:#64748b;--D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
-
-/* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
-  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
-  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
-.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+body{background:var(--bg);color:var(--tx);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--br);height:58px;display:flex;align-items:center;padding:0 1.5rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--tx);text-decoration:none}
+.l-nav-back{font-size:.8rem;color:var(--mu);text-decoration:none;font-weight:500;transition:color .2s}
 .l-nav-back:hover{color:var(--acc)}
-.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-
-/* PROGRESS */
-.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
-
-/* HERO */
-.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:860px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
-  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
-  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
-  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
-
-/* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
-.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
-.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
-.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
-  font-family:var(--M);font-size:.68rem;font-weight:500}
-
-/* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
-  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
-.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
-.phase-header{padding:1rem 1.4rem;background:#f5fbff;
-  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--acc)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
-  flex:1;margin:0 .8rem}
-.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
-  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
-  transition:background .3s,color .3s}
-.phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.6rem 1.8rem}
-
-/* RICH CONTENT STYLES */
+.l-nav-lbl{font-family:var(--M);font-size:.68rem;color:var(--mu)}
+.pw{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--br)}
+.pb{height:100%;background:linear-gradient(90deg,var(--acc),var(--acd));transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;position:relative}
+.pb::after{content:'';position:absolute;right:0;top:0;bottom:0;width:20px;background:inherit;filter:brightness(1.4);animation:pg 1.5s ease-in-out infinite}
+@keyframes pg{0%,100%{opacity:1}50%{opacity:.35}}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--br)}
+.l-hero-in{max-width:860px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;border-radius:100px;padding:.22rem .9rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--acc);background:var(--acp);border:1.5px solid var(--acb);margin-bottom:.85rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.9rem;color:var(--mu)}
+.wb{background:#fff;border:1.5px solid var(--acb);border-left:5px solid var(--acc);border-radius:14px;padding:1.4rem 1.6rem;max-width:860px;margin:1.5rem auto 0;box-shadow:0 2px 12px var(--acs)}
+.wb h2{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--acd);margin-bottom:.6rem}
+.wb p,.wb li{font-size:.92rem;line-height:1.85;color:var(--t2)}
+.wb ul{margin-left:1.2rem;margin-top:.4rem}
+.wm{display:flex;gap:.65rem;margin-top:1rem;flex-wrap:wrap}
+.wm span{background:var(--acp);color:var(--acd);border:1px solid var(--acb);border-radius:7px;padding:.22rem .7rem;font-family:var(--M);font-size:.68rem;font-weight:600}
+.phase{background:var(--sf);border:1.5px solid var(--br);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .35s,filter .35s,transform .35s}
+.phase.locked{opacity:.28;pointer-events:none;filter:blur(2px);transform:scale(.99)}
+.ph{padding:1rem 1.4rem;background:#f5fbff;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:.8rem}
+.pn{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);white-space:nowrap}
+.pt{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--tx);flex:1}
+.pc{width:26px;height:26px;border-radius:50%;background:var(--br);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:background .3s,transform .4s}
+.pc.done{background:#10b981;color:#fff;transform:scale(1.15) rotate(360deg)}
+.pb2{padding:1.6rem 1.8rem}
 .v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
-.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
-  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
-.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
-.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--tx);margin:1.6rem 0 .5rem;border-top:2px solid var(--acp);padding-top:.4rem}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1rem 0 .35rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.88rem;color:var(--mu);margin:.7rem 0 .3rem}
 .v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
 .v2-ul li,.v2-ol li{margin-bottom:.3rem}
-.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
-  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acp);border-radius:0 10px 10px 0;padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
 .v2-bq p{margin:0;color:inherit}
-.v2-bq strong{font-style:normal}
-.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
-.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-hr{border:none;border-top:1px solid var(--br);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0;border-radius:10px;border:1px solid var(--br)}
 .v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
-.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
-  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
-.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
-.v2-table tr:nth-child(even) td{background:#f8fafc}
-.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
-  padding:1px 5px;font-family:var(--M);font-size:.8em}
-.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
-.phase-body strong{color:var(--text)}
-
-/* CODE BLOCKS */
-.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-table th{background:var(--acp);color:#0c4a6e;font-family:var(--D);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--acb)}
+.v2-table td{padding:8px 12px;border-bottom:1px solid var(--br);color:var(--t2);vertical-align:top}
+.v2-table tr:last-child td{border:none}
+.v2-table tr:hover td{background:var(--acp)}
+.pb2 code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.pb2 a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.pb2 strong{color:var(--tx)}
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 18px rgba(0,0,0,.18)}
 .v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
 .v2-dot{width:10px;height:10px;border-radius:50%}
 .v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
-.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-lang{margin-left:.5rem;font-family:var(--M);font-size:.62rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em;flex:1}
+.copy-btn{background:rgba(255,255,255,.08);color:#94a3b8;border:none;border-radius:6px;padding:.25rem .65rem;font-family:var(--M);font-size:.65rem;cursor:pointer;transition:background .2s,color .2s}
+.copy-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+.copy-btn.copied{background:#10b981;color:#fff}
 .v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
 .v2-code-body pre{margin:0}
-.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
-  white-space:pre;background:transparent;padding:0;border-radius:0}
-
-/* TASK BOX */
-.task-box{background:#e0f2fe;border:2px dashed #0284c7;
-  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
-.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
-.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
-  font-family:var(--M);font-size:.82em}
-
-/* UNLOCK BUTTON */
-.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
-  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
-  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
-  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
-.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
-
-/* BUILD IT */
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.95;color:#e2e8f0;white-space:pre;background:transparent;padding:0;border-radius:0}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0}
+.task-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-body{font-size:.93rem;color:#0c4a6e;line-height:1.85}
+.task-body code{background:rgba(0,0,0,.1);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.chal-box{background:linear-gradient(135deg,#f0f9ff 0%,#fff 100%);border:2px solid var(--acc);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.2rem}
+.chal-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acd);margin-bottom:.6rem}
+.chal-body{font-size:.95rem;color:var(--tx);line-height:1.85}
+.chal-body code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 5px;font-family:var(--M);font-size:.82em}
+.reveal-btn{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--acd);font-family:var(--D);font-weight:700;font-size:.85rem;padding:.6rem 1.2rem;border-radius:8px;border:2px solid var(--acc);cursor:pointer;transition:background .2s,color .2s;margin:.6rem 0}
+.reveal-btn:hover{background:var(--acc);color:#fff}
+.reveal-content{display:none;margin-top:.6rem;animation:fi .3s ease}
+.reveal-content.open{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
-.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
-.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
-.build-desc strong{color:#14532d}
-
-/* GITHUB ACCORDION */
-.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.gh-acc-body.open{display:block}
-.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
-  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;margin-top:2px}
-.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-
-/* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
-.session-end.visible{display:block}
-.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
-.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
-  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
-  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
-  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.build-box.visible{display:block;animation:fi .4s ease}
+.build-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.15rem;color:#14532d;margin-bottom:.6rem}
+.build-req{font-size:.93rem;color:#166534;line-height:1.8;margin-bottom:.8rem}
+.build-req code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-req strong{color:#14532d}
+.gh-acc{border:1.5px solid var(--br);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-hd{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none;transition:background .2s}
+.gh-hd:hover{background:#f1f5f9}
+.gh-bd{display:none;padding:1.2rem;border-top:1px solid var(--br)}
+.gh-bd.open{display:block;animation:fi .25s ease}
+.gh-st{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-st p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-st code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.gh-nop{background:#fef3c7;border:1.5px solid #fde68a;border-radius:10px;padding:1rem 1.2rem;font-size:.9rem;color:#78350f;line-height:1.75;margin-bottom:1rem}
+.se{background:linear-gradient(135deg,var(--acc),var(--acd));color:#fff;border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
+.se.visible{display:block;animation:fi .4s ease}
+.se h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.se ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.se li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--sf);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--br);transition:border-color .2s,color .2s}
 .ln-btn:hover{border-color:var(--acc);color:var(--acc)}
 .ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;
-  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
-  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.ln{display:flex;align-items:center;justify-content:space-between;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.ub{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acs);margin-top:1.2rem}
+.ub:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acs)}
+.ub:active{transform:scale(.97)}
+#toast{position:fixed;bottom:90px;right:1.5rem;z-index:999;background:#1e293b;color:#fff;border-radius:10px;padding:.75rem 1.2rem;font-family:var(--D);font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+#toast.show{transform:translateY(0);opacity:1}
+#go-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;border:none;cursor:pointer;font-size:1.15rem;box-shadow:0 4px 16px var(--acs);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,box-shadow .2s;pointer-events:none}
+#go-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#go-top:hover{box-shadow:0 8px 24px var(--acs);transform:translateY(-2px)}
+#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none}
+.lf{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--mu);border-top:1px solid var(--br);background:var(--sf)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
   <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
-  <span class="l-nav-label">Lesson 46 of 73</span>
+  <span class="l-nav-lbl">Lesson 46 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
-
-<div class="l-hero">
-  <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 46</div>
-    <h1>CSS Rounded Corners</h1>
-    <div class="l-hero-sub">13 phases · Build: Stage 1 — Setup: Basic Card Structure</div>
-  </div>
-</div>
-
-<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
-  <h2>👋 Welcome to Lesson 46</h2>
-  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever noticed how buttons on apps, profile pictures on social media, and notification cards on websites all have soft, smooth, rounded edges instead of harsh, sharp corners? That polished look comes from a single, powerful CSS property: <strong><code>border-radius</code></strong>.</p>
-<p class="v2-p">In this lesson you will learn exactly what <code>border-radius</code> is, why it exists, how it works, and how to use it with complete control — from making one corner round to creating a perfect circle out of a square, to making fancy asymmetrical "pill" shapes.</p>
-<p class="v2-p">By the end of this lesson, you will be able to:</p>
-<ul class="v2-ul"><li>Understand what <code>border-radius</code> does and why designers love it</li><li>Apply rounded corners to any HTML element</li><li>Control each corner individually</li><li>Use the shorthand to write compact code</li><li>Create circles, pills, and ellipses with only CSS</li><li>Solve code challenges using <code>border-radius</code></li><li>Build a mini profile card mini-project</li></ul>
-<p class="v2-p">No prior CSS experience with rounded corners is needed — we will build from zero.</p>
-<hr class="v2-hr"></div>
-  <div class="welcome-meta">
-    <span>📚 13 phases</span>
-    <span>🏗️ Stage 1 — Setup: Basic Card Structure</span>
-  </div>
+<div class="pw"><div class="pb" id="pbar"></div></div>
+<div class="l-hero"><div class="l-hero-in">
+  <div class="badge">CSS · Lesson 46</div>
+  <h1>CSS Rounded Corners</h1>
+  <div class="l-hero-sub">13 phases &nbsp;·&nbsp; Build: Stage 1 — Setup: Basic Card Structure</div>
 </div></div>
-</section>
-
-<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
-<div class="phase" id="phase1">
-  <div class="phase-header">
-    <div class="phase-num">Phase 1 of 13</div>
-    <div class="phase-title">Lesson Introduction</div>
-    <div class="phase-check" id="chk1"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Have you ever noticed how buttons on apps, profile pictures on social media, and notification cards on websites all have soft, smooth, rounded edges instead of harsh, sharp corners? That polished look comes from a single, powerful CSS property: <strong><code>border-radius</code></strong>.</p>
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--br)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="wb"><h2>👋 Welcome to Lesson 46</h2><div style="font-size:.92rem;line-height:1.85;color:var(--t2)"><p class="v2-p">Have you ever noticed how buttons on apps, profile pictures on social media, and notification cards on websites all have soft, smooth, rounded edges instead of harsh, sharp corners? That polished look comes from a single, powerful CSS property: <strong><code>border-radius</code></strong>.</p>
 <p class="v2-p">In this lesson you will learn exactly what <code>border-radius</code> is, why it exists, how it works, and how to use it with complete control — from making one corner round to creating a perfect circle out of a square, to making fancy asymmetrical "pill" shapes.</p>
 <p class="v2-p">By the end of this lesson, you will be able to:</p>
 <ul class="v2-ul"><li>Understand what <code>border-radius</code> does and why designers love it</li><li>Apply rounded corners to any HTML element</li><li>Control each corner individually</li><li>Use the shorthand to write compact code</li><li>Create circles, pills, and ellipses with only CSS</li><li>Solve code challenges using <code>border-radius</code></li><li>Build a mini profile card mini-project</li></ul>
 <p class="v2-p">No prior CSS experience with rounded corners is needed — we will build from zero.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase2">
-  <div class="phase-header">
-    <div class="phase-num">Phase 2 of 13</div>
-    <div class="phase-title">Prerequisite Concepts</div>
-    <div class="phase-check" id="chk2"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Before jumping in, make sure you understand these basic ideas. If any of them are new to you, read the short explanation provided before continuing.</p>
+<hr class="v2-hr"></div><div class="wm"><span>📚 13 phases</span><span>🏗️ Stage 1 — Setup: Basic Card Structure</span><span>🌐 GitHub Pages</span></div></div></div>
+</section>
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1"><div class="ph"><div class="pn">Phase 1/13</div><div class="pt">Lesson Introduction</div><div class="pc" id="chk1"></div></div><div class="pb2"><p class="v2-p">Have you ever noticed how buttons on apps, profile pictures on social media, and notification cards on websites all have soft, smooth, rounded edges instead of harsh, sharp corners? That polished look comes from a single, powerful CSS property: <strong><code>border-radius</code></strong>.</p>
+<p class="v2-p">In this lesson you will learn exactly what <code>border-radius</code> is, why it exists, how it works, and how to use it with complete control — from making one corner round to creating a perfect circle out of a square, to making fancy asymmetrical "pill" shapes.</p>
+<p class="v2-p">By the end of this lesson, you will be able to:</p>
+<ul class="v2-ul"><li>Understand what <code>border-radius</code> does and why designers love it</li><li>Apply rounded corners to any HTML element</li><li>Control each corner individually</li><li>Use the shorthand to write compact code</li><li>Create circles, pills, and ellipses with only CSS</li><li>Solve code challenges using <code>border-radius</code></li><li>Build a mini profile card mini-project</li></ul>
+<p class="v2-p">No prior CSS experience with rounded corners is needed — we will build from zero.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">- Build a mini profile card mini-project
+
+No prior CSS experience with rounded corners is needed — we will build from zero.
+
+---</div></div><button class="ub" onclick="unlockNext(1)">Start Lesson ✓</button></div></div>
+<div class="phase locked" id="phase2"><div class="ph"><div class="pn">Phase 2/13</div><div class="pt">Prerequisite Concepts</div><div class="pc" id="chk2"></div></div><div class="pb2"><p class="v2-p">Before jumping in, make sure you understand these basic ideas. If any of them are new to you, read the short explanation provided before continuing.</p>
 <h3 class="v2-h3">What is an HTML element?</h3>
 <p class="v2-p">An HTML element is anything you put on a webpage — a box of text (<code>&lt;div&gt;</code>), a paragraph (<code>&lt;p&gt;</code>), an image (<code>&lt;img&gt;</code>), a button (<code>&lt;button&gt;</code>), and so on. Every element takes up a rectangular space on the page.</p>
 <h3 class="v2-h3">What is CSS?</h3>
 <p class="v2-p">CSS stands for <strong>Cascading Style Sheets</strong>. It is the language you use to control how HTML elements look — their colours, sizes, fonts, spacing, and shape.</p>
 <h3 class="v2-h3">What is a CSS property?</h3>
 <p class="v2-p">A CSS property is an instruction you give to the browser. For example:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>color: red;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>color: red;</code></pre></div></div>
 <p class="v2-p">This tells the browser: "Make the text colour red."</p>
 <h3 class="v2-h3">What is a CSS value?</h3>
 <p class="v2-p">A value is the <em>specific setting</em> you give to a property. In <code>color: red</code>, the value is <code>red</code>. Values can be colours, numbers, percentages, keywords, and more.</p>
 <h3 class="v2-h3">What is a pixel (px)?</h3>
 <p class="v2-p">A pixel is a tiny unit of measurement on screens. <code>25px</code> means "25 pixels." The more pixels, the bigger the size. A typical laptop screen is about 1920 pixels wide.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase3">
-  <div class="phase-header">
-    <div class="phase-num">Phase 3 of 13</div>
-    <div class="phase-title">Part 1 — Conceptual Understanding</div>
-    <div class="phase-check" id="chk3"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is <code>border-radius</code>?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase3"><div class="ph"><div class="pn">Phase 3/13</div><div class="pt">Part 1 — Conceptual Understanding</div><div class="pc" id="chk3"></div></div><div class="pb2"><h3 class="v2-h3">What is <code>border-radius</code>?</h3>
 <p class="v2-p">Imagine taking a plain rectangular piece of cardboard. The corners are sharp 90-degree points. Now imagine using scissors to clip each corner into a smooth curve. That is <em>exactly</em> what <code>border-radius</code> does in CSS — it clips the corners of an element's box to make them curved.</p>
 <p class="v2-p"><strong><code>border-radius</code></strong> is a CSS property that defines the <strong>radius of the curves</strong> at the corners of an element.</p>
 <blockquote class="v2-bq"><p class="v2-p">📐 <strong>Analogy:</strong> Think of a circle. The "radius" of a circle is the distance from its centre to its edge. When you set <code>border-radius: 25px</code>, you are telling the browser to place an imaginary circle of radius 25px at each corner, and curve the corner to match that circle.</p></blockquote>
@@ -265,34 +175,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Think about it:</strong> If an element has no visible background or border, <code>border-radius</code> still works but you may not be able to see the effect, because there is nothing being clipped visually.</p></blockquote>
 <h3 class="v2-h3">How does it work internally?</h3>
 <p class="v2-p">When you write:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>border-radius: 25px;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>border-radius: 25px;</code></pre></div></div>
 <p class="v2-p">The browser draws an arc (a curved segment from a circle of radius 25px) at all four corners of the element's box. The greater the value, the more dramatic the curve.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Conceptual Understanding</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase4">
-  <div class="phase-header">
-    <div class="phase-num">Phase 4 of 13</div>
-    <div class="phase-title">Part 2 — The `border-radius` Property in Detail</div>
-    <div class="phase-check" id="chk4"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Syntax</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>selector {
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Conceptual Understanding</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase4"><div class="ph"><div class="pn">Phase 4/13</div><div class="pt">Part 2 — The `border-radius` Property in Detail</div><div class="pc" id="chk4"></div></div><div class="pb2"><h3 class="v2-h3">Syntax</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>selector {
   border-radius: value;
 }</code></pre></div></div>
 <p class="v2-p">The <code>value</code> can be written as:</p>
 <ul class="v2-ul"><li><strong>Pixels</strong> — <code>10px</code>, <code>25px</code>, <code>50px</code></li><li><strong>Percentage</strong> — <code>10%</code>, <code>25%</code>, <code>50%</code></li></ul>
 <h3 class="v2-h3">Simple Example — One Value, All Four Corners</h3>
 <p class="v2-p">When you give <code>border-radius</code> a <strong>single value</strong>, it applies the same curve to <strong>all four corners</strong>.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
 &lt;div id=&quot;box1&quot;&gt;Hello!&lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CSS */
 #box1 {
   border-radius: 25px;
   background-color: #73AD21;
@@ -303,7 +199,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <p class="v2-p"><strong>What this does:</strong></p>
 <ul class="v2-ul"><li><code>border-radius: 25px</code> — clips all four corners with a 25px curve</li><li><code>background-color: #73AD21</code> — gives the box a green background so you can see the shape</li><li><code>width</code> and <code>height</code> — define the box size</li><li><code>padding</code> — adds space between the text and the edge</li></ul>
 <p class="v2-p"><strong>Expected visual output:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>╭──────────────────╮
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>╭──────────────────╮
 │                  │
 │      Hello!      │
 │                  │
@@ -313,8 +209,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <h3 class="v2-h3">The Property Works on Any Background Type</h3>
 <p class="v2-p">You do not need a solid colour background. <code>border-radius</code> also works on elements with:</p>
 <p class="v2-p"><strong>A border only (no fill):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;box2&quot;&gt;Rounded border!&lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>#box2 {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;box2&quot;&gt;Rounded border!&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>#box2 {
   border-radius: 25px;
   border: 2px solid #73AD21;
   width: 200px;
@@ -324,8 +220,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <p class="v2-p"><strong>Expected visual output:</strong> A box with NO fill colour, only a visible green curved border/stroke around it.</p>
 <hr class="v2-hr">
 <p class="v2-p"><strong>A background image:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;box3&quot;&gt;Image box!&lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>#box3 {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;box3&quot;&gt;Image box!&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>#box3 {
   border-radius: 25px;
   background-image: url(&quot;paper.jpg&quot;);
   width: 200px;
@@ -334,34 +230,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected visual output:</strong> The image inside the box is clipped so the corners are rounded — the image itself appears to have rounded corners.</p>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Key insight:</strong> <code>border-radius</code> clips the <em>visible boundary</em> of the element. Whatever is inside (colour, image, text) gets clipped at the rounded corners.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>The <code>border-radius</code> Property in Detail</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase5">
-  <div class="phase-header">
-    <div class="phase-num">Phase 5 of 13</div>
-    <div class="phase-title">Part 3 — Controlling Each Corner Individually</div>
-    <div class="phase-check" id="chk5"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">This is where <code>border-radius</code> becomes really powerful. You can round each corner by a <em>different amount</em>, which lets you create unique, custom shapes.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>The <code>border-radius</code> Property in Detail</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase5"><div class="ph"><div class="pn">Phase 5/13</div><div class="pt">Part 3 — Controlling Each Corner Individually</div><div class="pc" id="chk5"></div></div><div class="pb2"><p class="v2-p">This is where <code>border-radius</code> becomes really powerful. You can round each corner by a <em>different amount</em>, which lets you create unique, custom shapes.</p>
 <h3 class="v2-h3">The Four Corner Properties</h3>
 <p class="v2-p">Each corner of an element has its own property name:</p>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>Corner It Controls</th></tr></thead><tbody><tr><td><code>border-top-left-radius</code></td><td>Top-left corner</td></tr><tr><td><code>border-top-right-radius</code></td><td>Top-right corner</td></tr><tr><td><code>border-bottom-right-radius</code></td><td>Bottom-right corner</td></tr><tr><td><code>border-bottom-left-radius</code></td><td>Bottom-left corner</td></tr></tbody></table></div>
 <blockquote class="v2-bq"><p class="v2-p">🗺️ <strong>Corner map:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>top-left ──────────── top-right
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>top-left ──────────── top-right
 │                      │
 │         BOX           │
 │                      │
 bottom-left ──────── bottom-right</code></pre></div></div></blockquote>
 <h3 class="v2-h3">Example — Different Radius Per Corner</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;custom&quot;&gt;Unique shape!&lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>#custom {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;custom&quot;&gt;Unique shape!&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>#custom {
   border-top-left-radius: 50px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 50px;
@@ -375,33 +257,19 @@ bottom-left ──────── bottom-right</code></pre></div></div></bloc
 <p class="v2-p"><strong>Line-by-line breakdown:</strong></p>
 <ul class="v2-ul"><li><code>border-top-left-radius: 50px</code> → Top-left corner gets a big, dramatic curve (50px)</li><li><code>border-top-right-radius: 10px</code> → Top-right corner gets a small, subtle curve (10px)</li><li><code>border-bottom-right-radius: 50px</code> → Bottom-right gets the same big curve</li><li><code>border-bottom-left-radius: 10px</code> → Bottom-left gets the small curve</li><li><code>background-color: #3498DB</code> → Blue background</li><li><code>color: white</code> → White text so it's readable on blue</li></ul>
 <p class="v2-p"><strong>Expected visual output:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>╭────────────────────╮
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>╭────────────────────╮
 │                    │
 │   Unique shape!    │
 │                    │
 ╰────────────────────╯
 (left sides heavily curved, right sides slightly curved)</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Think about it:</strong> What would happen if you set <code>border-top-left-radius: 0px</code>? The top-left corner would be a sharp 90-degree point while the others remain rounded.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Controlling Each Corner Individually</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase6">
-  <div class="phase-header">
-    <div class="phase-num">Phase 6 of 13</div>
-    <div class="phase-title">Part 4 — The `border-radius` Shorthand</div>
-    <div class="phase-check" id="chk6"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Writing four separate properties every time would be tedious. CSS provides a <strong>shorthand</strong> — a way to write all four values in one line.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Controlling Each Corner Individually</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase6"><div class="ph"><div class="pn">Phase 6/13</div><div class="pt">Part 4 — The `border-radius` Shorthand</div><div class="pc" id="chk6"></div></div><div class="pb2"><p class="v2-p">Writing four separate properties every time would be tedious. CSS provides a <strong>shorthand</strong> — a way to write all four values in one line.</p>
 <h3 class="v2-h3">Shorthand with 4 Values</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>border-radius: top-left  top-right  bottom-right  bottom-left;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>border-radius: top-left  top-right  bottom-right  bottom-left;</code></pre></div></div>
 <p class="v2-p">The values go <strong>clockwise</strong> starting from the <strong>top-left</strong> corner. Think of a clock: start at 10 o'clock (top-left), go to 2 o'clock (top-right), then 4 o'clock (bottom-right), then 8 o'clock (bottom-left).</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* These two are exactly the same: */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* These two are exactly the same: */
 
 /* Long version */
 border-top-left-radius: 15px;
@@ -413,8 +281,8 @@ border-bottom-left-radius: 5px;
 border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">🧠 <strong>Memory trick:</strong> <strong>T</strong>op-<strong>L</strong>eft → <strong>T</strong>op-<strong>R</strong>ight → <strong>B</strong>ottom-<strong>R</strong>ight → <strong>B</strong>ottom-<strong>L</strong>eft. You can remember this as "TL → TR → BR → BL" going clockwise.</p></blockquote>
 <h3 class="v2-h3">Full Example with 4-Value Shorthand</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;shorthand-box&quot;&gt;Shorthand!&lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>#shorthand-box {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;shorthand-box&quot;&gt;Shorthand!&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>#shorthand-box {
   border-radius: 15px 50px 30px 5px;
   background-color: #E74C3C;
   width: 200px;
@@ -426,9 +294,9 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <ul class="v2-ul"><li>Top-left: small curve (15px)</li><li>Top-right: large curve (50px)</li><li>Bottom-right: medium curve (30px)</li><li>Bottom-left: very small curve (5px)</li></ul>
 <hr class="v2-hr">
 <h3 class="v2-h3">Shorthand with 3 Values</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>border-radius: top-left  top-right-AND-bottom-left  bottom-right;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>border-radius: top-left  top-right-AND-bottom-left  bottom-right;</code></pre></div></div>
 <p class="v2-p">Example:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>border-radius: 10px 25px 40px;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>border-radius: 10px 25px 40px;
 /* 
   top-left        = 10px
   top-right       = 25px (also applies to bottom-left)
@@ -437,9 +305,9 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 */</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Shorthand with 2 Values</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>border-radius: top-left-AND-bottom-right  top-right-AND-bottom-left;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>border-radius: top-left-AND-bottom-right  top-right-AND-bottom-left;</code></pre></div></div>
 <p class="v2-p">Example:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>border-radius: 10px 40px;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>border-radius: 10px 40px;
 /*
   top-left = bottom-right = 10px
   top-right = bottom-left = 40px
@@ -447,31 +315,17 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <p class="v2-p">This creates a shape that looks like it's tilted — the diagonal corners match.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Shorthand with 1 Value</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>border-radius: 25px;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>border-radius: 25px;
 /* All four corners = 25px */</code></pre></div></div>
 <p class="v2-p">This is the most common usage. All four corners get the same curve.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>The <code>border-radius</code> Shorthand</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase7">
-  <div class="phase-header">
-    <div class="phase-num">Phase 7 of 13</div>
-    <div class="phase-title">Part 5 — Special Shapes with `border-radius`</div>
-    <div class="phase-check" id="chk7"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">One of the most exciting things about <code>border-radius</code> is that you can use it to create circles and "pill" shapes — without any images!</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>The <code>border-radius</code> Shorthand</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase7"><div class="ph"><div class="pn">Phase 7/13</div><div class="pt">Part 5 — Special Shapes with `border-radius`</div><div class="pc" id="chk7"></div></div><div class="pb2"><p class="v2-p">One of the most exciting things about <code>border-radius</code> is that you can use it to create circles and "pill" shapes — without any images!</p>
 <h3 class="v2-h3">How to Make a Perfect Circle</h3>
 <p class="v2-p">To make a circle, you need:</p>
 <ol class="v2-ol"><li>An element where <code>width</code> equals <code>height</code> (a square)</li><li><code>border-radius: 50%</code></li></ol>
 <p class="v2-p">Using 50% means the radius equals half of the element's size — which turns a square into a perfect circle.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;circle&quot;&gt;Circle!&lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>#circle {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;circle&quot;&gt;Circle!&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>#circle {
   border-radius: 50%;
   background-color: #9B59B6;
   width: 150px;
@@ -483,7 +337,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <p class="v2-p"><strong>Line-by-line:</strong></p>
 <ul class="v2-ul"><li><code>border-radius: 50%</code> → Rounds every corner by 50% of the element's size — creating a full circle</li><li><code>width: 150px; height: 150px</code> → Must be equal to make a circle (not oval)</li><li><code>line-height: 150px</code> → A trick to vertically center text by matching line height to box height</li></ul>
 <p class="v2-p"><strong>Expected visual output:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>   ╭──────╮
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>   ╭──────╮
   ╱        ╲
  │  Circle!  │
   ╲        ╱
@@ -493,8 +347,8 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">How to Make a Pill Shape (Ellipse / Capsule)</h3>
 <p class="v2-p">A pill shape (also called a capsule) is a rectangle with fully rounded left and right sides. You often see this on buttons.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;pill&quot;&gt;I am a pill!&lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>#pill {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;pill&quot;&gt;I am a pill!&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>#pill {
   border-radius: 50px;  /* Large enough to fully round short sides */
   background-color: #1ABC9C;
   width: 250px;
@@ -505,7 +359,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
   padding: 0 20px;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected visual output:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>╭─────────────────────────╮
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>╭─────────────────────────╮
 │       I am a pill!       │
 ╰─────────────────────────╯</code></pre></div></div>
 <p class="v2-p">The trick: the height is <code>60px</code> and the <code>border-radius</code> is <code>50px</code> — since the radius is close to or greater than half the height, the short ends become fully curved into semicircles.</p>
@@ -513,8 +367,8 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Creating an Ellipse (Oval)</h3>
 <p class="v2-p">If you use <code>border-radius: 50%</code> on a <strong>non-square</strong> element (where width ≠ height), you get an oval/ellipse.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;ellipse&quot;&gt;Oval&lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>#ellipse {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div id=&quot;ellipse&quot;&gt;Oval&lt;/div&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>#ellipse {
   border-radius: 50%;
   background-color: #E67E22;
   width: 300px;
@@ -524,82 +378,39 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
   line-height: 100px;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected visual output:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>   ╭─────────────────────╮
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>   ╭─────────────────────╮
   ╱                        ╲
  │          Oval             │
   ╲                        ╱
    ╰─────────────────────╯</code></pre></div></div>
 <p class="v2-p">A wide, flat orange oval.</p>
 <blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Think about it:</strong> What happens to the shape if you change <code>height</code> from 100px to 200px while keeping <code>width: 300px</code>? The oval becomes more circular as the aspect ratio approaches 1:1.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Special Shapes with <code>border-radius</code></strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase8">
-  <div class="phase-header">
-    <div class="phase-num">Phase 8 of 13</div>
-    <div class="phase-title">Part 6 — Percentage Values vs. Pixel Values</div>
-    <div class="phase-check" id="chk8"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p"><code>border-radius</code> accepts both <code>px</code> (pixel) values and <code>%</code> (percentage) values. Understanding the difference is important.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Special Shapes with <code>border-radius</code></strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase8"><div class="ph"><div class="pn">Phase 8/13</div><div class="pt">Part 6 — Percentage Values vs. Pixel Values</div><div class="pc" id="chk8"></div></div><div class="pb2"><p class="v2-p"><code>border-radius</code> accepts both <code>px</code> (pixel) values and <code>%</code> (percentage) values. Understanding the difference is important.</p>
 <h3 class="v2-h3">Pixel values (<code>px</code>)</h3>
 <p class="v2-p">Fixed and absolute. <code>border-radius: 20px</code> always creates a curve with a 20px radius, no matter how big or small the element is.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* A small box and a large box both get a 20px curve */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* A small box and a large box both get a 20px curve */
 .small-box { width: 50px; height: 50px; border-radius: 20px; }
 .large-box { width: 500px; height: 500px; border-radius: 20px; }</code></pre></div></div>
 <p class="v2-p">On the small box, 20px is a large fraction of its size — it will look very round. On the large box, 20px is a tiny fraction — it will look almost square with just slightly clipped corners.</p>
 <h3 class="v2-h3">Percentage values (<code>%</code>)</h3>
 <p class="v2-p">Relative to the element's size. <code>border-radius: 50%</code> always creates a curve equal to 50% of the element's dimensions — so it scales perfectly with the element.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Both boxes become perfect circles */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Both boxes become perfect circles */
 .small-box { width: 50px; height: 50px; border-radius: 50%; }
 .large-box { width: 500px; height: 500px; border-radius: 50%; }</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">📏 <strong>Rule of thumb:</strong></p>
 <ul class="v2-ul"><li>Use <code>%</code> when you want the rounding to <strong>scale</strong> with the element (e.g., circles, responsive designs)</li><li>Use <code>px</code> when you want the rounding to stay a <strong>fixed size</strong> regardless of element dimensions (e.g., button corners, card corners)</li></ul></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Percentage Values vs. Pixel Values</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase9">
-  <div class="phase-header">
-    <div class="phase-num">Phase 9 of 13</div>
-    <div class="phase-title">Part 7 — The `border-radius` CSS Reference Table</div>
-    <div class="phase-check" id="chk9"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Here is a complete reference for everything you can do with <code>border-radius</code>:</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Percentage Values vs. Pixel Values</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase9"><div class="ph"><div class="pn">Phase 9/13</div><div class="pt">Part 7 — The `border-radius` CSS Reference Table</div><div class="pc" id="chk9"></div></div><div class="pb2"><p class="v2-p">Here is a complete reference for everything you can do with <code>border-radius</code>:</p>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>Description</th><th>Example</th></tr></thead><tbody><tr><td><code>border-radius</code></td><td>Shorthand for all corners</td><td><code>border-radius: 10px 25px 10px 25px</code></td></tr><tr><td><code>border-top-left-radius</code></td><td>Top-left corner only</td><td><code>border-top-left-radius: 20px</code></td></tr><tr><td><code>border-top-right-radius</code></td><td>Top-right corner only</td><td><code>border-top-right-radius: 5px</code></td></tr><tr><td><code>border-bottom-right-radius</code></td><td>Bottom-right corner only</td><td><code>border-bottom-right-radius: 20px</code></td></tr><tr><td><code>border-bottom-left-radius</code></td><td>Bottom-left corner only</td><td><code>border-bottom-left-radius: 5px</code></td></tr></tbody></table></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>The <code>border-radius</code> CSS Reference Table</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase10">
-  <div class="phase-header">
-    <div class="phase-num">Phase 10 of 13</div>
-    <div class="phase-title">Part 8 — Guided Practice Exercises</div>
-    <div class="phase-check" id="chk10"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Exercise 1 — Warm-Up: Simple Rounded Box</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>The <code>border-radius</code> CSS Reference Table</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase10"><div class="ph"><div class="pn">Phase 10/13</div><div class="pt">Part 8 — Guided Practice Exercises</div><div class="pc" id="chk10"></div></div><div class="pb2"><div class="chal-box"><div class="chal-lbl">🎯 Your Challenge</div><div class="chal-body"><h3 class="v2-h3">Exercise 1 — Warm-Up: Simple Rounded Box</h3>
 <p class="v2-p"><strong>Objective:</strong> Apply <code>border-radius</code> to a simple div.</p>
 <p class="v2-p"><strong>Scenario:</strong> You are styling a notification banner for a website. The banner must have a green background with rounded corners.</p>
 <p class="v2-p"><strong>Steps:</strong></p>
 <ol class="v2-ol"><li>Create an HTML file.</li><li>Add a <code>&lt;div&gt;</code> with the id <code>"notification"</code> and the text "You have a new message!".</li><li>In CSS, set:</li></ol>
 <p class="v2-p">- <code>border-radius: 15px</code>    - <code>background-color: #2ECC71</code> (a green colour)    - <code>padding: 20px</code>    - <code>width: 300px</code>    - <code>color: white</code></p>
-<p class="v2-p"><strong>Starter code:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<p class="v2-p"><strong>Starter code:</strong></p></div></div><div class="task-box"><div class="task-lbl">✏️ Task</div><div class="task-body">Practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="reveal-btn" onclick="toggleReveal(this)">👁️ Reveal Answer</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -613,7 +424,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 &lt;/body&gt;
 &lt;/html&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Solution:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -631,7 +442,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 &lt;/body&gt;
 &lt;/html&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>╭────────────────────────────╮
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>╭────────────────────────────╮
 │  You have a new message!   │
 ╰────────────────────────────╯</code></pre></div></div>
 <p class="v2-p">A green box with smooth rounded corners and white text inside.</p>
@@ -646,7 +457,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <p class="v2-p">- Top-left: <code>30px</code>    - Top-right: <code>30px</code>    - Bottom-right: <code>30px</code>    - Bottom-left: <code>0px</code> (sharp — the "tail" of the bubble)</p>
 <ol class="v2-ol"><li>Add <code>background-color: #3498DB</code>, <code>color: white</code>, <code>padding: 20px</code>, <code>width: 200px</code>.</li></ol>
 <p class="v2-p"><strong>Solution:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -667,7 +478,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 &lt;/body&gt;
 &lt;/html&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>╭──────────────────╮
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>╭──────────────────╮
 │                  │
 │   Hello there!   │
 │                  │
@@ -680,7 +491,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <h3 class="v2-h3">Exercise 3 — The Shorthand Challenge</h3>
 <p class="v2-p"><strong>Objective:</strong> Read shorthand values and predict the shape.</p>
 <p class="v2-p"><strong>Scenario:</strong> A colleague gave you this CSS. Before testing it in the browser, predict what each corner looks like.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>#mystery-box {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>#mystery-box {
   border-radius: 10px 60px 10px 60px;
   background-color: #E74C3C;
   width: 200px;
@@ -699,7 +510,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <ol class="v2-ol"><li>Create a <code>&lt;button&gt;</code> element with the text <code>"+"</code>.</li><li>Set:</li></ol>
 <p class="v2-p">- <code>width: 60px</code>    - <code>height: 60px</code>    - <code>border-radius: 50%</code>    - <code>background-color: #E74C3C</code>    - <code>color: white</code>    - <code>font-size: 30px</code>    - <code>border: none</code>    - <code>cursor: pointer</code></p>
 <p class="v2-p"><strong>Solution:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -721,30 +532,16 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 &lt;/html&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> A perfectly circular red button with a white "+" symbol in the centre.</p>
 <p class="v2-p"><strong>Professional use case:</strong> This exact pattern is used in Google Material Design for the "Floating Action Button" seen in Android apps and web apps like Gmail, Google Drive, and Google Maps.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase11">
-  <div class="phase-header">
-    <div class="phase-num">Phase 11 of 13</div>
-    <div class="phase-title">Part 9 — Code Challenges (Based on W3Schools Challenges)</div>
-    <div class="phase-check" id="chk11"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">These challenges directly reflect the types of exercises from the W3Schools CSS Rounded Corners Code Challenge page. Try each one, then check the solution.</p>
+<hr class="v2-hr"></div><button class="ub" onclick="unlockNext(10)">Mark Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase11"><div class="ph"><div class="pn">Phase 11/13</div><div class="pt">Part 9 — Code Challenges (Based on W3Schools Challenges)</div><div class="pc" id="chk11"></div></div><div class="pb2"><p class="v2-p">These challenges directly reflect the types of exercises from the W3Schools CSS Rounded Corners Code Challenge page. Try each one, then check the solution.</p>
 <h3 class="v2-h3">Challenge 1 — Add Rounded Corners</h3>
 <p class="v2-p"><strong>Task:</strong> Give the <code>&lt;div&gt;</code> below a <code>border-radius</code> of <code>25px</code>.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div style=&quot;background-color:#73AD21; width:200px; height:100px; padding:20px;&quot;&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div style=&quot;background-color:#73AD21; width:200px; height:100px; padding:20px;&quot;&gt;
   I am a div element.
 &lt;/div&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Your job:</strong> Add one CSS property to this div.</p>
 <p class="v2-p"><strong>Solution:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div style=&quot;background-color:#73AD21; width:200px; height:100px; padding:20px; border-radius:25px;&quot;&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div style=&quot;background-color:#73AD21; width:200px; height:100px; padding:20px; border-radius:25px;&quot;&gt;
   I am a div element.
 &lt;/div&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> A green box with all four corners rounded by 25 pixels.</p>
@@ -752,7 +549,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <h3 class="v2-h3">Challenge 2 — Only Top-Left Corner</h3>
 <p class="v2-p"><strong>Task:</strong> Make only the <strong>top-left</strong> corner of a div rounded with a value of <code>25px</code>. All other corners must stay sharp.</p>
 <p class="v2-p"><strong>Solution:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>div {
   border-top-left-radius: 25px;
   background-color: #73AD21;
   width: 200px;
@@ -760,7 +557,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
   padding: 20px;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>╭────────────────────
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>╭────────────────────
 │
 │   I am a div.
 │
@@ -769,10 +566,10 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Challenge 3 — Make an Ellipse</h3>
 <p class="v2-p"><strong>Task:</strong> Use <code>border-radius</code> to turn the div below into an ellipse (oval shape).</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div style=&quot;background-color:#73AD21; width:300px; height:100px;&quot;&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div style=&quot;background-color:#73AD21; width:300px; height:100px;&quot;&gt;
 &lt;/div&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Solution:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div style=&quot;background-color:#73AD21; width:300px; height:100px; border-radius:50%;&quot;&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div style=&quot;background-color:#73AD21; width:300px; height:100px; border-radius:50%;&quot;&gt;
 &lt;/div&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> A wide green oval shape.</p>
 <blockquote class="v2-bq"><p class="v2-p">🔑 <strong>Key:</strong> <code>50%</code> applied to a non-square element always creates an oval. The wider the element, the more "stretched" the oval.</p></blockquote>
@@ -781,7 +578,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
 <p class="v2-p"><strong>Task:</strong> Use the <code>border-radius</code> shorthand to set:</p>
 <ul class="v2-ul"><li>Top-left: <code>15px</code></li><li>Top-right: <code>50px</code></li><li>Bottom-right: <code>30px</code></li><li>Bottom-left: <code>5px</code></li></ul>
 <p class="v2-p"><strong>Solution:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>div {
   border-radius: 15px 50px 30px 5px;
   background-color: #73AD21;
   width: 200px;
@@ -789,10 +586,7 @@ border-radius: 15px 50px 30px 5px;</code></pre></div></div>
   padding: 20px;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected output:</strong> A green box with four distinctly different corner curves. Top-right has the most dramatic curve (50px), bottom-left has the subtlest (5px).</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Solution:
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Solution:
 
 `css
 div {
@@ -814,28 +608,17 @@ Expected output:
 `
 Only the top-left corner is rounded.
 
----</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase12">
-  <div class="phase-header">
-    <div class="phase-num">Phase 12 of 13</div>
-    <div class="phase-title">Part 11 — Common Beginner Mistakes</div>
-    <div class="phase-check" id="chk12"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Mistake 1 — Forgetting to set equal width and height for circles</h3>
+---</div></div><button class="ub" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase12"><div class="ph"><div class="pn">Phase 12/13</div><div class="pt">Part 11 — Common Beginner Mistakes</div><div class="pc" id="chk12"></div></div><div class="pb2"><h3 class="v2-h3">Mistake 1 — Forgetting to set equal width and height for circles</h3>
 <p class="v2-p">❌ <strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.circle {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.circle {
   border-radius: 50%;
   width: 200px;
   height: 100px; /* not equal to width! */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Result:</strong> An oval, not a circle. CSS cannot create a circle if the element is not square.</p>
 <p class="v2-p">✅ <strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.circle {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.circle {
   border-radius: 50%;
   width: 150px;
   height: 150px; /* equal to width */
@@ -843,22 +626,22 @@ Only the top-left corner is rounded.
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 2 — Wrong shorthand order</h3>
 <p class="v2-p">❌ <strong>Wrong (assuming clockwise but starting wrong):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Intended: top-right=50px, others=10px */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Intended: top-right=50px, others=10px */
 border-radius: 50px 10px 10px 10px; /* This makes TOP-LEFT=50px */</code></pre></div></div>
 <p class="v2-p">✅ <strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Shorthand order: top-left, top-right, bottom-right, bottom-left */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Shorthand order: top-left, top-right, bottom-right, bottom-left */
 border-radius: 10px 50px 10px 10px; /* NOW top-right=50px */</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">🔑 <strong>Reminder:</strong> The order is always <strong>clockwise starting from top-left</strong>.</p></blockquote>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 3 — Using <code>border-radius</code> without a visible background or border</h3>
 <p class="v2-p">❌ <strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>p {
   border-radius: 20px;
   /* No background-color, no border — nothing to round! */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Result:</strong> No visible change because there is nothing to clip.</p>
 <p class="v2-p">✅ <strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>p {
   border-radius: 20px;
   background-color: #ECF0F1; /* Now there&#x27;s something to round */
   padding: 10px;
@@ -866,41 +649,27 @@ border-radius: 10px 50px 10px 10px; /* NOW top-right=50px */</code></pre></div><
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 4 — Typos in the property name</h3>
 <p class="v2-p">❌ <strong>Common typos:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>border-radius-top: 10px;    /* WRONG - property doesn&#x27;t exist */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>border-radius-top: 10px;    /* WRONG - property doesn&#x27;t exist */
 top-left-radius: 10px;      /* WRONG - incorrect syntax */</code></pre></div></div>
 <p class="v2-p">✅ <strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>border-top-left-radius: 10px;   /* CORRECT - always &quot;border-&quot; first */</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>border-top-left-radius: 10px;   /* CORRECT - always &quot;border-&quot; first */</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 5 — Using percentage on a non-square for a circle</h3>
 <p class="v2-p">❌ <strong>Wrong (expecting a circle):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.avatar {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.avatar {
   border-radius: 50%;
   width: 200px;
   height: 80px; /* Different from width */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Result:</strong> An oval/ellipse, not a circle.</p>
 <p class="v2-p">✅ <strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.avatar {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.avatar {
   border-radius: 50%;
   width: 100px;
   height: 100px; /* Width = Height = Square → Circle */
 }</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(12)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase13">
-  <div class="phase-header">
-    <div class="phase-num">Phase 13 of 13</div>
-    <div class="phase-title">Part 12 — Real-World Use Cases</div>
-    <div class="phase-check" id="chk13"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p"><code>border-radius</code> is one of the most frequently used CSS properties in professional web development:</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(12)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase13"><div class="ph"><div class="pn">Phase 13/13</div><div class="pt">Part 12 — Real-World Use Cases</div><div class="pc" id="chk13"></div></div><div class="pb2"><p class="v2-p"><code>border-radius</code> is one of the most frequently used CSS properties in professional web development:</p>
 <p class="v2-p"><strong>Profile pictures:</strong> Social platforms use <code>border-radius: 50%</code> to turn square profile images into circles.</p>
 <p class="v2-p"><strong>Buttons:</strong> Most modern UI buttons use <code>border-radius: 4px</code> to <code>border-radius: 999px</code> for a friendly, approachable look. Google's Material Design recommends <code>border-radius: 4px</code> for standard buttons.</p>
 <p class="v2-p"><strong>Cards and panels:</strong> Dashboard panels, notification cards, and content cards typically use <code>border-radius: 8px</code> to <code>border-radius: 16px</code> for a modern, clean feel.</p>
@@ -908,24 +677,11 @@ top-left-radius: 10px;      /* WRONG - incorrect syntax */</code></pre></div></d
 <p class="v2-p"><strong>Modal dialogs:</strong> Popup windows and modals often use <code>border-radius: 12px</code> on the container for a friendly appearance.</p>
 <p class="v2-p"><strong>Input fields:</strong> Form inputs sometimes use <code>border-radius: 4px</code> or <code>border-radius: 8px</code> for a softer look.</p>
 <p class="v2-p"><strong>Avatars in chat apps:</strong> WhatsApp, Slack, and Teams use circular avatars created with <code>border-radius: 50%</code>.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Real-World Use Cases</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(13)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="build-box" id="build-it">
-  <div class="build-label">🏗️ Build It</div>
-  <div class="build-name">Stage 1 — Setup: Basic Card Structure</div>
-  <div class="build-desc">Profile cards appear everywhere — on team pages, apps, dashboards, social media. They typically have a circular avatar, a name, a job title, and rounded card edges.</div>
-  <div class="v2-code-wrap">
-    <div class="v2-code-bar">
-      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
-      <span class="v2-code-lang">starter.html</span>
-    </div>
-    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Real-World Use Cases</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(13)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="build-box" id="build-it"><div class="build-lbl">🏗️ Build It — Mini Project</div><div class="build-name">Stage 1 — Setup: Basic Card Structure</div><div class="build-req"><p class="v2-p">Now let's combine everything you have learned into a realistic, professional-looking mini-project: a <strong>profile card</strong>.</p>
+<p class="v2-p">Profile cards appear everywhere — on team pages, apps, dashboards, social media. They typically have a circular avatar, a name, a job title, and rounded card edges.</p>
+<h3 class="v2-h3">Stage 1 — Setup: Basic Card Structure</h3>
+<p class="v2-p"><strong>Preview:</strong></p></div><button class="reveal-btn" onclick="toggleCode(this)">💻 Reveal Starter Code</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">starter.html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;title&gt;Profile Card&lt;/title&gt;
@@ -938,10 +694,7 @@ top-left-radius: 10px;      /* WRONG - incorrect syntax */</code></pre></div></d
     &lt;button class=&quot;follow-btn&quot;&gt;Follow&lt;/button&gt;
   &lt;/div&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
-  </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
-    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+&lt;/html&gt;</code></pre></div></div><div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem"><button class="ub" onclick="downloadStarter(`<!DOCTYPE html>
 <html>
 <head>
   <title>Profile Card</title>
@@ -954,87 +707,66 @@ top-left-radius: 10px;      /* WRONG - incorrect syntax */</code></pre></div></d
     <button class="follow-btn">Follow</button>
   </div>
 </body>
-</html>`)"
-      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
-      ⬇ Download starter.html
-    </button>
-    <button class="unlock-btn" onclick="showGithub()"
-      style="background:#0f172a;box-shadow:none">
-      🐙 Push to GitHub →
-    </button>
-  </div>
-</div>
+</html>`)" style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">⬇ Download starter.html</button><button class="ub" onclick="showGithub()" style="background:#0f172a;box-shadow:none">🐙 Push to GitHub Pages →</button></div></div></div>
 <div class="gh-acc" id="gh-steps" style="display:none">
-  <div class="gh-acc-head" onclick="toggleGh(this)">
-    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
-  </div>
-  <div class="gh-acc-body">
-    <div class="gh-step"><div class="gh-step-n">1</div>
-    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-46-stage-1-setup-basic-card-structure</code>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">2</div>
-    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">3</div>
-    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
-    <div class="gh-step"><div class="gh-step-n">4</div>
-    <p>Commit message: <em>"Add CSS lesson 46 project"</em> → click <strong>Commit changes</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">5</div>
-    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-46-stage-1-setup-basic-card-structure/</code> in about 1 minute! 🎉</p></div>
-    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
-  </div>
-</div>
-<div class="session-end" id="session-end">
-  <h2>🎉 Lesson 46 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
-  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — Conceptual Understanding</li><li>✅ Part 2 — The `border-radius` Property in Detail</li><li>✅ Part 3 — Controlling Each Corner Individually</li><li>✅ Part 4 — The `border-radius` Shorthand</li><li>✅ Part 5 — Special Shapes with `border-radius`</li><li>✅ Part 6 — Percentage Values vs. Pixel Values</li></ul>
-  <div class="lesson-nav"><a href="lesson_45.html" class="ln-btn">← Lesson 45</a><a href="lesson_47.html" class="ln-btn primary">Lesson 47 →</a></div>
-</div>
+<div class="gh-hd" onclick="toggleGh(this)">🐙 Push to GitHub Pages &nbsp;<span>▼</span></div>
+<div class="gh-bd">
+<div class="gh-st"><div class="gh-n">1</div><p>Go to <strong>github.com → New repository</strong> → name it <code>css-lesson-46-stage-1-setup-basic-card-structure</code>. Set <strong>Public</strong>, tick <strong>Add README</strong>, click <strong>Create</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">2</div><p>Click <strong>Add file → Upload files</strong>. Rename your file to <code>index.html</code> then upload it.</p></div>
+<div class="gh-st"><div class="gh-n">3</div><p>Commit message: <em>"Add CSS lesson 46 project"</em> → <strong>Commit changes</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">4</div><p>Go to <strong>Settings → Pages</strong> → Source: <strong>main</strong> → <strong>Save</strong>. Live in ~1 min at <code>https://YOUR-NAME.github.io/css-lesson-46-stage-1-setup-basic-card-structure/</code> 🎉</p></div>
+<button class="ub" onclick="showEnd()" style="margin-top:.5rem">Done — Finish Session ✅</button>
+</div></div>
+<div class="se" id="session-end"><h2>🎉 Lesson 46 complete!</h2><p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p><ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — Conceptual Understanding</li><li>✅ Part 2 — The `border-radius` Property in Detail</li><li>✅ Part 3 — Controlling Each Corner Individually</li><li>✅ Part 4 — The `border-radius` Shorthand</li><li>✅ Part 5 — Special Shapes with `border-radius`</li><li>✅ Part 6 — Percentage Values vs. Pixel Values</li></ul><div class="ln"><a href="lesson_45.html" class="ln-btn">← Lesson 45</a><a href="lesson_47.html" class="ln-btn primary">Lesson 47 →</a></div></div>
 </main>
-
-<footer class="lesson-footer">
-  Techbase Code Coach · CSS Course · Lesson 46 · © 2025 Techbase Consultant Services, Ibadan
-</footer>
+<footer class="lf">Techbase Code Coach &nbsp;·&nbsp; CSS Course &nbsp;·&nbsp; Lesson 46 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</footer>
+<div id="toast"></div>
+<button id="go-top" title="Back to top">↑</button>
+<canvas id="cc"></canvas>
 <script>
 const TOTAL=13,KEY='techbase_css_l46';
-let current=parseInt(localStorage.getItem(KEY)||'1');
-function init(){
-  for(let i=2;i<=current;i++) unlockPhase(i,false);
-  updateBar();
-}
+let cur=parseInt(localStorage.getItem(KEY)||'1');
+function init(){for(let i=2;i<=cur;i++)unlock(i,false);bar();}
 function unlockNext(n){
-  const chk=document.getElementById('chk'+n);
-  if(chk){chk.classList.add('done');chk.textContent='✓';}
-  localStorage.setItem(KEY,n+1); current=n+1;
+  const c=document.getElementById('chk'+n);
+  if(c){c.classList.add('done');c.textContent='✓';}
+  localStorage.setItem(KEY,n+1);cur=n+1;
   if(n===TOTAL){
-    document.getElementById('build-it').style.display='block';
-    updateBar(100);
+    document.getElementById('build-it').classList.add('visible');
+    bar(100);toast('🏗️ Build It unlocked!');
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  }else{
-    unlockPhase(n+1,true); updateBar();
-  }
+    setTimeout(confetti,600);
+  }else{unlock(n+1,true);bar();toast(['✅ Phase complete!','🎯 Keep going!','💡 Nice work!','🚀 Nailed it!'][n%4]);}
 }
-function unlockPhase(n,scroll){
-  const el=document.getElementById('phase'+n);
-  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
+function unlock(n,scroll){
+  const el=document.getElementById('phase'+n);if(!el)return;
+  el.classList.remove('locked');
+  if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),180);
 }
-function updateBar(pct){
-  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
-  document.getElementById('pbar').style.width=p+'%';
+function bar(p){document.getElementById('pbar').style.width=(p!==undefined?p:Math.round((cur-1)/TOTAL*95))+'%';}
+function toggleReveal(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Answer':'👁️ Reveal Answer';}
+function toggleCode(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Starter Code':'💻 Reveal Starter Code';}
+function copyCode(btn){
+  const code=btn.closest('.v2-code-wrap').querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(()=>{btn.textContent='✓ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='⎘ Copy';btn.classList.remove('copied');},1800);}).catch(()=>{});
 }
-function showGithub(){
-  const g=document.getElementById('gh-steps');
-  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
-}
-function showEnd(){
-  const e=document.getElementById('session-end');
-  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
-}
+const tEl=document.getElementById('toast');let tT;
+function toast(msg){tEl.innerHTML=msg;tEl.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>tEl.classList.remove('show'),2400);}
+const gEl=document.getElementById('go-top');
+window.addEventListener('scroll',()=>gEl.classList.toggle('visible',scrollY>320),{passive:true});
+gEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
-function downloadStarter(code){
-  const a=document.createElement('a');
-  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
-  a.download='starter.html';a.click();
+function showGithub(){const g=document.getElementById('gh-steps');if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}}
+function showEnd(){const e=document.getElementById('session-end');if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}}
+function downloadStarter(code){const ext='css'==='python'?'py':'html';const a=document.createElement('a');a.href='data:text/'+(ext==='py'?'x-python':'html')+';charset=utf-8,'+encodeURIComponent(code);a.download='starter.'+ext;a.click();}
+function confetti(){
+  const cv=document.getElementById('cc');cv.style.display='block';const ctx=cv.getContext('2d');
+  cv.width=innerWidth;cv.height=innerHeight;
+  const ps=Array.from({length:130},()=>{return{x:Math.random()*cv.width,y:-10-Math.random()*120,r:4+Math.random()*6,d:2+Math.random()*3,c:['#e34c26','#0284c7','#d97706','#059669','#7c3aed','#ec4899'][Math.floor(Math.random()*6)],ta:0};}); 
+  let f=0;
+  function draw(){ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.ta+=.1;p.y+=p.d;p.x+=Math.sin(f/20);ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});f++;if(f<200)requestAnimationFrame(draw);else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}}
+  draw();toast('🎉 All phases done! Build It awaits!');
 }
 init();
 </script>
-</body>
-</html>
+</body></html>

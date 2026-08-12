@@ -1,235 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lesson 34: CSS Image Gallery and Image Sprites — Building Visual Displays and Optimising Performance — Techbase CSS</title>
-<meta name="description" content="CSS Image Gallery and Image Sprites — Building Visual Displays and Optimising Performance">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{
-  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
-  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
-  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
-  --text:#0f172a;--t2:#334155;--muted:#64748b;
-  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--acc:#0284c7;--acd:#0369a1;--acp:#f0f9ff;--acb:rgba(2,132,199,.22);--acs:rgba(2,132,199,.28);--bg:#f8fafc;--sf:#fff;--br:#e2e8f0;--tx:#0f172a;--t2:#334155;--mu:#64748b;--D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
-
-/* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
-  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
-  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
-.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+body{background:var(--bg);color:var(--tx);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--br);height:58px;display:flex;align-items:center;padding:0 1.5rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--tx);text-decoration:none}
+.l-nav-back{font-size:.8rem;color:var(--mu);text-decoration:none;font-weight:500;transition:color .2s}
 .l-nav-back:hover{color:var(--acc)}
-.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-
-/* PROGRESS */
-.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
-
-/* HERO */
-.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:860px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
-  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
-  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
-  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
-
-/* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
-.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
-.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
-.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
-  font-family:var(--M);font-size:.68rem;font-weight:500}
-
-/* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
-  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
-.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
-.phase-header{padding:1rem 1.4rem;background:#f5fbff;
-  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--acc)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
-  flex:1;margin:0 .8rem}
-.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
-  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
-  transition:background .3s,color .3s}
-.phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.6rem 1.8rem}
-
-/* RICH CONTENT STYLES */
+.l-nav-lbl{font-family:var(--M);font-size:.68rem;color:var(--mu)}
+.pw{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--br)}
+.pb{height:100%;background:linear-gradient(90deg,var(--acc),var(--acd));transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;position:relative}
+.pb::after{content:'';position:absolute;right:0;top:0;bottom:0;width:20px;background:inherit;filter:brightness(1.4);animation:pg 1.5s ease-in-out infinite}
+@keyframes pg{0%,100%{opacity:1}50%{opacity:.35}}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--br)}
+.l-hero-in{max-width:860px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;border-radius:100px;padding:.22rem .9rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--acc);background:var(--acp);border:1.5px solid var(--acb);margin-bottom:.85rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.9rem;color:var(--mu)}
+.wb{background:#fff;border:1.5px solid var(--acb);border-left:5px solid var(--acc);border-radius:14px;padding:1.4rem 1.6rem;max-width:860px;margin:1.5rem auto 0;box-shadow:0 2px 12px var(--acs)}
+.wb h2{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--acd);margin-bottom:.6rem}
+.wb p,.wb li{font-size:.92rem;line-height:1.85;color:var(--t2)}
+.wb ul{margin-left:1.2rem;margin-top:.4rem}
+.wm{display:flex;gap:.65rem;margin-top:1rem;flex-wrap:wrap}
+.wm span{background:var(--acp);color:var(--acd);border:1px solid var(--acb);border-radius:7px;padding:.22rem .7rem;font-family:var(--M);font-size:.68rem;font-weight:600}
+.phase{background:var(--sf);border:1.5px solid var(--br);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .35s,filter .35s,transform .35s}
+.phase.locked{opacity:.28;pointer-events:none;filter:blur(2px);transform:scale(.99)}
+.ph{padding:1rem 1.4rem;background:#f5fbff;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:.8rem}
+.pn{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);white-space:nowrap}
+.pt{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--tx);flex:1}
+.pc{width:26px;height:26px;border-radius:50%;background:var(--br);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:background .3s,transform .4s}
+.pc.done{background:#10b981;color:#fff;transform:scale(1.15) rotate(360deg)}
+.pb2{padding:1.6rem 1.8rem}
 .v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
-.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
-  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
-.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
-.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--tx);margin:1.6rem 0 .5rem;border-top:2px solid var(--acp);padding-top:.4rem}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1rem 0 .35rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.88rem;color:var(--mu);margin:.7rem 0 .3rem}
 .v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
 .v2-ul li,.v2-ol li{margin-bottom:.3rem}
-.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
-  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acp);border-radius:0 10px 10px 0;padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
 .v2-bq p{margin:0;color:inherit}
-.v2-bq strong{font-style:normal}
-.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
-.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-hr{border:none;border-top:1px solid var(--br);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0;border-radius:10px;border:1px solid var(--br)}
 .v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
-.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
-  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
-.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
-.v2-table tr:nth-child(even) td{background:#f8fafc}
-.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
-  padding:1px 5px;font-family:var(--M);font-size:.8em}
-.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
-.phase-body strong{color:var(--text)}
-
-/* CODE BLOCKS */
-.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-table th{background:var(--acp);color:#0c4a6e;font-family:var(--D);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--acb)}
+.v2-table td{padding:8px 12px;border-bottom:1px solid var(--br);color:var(--t2);vertical-align:top}
+.v2-table tr:last-child td{border:none}
+.v2-table tr:hover td{background:var(--acp)}
+.pb2 code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.pb2 a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.pb2 strong{color:var(--tx)}
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 18px rgba(0,0,0,.18)}
 .v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
 .v2-dot{width:10px;height:10px;border-radius:50%}
 .v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
-.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-lang{margin-left:.5rem;font-family:var(--M);font-size:.62rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em;flex:1}
+.copy-btn{background:rgba(255,255,255,.08);color:#94a3b8;border:none;border-radius:6px;padding:.25rem .65rem;font-family:var(--M);font-size:.65rem;cursor:pointer;transition:background .2s,color .2s}
+.copy-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+.copy-btn.copied{background:#10b981;color:#fff}
 .v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
 .v2-code-body pre{margin:0}
-.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
-  white-space:pre;background:transparent;padding:0;border-radius:0}
-
-/* TASK BOX */
-.task-box{background:#e0f2fe;border:2px dashed #0284c7;
-  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
-.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
-.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
-  font-family:var(--M);font-size:.82em}
-
-/* UNLOCK BUTTON */
-.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
-  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
-  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
-  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
-.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
-
-/* BUILD IT */
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.95;color:#e2e8f0;white-space:pre;background:transparent;padding:0;border-radius:0}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0}
+.task-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-body{font-size:.93rem;color:#0c4a6e;line-height:1.85}
+.task-body code{background:rgba(0,0,0,.1);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.chal-box{background:linear-gradient(135deg,#f0f9ff 0%,#fff 100%);border:2px solid var(--acc);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.2rem}
+.chal-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acd);margin-bottom:.6rem}
+.chal-body{font-size:.95rem;color:var(--tx);line-height:1.85}
+.chal-body code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 5px;font-family:var(--M);font-size:.82em}
+.reveal-btn{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--acd);font-family:var(--D);font-weight:700;font-size:.85rem;padding:.6rem 1.2rem;border-radius:8px;border:2px solid var(--acc);cursor:pointer;transition:background .2s,color .2s;margin:.6rem 0}
+.reveal-btn:hover{background:var(--acc);color:#fff}
+.reveal-content{display:none;margin-top:.6rem;animation:fi .3s ease}
+.reveal-content.open{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
-.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
-.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
-.build-desc strong{color:#14532d}
-
-/* GITHUB ACCORDION */
-.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.gh-acc-body.open{display:block}
-.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
-  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;margin-top:2px}
-.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-
-/* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
-.session-end.visible{display:block}
-.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
-.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
-  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
-  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
-  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.build-box.visible{display:block;animation:fi .4s ease}
+.build-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.15rem;color:#14532d;margin-bottom:.6rem}
+.build-req{font-size:.93rem;color:#166534;line-height:1.8;margin-bottom:.8rem}
+.build-req code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-req strong{color:#14532d}
+.gh-acc{border:1.5px solid var(--br);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-hd{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none;transition:background .2s}
+.gh-hd:hover{background:#f1f5f9}
+.gh-bd{display:none;padding:1.2rem;border-top:1px solid var(--br)}
+.gh-bd.open{display:block;animation:fi .25s ease}
+.gh-st{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-st p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-st code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.gh-nop{background:#fef3c7;border:1.5px solid #fde68a;border-radius:10px;padding:1rem 1.2rem;font-size:.9rem;color:#78350f;line-height:1.75;margin-bottom:1rem}
+.se{background:linear-gradient(135deg,var(--acc),var(--acd));color:#fff;border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
+.se.visible{display:block;animation:fi .4s ease}
+.se h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.se ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.se li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--sf);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--br);transition:border-color .2s,color .2s}
 .ln-btn:hover{border-color:var(--acc);color:var(--acc)}
 .ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;
-  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
-  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.ln{display:flex;align-items:center;justify-content:space-between;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.ub{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acs);margin-top:1.2rem}
+.ub:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acs)}
+.ub:active{transform:scale(.97)}
+#toast{position:fixed;bottom:90px;right:1.5rem;z-index:999;background:#1e293b;color:#fff;border-radius:10px;padding:.75rem 1.2rem;font-family:var(--D);font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+#toast.show{transform:translateY(0);opacity:1}
+#go-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;border:none;cursor:pointer;font-size:1.15rem;box-shadow:0 4px 16px var(--acs);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,box-shadow .2s;pointer-events:none}
+#go-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#go-top:hover{box-shadow:0 8px 24px var(--acs);transform:translateY(-2px)}
+#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none}
+.lf{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--mu);border-top:1px solid var(--br);background:var(--sf)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
   <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
-  <span class="l-nav-label">Lesson 34 of 73</span>
+  <span class="l-nav-lbl">Lesson 34 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
-
-<div class="l-hero">
-  <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 34</div>
-    <h1>CSS Image Gallery and Image Sprites — Building Visual Displays and Optimising Performance</h1>
-    <div class="l-hero-sub">16 phases · Build: Project Overview</div>
-  </div>
-</div>
-
-<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
-  <h2>👋 Welcome to Lesson 34</h2>
-  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Two of the most visible skills in front-end web development are creating beautiful image galleries and making pages load fast. This lesson teaches both — and shows you exactly how they connect.</p>
-<p class="v2-p"><strong>Part One: CSS Image Galleries</strong> You will learn how to take a raw collection of images and turn them into a polished, responsive grid gallery — the kind you see on photography portfolios, e-commerce product pages, Instagram-style apps, and news websites. You will build galleries from scratch using pure CSS: fixed-width galleries, responsive galleries, hover overlay effects, and caption displays.</p>
-<p class="v2-p"><strong>Part Two: CSS Image Sprites</strong> You will learn one of the most important performance techniques in CSS: combining many small images into one single file called a <em>sprite sheet</em>, then using CSS to "cut out" each individual image as needed. This dramatically reduces the number of network requests your page makes, making it load faster for users.</p>
-<p class="v2-p">By the end of this lesson you will be able to:</p>
-<ul class="v2-ul"><li>Build a fully responsive image gallery with hover effects using CSS alone</li><li>Understand what image sprites are and why they exist</li><li>Use <code>background-image</code> and <code>background-position</code> to display individual sprite icons</li><li>Create a sprite-based navigation bar with hover states</li><li>Build a combined mini-project: a portfolio gallery page with a sprite-powered icon toolbar</li></ul>
-<hr class="v2-hr"></div>
-  <div class="welcome-meta">
-    <span>📚 16 phases</span>
-    <span>🏗️ Project Overview</span>
-  </div>
+<div class="pw"><div class="pb" id="pbar"></div></div>
+<div class="l-hero"><div class="l-hero-in">
+  <div class="badge">CSS · Lesson 34</div>
+  <h1>CSS Image Gallery and Image Sprites — Building Visual Displays and Optimising Performance</h1>
+  <div class="l-hero-sub">16 phases &nbsp;·&nbsp; Build: Project Overview</div>
 </div></div>
-</section>
-
-<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
-<div class="phase" id="phase1">
-  <div class="phase-header">
-    <div class="phase-num">Phase 1 of 16</div>
-    <div class="phase-title">Lesson Introduction</div>
-    <div class="phase-check" id="chk1"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Two of the most visible skills in front-end web development are creating beautiful image galleries and making pages load fast. This lesson teaches both — and shows you exactly how they connect.</p>
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--br)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="wb"><h2>👋 Welcome to Lesson 34</h2><div style="font-size:.92rem;line-height:1.85;color:var(--t2)"><p class="v2-p">Two of the most visible skills in front-end web development are creating beautiful image galleries and making pages load fast. This lesson teaches both — and shows you exactly how they connect.</p>
 <p class="v2-p"><strong>Part One: CSS Image Galleries</strong> You will learn how to take a raw collection of images and turn them into a polished, responsive grid gallery — the kind you see on photography portfolios, e-commerce product pages, Instagram-style apps, and news websites. You will build galleries from scratch using pure CSS: fixed-width galleries, responsive galleries, hover overlay effects, and caption displays.</p>
 <p class="v2-p"><strong>Part Two: CSS Image Sprites</strong> You will learn one of the most important performance techniques in CSS: combining many small images into one single file called a <em>sprite sheet</em>, then using CSS to "cut out" each individual image as needed. This dramatically reduces the number of network requests your page makes, making it load faster for users.</p>
 <p class="v2-p">By the end of this lesson you will be able to:</p>
 <ul class="v2-ul"><li>Build a fully responsive image gallery with hover effects using CSS alone</li><li>Understand what image sprites are and why they exist</li><li>Use <code>background-image</code> and <code>background-position</code> to display individual sprite icons</li><li>Create a sprite-based navigation bar with hover states</li><li>Build a combined mini-project: a portfolio gallery page with a sprite-powered icon toolbar</li></ul>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase2">
-  <div class="phase-header">
-    <div class="phase-num">Phase 2 of 16</div>
-    <div class="phase-title">Prerequisite Concepts</div>
-    <div class="phase-check" id="chk2"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Before starting, you need to be comfortable with these ideas. Brief explanations are provided.</p>
+<hr class="v2-hr"></div><div class="wm"><span>📚 16 phases</span><span>🏗️ Project Overview</span><span>🌐 GitHub Pages</span></div></div></div>
+</section>
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1"><div class="ph"><div class="pn">Phase 1/16</div><div class="pt">Lesson Introduction</div><div class="pc" id="chk1"></div></div><div class="pb2"><p class="v2-p">Two of the most visible skills in front-end web development are creating beautiful image galleries and making pages load fast. This lesson teaches both — and shows you exactly how they connect.</p>
+<p class="v2-p"><strong>Part One: CSS Image Galleries</strong> You will learn how to take a raw collection of images and turn them into a polished, responsive grid gallery — the kind you see on photography portfolios, e-commerce product pages, Instagram-style apps, and news websites. You will build galleries from scratch using pure CSS: fixed-width galleries, responsive galleries, hover overlay effects, and caption displays.</p>
+<p class="v2-p"><strong>Part Two: CSS Image Sprites</strong> You will learn one of the most important performance techniques in CSS: combining many small images into one single file called a <em>sprite sheet</em>, then using CSS to "cut out" each individual image as needed. This dramatically reduces the number of network requests your page makes, making it load faster for users.</p>
+<p class="v2-p">By the end of this lesson you will be able to:</p>
+<ul class="v2-ul"><li>Build a fully responsive image gallery with hover effects using CSS alone</li><li>Understand what image sprites are and why they exist</li><li>Use <code>background-image</code> and <code>background-position</code> to display individual sprite icons</li><li>Create a sprite-based navigation bar with hover states</li><li>Build a combined mini-project: a portfolio gallery page with a sprite-powered icon toolbar</li></ul>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(1)">Start Lesson ✓</button></div></div>
+<div class="phase locked" id="phase2"><div class="ph"><div class="pn">Phase 2/16</div><div class="pt">Prerequisite Concepts</div><div class="pc" id="chk2"></div></div><div class="pb2"><p class="v2-p">Before starting, you need to be comfortable with these ideas. Brief explanations are provided.</p>
 <h3 class="v2-h3">CSS Box Model</h3>
 <p class="v2-p">Every HTML element is a rectangular box with <code>width</code>, <code>height</code>, <code>padding</code>, <code>border</code>, and <code>margin</code>. Controlling box dimensions is central to placing gallery images precisely.</p>
 <h3 class="v2-h3"><code>position: relative</code> and <code>position: absolute</code></h3>
 <p class="v2-p">When an element has <code>position: relative</code>, its children can use <code>position: absolute</code> to place themselves relative to it. This is the foundation of image overlay effects.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.parent {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.parent {
   position: relative;   /* Children positioned relative to this */
 }
 .child {
@@ -239,7 +159,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 }</code></pre></div></div>
 <h3 class="v2-h3"><code>background-image</code> and <code>background-position</code></h3>
 <p class="v2-p">These two properties are the foundation of image sprites.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.element {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.element {
   background-image: url(&quot;photo.jpg&quot;);     /* Which image file to use */
   background-position: 0 0;              /* Where to start showing the image */
   background-repeat: no-repeat;          /* Don&#x27;t tile the image */
@@ -248,72 +168,30 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <p class="v2-p">Hides content that goes outside a box's boundaries — essential for cropping images.</p>
 <h3 class="v2-h3"><code>opacity</code> and <code>transition</code></h3>
 <p class="v2-p"><code>opacity</code> controls how transparent an element is (0 = invisible, 1 = fully visible). <code>transition</code> makes property changes animate smoothly over time.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.overlay {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.overlay {
   opacity: 0;
   transition: opacity 0.3s ease;   /* Fade in/out over 0.3 seconds */
 }
 .parent:hover .overlay {
   opacity: 1;
 }</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase3">
-  <div class="phase-header">
-    <div class="phase-num">Phase 3 of 16</div>
-    <div class="phase-title">PART ONE — CSS Image Gallery</div>
-    <div class="phase-check" id="chk3"></div>
-  </div>
-  <div class="phase-body">
-    <hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>PART ONE — CSS Image Gallery</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase4">
-  <div class="phase-header">
-    <div class="phase-num">Phase 4 of 16</div>
-    <div class="phase-title">Section 1 — What Is an Image Gallery?</div>
-    <div class="phase-check" id="chk4"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">The Concept</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase3"><div class="ph"><div class="pn">Phase 3/16</div><div class="pt">PART ONE — CSS Image Gallery</div><div class="pc" id="chk3"></div></div><div class="pb2"><hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>PART ONE — CSS Image Gallery</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase4"><div class="ph"><div class="pn">Phase 4/16</div><div class="pt">Section 1 — What Is an Image Gallery?</div><div class="pc" id="chk4"></div></div><div class="pb2"><h3 class="v2-h3">The Concept</h3>
 <p class="v2-p">An image gallery is a structured visual layout that displays a collection of images in an organised grid or row. You encounter them everywhere:</p>
 <ul class="v2-ul"><li>A photographer's portfolio showing their work in a neat 3-column grid</li><li>An e-commerce site displaying product thumbnails in rows of four</li><li>A social media app's profile page showing a grid of posted photos</li><li>A news website showing article thumbnail images in a responsive layout</li></ul>
 <p class="v2-p">Without CSS, images just stack vertically one after another. CSS gives you the tools to arrange them in grids, control their sizes, add borders, captions, and hover effects — transforming a plain list into a professional gallery.</p>
 <h3 class="v2-h3">The Core Problem CSS Solves</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML without CSS — images just stack vertically, uncontrolled --&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!-- HTML without CSS — images just stack vertically, uncontrolled --&gt;
 &lt;img src=&quot;photo1.jpg&quot;&gt;
 &lt;img src=&quot;photo2.jpg&quot;&gt;
 &lt;img src=&quot;photo3.jpg&quot;&gt;
 &lt;img src=&quot;photo4.jpg&quot;&gt;</code></pre></div></div>
 <p class="v2-p">Without CSS, these four images appear one below the other in a messy column. With CSS, you can arrange them into a beautiful 2×2 or 4×1 grid, add space between them, make them uniform sizes, and add hover effects.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>What Is an Image Gallery?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase5">
-  <div class="phase-header">
-    <div class="phase-num">Phase 5 of 16</div>
-    <div class="phase-title">Section 2 — Building a Basic Image Gallery</div>
-    <div class="phase-check" id="chk5"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Step 1 — HTML Structure for a Gallery</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>What Is an Image Gallery?</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase5"><div class="ph"><div class="pn">Phase 5/16</div><div class="pt">Section 2 — Building a Basic Image Gallery</div><div class="pc" id="chk5"></div></div><div class="pb2"><h3 class="v2-h3">Step 1 — HTML Structure for a Gallery</h3>
 <p class="v2-p">The standard pattern for a CSS gallery uses a <strong>container <code>&lt;div&gt;</code></strong> wrapping individual <strong>gallery item <code>&lt;div&gt;</code>s</strong>, each containing an <code>&lt;img&gt;</code> and optional caption.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- The basic gallery HTML structure --&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!-- The basic gallery HTML structure --&gt;
 &lt;div class=&quot;gallery&quot;&gt;
 
   &lt;div class=&quot;gallery-item&quot;&gt;
@@ -342,7 +220,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <hr class="v2-hr">
 <h3 class="v2-h3">Step 2 — Making Images a Uniform Size</h3>
 <p class="v2-p">Images rarely arrive with the same dimensions. Left unstyled, your gallery would have a jumble of different sizes. CSS fixes this.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Make all gallery images the same size */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Make all gallery images the same size */
 .gallery-item img {
   width: 300px;         /* Fixed width — all images will be this wide */
   height: 200px;        /* Fixed height — all images will be this tall */
@@ -351,7 +229,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 }</code></pre></div></div>
 <p class="v2-p"><strong>What does <code>object-fit: cover</code> do?</strong></p>
 <p class="v2-p">Think of it like a photo frame. The frame (your <code>&lt;img&gt;</code> element) is a fixed 300×200 rectangle. Some photos may be landscape (wide), some portrait (tall), and some square. Without <code>object-fit: cover</code>, images would distort to fit — faces would be squashed or stretched. With <code>object-fit: cover</code>, the image is scaled up and cropped so that it fills the frame completely without any distortion. Some edges may be cropped, but the proportions are always correct.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Comparison of object-fit values */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Comparison of object-fit values */
 img { object-fit: fill;    }  /* Default: stretches/distorts to fit exactly */
 img { object-fit: cover;   }  /* Crops to fill — no distortion, may crop edges */
 img { object-fit: contain; }  /* Shrinks to fit inside — may show empty space */
@@ -359,7 +237,7 @@ img { object-fit: none;    }  /* Shows image at its natural size, may overflow *
 <p class="v2-p"><strong>Expected Output with <code>cover</code>:</strong> All images appear as uniform 300×200 rectangles, each perfectly filled with their respective photo, with no distortion.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Step 3 — Arranging Images in a Row Using Flexbox</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Arrange gallery items in a horizontal row */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Arrange gallery items in a horizontal row */
 .gallery {
   display: flex;          /* Flexbox layout — items go side by side */
   flex-wrap: wrap;        /* Items wrap to the next line when the row is full */
@@ -377,7 +255,7 @@ img { object-fit: none;    }  /* Shows image at its natural size, may overflow *
 <blockquote class="v2-bq"><p class="v2-p">💭 <strong>Think about it:</strong> What happens if you remove <code>flex-wrap: wrap</code>? All items stay on one row and might overflow off-screen, or they get squashed to fit. <code>flex-wrap: wrap</code> is what lets the gallery reflow onto multiple rows naturally.</p></blockquote>
 <hr class="v2-hr">
 <h3 class="v2-h3">Step 4 — Adding a Caption Below Each Image</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Style the caption text below each image */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Style the caption text below each image */
 .caption {
   padding: 8px 12px;
   font-size: 14px;
@@ -390,7 +268,7 @@ img { object-fit: none;    }  /* Shows image at its natural size, may overflow *
 <hr class="v2-hr">
 <h3 class="v2-h3">Full Basic Gallery Example</h3>
 <p class="v2-p">Here is the complete beginner gallery putting all four steps together:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot; /&gt;
@@ -477,25 +355,11 @@ img { object-fit: none;    }  /* Shows image at its natural size, may overflow *
 &lt;/body&gt;
 &lt;/html&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> Six gallery items arranged in a horizontal row (wrapping to a second row if needed), each showing a coloured placeholder image with a caption below. Clean, professional, and ordered.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Building a Basic Image Gallery</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase6">
-  <div class="phase-header">
-    <div class="phase-num">Phase 6 of 16</div>
-    <div class="phase-title">Section 3 — Responsive Gallery (Adapting to All Screen Sizes)</div>
-    <div class="phase-check" id="chk6"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">A responsive gallery automatically rearranges itself depending on the screen size. On a wide desktop, it might show four images per row. On a tablet, two per row. On a mobile phone, one per row.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Building a Basic Image Gallery</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase6"><div class="ph"><div class="pn">Phase 6/16</div><div class="pt">Section 3 — Responsive Gallery (Adapting to All Screen Sizes)</div><div class="pc" id="chk6"></div></div><div class="pb2"><p class="v2-p">A responsive gallery automatically rearranges itself depending on the screen size. On a wide desktop, it might show four images per row. On a tablet, two per row. On a mobile phone, one per row.</p>
 <h3 class="v2-h3">Using CSS Grid for Responsiveness</h3>
 <p class="v2-p">CSS Grid is the most powerful and modern way to build responsive galleries. The magic keyword is <code>auto-fill</code> combined with <code>minmax()</code>.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Responsive gallery using CSS Grid */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Responsive gallery using CSS Grid */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -507,13 +371,13 @@ img { object-fit: none;    }  /* Shows image at its natural size, may overflow *
 <p class="v2-p"><strong>Breaking down <code>repeat(auto-fill, minmax(200px, 1fr))</code>:</strong></p>
 <ul class="v2-ul"><li><code>repeat(...)</code> — create a repeating column pattern</li><li><code>auto-fill</code> — automatically add as many columns as will fit in the available width</li><li><code>minmax(200px, 1fr)</code> — each column is at minimum 200px wide, and can grow to fill equal fractions of the remaining space</li><li>The browser figures out how many columns to show automatically — no JavaScript needed</li></ul>
 <p class="v2-p"><strong>Expected Output at different screen widths:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Desktop (1200px wide):   [ img ] [ img ] [ img ] [ img ] [ img ]  ← 5 columns
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>Desktop (1200px wide):   [ img ] [ img ] [ img ] [ img ] [ img ]  ← 5 columns
 Tablet (768px wide):     [ img ] [ img ] [ img ]                  ← 3 columns
 Mobile (400px wide):     [ img ] [ img ]                          ← 2 columns
 Very small (250px wide): [ img ]                                   ← 1 column</code></pre></div></div>
 <h3 class="v2-h3">Using Media Queries for More Explicit Control</h3>
 <p class="v2-p">If you want to control exactly how many columns appear at each breakpoint:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Gallery items — start with full width (mobile first) */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Gallery items — start with full width (mobile first) */
 .gallery {
   display: flex;
   flex-wrap: wrap;
@@ -541,41 +405,27 @@ Very small (250px wide): [ img ]                                   ← 1 column<
 <p class="v2-p"><strong>Expected Output:</strong></p>
 <ul class="v2-ul"><li>On screens narrower than 480px: one full-width image per row</li><li>On screens 480px–767px: two images per row</li><li>On screens 768px and wider: four images per row</li></ul>
 <blockquote class="v2-bq"><p class="v2-p">⭐ <strong>Best practice:</strong> The CSS Grid <code>auto-fill</code> + <code>minmax</code> approach requires fewer lines of code and adapts more fluidly than media queries. Use it for most gallery layouts. Use explicit media queries when you need pixel-perfect control over exact column counts.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Responsive Gallery (Adapting to All Screen Sizes)</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase7">
-  <div class="phase-header">
-    <div class="phase-num">Phase 7 of 16</div>
-    <div class="phase-title">Section 4 — Image Hover Overlay Effects</div>
-    <div class="phase-check" id="chk7"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Hover overlay effects are one of the most visually impressive features of CSS galleries. When a user hovers over an image, a translucent layer fades in on top of it — often revealing the image caption, a zoom effect, or an action button.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Responsive Gallery (Adapting to All Screen Sizes)</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase7"><div class="ph"><div class="pn">Phase 7/16</div><div class="pt">Section 4 — Image Hover Overlay Effects</div><div class="pc" id="chk7"></div></div><div class="pb2"><p class="v2-p">Hover overlay effects are one of the most visually impressive features of CSS galleries. When a user hovers over an image, a translucent layer fades in on top of it — often revealing the image caption, a zoom effect, or an action button.</p>
 <h3 class="v2-h3">How an Overlay Works (The Mental Model)</h3>
 <p class="v2-p">Imagine a painting on a wall. Now imagine a glass panel that slides in front of the painting when you walk towards it. The glass is invisible until you get close, then it becomes visible.</p>
 <p class="v2-p">In CSS:</p>
 <ul class="v2-ul"><li>The <strong>painting</strong> is your <code>&lt;img&gt;</code> element</li><li>The <strong>glass panel</strong> is an <code>::after</code> pseudo-element or an overlay <code>&lt;div&gt;</code> positioned absolutely on top of the image</li><li>The <strong>walking towards it</strong> is the <code>:hover</code> state</li><li>The <strong>glass becoming visible</strong> is <code>opacity</code> transitioning from <code>0</code> to <code>1</code></li></ul>
 <h3 class="v2-h3">The Three-Layer Stack</h3>
 <p class="v2-p">Every gallery item with a hover overlay has this structure:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Layer 3 (top):    Overlay text / caption     ← position: absolute, shown on hover
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>Layer 3 (top):    Overlay text / caption     ← position: absolute, shown on hover
 Layer 2 (middle): Dark overlay panel         ← position: absolute, opacity 0 → 1
 Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pre></div></div>
 <p class="v2-p">The parent <code>.gallery-item</code> holds all three layers together with <code>position: relative</code>.</p>
 <h3 class="v2-h3">Basic Fade-In Overlay Example</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
 &lt;div class=&quot;gallery-item&quot;&gt;
   &lt;img src=&quot;photo.jpg&quot; alt=&quot;Mountain&quot; /&gt;
   &lt;div class=&quot;overlay&quot;&gt;
     &lt;div class=&quot;overlay-text&quot;&gt;Mountain Range&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CSS */
 
 /* The gallery item must be relative so the overlay positions inside it */
 .gallery-item {
@@ -631,7 +481,7 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 <hr class="v2-hr">
 <h3 class="v2-h3">Zoom Effect on Hover</h3>
 <p class="v2-p">A popular alternative or complement to the overlay effect is a subtle zoom — the image grows slightly when hovered, creating a sense of life and interactivity.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CSS */
 .gallery-item {
   overflow: hidden;    /* CRITICAL: clips the zoomed image within the box */
   width: 250px;
@@ -656,7 +506,7 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 <hr class="v2-hr">
 <h3 class="v2-h3">Combining Overlay and Zoom Together</h3>
 <p class="v2-p">The most professional gallery effect combines both — the image zooms AND an overlay fades in simultaneously:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS — combined overlay + zoom */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CSS — combined overlay + zoom */
 .gallery-item {
   position: relative;
   overflow: hidden;
@@ -710,23 +560,9 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 <p class="v2-p"><strong>Expected Output:</strong></p>
 <ul class="v2-ul"><li>Normal state: Clean image, no overlay</li><li>On hover: Image smoothly zooms to 108%, and a gradient overlay fades in from the bottom — the caption text appears over the dark gradient at the bottom of the image</li></ul>
 <p class="v2-p">This gradient overlay approach (<code>rgba(0,0,0,0)</code> at the top fading to <code>rgba(0,0,0,0.75)</code> at the bottom) is more elegant than a solid dark overlay. The image top remains clearly visible, and only the bottom where the caption sits has the dark gradient background.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Image Hover Overlay Effects</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase8">
-  <div class="phase-header">
-    <div class="phase-num">Phase 8 of 16</div>
-    <div class="phase-title">Section 5 — Full Responsive Gallery with Hover Effects</div>
-    <div class="phase-check" id="chk8"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">This is the complete gallery combining all the concepts: responsive grid, uniform images, and hover overlay with zoom.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Image Hover Overlay Effects</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase8"><div class="ph"><div class="pn">Phase 8/16</div><div class="pt">Section 5 — Full Responsive Gallery with Hover Effects</div><div class="pc" id="chk8"></div></div><div class="pb2"><p class="v2-p">This is the complete gallery combining all the concepts: responsive grid, uniform images, and hover overlay with zoom.</p>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot; /&gt;
@@ -885,37 +721,9 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 &lt;/body&gt;
 &lt;/html&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> A dark-themed gallery page with six city images in a responsive grid. On hover, each image zooms slightly and a gradient overlay fades in from the bottom revealing the city name and region.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Full Responsive Gallery with Hover Effects</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase9">
-  <div class="phase-header">
-    <div class="phase-num">Phase 9 of 16</div>
-    <div class="phase-title">PART TWO — CSS Image Sprites</div>
-    <div class="phase-check" id="chk9"></div>
-  </div>
-  <div class="phase-body">
-    <hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>PART TWO — CSS Image Sprites</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase10">
-  <div class="phase-header">
-    <div class="phase-num">Phase 10 of 16</div>
-    <div class="phase-title">Section 6 — What Is an Image Sprite?</div>
-    <div class="phase-check" id="chk10"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">The Problem Sprites Solve</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Full Responsive Gallery with Hover Effects</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase9"><div class="ph"><div class="pn">Phase 9/16</div><div class="pt">PART TWO — CSS Image Sprites</div><div class="pc" id="chk9"></div></div><div class="pb2"><hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>PART TWO — CSS Image Sprites</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase10"><div class="ph"><div class="pn">Phase 10/16</div><div class="pt">Section 6 — What Is an Image Sprite?</div><div class="pc" id="chk10"></div></div><div class="pb2"><h3 class="v2-h3">The Problem Sprites Solve</h3>
 <p class="v2-p">Every time a web browser needs to display an image, it must make a separate <strong>HTTP request</strong> to the web server — it asks the server, "Please send me this image file." This is like making a separate phone call for each item on your shopping list. If your page has 15 small icons, the browser makes 15 separate requests.</p>
 <p class="v2-p">Each request takes time — even if small, it adds up:</p>
 <ul class="v2-ul"><li>Request 1: <code>home-icon.png</code> → 50ms</li><li>Request 2: <code>search-icon.png</code> → 45ms</li><li>Request 3: <code>cart-icon.png</code> → 52ms</li><li>…and so on for 15 icons = potentially 750ms+ of waiting</li></ul>
@@ -923,7 +731,7 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 <p class="v2-p">This is exactly like a film strip. A film strip is one long piece of film containing many individual frames. A projector shows one frame at a time by positioning the right frame in front of the light. CSS sprites work the same way: one image file, many individual pictures, a CSS "window" that shows just the one you want.</p>
 <h3 class="v2-h3">Visual Diagram of a Sprite Sheet</h3>
 <p class="v2-p">Imagine a sprite sheet that looks like this (greatly simplified):</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Sprite sheet: img_icons.png (total size: 180px × 60px)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>Sprite sheet: img_icons.png (total size: 180px × 60px)
 +------------------+------------------+------------------+
 |                  |                  |                  |
 |   HOME ICON      |   SEARCH ICON    |   CART ICON      |
@@ -941,37 +749,23 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 <p class="v2-p">The browser creates a <strong>fixed viewport window</strong> the size of your element (for example, 60×60px). The sprite sheet sits <em>behind</em> this window. By default, the sprite sheet starts at position <code>0 0</code> — its top-left corner aligns with the window's top-left corner.</p>
 <p class="v2-p">When you write <code>background-position: -60px 0</code>:</p>
 <ul class="v2-ul"><li>You are moving the <em>sprite sheet</em> 60px to the LEFT</li><li>This means the part of the sprite sheet now visible through the 60×60 window is the section that starts 60px from the left edge — which is the second icon</li></ul>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>background-position: 0 0         background-position: -60px 0
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>background-position: 0 0         background-position: -60px 0
 +------------------+             +------------------+
 | HOME     |search |             |search    | CART  |
 | VISIBLE  |hidden |             | VISIBLE  |hidden |
 +------------------+             +------------------+
 ↑ window edge                    ↑ window edge
 (sprite moved 0px left)          (sprite moved 60px left)</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>What Is an Image Sprite?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase11">
-  <div class="phase-header">
-    <div class="phase-num">Phase 11 of 16</div>
-    <div class="phase-title">Section 7 — Basic Sprite Usage</div>
-    <div class="phase-check" id="chk11"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Simple Example — Three Navigation Icons</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>What Is an Image Sprite?</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase11"><div class="ph"><div class="pn">Phase 11/16</div><div class="pt">Section 7 — Basic Sprite Usage</div><div class="pc" id="chk11"></div></div><div class="pb2"><h3 class="v2-h3">Simple Example — Three Navigation Icons</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
 &lt;!-- Each img starts with a tiny 1×1 transparent placeholder.
      The src must not be empty, but the actual display
      comes from the CSS background-image. --&gt;
 &lt;img id=&quot;home&quot;  src=&quot;img_trans.gif&quot; width=&quot;1&quot; height=&quot;1&quot; alt=&quot;Home&quot; /&gt;
 &lt;img id=&quot;prev&quot;  src=&quot;img_trans.gif&quot; width=&quot;1&quot; height=&quot;1&quot; alt=&quot;Previous&quot; /&gt;
 &lt;img id=&quot;next&quot;  src=&quot;img_trans.gif&quot; width=&quot;1&quot; height=&quot;1&quot; alt=&quot;Next&quot; /&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CSS */
 
 /* Home icon — positioned at the very start of the sprite (0, 0) */
 #home {
@@ -999,11 +793,11 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 <p class="v2-p"><strong>Expected Output:</strong> Three icon images rendered side by side. Each shows a different portion of the single sprite file. The browser made ONE network request for <code>img_navsprites.gif</code>, not three separate requests.</p>
 <h3 class="v2-h3">Modern Alternative: Using <code>&lt;div&gt;</code> Instead of <code>&lt;img&gt;</code></h3>
 <p class="v2-p">In modern CSS, it is more common to use <code>&lt;div&gt;</code> or <code>&lt;span&gt;</code> elements for sprite icons rather than <code>&lt;img&gt;</code> tags. This avoids the awkward empty <code>src</code> attribute:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Modern approach using div elements --&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!-- Modern approach using div elements --&gt;
 &lt;div class=&quot;icon icon-home&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;icon icon-search&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;icon icon-cart&quot;&gt;&lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CSS */
 
 /* Shared styles for all sprite icons */
 .icon {
@@ -1019,26 +813,12 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 .icon-search { background-position: -40px 0px; }
 .icon-cart   { background-position: -80px 0px; }</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> Three icons displayed side by side, each showing a different part of the sprite image.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Basic Sprite Usage</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase12">
-  <div class="phase-header">
-    <div class="phase-num">Phase 12 of 16</div>
-    <div class="phase-title">Section 8 — Sprite Navigation Bar with Hover States</div>
-    <div class="phase-check" id="chk12"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">The most powerful use of sprites is a navigation bar where each item has a <strong>normal state</strong> and a <strong>hover state</strong> — and both states live in the same sprite file!</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Basic Sprite Usage</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(11)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase12"><div class="ph"><div class="pn">Phase 12/16</div><div class="pt">Section 8 — Sprite Navigation Bar with Hover States</div><div class="pc" id="chk12"></div></div><div class="pb2"><p class="v2-p">The most powerful use of sprites is a navigation bar where each item has a <strong>normal state</strong> and a <strong>hover state</strong> — and both states live in the same sprite file!</p>
 <h3 class="v2-h3">How It Works</h3>
 <p class="v2-p">The sprite sheet is designed so that:</p>
 <ul class="v2-ul"><li>Row 1 (y = 0): All normal/default icon states</li><li>Row 2 (y = -60px): All hover/active icon states</li></ul>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Sprite sheet: img_navsprites_hover.gif
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>Sprite sheet: img_navsprites_hover.gif
 +----------+----------+----------+
 | Home     | Prev     | Next     |  ← Row 1: normal icons (y=0)
 | (normal) | (normal) | (normal) |
@@ -1050,13 +830,13 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 <p class="v2-p">To show the hover version of the home icon:</p>
 <ul class="v2-ul"><li>Move the sprite 0px horizontally (home icon is still in the first column)</li><li>Move the sprite 60px UPWARD (use <code>-60px</code> for y), which reveals the hover row</li></ul>
 <h3 class="v2-h3">Navigation Bar with Hover Effect</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!-- HTML --&gt;
 &lt;ul id=&quot;navlist&quot;&gt;
   &lt;li id=&quot;home&quot;&gt;  &lt;a href=&quot;#&quot; title=&quot;Home&quot;&gt;&lt;/a&gt;     &lt;/li&gt;
   &lt;li id=&quot;prev&quot;&gt;  &lt;a href=&quot;#&quot; title=&quot;Previous&quot;&gt;&lt;/a&gt; &lt;/li&gt;
   &lt;li id=&quot;next&quot;&gt;  &lt;a href=&quot;#&quot; title=&quot;Next&quot;&gt;&lt;/a&gt;     &lt;/li&gt;
 &lt;/ul&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CSS */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CSS */
 
 /* Reset the list */
 #navlist {
@@ -1100,7 +880,7 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 <ul class="v2-ul"><li>Normal state: Three navigation icons shown from row 1 of the sprite</li><li>On hover over home icon: The background shifts to row 2 (y = -45px), revealing the highlighted version of the home icon — instant visual feedback, ZERO additional network requests</li></ul>
 <h3 class="v2-h3">Using Emoji as a Sprite Simulation (No Image File Needed)</h3>
 <p class="v2-p">Since real sprite image files are not available in this lesson environment, here is a fully working simulation using CSS background colours to demonstrate the sprite concept. The same CSS logic applies perfectly to real sprite images:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -1245,28 +1025,14 @@ Layer 1 (bottom): The actual &lt;img&gt;           ← always visible</code></pr
 &lt;/body&gt;
 &lt;/html&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> A dark navigation bar with five icon buttons. Hovering reveals a highlighted state. The comparison cards below show the dramatic difference in network requests between sprite and non-sprite approaches.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Sprite Navigation Bar with Hover States</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(12)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase13">
-  <div class="phase-header">
-    <div class="phase-num">Phase 13 of 16</div>
-    <div class="phase-title">Section 9 — How to Calculate `background-position` for Any Sprite</div>
-    <div class="phase-check" id="chk13"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">This section teaches you the systematic method for finding the correct position values for any icon in any sprite sheet.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Sprite Navigation Bar with Hover States</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(12)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase13"><div class="ph"><div class="pn">Phase 13/16</div><div class="pt">Section 9 — How to Calculate `background-position` for Any Sprite</div><div class="pc" id="chk13"></div></div><div class="pb2"><p class="v2-p">This section teaches you the systematic method for finding the correct position values for any icon in any sprite sheet.</p>
 <h3 class="v2-h3">The Formula</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>background-position-x = -(distance from LEFT edge of sprite to the icon&#x27;s left edge)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>background-position-x = -(distance from LEFT edge of sprite to the icon&#x27;s left edge)
 background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s top edge)</code></pre></div></div>
 <h3 class="v2-h3">Worked Example</h3>
 <p class="v2-p">Suppose you have a sprite sheet that is 200px wide × 100px tall, with four 50×50px icons arranged in a 2×2 grid:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Sprite sheet: icons.png (200px × 100px)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>Sprite sheet: icons.png (200px × 100px)
 +-------------------+-------------------+
 |                   |                   |
 |    ICON A         |    ICON B         |  ← Row 1 (y=0 to y=49)
@@ -1280,7 +1046,7 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 +-------------------+-------------------+
  x=0 to x=49          x=50 to x=99</code></pre></div></div>
 <p class="v2-p">To display each icon:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Icon A — top-left corner of the sprite */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Icon A — top-left corner of the sprite */
 .icon-a {
   width: 50px;
   height: 50px;
@@ -1318,24 +1084,10 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 <h3 class="v2-h3">Practical Tools for Finding Sprite Positions</h3>
 <p class="v2-p">In real professional work, you do not calculate positions by hand. You use tools:</p>
 <ul class="v2-ul"><li><strong>SpriteCow</strong> (spritecow.com) — upload a sprite sheet, hover over an icon, and it gives you the exact CSS</li><li><strong>CSS Sprite Generator</strong> (spritegen.website-performance.org) — upload images, it generates the combined sprite and all CSS</li><li><strong>Browser DevTools</strong> — open Chrome DevTools, use the <code>Computed</code> panel to inspect the background-position of any element</li><li><strong>Image editor rulers</strong> — in Photoshop, Figma, or GIMP, hover over a pixel and the coordinates are shown in the toolbar</li></ul>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>How to Calculate <code>background-position</code> for Any Sprite</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(13)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase14">
-  <div class="phase-header">
-    <div class="phase-num">Phase 14 of 16</div>
-    <div class="phase-title">Section 10 — Sprite Best Practices</div>
-    <div class="phase-check" id="chk14"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Tip 1 — Group Related Icons Together</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>How to Calculate <code>background-position</code> for Any Sprite</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(13)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase14"><div class="ph"><div class="pn">Phase 14/16</div><div class="pt">Section 10 — Sprite Best Practices</div><div class="pc" id="chk14"></div></div><div class="pb2"><h3 class="v2-h3">Tip 1 — Group Related Icons Together</h3>
 <p class="v2-p">Keep icons that are used together in the same sprite sheet. Don't mix navigation icons, social media icons, and product category icons in one massive sheet.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>✅ Good: nav-sprite.png (home, search, cart, profile, menu)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>✅ Good: nav-sprite.png (home, search, cart, profile, menu)
 ✅ Good: social-sprite.png (facebook, twitter, instagram, linkedin)
 ❌ Bad:  everything-sprite.png (50+ unrelated icons all mixed together)</code></pre></div></div>
 <h3 class="v2-h3">Tip 2 — Leave Padding Between Icons</h3>
@@ -1344,32 +1096,17 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 <p class="v2-p">Design all icons in a sprite at the same dimensions (e.g., all 40×40px). This makes position calculations simple and predictable.</p>
 <h3 class="v2-h3">Tip 4 — Use <code>background-repeat: no-repeat</code></h3>
 <p class="v2-p">Always add this when working with sprites. Without it, the sprite image tiles across the element, showing unwanted repeated copies of other icons.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Always include this! */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Always include this! */
 .icon {
   background-image: url(&quot;sprite.png&quot;);
   background-repeat: no-repeat;   /* ← ESSENTIAL */
 }</code></pre></div></div>
 <h3 class="v2-h3">Tip 5 — When NOT to Use Sprites</h3>
 <ul class="v2-ul"><li><strong>SVG icon fonts</strong> (like Font Awesome) are often better for purely vector icons — they scale perfectly on retina screens</li><li><strong>Inline SVGs</strong> give you CSS control over individual parts (colour, stroke)</li><li><strong>HTTP/2</strong> server connections reduce the HTTP request penalty, so sprites give slightly less benefit on modern servers — but they are still worthwhile</li></ul>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Sprite Best Practices</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(14)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase15">
-  <div class="phase-header">
-    <div class="phase-num">Phase 15 of 16</div>
-    <div class="phase-title">Part Three — Guided Practice Exercises</div>
-    <div class="phase-check" id="chk15"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Exercise 1 — Build a Fixed Gallery</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Sprite Best Practices</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(14)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase15"><div class="ph"><div class="pn">Phase 15/16</div><div class="pt">Part Three — Guided Practice Exercises</div><div class="pc" id="chk15"></div></div><div class="pb2"><div class="chal-box"><div class="chal-lbl">🎯 Your Challenge</div><div class="chal-body"><h3 class="v2-h3">Exercise 1 — Build a Fixed Gallery</h3>
 <p class="v2-p"><strong>Objective:</strong> Create a gallery of six images arranged in a 3-column grid with borders, uniform sizes, and captions.</p>
-<p class="v2-p"><strong>Scenario:</strong> You are building a "Team Members" section for a company website. Display six team member photos in a 3-column grid, each with the person's name below their photo.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<p class="v2-p"><strong>Scenario:</strong> You are building a "Team Members" section for a company website. Display six team member photos in a 3-column grid, each with the person's name below their photo.</p></div></div><div class="task-box"><div class="task-lbl">✏️ Task</div><div class="task-body">Practise what you just learned about <strong>Part Three — Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="reveal-btn" onclick="toggleReveal(this)">👁️ Reveal Answer</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -1455,7 +1192,7 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 <hr class="v2-hr">
 <h3 class="v2-h3">Exercise 2 — Adding Hover Overlay to a Gallery</h3>
 <p class="v2-p"><strong>Objective:</strong> Take the gallery from Exercise 1 and add a hover overlay effect that reveals an "info" panel over each photo.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Add these styles to your Exercise 1 code */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Add these styles to your Exercise 1 code */
 
 /* Make items position-relative for absolute overlay */
 .gallery-item {
@@ -1490,13 +1227,13 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 .gallery-item:hover .overlay {
   opacity: 1;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!-- Add this overlay div inside each .gallery-item, after the img --&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!-- Add this overlay div inside each .gallery-item, after the img --&gt;
 &lt;div class=&quot;overlay&quot;&gt;&lt;span&gt;View Profile&lt;/span&gt;&lt;/div&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> Same gallery as Exercise 1, but hovering over any team member photo reveals a blue translucent overlay with "View Profile" text.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Exercise 3 — Responsive Gallery with Media Queries</h3>
 <p class="v2-p"><strong>Objective:</strong> Create a gallery that shows 4 columns on desktop, 2 on tablet, 1 on mobile.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
@@ -1557,7 +1294,7 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 <h3 class="v2-h3">Exercise 4 — Sprite Position Calculator</h3>
 <p class="v2-p"><strong>Objective:</strong> Practice calculating <code>background-position</code> values without a real image.</p>
 <p class="v2-p">Given this sprite layout where every icon is exactly <strong>50×50px</strong>:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>Sprite sheet: 150px wide × 100px tall
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>Sprite sheet: 150px wide × 100px tall
 +------------------+------------------+------------------+
 | PLAY (50×50)     | PAUSE (50×50)    | STOP (50×50)     |  ← Row 1 (y=0)
 | x=0, y=0         | x=50, y=0        | x=100, y=0       |
@@ -1566,7 +1303,7 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 | x=0, y=50        | x=50, y=50       | x=100, y=50      |
 +------------------+------------------+------------------+</code></pre></div></div>
 <p class="v2-p">Fill in the correct <code>background-position</code> values:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Normal states */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Normal states */
 .play  { background-position: ___; }    /* Answer: 0 0 */
 .pause { background-position: ___; }    /* Answer: -50px 0 */
 .stop  { background-position: ___; }    /* Answer: -100px 0 */
@@ -1576,23 +1313,9 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 .pause:hover { background-position: ___; }   /* Answer: -50px -50px */
 .stop:hover  { background-position: ___; }   /* Answer: -100px -50px */</code></pre></div></div>
 <p class="v2-p"><strong>Self-check:</strong> Remember the formula: the value is the <em>negative</em> distance from the left edge (for x) and <em>negative</em> distance from the top edge (for y) to the icon you want to show.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Part Three — Guided Practice Exercises</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(15)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase16">
-  <div class="phase-header">
-    <div class="phase-num">Phase 16 of 16</div>
-    <div class="phase-title">Common Beginner Mistakes</div>
-    <div class="phase-check" id="chk16"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Mistake 1 — Not Setting <code>position: relative</code> on the Gallery Item</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — overlay ends up relative to the entire page, not the image card */
+<hr class="v2-hr"></div><button class="ub" onclick="unlockNext(15)">Mark Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase16"><div class="ph"><div class="pn">Phase 16/16</div><div class="pt">Common Beginner Mistakes</div><div class="pc" id="chk16"></div></div><div class="pb2"><h3 class="v2-h3">Mistake 1 — Not Setting <code>position: relative</code> on the Gallery Item</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* WRONG — overlay ends up relative to the entire page, not the image card */
 .gallery-item {
   overflow: hidden;
   /* Missing: position: relative; */
@@ -1602,7 +1325,7 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
   top: 0; left: 0;
   width: 100%; height: 100%;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CORRECT */
 .gallery-item {
   position: relative;   /* ← This line is essential */
   overflow: hidden;
@@ -1615,7 +1338,7 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 <p class="v2-p"><strong>Why:</strong> An <code>absolutely</code> positioned element positions itself relative to its nearest ancestor that has <code>position</code> set to <code>relative</code>, <code>absolute</code>, <code>fixed</code>, or <code>sticky</code>. Without <code>position: relative</code> on <code>.gallery-item</code>, the overlay escapes and positions itself relative to some parent element much further up the tree.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 2 — Forgetting <code>overflow: hidden</code> on the Zoomed Image Container</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — zoom effect breaks outside the card boundary */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* WRONG — zoom effect breaks outside the card boundary */
 .gallery-item {
   position: relative;
   /* Missing: overflow: hidden; */
@@ -1625,7 +1348,7 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 .gallery-item:hover img {
   transform: scale(1.15);   /* Image grows but overflows the card! */
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CORRECT */
 .gallery-item {
   position: relative;
   overflow: hidden;   /* ← Clips the zoomed image to stay inside the card */
@@ -1635,18 +1358,18 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 <p class="v2-p"><strong>Why:</strong> <code>transform: scale()</code> enlarges an element beyond its original boundaries. Without <code>overflow: hidden</code>, the scaled image visually overlaps neighbouring gallery cards.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 3 — Using Positive Values for Sprite <code>background-position</code></h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — positive values move the background away from the window edge */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* WRONG — positive values move the background away from the window edge */
 .icon-search {
   background-position: 60px 0;   /* Moves the sprite to the RIGHT — shows blank space */
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — negative values shift the sprite so the right portion shows */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CORRECT — negative values shift the sprite so the right portion shows */
 .icon-search {
   background-position: -60px 0;  /* Moves sprite 60px LEFT — search icon now visible */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Why:</strong> Think of sliding a long filmstrip left to bring the next frame into view. You slide <em>left</em> (negative direction). A positive value would slide the strip <em>right</em> — showing blank space or repeating the first frame.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 4 — Forgetting <code>background-repeat: no-repeat</code> on Sprite Icons</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — sprite image tiles across the element, showing multiple icons */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* WRONG — sprite image tiles across the element, showing multiple icons */
 .icon {
   width: 40px;
   height: 40px;
@@ -1654,7 +1377,7 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
   background-position: -40px 0;
   /* Missing: background-repeat: no-repeat; */
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — sprite shows exactly once in the correct position */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CORRECT — sprite shows exactly once in the correct position */
 .icon {
   width: 40px;
   height: 40px;
@@ -1665,13 +1388,13 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 <p class="v2-p"><strong>Why:</strong> By default, <code>background-image</code> tiles (repeats) across the entire element. For sprites, you never want tiling — you want to show only the specific section at the specified position.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 5 — Distorted Gallery Images (Not Using <code>object-fit</code>)</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — images stretch and distort to fit the fixed dimensions */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* WRONG — images stretch and distort to fit the fixed dimensions */
 .gallery-item img {
   width: 250px;
   height: 170px;
   /* Missing: object-fit: cover; */
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — images scale and crop to fill, no distortion */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CORRECT — images scale and crop to fill, no distortion */
 .gallery-item img {
   width: 250px;
   height: 170px;
@@ -1681,14 +1404,14 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
 <p class="v2-p"><strong>Why:</strong> Without <code>object-fit: cover</code>, the browser stretches the image to exactly match the specified <code>width</code> and <code>height</code>, regardless of the image's natural proportions. This produces distorted, squashed, or stretched photos.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 6 — Wrong Image Dimensions for the Sprite Element</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* WRONG — element is bigger than one icon, showing parts of neighbouring icons */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* WRONG — element is bigger than one icon, showing parts of neighbouring icons */
 .icon-play {
   width: 200px;    /* Way too wide — shows the entire sprite sheet! */
   height: 200px;   /* Way too tall */
   background-image: url(&quot;sprite.png&quot;);
   background-position: 0 0;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* CORRECT — element dimensions must match the individual icon&#x27;s dimensions */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* CORRECT — element dimensions must match the individual icon&#x27;s dimensions */
 .icon-play {
   width: 40px;     /* Exactly the width of one icon in the sprite */
   height: 40px;    /* Exactly the height of one icon in the sprite */
@@ -1697,24 +1420,13 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
   background-position: 0 0;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Why:</strong> The element's <code>width</code> and <code>height</code> define the viewport "window" through which you see the sprite. If the window is larger than one icon, neighbouring icons bleed into view.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(16)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="build-box" id="build-it"><div class="build-lbl">🏗️ Build It — Mini Project</div><div class="build-name">Project Overview</div><div class="build-req"><h3 class="v2-h3">Project Overview</h3>
+<p class="v2-p">You will build a complete <strong>Photography Portfolio Page</strong> that combines everything from this lesson:</p>
+<ol class="v2-ol"><li>A responsive image gallery grid with hover overlay effects</li><li>A sprite-simulated icon toolbar at the top (using CSS techniques that mirror real sprite implementation)</li><li>A filter button row that categorises photos</li></ol>
+<p class="v2-p">This mirrors exactly how professional portfolio websites like Behance, Dribbble, and 500px are built.</p>
 <hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(16)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="build-box" id="build-it">
-  <div class="build-label">🏗️ Build It</div>
-  <div class="build-name">Project Overview</div>
-  <div class="build-desc">You will build a complete <strong>Photography Portfolio Page</strong> that combines everything from this lesson:</div>
-  <div class="v2-code-wrap">
-    <div class="v2-code-bar">
-      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
-      <span class="v2-code-lang">starter.html</span>
-    </div>
-    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<h3 class="v2-h3">Complete Project Code</h3></div><button class="reveal-btn" onclick="toggleCode(this)">💻 Reveal Starter Code</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">starter.html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot; /&gt;
@@ -2147,10 +1859,7 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
   &lt;/div&gt;&lt;!-- end .content --&gt;
 
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
-  </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
-    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+&lt;/html&gt;</code></pre></div></div><div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem"><button class="ub" onclick="downloadStarter(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -2583,87 +2292,66 @@ background-position-y = -(distance from TOP edge of sprite to the icon&#x27;s to
   </div><!-- end .content -->
 
 </body>
-</html>`)"
-      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
-      ⬇ Download starter.html
-    </button>
-    <button class="unlock-btn" onclick="showGithub()"
-      style="background:#0f172a;box-shadow:none">
-      🐙 Push to GitHub →
-    </button>
-  </div>
-</div>
+</html>`)" style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">⬇ Download starter.html</button><button class="ub" onclick="showGithub()" style="background:#0f172a;box-shadow:none">🐙 Push to GitHub Pages →</button></div></div></div>
 <div class="gh-acc" id="gh-steps" style="display:none">
-  <div class="gh-acc-head" onclick="toggleGh(this)">
-    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
-  </div>
-  <div class="gh-acc-body">
-    <div class="gh-step"><div class="gh-step-n">1</div>
-    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-34-project-overview</code>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">2</div>
-    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">3</div>
-    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
-    <div class="gh-step"><div class="gh-step-n">4</div>
-    <p>Commit message: <em>"Add CSS lesson 34 project"</em> → click <strong>Commit changes</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">5</div>
-    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-34-project-overview/</code> in about 1 minute! 🎉</p></div>
-    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
-  </div>
-</div>
-<div class="session-end" id="session-end">
-  <h2>🎉 Lesson 34 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
-  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ PART ONE — CSS Image Gallery</li><li>✅ Section 1 — What Is an Image Gallery?</li><li>✅ Section 2 — Building a Basic Image Gallery</li><li>✅ Section 3 — Responsive Gallery (Adapting to All Screen Sizes)</li><li>✅ Section 4 — Image Hover Overlay Effects</li><li>✅ Section 5 — Full Responsive Gallery with Hover Effects</li></ul>
-  <div class="lesson-nav"><a href="lesson_33.html" class="ln-btn">← Lesson 33</a><a href="lesson_35.html" class="ln-btn primary">Lesson 35 →</a></div>
-</div>
+<div class="gh-hd" onclick="toggleGh(this)">🐙 Push to GitHub Pages &nbsp;<span>▼</span></div>
+<div class="gh-bd">
+<div class="gh-st"><div class="gh-n">1</div><p>Go to <strong>github.com → New repository</strong> → name it <code>css-lesson-34-project-overview</code>. Set <strong>Public</strong>, tick <strong>Add README</strong>, click <strong>Create</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">2</div><p>Click <strong>Add file → Upload files</strong>. Rename your file to <code>index.html</code> then upload it.</p></div>
+<div class="gh-st"><div class="gh-n">3</div><p>Commit message: <em>"Add CSS lesson 34 project"</em> → <strong>Commit changes</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">4</div><p>Go to <strong>Settings → Pages</strong> → Source: <strong>main</strong> → <strong>Save</strong>. Live in ~1 min at <code>https://YOUR-NAME.github.io/css-lesson-34-project-overview/</code> 🎉</p></div>
+<button class="ub" onclick="showEnd()" style="margin-top:.5rem">Done — Finish Session ✅</button>
+</div></div>
+<div class="se" id="session-end"><h2>🎉 Lesson 34 complete!</h2><p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p><ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ PART ONE — CSS Image Gallery</li><li>✅ Section 1 — What Is an Image Gallery?</li><li>✅ Section 2 — Building a Basic Image Gallery</li><li>✅ Section 3 — Responsive Gallery (Adapting to All Screen Sizes)</li><li>✅ Section 4 — Image Hover Overlay Effects</li><li>✅ Section 5 — Full Responsive Gallery with Hover Effects</li></ul><div class="ln"><a href="lesson_33.html" class="ln-btn">← Lesson 33</a><a href="lesson_35.html" class="ln-btn primary">Lesson 35 →</a></div></div>
 </main>
-
-<footer class="lesson-footer">
-  Techbase Code Coach · CSS Course · Lesson 34 · © 2025 Techbase Consultant Services, Ibadan
-</footer>
+<footer class="lf">Techbase Code Coach &nbsp;·&nbsp; CSS Course &nbsp;·&nbsp; Lesson 34 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</footer>
+<div id="toast"></div>
+<button id="go-top" title="Back to top">↑</button>
+<canvas id="cc"></canvas>
 <script>
 const TOTAL=16,KEY='techbase_css_l34';
-let current=parseInt(localStorage.getItem(KEY)||'1');
-function init(){
-  for(let i=2;i<=current;i++) unlockPhase(i,false);
-  updateBar();
-}
+let cur=parseInt(localStorage.getItem(KEY)||'1');
+function init(){for(let i=2;i<=cur;i++)unlock(i,false);bar();}
 function unlockNext(n){
-  const chk=document.getElementById('chk'+n);
-  if(chk){chk.classList.add('done');chk.textContent='✓';}
-  localStorage.setItem(KEY,n+1); current=n+1;
+  const c=document.getElementById('chk'+n);
+  if(c){c.classList.add('done');c.textContent='✓';}
+  localStorage.setItem(KEY,n+1);cur=n+1;
   if(n===TOTAL){
-    document.getElementById('build-it').style.display='block';
-    updateBar(100);
+    document.getElementById('build-it').classList.add('visible');
+    bar(100);toast('🏗️ Build It unlocked!');
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  }else{
-    unlockPhase(n+1,true); updateBar();
-  }
+    setTimeout(confetti,600);
+  }else{unlock(n+1,true);bar();toast(['✅ Phase complete!','🎯 Keep going!','💡 Nice work!','🚀 Nailed it!'][n%4]);}
 }
-function unlockPhase(n,scroll){
-  const el=document.getElementById('phase'+n);
-  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
+function unlock(n,scroll){
+  const el=document.getElementById('phase'+n);if(!el)return;
+  el.classList.remove('locked');
+  if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),180);
 }
-function updateBar(pct){
-  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
-  document.getElementById('pbar').style.width=p+'%';
+function bar(p){document.getElementById('pbar').style.width=(p!==undefined?p:Math.round((cur-1)/TOTAL*95))+'%';}
+function toggleReveal(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Answer':'👁️ Reveal Answer';}
+function toggleCode(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Starter Code':'💻 Reveal Starter Code';}
+function copyCode(btn){
+  const code=btn.closest('.v2-code-wrap').querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(()=>{btn.textContent='✓ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='⎘ Copy';btn.classList.remove('copied');},1800);}).catch(()=>{});
 }
-function showGithub(){
-  const g=document.getElementById('gh-steps');
-  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
-}
-function showEnd(){
-  const e=document.getElementById('session-end');
-  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
-}
+const tEl=document.getElementById('toast');let tT;
+function toast(msg){tEl.innerHTML=msg;tEl.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>tEl.classList.remove('show'),2400);}
+const gEl=document.getElementById('go-top');
+window.addEventListener('scroll',()=>gEl.classList.toggle('visible',scrollY>320),{passive:true});
+gEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
-function downloadStarter(code){
-  const a=document.createElement('a');
-  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
-  a.download='starter.html';a.click();
+function showGithub(){const g=document.getElementById('gh-steps');if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}}
+function showEnd(){const e=document.getElementById('session-end');if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}}
+function downloadStarter(code){const ext='css'==='python'?'py':'html';const a=document.createElement('a');a.href='data:text/'+(ext==='py'?'x-python':'html')+';charset=utf-8,'+encodeURIComponent(code);a.download='starter.'+ext;a.click();}
+function confetti(){
+  const cv=document.getElementById('cc');cv.style.display='block';const ctx=cv.getContext('2d');
+  cv.width=innerWidth;cv.height=innerHeight;
+  const ps=Array.from({length:130},()=>{return{x:Math.random()*cv.width,y:-10-Math.random()*120,r:4+Math.random()*6,d:2+Math.random()*3,c:['#e34c26','#0284c7','#d97706','#059669','#7c3aed','#ec4899'][Math.floor(Math.random()*6)],ta:0};}); 
+  let f=0;
+  function draw(){ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.ta+=.1;p.y+=p.d;p.x+=Math.sin(f/20);ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});f++;if(f<200)requestAnimationFrame(draw);else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}}
+  draw();toast('🎉 All phases done! Build It awaits!');
 }
 init();
 </script>
-</body>
-</html>
+</body></html>

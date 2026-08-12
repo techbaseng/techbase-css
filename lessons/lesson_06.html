@@ -1,251 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lesson 06: CSS Backgrounds — Colours, Images, Repeat, Attachment &amp; Shorthand — Techbase CSS</title>
-<meta name="description" content="CSS Backgrounds — Colours, Images, Repeat, Attachment &amp; Shorthand">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{
-  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
-  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
-  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
-  --text:#0f172a;--t2:#334155;--muted:#64748b;
-  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--acc:#0284c7;--acd:#0369a1;--acp:#f0f9ff;--acb:rgba(2,132,199,.22);--acs:rgba(2,132,199,.28);--bg:#f8fafc;--sf:#fff;--br:#e2e8f0;--tx:#0f172a;--t2:#334155;--mu:#64748b;--D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
-
-/* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
-  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
-  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
-.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+body{background:var(--bg);color:var(--tx);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--br);height:58px;display:flex;align-items:center;padding:0 1.5rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--tx);text-decoration:none}
+.l-nav-back{font-size:.8rem;color:var(--mu);text-decoration:none;font-weight:500;transition:color .2s}
 .l-nav-back:hover{color:var(--acc)}
-.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-
-/* PROGRESS */
-.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
-
-/* HERO */
-.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:860px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
-  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
-  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
-  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
-
-/* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
-.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
-.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
-.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
-  font-family:var(--M);font-size:.68rem;font-weight:500}
-
-/* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
-  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
-.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
-.phase-header{padding:1rem 1.4rem;background:#f5fbff;
-  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--acc)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
-  flex:1;margin:0 .8rem}
-.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
-  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
-  transition:background .3s,color .3s}
-.phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.6rem 1.8rem}
-
-/* RICH CONTENT STYLES */
+.l-nav-lbl{font-family:var(--M);font-size:.68rem;color:var(--mu)}
+.pw{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--br)}
+.pb{height:100%;background:linear-gradient(90deg,var(--acc),var(--acd));transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;position:relative}
+.pb::after{content:'';position:absolute;right:0;top:0;bottom:0;width:20px;background:inherit;filter:brightness(1.4);animation:pg 1.5s ease-in-out infinite}
+@keyframes pg{0%,100%{opacity:1}50%{opacity:.35}}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--br)}
+.l-hero-in{max-width:860px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;border-radius:100px;padding:.22rem .9rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--acc);background:var(--acp);border:1.5px solid var(--acb);margin-bottom:.85rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.9rem;color:var(--mu)}
+.wb{background:#fff;border:1.5px solid var(--acb);border-left:5px solid var(--acc);border-radius:14px;padding:1.4rem 1.6rem;max-width:860px;margin:1.5rem auto 0;box-shadow:0 2px 12px var(--acs)}
+.wb h2{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--acd);margin-bottom:.6rem}
+.wb p,.wb li{font-size:.92rem;line-height:1.85;color:var(--t2)}
+.wb ul{margin-left:1.2rem;margin-top:.4rem}
+.wm{display:flex;gap:.65rem;margin-top:1rem;flex-wrap:wrap}
+.wm span{background:var(--acp);color:var(--acd);border:1px solid var(--acb);border-radius:7px;padding:.22rem .7rem;font-family:var(--M);font-size:.68rem;font-weight:600}
+.phase{background:var(--sf);border:1.5px solid var(--br);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .35s,filter .35s,transform .35s}
+.phase.locked{opacity:.28;pointer-events:none;filter:blur(2px);transform:scale(.99)}
+.ph{padding:1rem 1.4rem;background:#f5fbff;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:.8rem}
+.pn{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);white-space:nowrap}
+.pt{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--tx);flex:1}
+.pc{width:26px;height:26px;border-radius:50%;background:var(--br);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:background .3s,transform .4s}
+.pc.done{background:#10b981;color:#fff;transform:scale(1.15) rotate(360deg)}
+.pb2{padding:1.6rem 1.8rem}
 .v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
-.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
-  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
-.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
-.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--tx);margin:1.6rem 0 .5rem;border-top:2px solid var(--acp);padding-top:.4rem}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1rem 0 .35rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.88rem;color:var(--mu);margin:.7rem 0 .3rem}
 .v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
 .v2-ul li,.v2-ol li{margin-bottom:.3rem}
-.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
-  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acp);border-radius:0 10px 10px 0;padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
 .v2-bq p{margin:0;color:inherit}
-.v2-bq strong{font-style:normal}
-.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
-.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-hr{border:none;border-top:1px solid var(--br);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0;border-radius:10px;border:1px solid var(--br)}
 .v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
-.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
-  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
-.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
-.v2-table tr:nth-child(even) td{background:#f8fafc}
-.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
-  padding:1px 5px;font-family:var(--M);font-size:.8em}
-.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
-.phase-body strong{color:var(--text)}
-
-/* CODE BLOCKS */
-.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-table th{background:var(--acp);color:#0c4a6e;font-family:var(--D);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--acb)}
+.v2-table td{padding:8px 12px;border-bottom:1px solid var(--br);color:var(--t2);vertical-align:top}
+.v2-table tr:last-child td{border:none}
+.v2-table tr:hover td{background:var(--acp)}
+.pb2 code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.pb2 a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.pb2 strong{color:var(--tx)}
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 18px rgba(0,0,0,.18)}
 .v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
 .v2-dot{width:10px;height:10px;border-radius:50%}
 .v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
-.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-lang{margin-left:.5rem;font-family:var(--M);font-size:.62rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em;flex:1}
+.copy-btn{background:rgba(255,255,255,.08);color:#94a3b8;border:none;border-radius:6px;padding:.25rem .65rem;font-family:var(--M);font-size:.65rem;cursor:pointer;transition:background .2s,color .2s}
+.copy-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+.copy-btn.copied{background:#10b981;color:#fff}
 .v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
 .v2-code-body pre{margin:0}
-.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
-  white-space:pre;background:transparent;padding:0;border-radius:0}
-
-/* TASK BOX */
-.task-box{background:#e0f2fe;border:2px dashed #0284c7;
-  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
-.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
-.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
-  font-family:var(--M);font-size:.82em}
-
-/* UNLOCK BUTTON */
-.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
-  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
-  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
-  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
-.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
-
-/* BUILD IT */
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.95;color:#e2e8f0;white-space:pre;background:transparent;padding:0;border-radius:0}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0}
+.task-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-body{font-size:.93rem;color:#0c4a6e;line-height:1.85}
+.task-body code{background:rgba(0,0,0,.1);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.chal-box{background:linear-gradient(135deg,#f0f9ff 0%,#fff 100%);border:2px solid var(--acc);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.2rem}
+.chal-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acd);margin-bottom:.6rem}
+.chal-body{font-size:.95rem;color:var(--tx);line-height:1.85}
+.chal-body code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 5px;font-family:var(--M);font-size:.82em}
+.reveal-btn{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--acd);font-family:var(--D);font-weight:700;font-size:.85rem;padding:.6rem 1.2rem;border-radius:8px;border:2px solid var(--acc);cursor:pointer;transition:background .2s,color .2s;margin:.6rem 0}
+.reveal-btn:hover{background:var(--acc);color:#fff}
+.reveal-content{display:none;margin-top:.6rem;animation:fi .3s ease}
+.reveal-content.open{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
-.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
-.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
-.build-desc strong{color:#14532d}
-
-/* GITHUB ACCORDION */
-.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.gh-acc-body.open{display:block}
-.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
-  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;margin-top:2px}
-.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-
-/* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
-.session-end.visible{display:block}
-.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
-.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
-  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
-  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
-  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.build-box.visible{display:block;animation:fi .4s ease}
+.build-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.15rem;color:#14532d;margin-bottom:.6rem}
+.build-req{font-size:.93rem;color:#166534;line-height:1.8;margin-bottom:.8rem}
+.build-req code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-req strong{color:#14532d}
+.gh-acc{border:1.5px solid var(--br);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-hd{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none;transition:background .2s}
+.gh-hd:hover{background:#f1f5f9}
+.gh-bd{display:none;padding:1.2rem;border-top:1px solid var(--br)}
+.gh-bd.open{display:block;animation:fi .25s ease}
+.gh-st{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-st p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-st code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.gh-nop{background:#fef3c7;border:1.5px solid #fde68a;border-radius:10px;padding:1rem 1.2rem;font-size:.9rem;color:#78350f;line-height:1.75;margin-bottom:1rem}
+.se{background:linear-gradient(135deg,var(--acc),var(--acd));color:#fff;border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
+.se.visible{display:block;animation:fi .4s ease}
+.se h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.se ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.se li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--sf);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--br);transition:border-color .2s,color .2s}
 .ln-btn:hover{border-color:var(--acc);color:var(--acc)}
 .ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;
-  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
-  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.ln{display:flex;align-items:center;justify-content:space-between;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.ub{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acs);margin-top:1.2rem}
+.ub:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acs)}
+.ub:active{transform:scale(.97)}
+#toast{position:fixed;bottom:90px;right:1.5rem;z-index:999;background:#1e293b;color:#fff;border-radius:10px;padding:.75rem 1.2rem;font-family:var(--D);font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+#toast.show{transform:translateY(0);opacity:1}
+#go-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;border:none;cursor:pointer;font-size:1.15rem;box-shadow:0 4px 16px var(--acs);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,box-shadow .2s;pointer-events:none}
+#go-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#go-top:hover{box-shadow:0 8px 24px var(--acs);transform:translateY(-2px)}
+#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none}
+.lf{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--mu);border-top:1px solid var(--br);background:var(--sf)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
   <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
-  <span class="l-nav-label">Lesson 06 of 73</span>
+  <span class="l-nav-lbl">Lesson 06 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
-
-<div class="l-hero">
-  <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 06</div>
-    <h1>CSS Backgrounds — Colours, Images, Repeat, Attachment &amp; Shorthand</h1>
-    <div class="l-hero-sub">9 phases · Build: Project Brief</div>
-  </div>
-</div>
-
-<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
-  <h2>👋 Welcome to Lesson 06</h2>
-  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Every webpage you have ever visited has a background. Sometimes it is a plain colour — like the white page of a news article. Sometimes it is a beautiful photograph spanning the full screen. Sometimes it is a subtle repeating pattern that gives texture to the design. All of these effects are created with one family of CSS properties: the <strong>background properties</strong>.</p>
-<p class="v2-p">Think of an HTML element as a picture frame. The content (text, images, buttons) is the artwork inside the frame. The <strong>background</strong> is the wall behind the artwork — the surface you see wherever there is no content covering it.</p>
-<p class="v2-p">In this lesson you will master every background property CSS offers, one at a time, from the simplest to the most sophisticated. By the end you will be able to:</p>
-<ul class="v2-ul"><li>Set a solid <strong>background colour</strong> for any element</li><li>Place a <strong>background image</strong> behind any element</li><li>Control whether an image <strong>repeats</strong> (tiles) or appears only once</li><li>Control the <strong>position</strong> of a background image</li><li>Decide whether the background <strong>scrolls</strong> with the page or stays fixed</li><li>Write all background properties in a single line using the <strong>shorthand property</strong></li><li>Combine everything into a polished, real-world webpage section</li></ul>
-<hr class="v2-hr"></div>
-  <div class="welcome-meta">
-    <span>📚 9 phases</span>
-    <span>🏗️ Project Brief</span>
-  </div>
+<div class="pw"><div class="pb" id="pbar"></div></div>
+<div class="l-hero"><div class="l-hero-in">
+  <div class="badge">CSS · Lesson 06</div>
+  <h1>CSS Backgrounds — Colours, Images, Repeat, Attachment &amp; Shorthand</h1>
+  <div class="l-hero-sub">9 phases &nbsp;·&nbsp; Build: Project Brief</div>
 </div></div>
-</section>
-
-<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
-<div class="phase" id="phase1">
-  <div class="phase-header">
-    <div class="phase-num">Phase 1 of 9</div>
-    <div class="phase-title">Lesson Introduction</div>
-    <div class="phase-check" id="chk1"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Every webpage you have ever visited has a background. Sometimes it is a plain colour — like the white page of a news article. Sometimes it is a beautiful photograph spanning the full screen. Sometimes it is a subtle repeating pattern that gives texture to the design. All of these effects are created with one family of CSS properties: the <strong>background properties</strong>.</p>
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--br)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="wb"><h2>👋 Welcome to Lesson 06</h2><div style="font-size:.92rem;line-height:1.85;color:var(--t2)"><p class="v2-p">Every webpage you have ever visited has a background. Sometimes it is a plain colour — like the white page of a news article. Sometimes it is a beautiful photograph spanning the full screen. Sometimes it is a subtle repeating pattern that gives texture to the design. All of these effects are created with one family of CSS properties: the <strong>background properties</strong>.</p>
 <p class="v2-p">Think of an HTML element as a picture frame. The content (text, images, buttons) is the artwork inside the frame. The <strong>background</strong> is the wall behind the artwork — the surface you see wherever there is no content covering it.</p>
 <p class="v2-p">In this lesson you will master every background property CSS offers, one at a time, from the simplest to the most sophisticated. By the end you will be able to:</p>
 <ul class="v2-ul"><li>Set a solid <strong>background colour</strong> for any element</li><li>Place a <strong>background image</strong> behind any element</li><li>Control whether an image <strong>repeats</strong> (tiles) or appears only once</li><li>Control the <strong>position</strong> of a background image</li><li>Decide whether the background <strong>scrolls</strong> with the page or stays fixed</li><li>Write all background properties in a single line using the <strong>shorthand property</strong></li><li>Combine everything into a polished, real-world webpage section</li></ul>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase2">
-  <div class="phase-header">
-    <div class="phase-num">Phase 2 of 9</div>
-    <div class="phase-title">Prerequisite Concepts</div>
-    <div class="phase-check" id="chk2"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is a CSS property?</h3>
+<hr class="v2-hr"></div><div class="wm"><span>📚 9 phases</span><span>🏗️ Project Brief</span><span>🌐 GitHub Pages</span></div></div></div>
+</section>
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1"><div class="ph"><div class="pn">Phase 1/9</div><div class="pt">Lesson Introduction</div><div class="pc" id="chk1"></div></div><div class="pb2"><p class="v2-p">Every webpage you have ever visited has a background. Sometimes it is a plain colour — like the white page of a news article. Sometimes it is a beautiful photograph spanning the full screen. Sometimes it is a subtle repeating pattern that gives texture to the design. All of these effects are created with one family of CSS properties: the <strong>background properties</strong>.</p>
+<p class="v2-p">Think of an HTML element as a picture frame. The content (text, images, buttons) is the artwork inside the frame. The <strong>background</strong> is the wall behind the artwork — the surface you see wherever there is no content covering it.</p>
+<p class="v2-p">In this lesson you will master every background property CSS offers, one at a time, from the simplest to the most sophisticated. By the end you will be able to:</p>
+<ul class="v2-ul"><li>Set a solid <strong>background colour</strong> for any element</li><li>Place a <strong>background image</strong> behind any element</li><li>Control whether an image <strong>repeats</strong> (tiles) or appears only once</li><li>Control the <strong>position</strong> of a background image</li><li>Decide whether the background <strong>scrolls</strong> with the page or stays fixed</li><li>Write all background properties in a single line using the <strong>shorthand property</strong></li><li>Combine everything into a polished, real-world webpage section</li></ul>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(1)">Start Lesson ✓</button></div></div>
+<div class="phase locked" id="phase2"><div class="ph"><div class="pn">Phase 2/9</div><div class="pt">Prerequisite Concepts</div><div class="pc" id="chk2"></div></div><div class="pb2"><h3 class="v2-h3">What is a CSS property?</h3>
 <p class="v2-p">A CSS property is a specific visual characteristic you can control. For example, <code>color</code> controls text colour, <code>font-size</code> controls text size, and <code>background-color</code> controls the background colour of an element.</p>
 <h3 class="v2-h3">What does "behind" mean in CSS?</h3>
 <p class="v2-p">HTML elements are stacked in layers. The background of an element sits behind its text and child elements. So if you set a red background on a <code>&lt;div&gt;</code> that contains a paragraph, the red colour appears under the paragraph text — not on top of it.</p>
 <h3 class="v2-h3">What is a URL in CSS?</h3>
 <p class="v2-p">When you reference an image file in CSS, you wrap its path in <code>url()</code>:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>background-image: url(&quot;photo.jpg&quot;);</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>background-image: url(&quot;photo.jpg&quot;);</code></pre></div></div>
 <p class="v2-p">This tells the browser: <em>"Go find the file called photo.jpg and use it here."</em> The path can be a file path (<code>"images/banner.jpg"</code>) or a full web address (<code>"https://example.com/img/pattern.png"</code>).</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase3">
-  <div class="phase-header">
-    <div class="phase-num">Phase 3 of 9</div>
-    <div class="phase-title">Part 1 — `background-color`: Painting With a Solid Colour</div>
-    <div class="phase-check" id="chk3"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is it?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase3"><div class="ph"><div class="pn">Phase 3/9</div><div class="pt">Part 1 — `background-color`: Painting With a Solid Colour</div><div class="pc" id="chk3"></div></div><div class="pb2"><h3 class="v2-h3">What is it?</h3>
 <p class="v2-p"><code>background-color</code> sets the <strong>solid fill colour</strong> of an element's background area — the space behind the element's content and padding.</p>
 <h3 class="v2-h3">Why does it exist?</h3>
 <p class="v2-p">Before images or gradients, colour is the most fundamental background tool. Solid background colours are used everywhere: page backgrounds, navigation bars, buttons, cards, alerts, hero banners, table rows, and more.</p>
@@ -256,7 +162,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 1 — Colour the whole page body</h3>
 <p class="v2-p"><strong>HTML + CSS:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
@@ -276,7 +182,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 2 — Colour individual elements differently</h3>
 <p class="v2-p">You can set different background colours for different elements on the same page:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;style&gt;
   body {
     background-color: #f0f0f0;  /* light grey page */
   }
@@ -297,7 +203,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <blockquote class="v2-bq"><p class="v2-p"><strong>Thinking Prompt:</strong> The <code>body</code> has grey background. The <code>h1</code> has navy. What colour do you see around the <code>h1</code>? Is it grey or navy? <em>(Answer: You see grey around it — the body grey shows where the h1 does not cover.)</em></p></blockquote>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 3 — Using HEX and RGBA</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>div {
   background-color: #2c3e50;        /* dark blue-grey HEX */
   color: white;
   padding: 20px;
@@ -312,11 +218,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <h3 class="v2-h3">The <code>opacity</code> property vs RGBA</h3>
 <p class="v2-p">There are two ways to make a background semi-transparent:</p>
 <p class="v2-p"><strong>Method 1: RGBA background (preferred — only the background becomes transparent):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>div {
   background-color: rgba(0, 0, 255, 0.3);
 }</code></pre></div></div>
 <p class="v2-p"><strong>Method 2: opacity property (entire element becomes transparent — including text!):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>div {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>div {
   background-color: blue;
   opacity: 0.3;  /* Text also becomes faded! */
 }</code></pre></div></div>
@@ -324,7 +230,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <hr class="v2-hr">
 <h3 class="v2-h3">Real-World Use Case</h3>
 <p class="v2-p">Almost every professional website uses <code>background-color</code> extensively:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Navigation bar */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Navigation bar */
 nav {
   background-color: #1a1a2e;
 }
@@ -343,41 +249,27 @@ nav {
   color: white;
   padding: 10px 20px;
 }</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong><code>background-color</code>: Painting With a Solid Colour</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase4">
-  <div class="phase-header">
-    <div class="phase-num">Phase 4 of 9</div>
-    <div class="phase-title">Part 2 — `background-image`: Placing an Image Behind Your Content</div>
-    <div class="phase-check" id="chk4"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is it?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong><code>background-color</code>: Painting With a Solid Colour</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase4"><div class="ph"><div class="pn">Phase 4/9</div><div class="pt">Part 2 — `background-image`: Placing an Image Behind Your Content</div><div class="pc" id="chk4"></div></div><div class="pb2"><h3 class="v2-h3">What is it?</h3>
 <p class="v2-p"><code>background-image</code> places an image (or a gradient) in the background of an element — behind its text and content.</p>
 <h3 class="v2-h3">Why does it exist?</h3>
 <p class="v2-p">Flat colours are great for many uses, but sometimes you need photography, textures, patterns, or gradients as a backdrop. Background images make hero sections, full-screen landing pages, patterned cards, and decorative headers possible.</p>
 <h3 class="v2-h3">How it works</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>element {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>element {
   background-image: url(&quot;path/to/image.jpg&quot;);
 }</code></pre></div></div>
 <p class="v2-p">The <code>url()</code> function points to the image file. The path can be:</p>
 <ul class="v2-ul"><li><strong>Relative</strong>: <code>"images/banner.jpg"</code> — relative to your CSS file's location</li><li><strong>Absolute</strong>: <code>"https://example.com/img/photo.jpg"</code> — a full web URL</li></ul>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 1 — Set a background image on the body</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;paper.gif&quot;);
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> The image <code>paper.gif</code> tiles (repeats) to fill the entire page background by default.</p>
 <blockquote class="v2-bq"><p class="v2-p"><strong>Why does it repeat?</strong> By default, CSS tiles (repeats) background images in both directions to fill the available space — like wallpaper. You will learn to control this in Part 3.</p></blockquote>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 2 — Background image on a specific element</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;style&gt;
   .hero {
     background-image: url(&quot;mountain.jpg&quot;);
     height: 400px;
@@ -394,7 +286,7 @@ nav {
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 3 — Stacking a background image on top of a background colour</h3>
 <p class="v2-p">A very useful technique: set both a <code>background-color</code> and <code>background-image</code>. The colour acts as a <strong>fallback</strong> — it shows if the image fails to load:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.hero {
   background-image: url(&quot;banner.jpg&quot;);
   background-color: #2c3e50;   /* shows if image doesn&#x27;t load */
   height: 400px;
@@ -405,22 +297,8 @@ nav {
 <h3 class="v2-h3">Important: Background Image vs <code>&lt;img&gt;</code> Tag</h3>
 <p class="v2-p">You might wonder: when should you use <code>background-image</code> in CSS versus an <code>&lt;img&gt;</code> tag in HTML?</p>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Use <code>background-image</code> (CSS)</th><th>Use <code>&lt;img&gt;</code> (HTML)</th></tr></thead><tbody><tr><td>Decorative images (textures, hero backdrops)</td><td>Content images (product photos, diagrams)</td></tr><tr><td>When you want text layered on top</td><td>When the image IS the content</td></tr><tr><td>Patterns and design elements</td><td>Profile pictures, logos</td></tr><tr><td>Images that don't need <code>alt</code> text</td><td>Images that need accessibility descriptions</td></tr></tbody></table></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong><code>background-image</code>: Placing an Image Behind Your Content</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase5">
-  <div class="phase-header">
-    <div class="phase-num">Phase 5 of 9</div>
-    <div class="phase-title">Part 3 — `background-repeat`: Controlling the Tile Behaviour</div>
-    <div class="phase-check" id="chk5"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is it?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong><code>background-image</code>: Placing an Image Behind Your Content</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase5"><div class="ph"><div class="pn">Phase 5/9</div><div class="pt">Part 3 — `background-repeat`: Controlling the Tile Behaviour</div><div class="pc" id="chk5"></div></div><div class="pb2"><h3 class="v2-h3">What is it?</h3>
 <p class="v2-p">By default, CSS <strong>tiles</strong> (repeats) background images in both the horizontal and vertical directions to fill the available space. <code>background-repeat</code> lets you control — or stop — this tiling behaviour.</p>
 <h3 class="v2-h3">Why does it exist?</h3>
 <p class="v2-p">Tiling is perfect for small texture and pattern images, but it is a disaster for large photos. Imagine a beautiful landscape photo tiled across your page dozens of times — it would look broken and ugly. <code>background-repeat</code> gives you control over how (and whether) the image repeats.</p>
@@ -428,7 +306,7 @@ nav {
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>What it does</th></tr></thead><tbody><tr><td><code>repeat</code></td><td>Repeats in both X and Y directions (default)</td></tr><tr><td><code>repeat-x</code></td><td>Repeats <strong>only horizontally</strong> (left to right)</td></tr><tr><td><code>repeat-y</code></td><td>Repeats <strong>only vertically</strong> (top to bottom)</td></tr><tr><td><code>no-repeat</code></td><td>Image appears <strong>exactly once</strong> — no tiling</td></tr></tbody></table></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 1 — Default behaviour (repeat in both directions)</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;small-pattern.png&quot;);
   background-repeat: repeat;   /* this is the default */
 }</code></pre></div></div>
@@ -436,21 +314,21 @@ nav {
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 2 — Repeat only horizontally</h3>
 <p class="v2-p">A horizontal stripe effect — great for decorative top/bottom borders:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;gradient-stripe.png&quot;);
   background-repeat: repeat-x;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> The image repeats from left to right in a single row across the top of the page. It does NOT repeat downward. Below the first row, the background colour (or white default) shows.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 3 — Repeat only vertically</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;side-pattern.png&quot;);
   background-repeat: repeat-y;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> The image repeats from top to bottom in a single column on the left side of the page. It does NOT repeat horizontally.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 4 — No repeat (most common for photo backgrounds)</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;mountain-photo.jpg&quot;);
   background-repeat: no-repeat;
 }</code></pre></div></div>
@@ -460,7 +338,7 @@ nav {
 <h3 class="v2-h3"><code>background-position</code> — Placing the Image Precisely</h3>
 <p class="v2-p">When using <code>no-repeat</code>, the image defaults to the <strong>top-left corner</strong>. <code>background-position</code> lets you move it anywhere.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>background-position: horizontal vertical;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>background-position: horizontal vertical;</code></pre></div></div>
 <p class="v2-p"><strong>Keyword values:</strong></p>
 <ul class="v2-ul"><li>Horizontal: <code>left</code>, <code>center</code>, <code>right</code></li><li>Vertical: <code>top</code>, <code>center</code>, <code>bottom</code></li></ul>
 <p class="v2-p"><strong>Pixel values:</strong></p>
@@ -469,7 +347,7 @@ nav {
 <ul class="v2-ul"><li><code>background-position: 50% 50%;</code> — perfectly centred</li></ul>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example — Centre a background image</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;mountain-photo.jpg&quot;);
   background-repeat: no-repeat;
   background-position: center top;
@@ -477,7 +355,7 @@ nav {
 <p class="v2-p"><strong>Expected Output:</strong> The mountain photo appears once, centred horizontally, aligned to the top of the page.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example — Centre both ways</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;logo-watermark.png&quot;);
   background-repeat: no-repeat;
   background-position: center center;
@@ -486,35 +364,21 @@ nav {
 <hr class="v2-hr">
 <h3 class="v2-h3">Real-World Use Case</h3>
 <p class="v2-p">Patterns (small repeating images) are commonly used for subtle textures:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.card {
   background-image: url(&quot;subtle-dots.png&quot;);
   background-repeat: repeat;
   background-color: #ffffff;
   padding: 30px;
 }</code></pre></div></div>
 <p class="v2-p">Large hero photos always use <code>no-repeat</code>:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero-section {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.hero-section {
   background-image: url(&quot;hero-photo.jpg&quot;);
   background-repeat: no-repeat;
   background-position: center center;
   height: 600px;
 }</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong><code>background-repeat</code>: Controlling the Tile Behaviour</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase6">
-  <div class="phase-header">
-    <div class="phase-num">Phase 6 of 9</div>
-    <div class="phase-title">Part 4 — `background-attachment`: Fixed or Scrolling Background</div>
-    <div class="phase-check" id="chk6"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is it?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong><code>background-repeat</code>: Controlling the Tile Behaviour</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase6"><div class="ph"><div class="pn">Phase 6/9</div><div class="pt">Part 4 — `background-attachment`: Fixed or Scrolling Background</div><div class="pc" id="chk6"></div></div><div class="pb2"><h3 class="v2-h3">What is it?</h3>
 <p class="v2-p"><code>background-attachment</code> controls whether a background image <strong>moves with the page as you scroll</strong>, or <strong>stays fixed</strong> in place while the content scrolls over it.</p>
 <h3 class="v2-h3">Why does it exist?</h3>
 <p class="v2-p">This single property creates one of the most impressive visual effects in web design: the <strong>parallax effect</strong> — where the background appears to stay still while foreground content scrolls past it. It creates an illusion of depth and is widely used in modern landing pages.</p>
@@ -523,7 +387,7 @@ nav {
 <p class="v2-p">There is also a third value <code>local</code> which fixes the image relative to the element's own scrolling, but <code>scroll</code> and <code>fixed</code> cover 95% of real use cases.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 1 — Default scroll behaviour</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;nature.jpg&quot;);
   background-attachment: scroll;  /* this is the default */
   background-repeat: no-repeat;
@@ -531,7 +395,7 @@ nav {
 <p class="v2-p"><strong>Expected Output:</strong> When you scroll the page, the background image moves upward along with the rest of the content — everything scrolls together as one unit.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 2 — Fixed background (parallax effect)</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;nature.jpg&quot;);
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -541,7 +405,7 @@ nav {
 <hr class="v2-hr">
 <h3 class="v2-h3">Seeing the Difference</h3>
 <p class="v2-p">The difference between <code>scroll</code> and <code>fixed</code> is most noticeable on long pages:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;style&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;style&gt;
   body {
     background-image: url(&quot;forest.jpg&quot;);
     background-attachment: fixed;
@@ -571,7 +435,7 @@ nav {
 <h3 class="v2-h3"><code>background-size</code> — Making Images Fill the Element</h3>
 <p class="v2-p">Introduced alongside modern CSS, <code>background-size</code> controls how large the background image is rendered. While not part of the original four properties, it is essential for using background images well.</p>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>What it does</th></tr></thead><tbody><tr><td><code>auto</code></td><td>Image displays at its natural size (default)</td></tr><tr><td><code>cover</code></td><td>Scales image to <strong>cover the entire element</strong> — may crop edges</td></tr><tr><td><code>contain</code></td><td>Scales image to <strong>fit entirely within</strong> the element — may show gaps</td></tr><tr><td><code>100px 200px</code></td><td>Sets exact width and height</td></tr><tr><td><code>50% auto</code></td><td>Sets percentage width, auto height</td></tr></tbody></table></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.hero {
   background-image: url(&quot;banner.jpg&quot;);
   background-size: cover;        /* fills the entire hero section */
   background-position: center;
@@ -580,32 +444,18 @@ nav {
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> The banner image scales to completely cover the 500px hero section. If the image's aspect ratio differs from the container, the image is cropped on the edges but never distorted.</p>
 <blockquote class="v2-bq"><p class="v2-p"><strong><code>cover</code> vs <code>contain</code> analogy:</strong> <code>cover</code> is like filling a frame by zooming in — the whole frame is covered but parts of the photo may be cut off. <code>contain</code> is like fitting a photo inside a frame without cropping — all of the photo is visible but there may be empty space around it.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong><code>background-attachment</code>: Fixed or Scrolling Background</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase7">
-  <div class="phase-header">
-    <div class="phase-num">Phase 7 of 9</div>
-    <div class="phase-title">Part 5 — The `background` Shorthand Property</div>
-    <div class="phase-check" id="chk7"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is it?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong><code>background-attachment</code>: Fixed or Scrolling Background</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase7"><div class="ph"><div class="pn">Phase 7/9</div><div class="pt">Part 5 — The `background` Shorthand Property</div><div class="pc" id="chk7"></div></div><div class="pb2"><h3 class="v2-h3">What is it?</h3>
 <p class="v2-p">Instead of writing five or six separate background property declarations, CSS lets you combine them all into a single line using the <strong><code>background</code> shorthand property</strong>.</p>
 <h3 class="v2-h3">Why does it exist?</h3>
 <p class="v2-p">Shorthand properties exist to make code shorter, faster to write, and easier to read. Once you are comfortable with each individual property, the shorthand becomes the natural and preferred way to write backgrounds in professional code.</p>
 <h3 class="v2-h3">The full shorthand syntax</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>background: color image position/size repeat attachment;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>background: color image position/size repeat attachment;</code></pre></div></div>
 <p class="v2-p">You can include any or all of these values in a single declaration. The order matters for some values (particularly <code>position/size</code>).</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Understanding the Syntax Step by Step</h3>
 <p class="v2-p">Here is the longhand version:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color:      #ffffff;
   background-image:      url(&quot;paper.png&quot;);
   background-position:   right top;
@@ -614,25 +464,25 @@ nav {
   background-attachment: fixed;
 }</code></pre></div></div>
 <p class="v2-p">And here is the exact same thing as a shorthand:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background: #ffffff url(&quot;paper.png&quot;) right top / auto no-repeat fixed;
 }</code></pre></div></div>
 <p class="v2-p">The <strong><code>/</code></strong> (forward slash) separates <code>background-position</code> from <code>background-size</code>. Everything to the left of <code>/</code> is the position; everything to the right is the size.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 1 — Colour and image only</h3>
 <p class="v2-p">The most minimal shorthand — colour + image:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background: #f4f4f4 url(&quot;texture.png&quot;);
 }</code></pre></div></div>
 <p class="v2-p">This is equivalent to:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-color: #f4f4f4;
   background-image: url(&quot;texture.png&quot;);
 }</code></pre></div></div>
 <p class="v2-p"><strong>Expected Output:</strong> The body has a light grey colour (fallback), and the texture image tiles over it by default.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 2 — Full shorthand with all main values</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background: #ffffff url(&quot;mountain.jpg&quot;) center center / cover no-repeat fixed;
 }</code></pre></div></div>
 <p class="v2-p">Breaking this down word by word:</p>
@@ -640,7 +490,7 @@ nav {
 <p class="v2-p"><strong>Expected Output:</strong> The mountain image covers the full page background, is centred, doesn't repeat, and stays fixed as you scroll — the complete parallax hero effect — all in one line.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 3 — Shorthand for a card with a texture</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.card {
   background: #fff url(&quot;dots-pattern.png&quot;) repeat;
   border: 1px solid #ddd;
   padding: 20px;
@@ -649,7 +499,7 @@ nav {
 <hr class="v2-hr">
 <h3 class="v2-h3">What Happens to Values You Don't Specify?</h3>
 <p class="v2-p">When you use the shorthand and omit a value, CSS <strong>resets</strong> that property to its initial (default) value. This is an important gotcha:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Full longhand set previously: */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Full longhand set previously: */
 div {
   background-color: navy;
   background-image: url(&quot;pattern.png&quot;);
@@ -665,26 +515,26 @@ div {
 <hr class="v2-hr">
 <h3 class="v2-h3">All CSS Background Properties — Reference Table</h3>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>Purpose</th><th>Common Values</th></tr></thead><tbody><tr><td><code>background-color</code></td><td>Sets solid background colour</td><td>Named colour, HEX, RGB, RGBA</td></tr><tr><td><code>background-image</code></td><td>Sets background image or gradient</td><td><code>url("file.jpg")</code>, <code>none</code></td></tr><tr><td><code>background-repeat</code></td><td>Controls image tiling</td><td><code>repeat</code>, <code>no-repeat</code>, <code>repeat-x</code>, <code>repeat-y</code></td></tr><tr><td><code>background-position</code></td><td>Positions the background image</td><td><code>top left</code>, <code>center center</code>, <code>50% 50%</code>, <code>0px 0px</code></td></tr><tr><td><code>background-size</code></td><td>Controls image size</td><td><code>auto</code>, <code>cover</code>, <code>contain</code>, pixel/percentage values</td></tr><tr><td><code>background-attachment</code></td><td>Scroll vs fixed behaviour</td><td><code>scroll</code>, <code>fixed</code>, <code>local</code></td></tr><tr><td><code>background</code></td><td>Shorthand for all the above</td><td>See shorthand syntax</td></tr></tbody></table></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>The <code>background</code> Shorthand Property</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase8">
-  <div class="phase-header">
-    <div class="phase-num">Phase 8 of 9</div>
-    <div class="phase-title">Part 6 — Guided Practice Exercises</div>
-    <div class="phase-check" id="chk8"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Exercise 1 — Styled Blog Post Header</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>The <code>background</code> Shorthand Property</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase8"><div class="ph"><div class="pn">Phase 8/9</div><div class="pt">Part 6 — Guided Practice Exercises</div><div class="pc" id="chk8"></div></div><div class="pb2"><div class="chal-box"><div class="chal-lbl">🎯 Your Challenge</div><div class="chal-body"><h3 class="v2-h3">Exercise 1 — Styled Blog Post Header</h3>
 <p class="v2-p"><strong>Objective:</strong> Practice <code>background-color</code>, <code>background-image</code>, <code>no-repeat</code>, <code>background-position</code>, and <code>background-size</code>.</p>
 <p class="v2-p"><strong>Scenario:</strong> You are building the header section of a travel blog. The header should display a stunning full-width photo with the blog title on top.</p>
-<p class="v2-p"><strong>HTML (given):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<p class="v2-p"><strong>HTML (given):</strong></p></div></div><div class="task-box"><div class="task-lbl">✏️ Task</div><div class="task-body">article {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 16px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+`
+
+Self-check Questions:
+- What colour would you see in the header if banner.jpg could not be found?
+- Why does the header need an explicit height?
+- What would change if you switched background-size: cover to background-size: contain?
+
+---</div></div><button class="reveal-btn" onclick="toggleReveal(this)">👁️ Reveal Answer</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;title&gt;Travel Blog&lt;/title&gt;
@@ -714,7 +564,7 @@ div {
 <p class="v2-p"><strong>Your Task — write the CSS:</strong></p>
 <ol class="v2-ol"><li>Style <code>.blog-header</code> with a background image of your choice (use any image URL or a placeholder like <code>"banner.jpg"</code>), <code>no-repeat</code>, <code>cover</code> size, centred position, and a dark navy fallback colour (<code>#1a1a2e</code>). Give it a <code>height</code> of <code>400px</code>.</li><li>Make the text in <code>.blog-header</code> white so it shows up against the dark image.</li><li>Give the <code>body</code> a <code>background-color</code> of <code>#f5f5f5</code> (light grey).</li><li>Give each <code>article</code> a <code>background-color</code> of white, some padding (<code>20px</code>), and a bottom margin (<code>16px</code>).</li><li><strong>Bonus:</strong> Add <code>background-attachment: fixed</code> to the header to create a parallax effect.</li></ol>
 <p class="v2-p"><strong>Solution:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Task 3 — body background */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Task 3 — body background */
 body {
   background-color: #f5f5f5;
   margin: 0;
@@ -759,7 +609,7 @@ article {
 <p class="v2-p"><strong>Objective:</strong> Practice <code>background-repeat</code>, <code>background-color</code> as fallback, and the <code>background</code> shorthand.</p>
 <p class="v2-p"><strong>Scenario:</strong> You are building a grid of feature cards for a design agency website. Each card should have a distinct background personality.</p>
 <p class="v2-p"><strong>HTML (given):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;card-grid&quot;&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;card-grid&quot;&gt;
 
   &lt;div class=&quot;card card-plain&quot;&gt;
     &lt;h3&gt;Strategy&lt;/h3&gt;
@@ -780,7 +630,7 @@ article {
 <p class="v2-p"><strong>Your Task:</strong></p>
 <ol class="v2-ol"><li>Give <code>.card</code> base styles: <code>padding: 30px</code>, <code>border-radius: 8px</code>, <code>margin: 10px</code>.</li><li>Use the <strong><code>background</code> shorthand</strong> to style <code>.card-plain</code> with only a solid colour: <code>#e8f4fd</code>.</li><li>Style <code>.card-pattern</code> using the shorthand with a white fallback colour, a small repeating pattern image (<code>"dots.png"</code> — imagine it exists), and <code>repeat</code>.</li><li>Style <code>.card-dark</code> using the shorthand with <code>#2c3e50</code> background colour and white text.</li></ol>
 <p class="v2-p"><strong>Solution:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Task 1 — Base card */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Task 1 — Base card */
 .card {
   padding: 30px;
   border-radius: 8px;
@@ -807,7 +657,7 @@ article {
 <p class="v2-p"><strong>Objective:</strong> Practice reading and writing the <code>background</code> shorthand.</p>
 <p class="v2-p"><strong>Given longhand CSS — convert each to shorthand:</strong></p>
 <p class="v2-p"><strong>Set A:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Longhand */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Longhand */
 div.box-a {
   background-color: #ffeeba;
   background-image: url(&quot;stripe.png&quot;);
@@ -815,7 +665,7 @@ div.box-a {
   background-position: top left;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Set B:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Longhand */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Longhand */
 section.hero {
   background-color: #000;
   background-image: url(&quot;hero.jpg&quot;);
@@ -825,7 +675,7 @@ section.hero {
   background-attachment: fixed;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Solutions:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Set A — shorthand */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Set A — shorthand */
 div.box-a {
   background: #ffeeba url(&quot;stripe.png&quot;) top left repeat-x;
 }
@@ -835,39 +685,10 @@ section.hero {
   background: #000 url(&quot;hero.jpg&quot;) center center / cover no-repeat fixed;
 }</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p"><strong>Note on Set B:</strong> The <code>/</code> between <code>center center</code> and <code>cover</code> is required — it separates position from size. This is mandatory CSS syntax.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">article {
-  background-color: white;
-  padding: 20px;
-  margin-bottom: 16px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-`
-
-Self-check Questions:
-- What colour would you see in the header if banner.jpg could not be found?
-- Why does the header need an explicit height?
-- What would change if you switched background-size: cover to background-size: contain?
-
----</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase9">
-  <div class="phase-header">
-    <div class="phase-num">Phase 9 of 9</div>
-    <div class="phase-title">Part 8 — Common Beginner Mistakes</div>
-    <div class="phase-check" id="chk9"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Mistake 1 — Background image not showing (wrong path)</h3>
+<hr class="v2-hr"></div><button class="ub" onclick="unlockNext(8)">Mark Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase9"><div class="ph"><div class="pn">Phase 9/9</div><div class="pt">Part 8 — Common Beginner Mistakes</div><div class="pc" id="chk9"></div></div><div class="pb2"><h3 class="v2-h3">Mistake 1 — Background image not showing (wrong path)</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(mountain.jpg);   /* no quotes */
 }
 
@@ -877,22 +698,22 @@ body {
 }</code></pre></div></div>
 <p class="v2-p"><strong>Why it's wrong:</strong> A missing or incorrect file path means the browser cannot find the image — it silently fails with no error shown on the page.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;mountain.jpg&quot;);   /* quotes are recommended */
 }</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p"><strong>Debugging tip:</strong> Open browser DevTools (F12), go to the Network tab, reload the page, and look for the image file. A red status (404) means the path is wrong.</p></blockquote>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 2 — Background image invisible because element has no height</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.hero {
   background-image: url(&quot;banner.jpg&quot;);
   background-size: cover;
 }</code></pre></div></div>
 <p class="v2-p"><strong>HTML:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;hero&quot;&gt;&lt;/div&gt;  &lt;!-- empty div! --&gt;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;hero&quot;&gt;&lt;/div&gt;  &lt;!-- empty div! --&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Why it's wrong:</strong> An empty <code>&lt;div&gt;</code> has <code>height: 0</code> by default. With no content to expand it, the div collapses to zero height — the background is technically there but invisible because the element is zero pixels tall.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.hero {
   background-image: url(&quot;banner.jpg&quot;);
   background-size: cover;
   height: 500px;   /* explicit height required */
@@ -900,13 +721,13 @@ body {
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 3 — Forgetting <code>background-repeat: no-repeat</code> on photos</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;portrait-photo.jpg&quot;);
   /* missing no-repeat! */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Why it's wrong:</strong> Without <code>no-repeat</code>, the photo tiles repeatedly across the page, which almost never looks good for actual photographs.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background-image: url(&quot;portrait-photo.jpg&quot;);
   background-repeat: no-repeat;
   background-size: cover;
@@ -915,31 +736,31 @@ body {
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 4 — Using <code>opacity</code> when you only want to fade the background</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.overlay {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.overlay {
   background-color: black;
   opacity: 0.5;   /* this fades EVERYTHING — text becomes unreadable too! */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.overlay {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.overlay {
   background-color: rgba(0, 0, 0, 0.5);  /* only the background is faded */
 }</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 5 — Wrong shorthand order for position/size (missing the slash)</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background: url(&quot;hero.jpg&quot;) center center cover no-repeat;
   /* Missing / between position and size! */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Why it's wrong:</strong> CSS does not know where the position ends and the size begins without the <code>/</code> separator.</p>
 <p class="v2-p"><strong>Correct:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>body {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>body {
   background: url(&quot;hero.jpg&quot;) center center / cover no-repeat;
   /*                          position ↑ / ↑ size       */
 }</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 6 — Overwriting background properties accidentally with shorthand</h3>
 <p class="v2-p"><strong>Wrong:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.card {
   background-image: url(&quot;texture.png&quot;);
   background-repeat: repeat;
 }
@@ -950,27 +771,16 @@ body {
 }</code></pre></div></div>
 <p class="v2-p"><strong>Why it's wrong:</strong> The <code>background</code> shorthand resets all unspecified sub-properties to their initial defaults. The image and repeat settings are wiped out.</p>
 <p class="v2-p"><strong>Correct:</strong> If you only want to update the colour, use the individual property:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.card {
   background-color: white;   /* Only changes the colour; image/repeat unchanged */
 }</code></pre></div></div>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="build-box" id="build-it"><div class="build-lbl">🏗️ Build It — Mini Project</div><div class="build-name">Project Brief</div><div class="build-req"><p class="v2-p">Build a polished, multi-section landing page that uses every background property you have learned.</p>
+<h3 class="v2-h3">Project Brief</h3>
+<p class="v2-p">You are building the homepage for a fictional eco-travel company called <strong>"Verdant Journeys."</strong> The page should have three distinct sections, each with a different background treatment.</p>
 <hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="build-box" id="build-it">
-  <div class="build-label">🏗️ Build It</div>
-  <div class="build-name">Project Brief</div>
-  <div class="build-desc">You are building the homepage for a fictional eco-travel company called <strong>"Verdant Journeys."</strong> The page should have three distinct sections, each with a different background treatment.</div>
-  <div class="v2-code-wrap">
-    <div class="v2-code-bar">
-      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
-      <span class="v2-code-lang">starter.html</span>
-    </div>
-    <div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<h3 class="v2-h3">Stage 1 — HTML Structure</h3>
+<p class="v2-p">Create <code>index.html</code>:</p></div><button class="reveal-btn" onclick="toggleCode(this)">💻 Reveal Starter Code</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">starter.html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -1022,10 +832,7 @@ body {
   &lt;/footer&gt;
 
 &lt;/body&gt;
-&lt;/html&gt;</code></pre></div>
-  </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
-    <button class="unlock-btn" onclick="downloadStarter(`<!DOCTYPE html>
+&lt;/html&gt;</code></pre></div></div><div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem"><button class="ub" onclick="downloadStarter(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1077,87 +884,66 @@ body {
   </footer>
 
 </body>
-</html>`)"
-      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
-      ⬇ Download starter.html
-    </button>
-    <button class="unlock-btn" onclick="showGithub()"
-      style="background:#0f172a;box-shadow:none">
-      🐙 Push to GitHub →
-    </button>
-  </div>
-</div>
+</html>`)" style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">⬇ Download starter.html</button><button class="ub" onclick="showGithub()" style="background:#0f172a;box-shadow:none">🐙 Push to GitHub Pages →</button></div></div></div>
 <div class="gh-acc" id="gh-steps" style="display:none">
-  <div class="gh-acc-head" onclick="toggleGh(this)">
-    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
-  </div>
-  <div class="gh-acc-body">
-    <div class="gh-step"><div class="gh-step-n">1</div>
-    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-06-project-brief</code>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">2</div>
-    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">3</div>
-    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
-    <div class="gh-step"><div class="gh-step-n">4</div>
-    <p>Commit message: <em>"Add CSS lesson 06 project"</em> → click <strong>Commit changes</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">5</div>
-    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-06-project-brief/</code> in about 1 minute! 🎉</p></div>
-    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
-  </div>
-</div>
-<div class="session-end" id="session-end">
-  <h2>🎉 Lesson 06 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
-  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — `background-color`: Painting With a Solid Colour</li><li>✅ Part 2 — `background-image`: Placing an Image Behind Your Content</li><li>✅ Part 3 — `background-repeat`: Controlling the Tile Behaviour</li><li>✅ Part 4 — `background-attachment`: Fixed or Scrolling Background</li><li>✅ Part 5 — The `background` Shorthand Property</li><li>✅ Part 6 — Guided Practice Exercises</li></ul>
-  <div class="lesson-nav"><a href="lesson_05.html" class="ln-btn">← Lesson 05</a><a href="lesson_07.html" class="ln-btn primary">Lesson 07 →</a></div>
-</div>
+<div class="gh-hd" onclick="toggleGh(this)">🐙 Push to GitHub Pages &nbsp;<span>▼</span></div>
+<div class="gh-bd">
+<div class="gh-st"><div class="gh-n">1</div><p>Go to <strong>github.com → New repository</strong> → name it <code>css-lesson-06-project-brief</code>. Set <strong>Public</strong>, tick <strong>Add README</strong>, click <strong>Create</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">2</div><p>Click <strong>Add file → Upload files</strong>. Rename your file to <code>index.html</code> then upload it.</p></div>
+<div class="gh-st"><div class="gh-n">3</div><p>Commit message: <em>"Add CSS lesson 06 project"</em> → <strong>Commit changes</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">4</div><p>Go to <strong>Settings → Pages</strong> → Source: <strong>main</strong> → <strong>Save</strong>. Live in ~1 min at <code>https://YOUR-NAME.github.io/css-lesson-06-project-brief/</code> 🎉</p></div>
+<button class="ub" onclick="showEnd()" style="margin-top:.5rem">Done — Finish Session ✅</button>
+</div></div>
+<div class="se" id="session-end"><h2>🎉 Lesson 06 complete!</h2><p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p><ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — `background-color`: Painting With a Solid Colour</li><li>✅ Part 2 — `background-image`: Placing an Image Behind Your Content</li><li>✅ Part 3 — `background-repeat`: Controlling the Tile Behaviour</li><li>✅ Part 4 — `background-attachment`: Fixed or Scrolling Background</li><li>✅ Part 5 — The `background` Shorthand Property</li><li>✅ Part 6 — Guided Practice Exercises</li></ul><div class="ln"><a href="lesson_05.html" class="ln-btn">← Lesson 05</a><a href="lesson_07.html" class="ln-btn primary">Lesson 07 →</a></div></div>
 </main>
-
-<footer class="lesson-footer">
-  Techbase Code Coach · CSS Course · Lesson 06 · © 2025 Techbase Consultant Services, Ibadan
-</footer>
+<footer class="lf">Techbase Code Coach &nbsp;·&nbsp; CSS Course &nbsp;·&nbsp; Lesson 06 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</footer>
+<div id="toast"></div>
+<button id="go-top" title="Back to top">↑</button>
+<canvas id="cc"></canvas>
 <script>
 const TOTAL=9,KEY='techbase_css_l06';
-let current=parseInt(localStorage.getItem(KEY)||'1');
-function init(){
-  for(let i=2;i<=current;i++) unlockPhase(i,false);
-  updateBar();
-}
+let cur=parseInt(localStorage.getItem(KEY)||'1');
+function init(){for(let i=2;i<=cur;i++)unlock(i,false);bar();}
 function unlockNext(n){
-  const chk=document.getElementById('chk'+n);
-  if(chk){chk.classList.add('done');chk.textContent='✓';}
-  localStorage.setItem(KEY,n+1); current=n+1;
+  const c=document.getElementById('chk'+n);
+  if(c){c.classList.add('done');c.textContent='✓';}
+  localStorage.setItem(KEY,n+1);cur=n+1;
   if(n===TOTAL){
-    document.getElementById('build-it').style.display='block';
-    updateBar(100);
+    document.getElementById('build-it').classList.add('visible');
+    bar(100);toast('🏗️ Build It unlocked!');
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  }else{
-    unlockPhase(n+1,true); updateBar();
-  }
+    setTimeout(confetti,600);
+  }else{unlock(n+1,true);bar();toast(['✅ Phase complete!','🎯 Keep going!','💡 Nice work!','🚀 Nailed it!'][n%4]);}
 }
-function unlockPhase(n,scroll){
-  const el=document.getElementById('phase'+n);
-  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
+function unlock(n,scroll){
+  const el=document.getElementById('phase'+n);if(!el)return;
+  el.classList.remove('locked');
+  if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),180);
 }
-function updateBar(pct){
-  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
-  document.getElementById('pbar').style.width=p+'%';
+function bar(p){document.getElementById('pbar').style.width=(p!==undefined?p:Math.round((cur-1)/TOTAL*95))+'%';}
+function toggleReveal(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Answer':'👁️ Reveal Answer';}
+function toggleCode(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Starter Code':'💻 Reveal Starter Code';}
+function copyCode(btn){
+  const code=btn.closest('.v2-code-wrap').querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(()=>{btn.textContent='✓ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='⎘ Copy';btn.classList.remove('copied');},1800);}).catch(()=>{});
 }
-function showGithub(){
-  const g=document.getElementById('gh-steps');
-  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
-}
-function showEnd(){
-  const e=document.getElementById('session-end');
-  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
-}
+const tEl=document.getElementById('toast');let tT;
+function toast(msg){tEl.innerHTML=msg;tEl.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>tEl.classList.remove('show'),2400);}
+const gEl=document.getElementById('go-top');
+window.addEventListener('scroll',()=>gEl.classList.toggle('visible',scrollY>320),{passive:true});
+gEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
-function downloadStarter(code){
-  const a=document.createElement('a');
-  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
-  a.download='starter.html';a.click();
+function showGithub(){const g=document.getElementById('gh-steps');if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}}
+function showEnd(){const e=document.getElementById('session-end');if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}}
+function downloadStarter(code){const ext='css'==='python'?'py':'html';const a=document.createElement('a');a.href='data:text/'+(ext==='py'?'x-python':'html')+';charset=utf-8,'+encodeURIComponent(code);a.download='starter.'+ext;a.click();}
+function confetti(){
+  const cv=document.getElementById('cc');cv.style.display='block';const ctx=cv.getContext('2d');
+  cv.width=innerWidth;cv.height=innerHeight;
+  const ps=Array.from({length:130},()=>{return{x:Math.random()*cv.width,y:-10-Math.random()*120,r:4+Math.random()*6,d:2+Math.random()*3,c:['#e34c26','#0284c7','#d97706','#059669','#7c3aed','#ec4899'][Math.floor(Math.random()*6)],ta:0};}); 
+  let f=0;
+  function draw(){ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.ta+=.1;p.y+=p.d;p.x+=Math.sin(f/20);ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});f++;if(f<200)requestAnimationFrame(draw);else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}}
+  draw();toast('🎉 All phases done! Build It awaits!');
 }
 init();
 </script>
-</body>
-</html>
+</body></html>

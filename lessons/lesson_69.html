@@ -1,230 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lesson 69: CSS Flexbox — Flexible Box Layout Complete Guide — Techbase CSS</title>
-<meta name="description" content="CSS Flexbox — Flexible Box Layout Complete Guide">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{
-  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
-  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
-  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
-  --text:#0f172a;--t2:#334155;--muted:#64748b;
-  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--acc:#0284c7;--acd:#0369a1;--acp:#f0f9ff;--acb:rgba(2,132,199,.22);--acs:rgba(2,132,199,.28);--bg:#f8fafc;--sf:#fff;--br:#e2e8f0;--tx:#0f172a;--t2:#334155;--mu:#64748b;--D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
-
-/* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
-  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
-  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
-.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+body{background:var(--bg);color:var(--tx);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--br);height:58px;display:flex;align-items:center;padding:0 1.5rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--tx);text-decoration:none}
+.l-nav-back{font-size:.8rem;color:var(--mu);text-decoration:none;font-weight:500;transition:color .2s}
 .l-nav-back:hover{color:var(--acc)}
-.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-
-/* PROGRESS */
-.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
-
-/* HERO */
-.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:860px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
-  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
-  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
-  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
-
-/* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
-.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
-.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
-.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
-  font-family:var(--M);font-size:.68rem;font-weight:500}
-
-/* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
-  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
-.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
-.phase-header{padding:1rem 1.4rem;background:#f5fbff;
-  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--acc)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
-  flex:1;margin:0 .8rem}
-.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
-  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
-  transition:background .3s,color .3s}
-.phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.6rem 1.8rem}
-
-/* RICH CONTENT STYLES */
+.l-nav-lbl{font-family:var(--M);font-size:.68rem;color:var(--mu)}
+.pw{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--br)}
+.pb{height:100%;background:linear-gradient(90deg,var(--acc),var(--acd));transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;position:relative}
+.pb::after{content:'';position:absolute;right:0;top:0;bottom:0;width:20px;background:inherit;filter:brightness(1.4);animation:pg 1.5s ease-in-out infinite}
+@keyframes pg{0%,100%{opacity:1}50%{opacity:.35}}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--br)}
+.l-hero-in{max-width:860px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;border-radius:100px;padding:.22rem .9rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--acc);background:var(--acp);border:1.5px solid var(--acb);margin-bottom:.85rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.9rem;color:var(--mu)}
+.wb{background:#fff;border:1.5px solid var(--acb);border-left:5px solid var(--acc);border-radius:14px;padding:1.4rem 1.6rem;max-width:860px;margin:1.5rem auto 0;box-shadow:0 2px 12px var(--acs)}
+.wb h2{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--acd);margin-bottom:.6rem}
+.wb p,.wb li{font-size:.92rem;line-height:1.85;color:var(--t2)}
+.wb ul{margin-left:1.2rem;margin-top:.4rem}
+.wm{display:flex;gap:.65rem;margin-top:1rem;flex-wrap:wrap}
+.wm span{background:var(--acp);color:var(--acd);border:1px solid var(--acb);border-radius:7px;padding:.22rem .7rem;font-family:var(--M);font-size:.68rem;font-weight:600}
+.phase{background:var(--sf);border:1.5px solid var(--br);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .35s,filter .35s,transform .35s}
+.phase.locked{opacity:.28;pointer-events:none;filter:blur(2px);transform:scale(.99)}
+.ph{padding:1rem 1.4rem;background:#f5fbff;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:.8rem}
+.pn{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);white-space:nowrap}
+.pt{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--tx);flex:1}
+.pc{width:26px;height:26px;border-radius:50%;background:var(--br);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:background .3s,transform .4s}
+.pc.done{background:#10b981;color:#fff;transform:scale(1.15) rotate(360deg)}
+.pb2{padding:1.6rem 1.8rem}
 .v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
-.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
-  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
-.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
-.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--tx);margin:1.6rem 0 .5rem;border-top:2px solid var(--acp);padding-top:.4rem}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1rem 0 .35rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.88rem;color:var(--mu);margin:.7rem 0 .3rem}
 .v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
 .v2-ul li,.v2-ol li{margin-bottom:.3rem}
-.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
-  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acp);border-radius:0 10px 10px 0;padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
 .v2-bq p{margin:0;color:inherit}
-.v2-bq strong{font-style:normal}
-.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
-.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-hr{border:none;border-top:1px solid var(--br);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0;border-radius:10px;border:1px solid var(--br)}
 .v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
-.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
-  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
-.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
-.v2-table tr:nth-child(even) td{background:#f8fafc}
-.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
-  padding:1px 5px;font-family:var(--M);font-size:.8em}
-.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
-.phase-body strong{color:var(--text)}
-
-/* CODE BLOCKS */
-.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-table th{background:var(--acp);color:#0c4a6e;font-family:var(--D);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--acb)}
+.v2-table td{padding:8px 12px;border-bottom:1px solid var(--br);color:var(--t2);vertical-align:top}
+.v2-table tr:last-child td{border:none}
+.v2-table tr:hover td{background:var(--acp)}
+.pb2 code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.pb2 a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.pb2 strong{color:var(--tx)}
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 18px rgba(0,0,0,.18)}
 .v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
 .v2-dot{width:10px;height:10px;border-radius:50%}
 .v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
-.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-lang{margin-left:.5rem;font-family:var(--M);font-size:.62rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em;flex:1}
+.copy-btn{background:rgba(255,255,255,.08);color:#94a3b8;border:none;border-radius:6px;padding:.25rem .65rem;font-family:var(--M);font-size:.65rem;cursor:pointer;transition:background .2s,color .2s}
+.copy-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+.copy-btn.copied{background:#10b981;color:#fff}
 .v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
 .v2-code-body pre{margin:0}
-.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
-  white-space:pre;background:transparent;padding:0;border-radius:0}
-
-/* TASK BOX */
-.task-box{background:#e0f2fe;border:2px dashed #0284c7;
-  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
-.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
-.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
-  font-family:var(--M);font-size:.82em}
-
-/* UNLOCK BUTTON */
-.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
-  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
-  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
-  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
-.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
-
-/* BUILD IT */
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.95;color:#e2e8f0;white-space:pre;background:transparent;padding:0;border-radius:0}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0}
+.task-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-body{font-size:.93rem;color:#0c4a6e;line-height:1.85}
+.task-body code{background:rgba(0,0,0,.1);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.chal-box{background:linear-gradient(135deg,#f0f9ff 0%,#fff 100%);border:2px solid var(--acc);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.2rem}
+.chal-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acd);margin-bottom:.6rem}
+.chal-body{font-size:.95rem;color:var(--tx);line-height:1.85}
+.chal-body code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 5px;font-family:var(--M);font-size:.82em}
+.reveal-btn{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--acd);font-family:var(--D);font-weight:700;font-size:.85rem;padding:.6rem 1.2rem;border-radius:8px;border:2px solid var(--acc);cursor:pointer;transition:background .2s,color .2s;margin:.6rem 0}
+.reveal-btn:hover{background:var(--acc);color:#fff}
+.reveal-content{display:none;margin-top:.6rem;animation:fi .3s ease}
+.reveal-content.open{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
-.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
-.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
-.build-desc strong{color:#14532d}
-
-/* GITHUB ACCORDION */
-.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.gh-acc-body.open{display:block}
-.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
-  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;margin-top:2px}
-.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-
-/* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
-.session-end.visible{display:block}
-.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
-.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
-  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
-  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
-  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.build-box.visible{display:block;animation:fi .4s ease}
+.build-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.15rem;color:#14532d;margin-bottom:.6rem}
+.build-req{font-size:.93rem;color:#166534;line-height:1.8;margin-bottom:.8rem}
+.build-req code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-req strong{color:#14532d}
+.gh-acc{border:1.5px solid var(--br);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-hd{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none;transition:background .2s}
+.gh-hd:hover{background:#f1f5f9}
+.gh-bd{display:none;padding:1.2rem;border-top:1px solid var(--br)}
+.gh-bd.open{display:block;animation:fi .25s ease}
+.gh-st{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-st p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-st code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.gh-nop{background:#fef3c7;border:1.5px solid #fde68a;border-radius:10px;padding:1rem 1.2rem;font-size:.9rem;color:#78350f;line-height:1.75;margin-bottom:1rem}
+.se{background:linear-gradient(135deg,var(--acc),var(--acd));color:#fff;border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
+.se.visible{display:block;animation:fi .4s ease}
+.se h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.se ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.se li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--sf);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--br);transition:border-color .2s,color .2s}
 .ln-btn:hover{border-color:var(--acc);color:var(--acc)}
 .ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;
-  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
-  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.ln{display:flex;align-items:center;justify-content:space-between;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.ub{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acs);margin-top:1.2rem}
+.ub:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acs)}
+.ub:active{transform:scale(.97)}
+#toast{position:fixed;bottom:90px;right:1.5rem;z-index:999;background:#1e293b;color:#fff;border-radius:10px;padding:.75rem 1.2rem;font-family:var(--D);font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+#toast.show{transform:translateY(0);opacity:1}
+#go-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;border:none;cursor:pointer;font-size:1.15rem;box-shadow:0 4px 16px var(--acs);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,box-shadow .2s;pointer-events:none}
+#go-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#go-top:hover{box-shadow:0 8px 24px var(--acs);transform:translateY(-2px)}
+#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none}
+.lf{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--mu);border-top:1px solid var(--br);background:var(--sf)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
   <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
-  <span class="l-nav-label">Lesson 69 of 73</span>
+  <span class="l-nav-lbl">Lesson 69 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
-
-<div class="l-hero">
-  <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 69</div>
-    <h1>CSS Flexbox — Flexible Box Layout Complete Guide</h1>
-    <div class="l-hero-sub">10 phases · Build: Stage 1 — Navigation Bar</div>
-  </div>
-</div>
-
-<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
-  <h2>👋 Welcome to Lesson 69</h2>
-  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever tried to centre something perfectly on a webpage and ended up fighting with <code>margin: auto</code>, <code>float</code>, and endless guessing? Or built a row of cards that looked fine on a big screen but collapsed into a mess on a phone? For years, web developers struggled with these exact problems using old layout tools that were never really designed for the job.</p>
-<p class="v2-p"><strong>CSS Flexbox</strong> (short for Flexible Box Layout) was built specifically to solve those problems. It gives you a powerful, intuitive system for arranging elements in rows or columns — aligning them, distributing space between them, and making them adapt to different screen sizes — all with just a handful of well-named CSS properties.</p>
-<p class="v2-p">In this lesson you will learn:</p>
-<ul class="v2-ul"><li>What Flexbox is, why it exists, and how it thinks about layout</li><li>How to turn any element into a <strong>flex container</strong></li><li>How to control direction, wrapping, and the main axis with container properties</li><li>How to align items along both axes (<code>justify-content</code>, <code>align-items</code>, <code>align-content</code>)</li><li>How to control individual <strong>flex items</strong> — their size, order, growth, and shrinkage</li><li>How to build fully <strong>responsive layouts</strong> using Flexbox and media queries</li><li>How to apply everything in a real mini-project</li></ul>
-<p class="v2-p">No prior Flexbox knowledge is required. A basic understanding of HTML and CSS (selectors, properties, values) is enough to follow along.</p>
-<hr class="v2-hr"></div>
-  <div class="welcome-meta">
-    <span>📚 10 phases</span>
-    <span>🏗️ Stage 1 — Navigation Bar</span>
-  </div>
+<div class="pw"><div class="pb" id="pbar"></div></div>
+<div class="l-hero"><div class="l-hero-in">
+  <div class="badge">CSS · Lesson 69</div>
+  <h1>CSS Flexbox — Flexible Box Layout Complete Guide</h1>
+  <div class="l-hero-sub">10 phases &nbsp;·&nbsp; Build: Stage 1 — Navigation Bar</div>
 </div></div>
-</section>
-
-<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
-<div class="phase" id="phase1">
-  <div class="phase-header">
-    <div class="phase-num">Phase 1 of 10</div>
-    <div class="phase-title">Lesson Introduction</div>
-    <div class="phase-check" id="chk1"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Have you ever tried to centre something perfectly on a webpage and ended up fighting with <code>margin: auto</code>, <code>float</code>, and endless guessing? Or built a row of cards that looked fine on a big screen but collapsed into a mess on a phone? For years, web developers struggled with these exact problems using old layout tools that were never really designed for the job.</p>
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--br)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="wb"><h2>👋 Welcome to Lesson 69</h2><div style="font-size:.92rem;line-height:1.85;color:var(--t2)"><p class="v2-p">Have you ever tried to centre something perfectly on a webpage and ended up fighting with <code>margin: auto</code>, <code>float</code>, and endless guessing? Or built a row of cards that looked fine on a big screen but collapsed into a mess on a phone? For years, web developers struggled with these exact problems using old layout tools that were never really designed for the job.</p>
 <p class="v2-p"><strong>CSS Flexbox</strong> (short for Flexible Box Layout) was built specifically to solve those problems. It gives you a powerful, intuitive system for arranging elements in rows or columns — aligning them, distributing space between them, and making them adapt to different screen sizes — all with just a handful of well-named CSS properties.</p>
 <p class="v2-p">In this lesson you will learn:</p>
 <ul class="v2-ul"><li>What Flexbox is, why it exists, and how it thinks about layout</li><li>How to turn any element into a <strong>flex container</strong></li><li>How to control direction, wrapping, and the main axis with container properties</li><li>How to align items along both axes (<code>justify-content</code>, <code>align-items</code>, <code>align-content</code>)</li><li>How to control individual <strong>flex items</strong> — their size, order, growth, and shrinkage</li><li>How to build fully <strong>responsive layouts</strong> using Flexbox and media queries</li><li>How to apply everything in a real mini-project</li></ul>
 <p class="v2-p">No prior Flexbox knowledge is required. A basic understanding of HTML and CSS (selectors, properties, values) is enough to follow along.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase2">
-  <div class="phase-header">
-    <div class="phase-num">Phase 2 of 10</div>
-    <div class="phase-title">Prerequisite Concepts</div>
-    <div class="phase-check" id="chk2"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is "layout" in CSS?</h3>
+<hr class="v2-hr"></div><div class="wm"><span>📚 10 phases</span><span>🏗️ Stage 1 — Navigation Bar</span><span>🌐 GitHub Pages</span></div></div></div>
+</section>
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1"><div class="ph"><div class="pn">Phase 1/10</div><div class="pt">Lesson Introduction</div><div class="pc" id="chk1"></div></div><div class="pb2"><p class="v2-p">Have you ever tried to centre something perfectly on a webpage and ended up fighting with <code>margin: auto</code>, <code>float</code>, and endless guessing? Or built a row of cards that looked fine on a big screen but collapsed into a mess on a phone? For years, web developers struggled with these exact problems using old layout tools that were never really designed for the job.</p>
+<p class="v2-p"><strong>CSS Flexbox</strong> (short for Flexible Box Layout) was built specifically to solve those problems. It gives you a powerful, intuitive system for arranging elements in rows or columns — aligning them, distributing space between them, and making them adapt to different screen sizes — all with just a handful of well-named CSS properties.</p>
+<p class="v2-p">In this lesson you will learn:</p>
+<ul class="v2-ul"><li>What Flexbox is, why it exists, and how it thinks about layout</li><li>How to turn any element into a <strong>flex container</strong></li><li>How to control direction, wrapping, and the main axis with container properties</li><li>How to align items along both axes (<code>justify-content</code>, <code>align-items</code>, <code>align-content</code>)</li><li>How to control individual <strong>flex items</strong> — their size, order, growth, and shrinkage</li><li>How to build fully <strong>responsive layouts</strong> using Flexbox and media queries</li><li>How to apply everything in a real mini-project</li></ul>
+<p class="v2-p">No prior Flexbox knowledge is required. A basic understanding of HTML and CSS (selectors, properties, values) is enough to follow along.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(1)">Start Lesson ✓</button></div></div>
+<div class="phase locked" id="phase2"><div class="ph"><div class="pn">Phase 2/10</div><div class="pt">Prerequisite Concepts</div><div class="pc" id="chk2"></div></div><div class="pb2"><h3 class="v2-h3">What is "layout" in CSS?</h3>
 <p class="v2-p">Layout means deciding how elements are positioned and sized on the page — how they sit next to each other, how much space they take, and where they appear when the screen is resized.</p>
 <h3 class="v2-h3">The Problem with Old Layout Methods</h3>
 <p class="v2-p">Before Flexbox, layout was done with:</p>
@@ -234,32 +154,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <p class="v2-p">Flexbox introduces a <strong>parent-child relationship</strong> for layout:</p>
 <ul class="v2-ul"><li>The <strong>parent</strong> element is called the <strong>flex container</strong>. You set rules on it that control how its children are arranged.</li><li>The <strong>children</strong> inside it are called <strong>flex items</strong>. They automatically respond to the container's rules, and you can also give them individual rules.</li></ul>
 <p class="v2-p">Think of a flex container like a <strong>tray</strong> holding items. The tray decides whether items line up left-to-right or top-to-bottom, how much space sits between them, and whether they wrap onto new lines. Each item on the tray can also have its own rules about how big it should be.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase3">
-  <div class="phase-header">
-    <div class="phase-num">Phase 3 of 10</div>
-    <div class="phase-title">Part 1 — What is Flexbox and How Do You Activate It?</div>
-    <div class="phase-check" id="chk3"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Activating Flexbox</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase3"><div class="ph"><div class="pn">Phase 3/10</div><div class="pt">Part 1 — What is Flexbox and How Do You Activate It?</div><div class="pc" id="chk3"></div></div><div class="pb2"><h3 class="v2-h3">Activating Flexbox</h3>
 <p class="v2-p">You turn any HTML element into a flex container by writing one line of CSS:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>display: flex;</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>display: flex;</code></pre></div></div>
 <p class="v2-p">That is it. Once you do this, all <strong>direct children</strong> of that element automatically become flex items and are arranged according to flexbox rules.</p>
 <p class="v2-p"><strong>Before Flexbox (block layout):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;container&quot;&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;container&quot;&gt;
   &lt;div class=&quot;box&quot;&gt;Box 1&lt;/div&gt;
   &lt;div class=&quot;box&quot;&gt;Box 2&lt;/div&gt;
   &lt;div class=&quot;box&quot;&gt;Box 3&lt;/div&gt;
 &lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   /* No display: flex — default block layout */
 }
 .box {
@@ -271,7 +177,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <p class="v2-p"><strong>Expected result without Flexbox:</strong> Each <code>.box</code> is a block element and stacks vertically — one box per line.</p>
 <hr class="v2-hr">
 <p class="v2-p"><strong>After adding Flexbox:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;   /* ← This one line changes everything */
 }
 .box {
@@ -285,7 +191,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <hr class="v2-hr">
 <h3 class="v2-h3">The Two Axes of Flexbox</h3>
 <p class="v2-p">Flexbox works along <strong>two axes</strong>. Understanding these axes is the key to understanding every property that follows.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>MAIN AXIS (default: horizontal → left to right)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>MAIN AXIS (default: horizontal → left to right)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►
 
   ┌─────────┐  ┌─────────┐  ┌─────────┐
@@ -299,98 +205,84 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <h3 class="v2-h3"><code>display: inline-flex</code></h3>
 <p class="v2-p">There is also <code>display: inline-flex</code>. The difference:</p>
 <ul class="v2-ul"><li><code>display: flex</code> — the container itself becomes a block-level element (takes full row width)</li><li><code>display: inline-flex</code> — the container becomes inline (sits alongside other inline content)</li></ul>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* The container takes full width */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* The container takes full width */
 .container { display: flex; }
 
 /* The container is only as wide as its content */
 .container { display: inline-flex; }</code></pre></div></div>
 <p class="v2-p">Most of the time you will use <code>display: flex</code>.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>What is Flexbox and How Do You Activate It?</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase4">
-  <div class="phase-header">
-    <div class="phase-num">Phase 4 of 10</div>
-    <div class="phase-title">Part 2 — Flex Container Properties</div>
-    <div class="phase-check" id="chk4"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">These are properties you set <strong>on the parent/container</strong> to control how all its children are arranged.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>What is Flexbox and How Do You Activate It?</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase4"><div class="ph"><div class="pn">Phase 4/10</div><div class="pt">Part 2 — Flex Container Properties</div><div class="pc" id="chk4"></div></div><div class="pb2"><p class="v2-p">These are properties you set <strong>on the parent/container</strong> to control how all its children are arranged.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3"><code>flex-direction</code> — Which Way Do Items Go?</h3>
 <p class="v2-p"><code>flex-direction</code> controls the direction of the <strong>main axis</strong> — the direction items are placed.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   flex-direction: row | row-reverse | column | column-reverse;
 }</code></pre></div></div>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>What it does</th></tr></thead><tbody><tr><td><code>row</code></td><td>Items placed left to right (default)</td></tr><tr><td><code>row-reverse</code></td><td>Items placed right to left</td></tr><tr><td><code>column</code></td><td>Items placed top to bottom</td></tr><tr><td><code>column-reverse</code></td><td>Items placed bottom to top</td></tr></tbody></table></div>
 <p class="v2-p"><strong>Example 1 — <code>flex-direction: row</code> (default):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   flex-direction: row;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Item 1 ] [ Item 2 ] [ Item 3 ]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[ Item 1 ] [ Item 2 ] [ Item 3 ]
 → left to right</code></pre></div></div>
 <hr class="v2-hr">
 <p class="v2-p"><strong>Example 2 — <code>flex-direction: column</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   flex-direction: column;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Item 1 ]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[ Item 1 ]
 [ Item 2 ]   ↓ top to bottom
 [ Item 3 ]</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Important:</strong> When you switch to <code>column</code>, the <strong>main axis is now vertical</strong> and the <strong>cross axis is now horizontal</strong>. This affects how <code>justify-content</code> and <code>align-items</code> behave — something beginners often find confusing!</p></blockquote>
 <hr class="v2-hr">
 <p class="v2-p"><strong>Example 3 — <code>flex-direction: row-reverse</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   flex-direction: row-reverse;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[ Item 3 ] [ Item 2 ] [ Item 1 ]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[ Item 3 ] [ Item 2 ] [ Item 1 ]
 ← right to left</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3"><code>flex-wrap</code> — What Happens When There Is No Room?</h3>
 <p class="v2-p">By default, flex items all try to fit on one line. If there are too many items to fit, they <strong>shrink</strong> rather than wrap. <code>flex-wrap</code> changes this behaviour.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   flex-wrap: nowrap | wrap | wrap-reverse;
 }</code></pre></div></div>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>What it does</th></tr></thead><tbody><tr><td><code>nowrap</code></td><td>All items on one line, shrink to fit (default)</td></tr><tr><td><code>wrap</code></td><td>Items wrap onto new lines as needed</td></tr><tr><td><code>wrap-reverse</code></td><td>Items wrap in reverse — new lines appear above</td></tr></tbody></table></div>
 <p class="v2-p"><strong>Example — <code>flex-wrap: nowrap</code> (default):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   flex-wrap: nowrap;
   width: 300px;   /* too narrow for 6 items */
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[I1][I2][I3][I4][I5][I6]   ← all squashed on one line</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[I1][I2][I3][I4][I5][I6]   ← all squashed on one line</code></pre></div></div>
 <hr class="v2-hr">
 <p class="v2-p"><strong>Example — <code>flex-wrap: wrap</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   flex-wrap: wrap;
   width: 300px;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[Item 1][Item 2][Item 3]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[Item 1][Item 2][Item 3]
 [Item 4][Item 5][Item 6]   ← overflow wraps to next line</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Real-world use:</strong> <code>flex-wrap: wrap</code> is essential for responsive card grids. When the screen gets narrow, cards naturally wrap to new rows instead of becoming tiny.</p></blockquote>
 <hr class="v2-hr">
 <p class="v2-p"><strong>Example — <code>flex-wrap: wrap-reverse</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   flex-wrap: wrap-reverse;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[Item 4][Item 5][Item 6]   ← last row appears at TOP
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[Item 4][Item 5][Item 6]   ← last row appears at TOP
 [Item 1][Item 2][Item 3]</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3"><code>flex-flow</code> — Shorthand for direction + wrap</h3>
 <p class="v2-p"><code>flex-flow</code> combines <code>flex-direction</code> and <code>flex-wrap</code> in one line:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Long form */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Long form */
 .container {
   flex-direction: row;
   flex-wrap: wrap;
@@ -401,78 +293,64 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
   flex-flow: row wrap;
 }</code></pre></div></div>
 <p class="v2-p"><strong>More examples:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>flex-flow: column nowrap;      /* column direction, no wrapping */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>flex-flow: column nowrap;      /* column direction, no wrapping */
 flex-flow: row-reverse wrap;   /* right-to-left with wrapping */</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Flex Container Properties</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase5">
-  <div class="phase-header">
-    <div class="phase-num">Phase 5 of 10</div>
-    <div class="phase-title">Part 3 — Justifying Content Along the Main Axis</div>
-    <div class="phase-check" id="chk5"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3"><code>justify-content</code> — Space Distribution on the Main Axis</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Flex Container Properties</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase5"><div class="ph"><div class="pn">Phase 5/10</div><div class="pt">Part 3 — Justifying Content Along the Main Axis</div><div class="pc" id="chk5"></div></div><div class="pb2"><h3 class="v2-h3"><code>justify-content</code> — Space Distribution on the Main Axis</h3>
 <p class="v2-p"><code>justify-content</code> controls how flex items are positioned and spaced <strong>along the main axis</strong> (the direction they are flowing in).</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly;
 }</code></pre></div></div>
 <p class="v2-p">To understand each value, imagine 3 boxes inside a wide container. The container has leftover space on the right.</p>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>justify-content: flex-start</code> (default):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[Box1][Box2][Box3]                    (empty space)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[Box1][Box2][Box3]                    (empty space)
 ← items packed to the START of the main axis</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   justify-content: flex-start;
 }</code></pre></div></div>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>justify-content: flex-end</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>                    (empty space)[Box1][Box2][Box3]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>                    (empty space)[Box1][Box2][Box3]
                                  items packed to the END →</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   justify-content: flex-end;
 }</code></pre></div></div>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>justify-content: center</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>         (space)[Box1][Box2][Box3](space)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>         (space)[Box1][Box2][Box3](space)
                   items centred</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   justify-content: center;
 }</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>This is how you centre things horizontally in a row container with one line of CSS!</strong></p></blockquote>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>justify-content: space-between</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[Box1]         [Box2]         [Box3]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[Box1]         [Box2]         [Box3]
   no gap at edges; equal gap BETWEEN items</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   justify-content: space-between;
 }</code></pre></div></div>
 <p class="v2-p">This is extremely common for navigation bars — logo on the left, links on the right.</p>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>justify-content: space-around</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>  (half)[Box1](full)(Box2)(full)[Box3](half)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>  (half)[Box1](full)(Box2)(full)[Box3](half)
   equal space on EACH SIDE of every item
   (edge gaps are half the size of middle gaps)</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   justify-content: space-around;
 }</code></pre></div></div>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>justify-content: space-evenly</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>  (gap)[Box1](gap)[Box2](gap)[Box3](gap)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>  (gap)[Box1](gap)[Box2](gap)[Box3](gap)
   perfectly EQUAL gaps everywhere including edges</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   justify-content: space-evenly;
 }</code></pre></div></div>
@@ -480,37 +358,23 @@ flex-flow: row-reverse wrap;   /* right-to-left with wrapping */</code></pre></d
 <hr class="v2-hr">
 <h3 class="v2-h3">Remembering <code>justify-content</code></h3>
 <p class="v2-p">A simple memory trick: <strong>"justify" = along the main axis</strong>. Just like text justification in a word processor adjusts text along the horizontal line, <code>justify-content</code> adjusts items along the flex direction.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Justifying Content Along the Main Axis</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase6">
-  <div class="phase-header">
-    <div class="phase-num">Phase 6 of 10</div>
-    <div class="phase-title">Part 4 — Aligning Items Along the Cross Axis</div>
-    <div class="phase-check" id="chk6"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3"><code>align-items</code> — Alignment on the Cross Axis (Single Line)</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Justifying Content Along the Main Axis</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase6"><div class="ph"><div class="pn">Phase 6/10</div><div class="pt">Part 4 — Aligning Items Along the Cross Axis</div><div class="pc" id="chk6"></div></div><div class="pb2"><h3 class="v2-h3"><code>align-items</code> — Alignment on the Cross Axis (Single Line)</h3>
 <p class="v2-p"><code>align-items</code> controls how flex items are positioned <strong>along the cross axis</strong> (perpendicular to the direction they flow). For a <code>row</code> container, this means vertical alignment.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   align-items: stretch | flex-start | flex-end | center | baseline;
 }</code></pre></div></div>
 <p class="v2-p">Imagine 3 boxes in a row inside a tall container. The cross axis runs vertically.</p>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>align-items: stretch</code> (default):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
 │ [Box1] [Box2] [Box3]           │
 │                                │
 │  items stretch to fill the     │
 │  full height of the container  │
 └────────────────────────────────┘</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   align-items: stretch;
   height: 200px;
@@ -518,7 +382,7 @@ flex-flow: row-reverse wrap;   /* right-to-left with wrapping */</code></pre></d
 <p class="v2-p"><strong>Expected result:</strong> All items grow to the container's full height, even if their content is short.</p>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>align-items: flex-start</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
 │ [Box1] [Box2] [Box3]           │  ← items at TOP (cross-axis start)
 │                                │
 │                                │
@@ -526,7 +390,7 @@ flex-flow: row-reverse wrap;   /* right-to-left with wrapping */</code></pre></d
 └────────────────────────────────┘</code></pre></div></div>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>align-items: flex-end</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
 │                                │
 │                                │
 │                                │
@@ -534,18 +398,18 @@ flex-flow: row-reverse wrap;   /* right-to-left with wrapping */</code></pre></d
 └────────────────────────────────┘</code></pre></div></div>
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>align-items: center</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
 │                                │
 │ [Box1] [Box2] [Box3]           │  ← items CENTRED vertically
 │                                │
 └────────────────────────────────┘</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   align-items: center;
   height: 200px;
 }</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>The famous centring trick:</strong> Combine <code>justify-content: center</code> + <code>align-items: center</code> to perfectly centre one or more items both horizontally AND vertically inside their container — something that was notoriously difficult before Flexbox!</p></blockquote>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   justify-content: center;   /* centre along main axis (horizontal) */
   align-items: center;       /* centre along cross axis (vertical) */
@@ -554,11 +418,11 @@ flex-flow: row-reverse wrap;   /* right-to-left with wrapping */</code></pre></d
 <hr class="v2-hr">
 <p class="v2-p"><strong><code>align-items: baseline</code>:</strong></p>
 <p class="v2-p">Items are aligned so their <strong>text baselines</strong> line up — useful when items have different font sizes and you want the text to sit on the same invisible line.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   align-items: baseline;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[small text] [BIG TEXT] [medium]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[small text] [BIG TEXT] [medium]
       ↑           ↑        ↑
       All text baselines aligned on same horizontal line</code></pre></div></div>
 <hr class="v2-hr">
@@ -566,18 +430,18 @@ flex-flow: row-reverse wrap;   /* right-to-left with wrapping */</code></pre></d
 <p class="v2-p"><code>align-content</code> only takes effect when items <strong>wrap onto multiple lines</strong> (i.e., when <code>flex-wrap: wrap</code> is set and there actually IS wrapping). It controls how the <strong>lines themselves</strong> are distributed along the cross axis.</p>
 <p class="v2-p">Think of it as <code>justify-content</code> but for the lines/rows rather than for individual items.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   align-content: flex-start | flex-end | center | space-between | space-around | space-evenly | stretch;
 }</code></pre></div></div>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>What it does</th></tr></thead><tbody><tr><td><code>flex-start</code></td><td>Lines packed at the start of the cross axis</td></tr><tr><td><code>flex-end</code></td><td>Lines packed at the end</td></tr><tr><td><code>center</code></td><td>Lines centred on the cross axis</td></tr><tr><td><code>space-between</code></td><td>Equal space between lines, no space at edges</td></tr><tr><td><code>space-around</code></td><td>Equal space around each line</td></tr><tr><td><code>space-evenly</code></td><td>Equal space between all lines and edges</td></tr><tr><td><code>stretch</code></td><td>Lines stretch to fill available space (default)</td></tr></tbody></table></div>
 <p class="v2-p"><strong>Example:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   flex-wrap: wrap;
   align-content: space-between;
   height: 400px;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>┌────────────────────────────────┐
 │ [Item1][Item2][Item3]          │  ← Row 1 at top
 │                                │
 │                                │  ← space between rows
@@ -589,37 +453,23 @@ flex-flow: row-reverse wrap;   /* right-to-left with wrapping */</code></pre></d
 <hr class="v2-hr">
 <h3 class="v2-h3">Quick Reference: Container Properties Summary</h3>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>Controls</th><th>Axis</th></tr></thead><tbody><tr><td><code>flex-direction</code></td><td>Direction items flow</td><td>Sets main axis</td></tr><tr><td><code>flex-wrap</code></td><td>Whether items wrap to new lines</td><td>Cross axis</td></tr><tr><td><code>flex-flow</code></td><td>Shorthand: direction + wrap</td><td>Both</td></tr><tr><td><code>justify-content</code></td><td>Space/position along main axis</td><td>Main</td></tr><tr><td><code>align-items</code></td><td>Position along cross axis (single line)</td><td>Cross</td></tr><tr><td><code>align-content</code></td><td>Position of multiple lines</td><td>Cross</td></tr></tbody></table></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Aligning Items Along the Cross Axis</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase7">
-  <div class="phase-header">
-    <div class="phase-num">Phase 7 of 10</div>
-    <div class="phase-title">Part 5 — Flex Item Properties</div>
-    <div class="phase-check" id="chk7"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">So far we have only set properties on the <strong>container</strong>. Now we look at properties you set on <strong>individual items</strong> to control their own size and behaviour.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Aligning Items Along the Cross Axis</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase7"><div class="ph"><div class="pn">Phase 7/10</div><div class="pt">Part 5 — Flex Item Properties</div><div class="pc" id="chk7"></div></div><div class="pb2"><p class="v2-p">So far we have only set properties on the <strong>container</strong>. Now we look at properties you set on <strong>individual items</strong> to control their own size and behaviour.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3"><code>order</code> — Change the Visual Order of Items</h3>
 <p class="v2-p">By default, flex items appear in the same order as they appear in the HTML. <code>order</code> lets you change the visual order without changing the HTML.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item {
   order: integer;   /* default is 0 */
 }</code></pre></div></div>
 <p class="v2-p">Items are sorted from lowest to highest <code>order</code> value. Items with the same <code>order</code> appear in HTML order.</p>
 <p class="v2-p"><strong>Example:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;container&quot;&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;container&quot;&gt;
   &lt;div class=&quot;item&quot; id=&quot;a&quot;&gt;A&lt;/div&gt;   &lt;!-- HTML order: 1st --&gt;
   &lt;div class=&quot;item&quot; id=&quot;b&quot;&gt;B&lt;/div&gt;   &lt;!-- HTML order: 2nd --&gt;
   &lt;div class=&quot;item&quot; id=&quot;c&quot;&gt;C&lt;/div&gt;   &lt;!-- HTML order: 3rd --&gt;
 &lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container { display: flex; }
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container { display: flex; }
 
 #a { order: 3; }   /* A displayed last */
 #b { order: 1; }   /* B displayed first */
@@ -631,61 +481,61 @@ flex-flow: row-reverse wrap;   /* right-to-left with wrapping */</code></pre></d
 <h3 class="v2-h3"><code>flex-grow</code> — How Much Should an Item Grow?</h3>
 <p class="v2-p"><code>flex-grow</code> controls how much extra space an item takes up relative to other items, when the container has leftover space.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item {
   flex-grow: number;   /* default is 0 — do not grow */
 }</code></pre></div></div>
 <p class="v2-p">The value is a <strong>ratio</strong> (not a percentage or pixel amount). The browser calculates how much free space exists, then divides it among items proportionally to their <code>flex-grow</code> values.</p>
 <p class="v2-p"><strong>Example 1 — No growing (default):</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item { flex-grow: 0; }   /* items stay their natural size */</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[Item1][Item2][Item3]                  (leftover space unused)</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item { flex-grow: 0; }   /* items stay their natural size */</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[Item1][Item2][Item3]                  (leftover space unused)</code></pre></div></div>
 <hr class="v2-hr">
 <p class="v2-p"><strong>Example 2 — All items grow equally:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item { flex-grow: 1; }   /* each item gets 1 share of free space */</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[──── Item1 ────][──── Item2 ────][──── Item3 ────]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item { flex-grow: 1; }   /* each item gets 1 share of free space */</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[──── Item1 ────][──── Item2 ────][──── Item3 ────]
 All three items grow equally to fill the container</code></pre></div></div>
 <hr class="v2-hr">
 <p class="v2-p"><strong>Example 3 — One item grows more:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item-a { flex-grow: 1; }
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item-a { flex-grow: 1; }
 .item-b { flex-grow: 2; }   /* gets TWICE as much free space */
 .item-c { flex-grow: 1; }</code></pre></div></div>
 <p class="v2-p">If there is 60px of free space, item-a gets 15px, item-b gets 30px, item-c gets 15px (ratios 1:2:1).</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[─ Item A ─][──── Item B ────][─ Item C ─]</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[─ Item A ─][──── Item B ────][─ Item C ─]</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Think About This:</strong> If every item has <code>flex-grow: 1</code>, do they all end up the same size? Not necessarily — they start at their natural size and then share the FREE space. If they started at different sizes they will end at different sizes but each absorbed the same amount of extra space.</p></blockquote>
 <hr class="v2-hr">
 <h3 class="v2-h3"><code>flex-shrink</code> — How Much Should an Item Shrink?</h3>
 <p class="v2-p"><code>flex-shrink</code> is the opposite of <code>flex-grow</code>. It controls how much an item shrinks relative to others when the container is <strong>too small</strong> to fit everything at natural size.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item {
   flex-shrink: number;   /* default is 1 — shrink proportionally */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Example:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item-a { flex-shrink: 1; }   /* shrinks normally */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item-a { flex-shrink: 1; }   /* shrinks normally */
 .item-b { flex-shrink: 3; }   /* shrinks 3x as much as item-a */
 .item-c { flex-shrink: 1; }</code></pre></div></div>
 <p class="v2-p">When the container runs out of space, item-b gives up three times more width than item-a or item-c.</p>
 <p class="v2-p"><strong>To prevent shrinking:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item { flex-shrink: 0; }   /* item will never shrink below its natural size */</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item { flex-shrink: 0; }   /* item will never shrink below its natural size */</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Real-world use:</strong> A navigation logo should never shrink while links can. Set <code>flex-shrink: 0</code> on the logo item.</p></blockquote>
 <hr class="v2-hr">
 <h3 class="v2-h3"><code>flex-basis</code> — The Starting Size of an Item</h3>
 <p class="v2-p"><code>flex-basis</code> sets the <strong>initial/base size</strong> of a flex item before any growing or shrinking happens. Think of it as setting the "starting point" size.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item {
   flex-basis: auto | length | percentage;
 }</code></pre></div></div>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Value</th><th>Meaning</th></tr></thead><tbody><tr><td><code>auto</code></td><td>Use the item's content size (default)</td></tr><tr><td><code>200px</code></td><td>Start at exactly 200px</td></tr><tr><td><code>30%</code></td><td>Start at 30% of the container's size</td></tr><tr><td><code>0</code></td><td>Start with no assumed size (grow from scratch)</td></tr></tbody></table></div>
 <p class="v2-p"><strong>Example:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item-a { flex-basis: 200px; }   /* starts at 200px, then grows/shrinks from there */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item-a { flex-basis: 200px; }   /* starts at 200px, then grows/shrinks from there */
 .item-b { flex-basis: 100px; }   /* starts at 100px */
 .item-c { flex-basis: auto; }    /* starts at natural content size */</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3"><code>flex</code> — The Powerful Shorthand</h3>
 <p class="v2-p"><code>flex</code> is a shorthand that combines <code>flex-grow</code>, <code>flex-shrink</code>, and <code>flex-basis</code> in one declaration:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item {
   flex: flex-grow  flex-shrink  flex-basis;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Common patterns:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>flex: 1;            /* grow: 1, shrink: 1, basis: 0  → items share space equally */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>flex: 1;            /* grow: 1, shrink: 1, basis: 0  → items share space equally */
 flex: 1 1 auto;     /* same as above but starts from natural size */
 flex: 0 0 200px;    /* fixed 200px — never grows, never shrinks */
 flex: 2 1 150px;    /* starts at 150px, grows at 2x rate, shrinks at 1x rate */
@@ -693,34 +543,34 @@ flex: none;         /* fully inflexible: 0 0 auto — stays natural size */
 flex: auto;         /* fully flexible: 1 1 auto */</code></pre></div></div>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Best practice:</strong> Use the shorthand <code>flex</code> rather than the three separate properties. It also sets sensible defaults for the properties you don't specify.</p></blockquote>
 <p class="v2-p"><strong>Equal-width columns with <code>flex: 1</code>:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
 }
 
 .column {
   flex: 1;   /* every column shares space equally */
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[── Column 1 ──][── Column 2 ──][── Column 3 ──]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[── Column 1 ──][── Column 2 ──][── Column 3 ──]
 All three columns are exactly equal width</code></pre></div></div>
 <p class="v2-p"><strong>Sidebar + main content layout:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.sidebar {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.sidebar {
   flex: 0 0 250px;   /* fixed 250px sidebar, never grows or shrinks */
 }
 
 .main-content {
   flex: 1;           /* takes all remaining space */
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[── Sidebar 250px ──][──────────── Main Content ────────────]</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[── Sidebar 250px ──][──────────── Main Content ────────────]</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3"><code>align-self</code> — Override Alignment for One Item</h3>
 <p class="v2-p"><code>align-self</code> lets a <strong>single item</strong> override the container's <code>align-items</code> setting for itself only.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.item {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.item {
   align-self: auto | flex-start | flex-end | center | baseline | stretch;
 }</code></pre></div></div>
 <p class="v2-p">These values work exactly like <code>align-items</code> but apply to just one item.</p>
 <p class="v2-p"><strong>Example:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   align-items: flex-start;   /* all items start at the top */
   height: 200px;
@@ -729,7 +579,7 @@ All three columns are exactly equal width</code></pre></div></div>
 .special-item {
   align-self: center;   /* THIS item centres itself vertically, overriding the container rule */
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>┌─────────────────────────────────────────┐
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>┌─────────────────────────────────────────┐
 │ [Item1]  [Item2]       [Item3]          │
 │           ↑ starts at top               │
 │         [Special]                       │
@@ -740,19 +590,19 @@ All three columns are exactly equal width</code></pre></div></div>
 <h3 class="v2-h3"><code>gap</code>, <code>row-gap</code>, <code>column-gap</code> — Space Between Items</h3>
 <p class="v2-p"><code>gap</code> (previously called <code>grid-gap</code>) adds space between flex items without affecting the outer edges of the container. This is cleaner than using <code>margin</code> on every item.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   gap: 20px;              /* equal gap in both directions */
   row-gap: 10px;          /* gap between rows only */
   column-gap: 20px;       /* gap between columns only */
   gap: 10px 20px;         /* row-gap then column-gap */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Example:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
 }</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>[Item1]  [Item2]  [Item3]
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>[Item1]  [Item2]  [Item3]
   16px     16px
 [Item4]  [Item5]
   ↑ 16px between rows too</code></pre></div></div>
@@ -760,29 +610,15 @@ All three columns are exactly equal width</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Flex Item Properties Summary</h3>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Property</th><th>Controls</th><th>Default</th></tr></thead><tbody><tr><td><code>order</code></td><td>Visual order of this item</td><td><code>0</code></td></tr><tr><td><code>flex-grow</code></td><td>How much this item grows</td><td><code>0</code></td></tr><tr><td><code>flex-shrink</code></td><td>How much this item shrinks</td><td><code>1</code></td></tr><tr><td><code>flex-basis</code></td><td>Starting size before grow/shrink</td><td><code>auto</code></td></tr><tr><td><code>flex</code></td><td>Shorthand: grow + shrink + basis</td><td><code>0 1 auto</code></td></tr><tr><td><code>align-self</code></td><td>This item's cross-axis alignment</td><td><code>auto</code></td></tr></tbody></table></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Flex Item Properties</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase8">
-  <div class="phase-header">
-    <div class="phase-num">Phase 8 of 10</div>
-    <div class="phase-title">Part 6 — Responsive Flexbox Layouts</div>
-    <div class="phase-check" id="chk8"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is Responsive Design?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Flex Item Properties</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase8"><div class="ph"><div class="pn">Phase 8/10</div><div class="pt">Part 6 — Responsive Flexbox Layouts</div><div class="pc" id="chk8"></div></div><div class="pb2"><h3 class="v2-h3">What is Responsive Design?</h3>
 <p class="v2-p">Responsive design means your layout adapts gracefully to different screen sizes — desktop, tablet, and mobile — without building separate websites. Flexbox is perfectly suited for this because flex items can grow, shrink, and wrap automatically.</p>
 <p class="v2-p">The two main tools for responsive Flexbox are:</p>
 <ol class="v2-ol"><li><strong><code>flex-wrap: wrap</code></strong> — items wrap naturally when the container is too narrow</li><li><strong>Media queries</strong> — override Flexbox properties at specific screen widths</li></ol>
 <hr class="v2-hr">
 <h3 class="v2-h3">Technique 1 — Natural Wrapping with <code>flex-wrap</code></h3>
 <p class="v2-p">The simplest responsive pattern: set items to a minimum width and let them wrap.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -798,7 +634,7 @@ All three columns are exactly equal width</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Technique 2 — Responsive Navigation Bar</h3>
 <p class="v2-p">A navigation bar that is horizontal on desktop but stacks vertically on mobile:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Base styles (mobile first — stack vertically) */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Base styles (mobile first — stack vertically) */
 .nav {
   display: flex;
   flex-direction: column;
@@ -824,7 +660,7 @@ All three columns are exactly equal width</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Technique 3 — Responsive Two-Column Layout</h3>
 <p class="v2-p">A sidebar + main content layout that collapses to a single column on mobile:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Base: single column for mobile */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Base: single column for mobile */
 .page-layout {
   display: flex;
   flex-direction: column;
@@ -850,7 +686,7 @@ All three columns are exactly equal width</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Technique 4 — Responsive Card Grid</h3>
 <p class="v2-p">A classic card grid that adjusts columns automatically:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card-grid {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.card-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
@@ -871,7 +707,7 @@ All three columns are exactly equal width</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Technique 5 — Mobile-First with Media Queries</h3>
 <p class="v2-p">The professional approach: start with mobile styles, then add desktop styles in media queries.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ===== MOBILE FIRST ===== */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ===== MOBILE FIRST ===== */
 .features {
   display: flex;
   flex-direction: column;   /* stack on mobile */
@@ -908,7 +744,7 @@ All three columns are exactly equal width</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3"><code>order</code> for Responsive Reordering</h3>
 <p class="v2-p">You can also use <code>order</code> to change the visual sequence between mobile and desktop — without touching HTML.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Mobile: natural HTML order — content first, sidebar second */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Mobile: natural HTML order — content first, sidebar second */
 .sidebar    { order: 2; }
 .main-content { order: 1; }
 
@@ -917,25 +753,22 @@ All three columns are exactly equal width</code></pre></div></div>
   .sidebar    { order: 1; }   /* sidebar appears first on desktop */
   .main-content { order: 2; }
 }</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Responsive Flexbox Layouts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase9">
-  <div class="phase-header">
-    <div class="phase-num">Phase 9 of 10</div>
-    <div class="phase-title">Part 7 — Guided Practice Exercises</div>
-    <div class="phase-check" id="chk9"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Exercise 1 — Your First Flex Container (Beginner)</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Responsive Flexbox Layouts</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase9"><div class="ph"><div class="pn">Phase 9/10</div><div class="pt">Part 7 — Guided Practice Exercises</div><div class="pc" id="chk9"></div></div><div class="pb2"><div class="chal-box"><div class="chal-lbl">🎯 Your Challenge</div><div class="chal-body"><h3 class="v2-h3">Exercise 1 — Your First Flex Container (Beginner)</h3>
 <p class="v2-p"><strong>Objective:</strong> Activate Flexbox and control direction.</p>
-<p class="v2-p"><strong>Scenario:</strong> You have a row of navigation links that should display horizontally, centred, with even spacing.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<p class="v2-p"><strong>Scenario:</strong> You have a row of navigation links that should display horizontally, centred, with even spacing.</p></div></div><div class="task-box"><div class="task-lbl">✏️ Task</div><div class="task-body">- Cards start at 280px wide
+- Cards grow to fill available space
+- Cards shrink if needed
+- Cards wrap when they can't fit at 280px
+
+Expected Behaviour:
+- Wide screen → 3 or more cards per row
+- Medium screen → 2 per row
+- Narrow screen → 1 per row, full width
+
+Answer: flex: 1 1 280px;
+
+---</div></div><button class="reveal-btn" onclick="toggleReveal(this)">👁️ Reveal Answer</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -972,7 +805,7 @@ All three columns are exactly equal width</code></pre></div></div>
 <h3 class="v2-h3">Exercise 2 — Perfect Centring (Beginner)</h3>
 <p class="v2-p"><strong>Objective:</strong> Centre content both vertically and horizontally.</p>
 <p class="v2-p"><strong>Scenario:</strong> A hero section that should display its text perfectly centred in the middle of a 400px tall box.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.hero {
   height: 400px;
   background-color: #3498db;
   /* TODO: Use Flexbox to centre .hero-content both ways */
@@ -983,7 +816,7 @@ All three columns are exactly equal width</code></pre></div></div>
   text-align: center;
 }</code></pre></div></div>
 <p class="v2-p"><strong>Solution — fill in the blanks:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.hero {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.hero {
   height: 400px;
   background-color: #3498db;
   display: _______;           /* activate Flexbox */
@@ -996,11 +829,11 @@ All three columns are exactly equal width</code></pre></div></div>
 <p class="v2-p"><strong>Objective:</strong> Build a two-column page layout.</p>
 <p class="v2-p"><strong>Task:</strong> Using Flexbox, create a layout with:</p>
 <ul class="v2-ul"><li>A sidebar that is always 220px wide and never shrinks or grows</li><li>A main content area that fills all remaining space</li></ul>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;page&quot;&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;div class=&quot;page&quot;&gt;
   &lt;aside class=&quot;sidebar&quot;&gt;Sidebar&lt;/aside&gt;
   &lt;main class=&quot;content&quot;&gt;Main Content&lt;/main&gt;
 &lt;/div&gt;</code></pre></div></div>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.page {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.page {
   display: flex;
   min-height: 100vh;
   gap: 0;
@@ -1023,7 +856,7 @@ All three columns are exactly equal width</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Exercise 4 — Responsive Card Grid (Intermediate)</h3>
 <p class="v2-p"><strong>Objective:</strong> Build a card grid that wraps responsively without any media queries.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card-container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.card-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -1047,7 +880,7 @@ All three columns are exactly equal width</code></pre></div></div>
 <p class="v2-p"><strong>Objective:</strong> Use <code>order</code> and <code>align-self</code>.</p>
 <p class="v2-p"><strong>Scenario:</strong> A three-card row where:</p>
 <ul class="v2-ul"><li>The second card should appear first</li><li>The first card should appear last</li><li>The third card should be aligned to the bottom of the row (while others stretch to full height)</li></ul>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.container {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.container {
   display: flex;
   align-items: stretch;
   height: 250px;
@@ -1061,38 +894,12 @@ All three columns are exactly equal width</code></pre></div></div>
   align-self: ___;        /* pinned to bottom */
 }</code></pre></div></div>
 <p class="v2-p"><strong>Answer:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card-1 { order: 3; }
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.card-1 { order: 3; }
 .card-2 { order: 1; }
 .card-3 { order: 2; align-self: flex-end; }</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">- Cards start at 280px wide
-- Cards grow to fill available space
-- Cards shrink if needed
-- Cards wrap when they can't fit at 280px
-
-Expected Behaviour:
-- Wide screen → 3 or more cards per row
-- Medium screen → 2 per row
-- Narrow screen → 1 per row, full width
-
-Answer: flex: 1 1 280px;
-
----</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(9)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase10">
-  <div class="phase-header">
-    <div class="phase-num">Phase 10 of 10</div>
-    <div class="phase-title">Part 9 — Common Beginner Mistakes</div>
-    <div class="phase-check" id="chk10"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Mistake 1: Setting Flex Properties on the Wrong Element</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — setting container properties on an item */
+<hr class="v2-hr"></div><button class="ub" onclick="unlockNext(9)">Mark Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase10"><div class="ph"><div class="pn">Phase 10/10</div><div class="pt">Part 9 — Common Beginner Mistakes</div><div class="pc" id="chk10"></div></div><div class="pb2"><h3 class="v2-h3">Mistake 1: Setting Flex Properties on the Wrong Element</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — setting container properties on an item */
 .item {
   justify-content: center;   /* this does nothing on an item */
 }
@@ -1105,7 +912,7 @@ Answer: flex: 1 1 280px;
 <p class="v2-p"><strong>Why:</strong> <code>justify-content</code>, <code>align-items</code>, <code>flex-direction</code>, and <code>flex-wrap</code> are <strong>container properties</strong>. <code>order</code>, <code>flex-grow</code>, <code>flex-shrink</code>, <code>flex-basis</code>, <code>flex</code>, and <code>align-self</code> are <strong>item properties</strong>.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 2: Forgetting <code>display: flex</code></h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — nothing works without activating Flexbox */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — nothing works without activating Flexbox */
 .container {
   justify-content: center;   /* has zero effect */
 }
@@ -1119,7 +926,7 @@ Answer: flex: 1 1 280px;
 <h3 class="v2-h3">Mistake 3: Confusing <code>align-items</code> with <code>justify-content</code></h3>
 <p class="v2-p">Many beginners mix up which property controls which axis. The mnemonic:</p>
 <ul class="v2-ul"><li><strong><code>justify-content</code></strong> → <strong>J</strong>ust like text <strong>J</strong>ustification → works along the <strong>main axis</strong> (same direction as the text/flow)</li><li><strong><code>align-items</code></strong> → <strong>A</strong>cross → works across on the <strong>cross axis</strong> (perpendicular)</li></ul>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* For a row container (flex-direction: row): */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* For a row container (flex-direction: row): */
 justify-content: center;   /* centres LEFT-RIGHT */
 align-items: center;       /* centres UP-DOWN */
 
@@ -1128,7 +935,7 @@ justify-content: center;   /* centres UP-DOWN (main axis is now vertical) */
 align-items: center;       /* centres LEFT-RIGHT (cross axis is now horizontal) */</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 4: Using <code>align-content</code> When You Mean <code>align-items</code></h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — align-content has no effect on a single-line flex container */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — align-content has no effect on a single-line flex container */
 .container {
   display: flex;
   /* NO flex-wrap, so only one line */
@@ -1149,7 +956,7 @@ align-items: center;       /* centres LEFT-RIGHT (cross axis is now horizontal) 
 }</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 5: Expecting <code>flex-grow</code> to Set a Percentage</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ COMMON MISUNDERSTANDING */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ COMMON MISUNDERSTANDING */
 .item { flex-grow: 50; }   /* this does NOT mean 50% width */
 
 /* flex-grow is a RATIO — items share free space in proportion */
@@ -1158,7 +965,7 @@ align-items: center;       /* centres LEFT-RIGHT (cross axis is now horizontal) 
 <p class="v2-p">If you want exactly 50% width, use <code>flex: 0 0 50%</code> or <code>flex-basis: 50%</code>.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 6: Adding <code>flex-wrap</code> Without Enough Min-Width</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ PROBLEM — items wrap immediately if they have no natural or set minimum size */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ PROBLEM — items wrap immediately if they have no natural or set minimum size */
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -1172,7 +979,7 @@ align-items: center;       /* centres LEFT-RIGHT (cross axis is now horizontal) 
 }</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 7: Assuming Flex Children Are Still Block Elements</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ MISUNDERSTANDING */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ MISUNDERSTANDING */
 /* Flex items do NOT stack vertically by default, they go horizontal */
 /* And they do NOT respect margin: auto the same way block elements do */
 /* BUT margin: auto DOES work for centering one item in Flexbox! */
@@ -1184,24 +991,9 @@ align-items: center;       /* centres LEFT-RIGHT (cross axis is now horizontal) 
 .push-right {
   margin-left: auto;   /* ✅ This DOES work — pushes item to the far right! */
 }</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="build-box" id="build-it">
-  <div class="build-label">🏗️ Build It</div>
-  <div class="build-name">Stage 1 — Navigation Bar</div>
-  <div class="build-desc"><strong>Milestone 1 Output:</strong> Dark navbar with logo on the left and four nav links on the right, all vertically centred.</div>
-  <div class="v2-code-wrap">
-    <div class="v2-code-bar">
-      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
-      <span class="v2-code-lang">starter.html</span>
-    </div>
-    <div class="v2-code-body"><pre><code>&lt;nav class=&quot;navbar&quot;&gt;
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Common Beginner Mistakes</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(10)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="build-box" id="build-it"><div class="build-lbl">🏗️ Build It — Mini Project</div><div class="build-name">Stage 1 — Navigation Bar</div><div class="build-req"><p class="v2-p">Build a complete responsive portfolio page for a fictional web developer called "Jordan Lee". The page uses Flexbox for every layout decision.</p>
+<h3 class="v2-h3">Stage 1 — Navigation Bar</h3></div><button class="reveal-btn" onclick="toggleCode(this)">💻 Reveal Starter Code</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">starter.html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;nav class=&quot;navbar&quot;&gt;
   &lt;div class=&quot;logo&quot;&gt;Jordan Lee&lt;/div&gt;
   &lt;ul class=&quot;nav-links&quot;&gt;
     &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
@@ -1209,10 +1001,7 @@ align-items: center;       /* centres LEFT-RIGHT (cross axis is now horizontal) 
     &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
-&lt;/nav&gt;</code></pre></div>
-  </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
-    <button class="unlock-btn" onclick="downloadStarter(`<nav class="navbar">
+&lt;/nav&gt;</code></pre></div></div><div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem"><button class="ub" onclick="downloadStarter(`<nav class="navbar">
   <div class="logo">Jordan Lee</div>
   <ul class="nav-links">
     <li><a href="#">Home</a></li>
@@ -1220,87 +1009,66 @@ align-items: center;       /* centres LEFT-RIGHT (cross axis is now horizontal) 
     <li><a href="#">About</a></li>
     <li><a href="#">Contact</a></li>
   </ul>
-</nav>`)"
-      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
-      ⬇ Download starter.html
-    </button>
-    <button class="unlock-btn" onclick="showGithub()"
-      style="background:#0f172a;box-shadow:none">
-      🐙 Push to GitHub →
-    </button>
-  </div>
-</div>
+</nav>`)" style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">⬇ Download starter.html</button><button class="ub" onclick="showGithub()" style="background:#0f172a;box-shadow:none">🐙 Push to GitHub Pages →</button></div></div></div>
 <div class="gh-acc" id="gh-steps" style="display:none">
-  <div class="gh-acc-head" onclick="toggleGh(this)">
-    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
-  </div>
-  <div class="gh-acc-body">
-    <div class="gh-step"><div class="gh-step-n">1</div>
-    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-69-stage-1-navigation-bar</code>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">2</div>
-    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">3</div>
-    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
-    <div class="gh-step"><div class="gh-step-n">4</div>
-    <p>Commit message: <em>"Add CSS lesson 69 project"</em> → click <strong>Commit changes</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">5</div>
-    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-69-stage-1-navigation-bar/</code> in about 1 minute! 🎉</p></div>
-    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
-  </div>
-</div>
-<div class="session-end" id="session-end">
-  <h2>🎉 Lesson 69 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
-  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — What is Flexbox and How Do You Activate It?</li><li>✅ Part 2 — Flex Container Properties</li><li>✅ Part 3 — Justifying Content Along the Main Axis</li><li>✅ Part 4 — Aligning Items Along the Cross Axis</li><li>✅ Part 5 — Flex Item Properties</li><li>✅ Part 6 — Responsive Flexbox Layouts</li></ul>
-  <div class="lesson-nav"><a href="lesson_68.html" class="ln-btn">← Lesson 68</a><a href="lesson_70.html" class="ln-btn primary">Lesson 70 →</a></div>
-</div>
+<div class="gh-hd" onclick="toggleGh(this)">🐙 Push to GitHub Pages &nbsp;<span>▼</span></div>
+<div class="gh-bd">
+<div class="gh-st"><div class="gh-n">1</div><p>Go to <strong>github.com → New repository</strong> → name it <code>css-lesson-69-stage-1-navigation-bar</code>. Set <strong>Public</strong>, tick <strong>Add README</strong>, click <strong>Create</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">2</div><p>Click <strong>Add file → Upload files</strong>. Rename your file to <code>index.html</code> then upload it.</p></div>
+<div class="gh-st"><div class="gh-n">3</div><p>Commit message: <em>"Add CSS lesson 69 project"</em> → <strong>Commit changes</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">4</div><p>Go to <strong>Settings → Pages</strong> → Source: <strong>main</strong> → <strong>Save</strong>. Live in ~1 min at <code>https://YOUR-NAME.github.io/css-lesson-69-stage-1-navigation-bar/</code> 🎉</p></div>
+<button class="ub" onclick="showEnd()" style="margin-top:.5rem">Done — Finish Session ✅</button>
+</div></div>
+<div class="se" id="session-end"><h2>🎉 Lesson 69 complete!</h2><p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p><ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — What is Flexbox and How Do You Activate It?</li><li>✅ Part 2 — Flex Container Properties</li><li>✅ Part 3 — Justifying Content Along the Main Axis</li><li>✅ Part 4 — Aligning Items Along the Cross Axis</li><li>✅ Part 5 — Flex Item Properties</li><li>✅ Part 6 — Responsive Flexbox Layouts</li></ul><div class="ln"><a href="lesson_68.html" class="ln-btn">← Lesson 68</a><a href="lesson_70.html" class="ln-btn primary">Lesson 70 →</a></div></div>
 </main>
-
-<footer class="lesson-footer">
-  Techbase Code Coach · CSS Course · Lesson 69 · © 2025 Techbase Consultant Services, Ibadan
-</footer>
+<footer class="lf">Techbase Code Coach &nbsp;·&nbsp; CSS Course &nbsp;·&nbsp; Lesson 69 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</footer>
+<div id="toast"></div>
+<button id="go-top" title="Back to top">↑</button>
+<canvas id="cc"></canvas>
 <script>
 const TOTAL=10,KEY='techbase_css_l69';
-let current=parseInt(localStorage.getItem(KEY)||'1');
-function init(){
-  for(let i=2;i<=current;i++) unlockPhase(i,false);
-  updateBar();
-}
+let cur=parseInt(localStorage.getItem(KEY)||'1');
+function init(){for(let i=2;i<=cur;i++)unlock(i,false);bar();}
 function unlockNext(n){
-  const chk=document.getElementById('chk'+n);
-  if(chk){chk.classList.add('done');chk.textContent='✓';}
-  localStorage.setItem(KEY,n+1); current=n+1;
+  const c=document.getElementById('chk'+n);
+  if(c){c.classList.add('done');c.textContent='✓';}
+  localStorage.setItem(KEY,n+1);cur=n+1;
   if(n===TOTAL){
-    document.getElementById('build-it').style.display='block';
-    updateBar(100);
+    document.getElementById('build-it').classList.add('visible');
+    bar(100);toast('🏗️ Build It unlocked!');
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  }else{
-    unlockPhase(n+1,true); updateBar();
-  }
+    setTimeout(confetti,600);
+  }else{unlock(n+1,true);bar();toast(['✅ Phase complete!','🎯 Keep going!','💡 Nice work!','🚀 Nailed it!'][n%4]);}
 }
-function unlockPhase(n,scroll){
-  const el=document.getElementById('phase'+n);
-  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
+function unlock(n,scroll){
+  const el=document.getElementById('phase'+n);if(!el)return;
+  el.classList.remove('locked');
+  if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),180);
 }
-function updateBar(pct){
-  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
-  document.getElementById('pbar').style.width=p+'%';
+function bar(p){document.getElementById('pbar').style.width=(p!==undefined?p:Math.round((cur-1)/TOTAL*95))+'%';}
+function toggleReveal(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Answer':'👁️ Reveal Answer';}
+function toggleCode(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Starter Code':'💻 Reveal Starter Code';}
+function copyCode(btn){
+  const code=btn.closest('.v2-code-wrap').querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(()=>{btn.textContent='✓ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='⎘ Copy';btn.classList.remove('copied');},1800);}).catch(()=>{});
 }
-function showGithub(){
-  const g=document.getElementById('gh-steps');
-  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
-}
-function showEnd(){
-  const e=document.getElementById('session-end');
-  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
-}
+const tEl=document.getElementById('toast');let tT;
+function toast(msg){tEl.innerHTML=msg;tEl.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>tEl.classList.remove('show'),2400);}
+const gEl=document.getElementById('go-top');
+window.addEventListener('scroll',()=>gEl.classList.toggle('visible',scrollY>320),{passive:true});
+gEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
-function downloadStarter(code){
-  const a=document.createElement('a');
-  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
-  a.download='starter.html';a.click();
+function showGithub(){const g=document.getElementById('gh-steps');if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}}
+function showEnd(){const e=document.getElementById('session-end');if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}}
+function downloadStarter(code){const ext='css'==='python'?'py':'html';const a=document.createElement('a');a.href='data:text/'+(ext==='py'?'x-python':'html')+';charset=utf-8,'+encodeURIComponent(code);a.download='starter.'+ext;a.click();}
+function confetti(){
+  const cv=document.getElementById('cc');cv.style.display='block';const ctx=cv.getContext('2d');
+  cv.width=innerWidth;cv.height=innerHeight;
+  const ps=Array.from({length:130},()=>{return{x:Math.random()*cv.width,y:-10-Math.random()*120,r:4+Math.random()*6,d:2+Math.random()*3,c:['#e34c26','#0284c7','#d97706','#059669','#7c3aed','#ec4899'][Math.floor(Math.random()*6)],ta:0};}); 
+  let f=0;
+  function draw(){ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.ta+=.1;p.y+=p.d;p.x+=Math.sin(f/20);ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});f++;if(f<200)requestAnimationFrame(draw);else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}}
+  draw();toast('🎉 All phases done! Build It awaits!');
 }
 init();
 </script>
-</body>
-</html>
+</body></html>

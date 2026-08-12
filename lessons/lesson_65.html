@@ -1,233 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lesson 65: CSS Variables — The var() Function, Overriding, JavaScript, and Media Queries — Techbase CSS</title>
-<meta name="description" content="CSS Variables — The var() Function, Overriding, JavaScript, and Media Queries">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{
-  --acc:#0284c7;--acc-d:#0369a1;--acc-pale:#f0f9ff;
-  --acc-b:rgba(2,132,199,.25);--acc-sh:rgba(2,132,199,.28);
-  --bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--border2:#cbd5e1;
-  --text:#0f172a;--t2:#334155;--muted:#64748b;
-  --D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--acc:#0284c7;--acd:#0369a1;--acp:#f0f9ff;--acb:rgba(2,132,199,.22);--acs:rgba(2,132,199,.28);--bg:#f8fafc;--sf:#fff;--br:#e2e8f0;--tx:#0f172a;--t2:#334155;--mu:#64748b;--D:'Space Grotesk',sans-serif;--B:'Plus Jakarta Sans',sans-serif;--M:'JetBrains Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
-
-/* NAV */
-.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);
-  backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:58px;
-  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;justify-content:space-between}
-.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--text);text-decoration:none}
-.l-nav-back{font-size:.8rem;color:var(--muted);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;transition:color .2s}
+body{background:var(--bg);color:var(--tx);font-family:var(--B);font-size:16px;line-height:1.75;overflow-x:hidden}
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--br);height:58px;display:flex;align-items:center;padding:0 1.5rem;justify-content:space-between}
+.l-nav-logo{font-family:var(--D);font-weight:700;font-size:.9rem;color:var(--tx);text-decoration:none}
+.l-nav-back{font-size:.8rem;color:var(--mu);text-decoration:none;font-weight:500;transition:color .2s}
 .l-nav-back:hover{color:var(--acc)}
-.l-nav-label{font-family:var(--M);font-size:.68rem;color:var(--muted)}
-
-/* PROGRESS */
-.progress-wrap{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--border)}
-.progress-bar{height:100%;background:var(--acc);transition:width .4s ease;width:0%}
-
-/* HERO */
-.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--border)}
-.l-hero-inner{max-width:860px;margin:0 auto}
-.l-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;padding:.2rem .85rem;
-  font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
-  color:var(--acc);background:var(--acc-pale);border:1px solid var(--acc-b);margin-bottom:.8rem}
-.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);
-  letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
-.l-hero-sub{font-size:.95rem;color:var(--muted);margin-bottom:1rem}
-
-/* WELCOME BOX */
-.welcome-box{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.5rem 1.8rem;max-width:860px;margin:1.5rem auto 0}
-.welcome-box h2{font-family:var(--D);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
-.welcome-box p,.welcome-box li{font-size:.9rem;line-height:1.8;opacity:.93}
-.welcome-box ul{margin-left:1.2rem;margin-top:.5rem}
-.welcome-meta{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
-.welcome-meta span{background:rgba(255,255,255,.18);border-radius:6px;padding:.2rem .75rem;
-  font-family:var(--M);font-size:.68rem;font-weight:500}
-
-/* PHASE */
-.phase{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
-  margin-bottom:1.5rem;overflow:hidden;transition:opacity .3s,transform .3s,filter .3s}
-.phase.locked{opacity:.35;pointer-events:none;filter:blur(1.5px)}
-.phase-header{padding:1rem 1.4rem;background:#f5fbff;
-  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:default}
-.phase-num{font-family:var(--M);font-size:.7rem;font-weight:600;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--acc)}
-.phase-title{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--text);
-  flex:1;margin:0 .8rem}
-.phase-check{width:26px;height:26px;border-radius:50%;background:var(--border);
-  display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;
-  transition:background .3s,color .3s}
-.phase-check.done{background:#10b981;color:#fff}
-.phase-body{padding:1.6rem 1.8rem}
-
-/* RICH CONTENT STYLES */
+.l-nav-lbl{font-family:var(--M);font-size:.68rem;color:var(--mu)}
+.pw{position:fixed;top:58px;left:0;right:0;z-index:199;height:4px;background:var(--br)}
+.pb{height:100%;background:linear-gradient(90deg,var(--acc),var(--acd));transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;position:relative}
+.pb::after{content:'';position:absolute;right:0;top:0;bottom:0;width:20px;background:inherit;filter:brightness(1.4);animation:pg 1.5s ease-in-out infinite}
+@keyframes pg{0%,100%{opacity:1}50%{opacity:.35}}
+.l-hero{padding:80px 1.5rem 2rem;background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);border-bottom:1px solid var(--br)}
+.l-hero-in{max-width:860px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;border-radius:100px;padding:.22rem .9rem;font-family:var(--M);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--acc);background:var(--acp);border:1.5px solid var(--acb);margin-bottom:.85rem}
+.l-hero h1{font-family:var(--D);font-weight:700;font-size:clamp(1.5rem,4vw,2.3rem);letter-spacing:-.02em;line-height:1.15;margin-bottom:.5rem}
+.l-hero-sub{font-size:.9rem;color:var(--mu)}
+.wb{background:#fff;border:1.5px solid var(--acb);border-left:5px solid var(--acc);border-radius:14px;padding:1.4rem 1.6rem;max-width:860px;margin:1.5rem auto 0;box-shadow:0 2px 12px var(--acs)}
+.wb h2{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--acd);margin-bottom:.6rem}
+.wb p,.wb li{font-size:.92rem;line-height:1.85;color:var(--t2)}
+.wb ul{margin-left:1.2rem;margin-top:.4rem}
+.wm{display:flex;gap:.65rem;margin-top:1rem;flex-wrap:wrap}
+.wm span{background:var(--acp);color:var(--acd);border:1px solid var(--acb);border-radius:7px;padding:.22rem .7rem;font-family:var(--M);font-size:.68rem;font-weight:600}
+.phase{background:var(--sf);border:1.5px solid var(--br);border-radius:16px;margin-bottom:1.5rem;overflow:hidden;transition:opacity .35s,filter .35s,transform .35s}
+.phase.locked{opacity:.28;pointer-events:none;filter:blur(2px);transform:scale(.99)}
+.ph{padding:1rem 1.4rem;background:#f5fbff;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:.8rem}
+.pn{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);white-space:nowrap}
+.pt{font-family:var(--D);font-weight:700;font-size:.95rem;color:var(--tx);flex:1}
+.pc{width:26px;height:26px;border-radius:50%;background:var(--br);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:background .3s,transform .4s}
+.pc.done{background:#10b981;color:#fff;transform:scale(1.15) rotate(360deg)}
+.pb2{padding:1.6rem 1.8rem}
 .v2-p{margin-bottom:1rem;font-size:.95rem;color:var(--t2);line-height:1.85}
-.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--text);
-  margin:1.6rem 0 .5rem;padding-top:.2rem;border-top:2px solid var(--acc-pale)}
-.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1.1rem 0 .4rem}
-.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.9rem;color:var(--muted);margin:.8rem 0 .3rem}
+.v2-h3{font-family:var(--D);font-weight:700;font-size:1.05rem;color:var(--tx);margin:1.6rem 0 .5rem;border-top:2px solid var(--acp);padding-top:.4rem}
+.v2-h4{font-family:var(--D);font-weight:600;font-size:.95rem;color:var(--t2);margin:1rem 0 .35rem}
+.v2-h5,.v2-h6{font-family:var(--D);font-weight:600;font-size:.88rem;color:var(--mu);margin:.7rem 0 .3rem}
 .v2-ul,.v2-ol{margin:.6rem 0 1rem 1.4rem;font-size:.93rem;color:var(--t2);line-height:1.9}
 .v2-ul li,.v2-ol li{margin-bottom:.3rem}
-.v2-bq{border-left:4px solid var(--acc);background:var(--acc-pale);border-radius:0 10px 10px 0;
-  padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
+.v2-bq{border-left:4px solid var(--acc);background:var(--acp);border-radius:0 10px 10px 0;padding:.9rem 1.2rem;margin:1rem 0;font-size:.92rem;color:#0c4a6e;font-style:italic}
 .v2-bq p{margin:0;color:inherit}
-.v2-bq strong{font-style:normal}
-.v2-hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
-.v2-table-wrap{overflow-x:auto;margin:1rem 0}
+.v2-hr{border:none;border-top:1px solid var(--br);margin:1.2rem 0}
+.v2-table-wrap{overflow-x:auto;margin:1rem 0;border-radius:10px;border:1px solid var(--br)}
 .v2-table{width:100%;border-collapse:collapse;font-size:.87rem}
-.v2-table th{background:var(--acc-pale);color:#0c4a6e;font-family:var(--D);
-  font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--acc-b)}
-.v2-table td{padding:8px 12px;border:1px solid var(--border);color:var(--t2);vertical-align:top}
-.v2-table tr:nth-child(even) td{background:#f8fafc}
-.v2-table code{background:var(--acc-pale);color:var(--acc);border-radius:4px;
-  padding:1px 5px;font-family:var(--M);font-size:.8em}
-.phase-body code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-.phase-body a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
-.phase-body strong{color:var(--text)}
-
-/* CODE BLOCKS */
-.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.v2-table th{background:var(--acp);color:#0c4a6e;font-family:var(--D);font-weight:700;padding:10px 12px;text-align:left;border-bottom:2px solid var(--acb)}
+.v2-table td{padding:8px 12px;border-bottom:1px solid var(--br);color:var(--t2);vertical-align:top}
+.v2-table tr:last-child td{border:none}
+.v2-table tr:hover td{background:var(--acp)}
+.pb2 code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.pb2 a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.pb2 strong{color:var(--tx)}
+.v2-code-wrap{margin:1.2rem 0;border-radius:12px;overflow:hidden;border:1px solid #1e293b;box-shadow:0 4px 18px rgba(0,0,0,.18)}
 .v2-code-bar{background:#1e293b;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem}
 .v2-dot{width:10px;height:10px;border-radius:50%}
 .v2-dot.r{background:#ff5f57}.v2-dot.y{background:#febc2e}.v2-dot.g{background:#28c840}
-.v2-code-lang{margin-left:.6rem;font-family:var(--M);font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+.v2-code-lang{margin-left:.5rem;font-family:var(--M);font-size:.62rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em;flex:1}
+.copy-btn{background:rgba(255,255,255,.08);color:#94a3b8;border:none;border-radius:6px;padding:.25rem .65rem;font-family:var(--M);font-size:.65rem;cursor:pointer;transition:background .2s,color .2s}
+.copy-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+.copy-btn.copied{background:#10b981;color:#fff}
 .v2-code-body{background:#0f172a;padding:1.3rem 1.5rem;overflow-x:auto}
 .v2-code-body pre{margin:0}
-.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.9;color:#e2e8f0;
-  white-space:pre;background:transparent;padding:0;border-radius:0}
-
-/* TASK BOX */
-.task-box{background:#e0f2fe;border:2px dashed #0284c7;
-  border-radius:12px;padding:1rem 1.3rem;margin:1.4rem 0}
-.task-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
-.task-box p,.task-body{font-size:.92rem;color:#0c4a6e;line-height:1.8}
-.task-box code{background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;
-  font-family:var(--M);font-size:.82em}
-
-/* UNLOCK BUTTON */
-.unlock-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);
-  color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;
-  padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;
-  transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acc-sh);margin-top:1.2rem}
-.unlock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acc-sh)}
-
-/* BUILD IT */
+.v2-code-body code{font-family:var(--M);font-size:.8rem;line-height:1.95;color:#e2e8f0;white-space:pre;background:transparent;padding:0;border-radius:0}
+.task-box{background:#e0f2fe;border:2px dashed #0284c7;border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0}
+.task-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0c4a6e;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.task-body{font-size:.93rem;color:#0c4a6e;line-height:1.85}
+.task-body code{background:rgba(0,0,0,.1);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.chal-box{background:linear-gradient(135deg,#f0f9ff 0%,#fff 100%);border:2px solid var(--acc);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.2rem}
+.chal-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acd);margin-bottom:.6rem}
+.chal-body{font-size:.95rem;color:var(--tx);line-height:1.85}
+.chal-body code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 5px;font-family:var(--M);font-size:.82em}
+.reveal-btn{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--acd);font-family:var(--D);font-weight:700;font-size:.85rem;padding:.6rem 1.2rem;border-radius:8px;border:2px solid var(--acc);cursor:pointer;transition:background .2s,color .2s;margin:.6rem 0}
+.reveal-btn:hover{background:var(--acc);color:#fff}
+.reveal-content{display:none;margin-top:.6rem;animation:fi .3s ease}
+.reveal-content.open{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .build-box{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:1.6rem;margin:2rem 0;display:none}
-.build-label{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
-.build-name{font-family:var(--D);font-weight:700;font-size:1.1rem;color:#14532d;margin-bottom:.5rem}
-.build-desc{font-size:.9rem;color:#166534;margin-bottom:1.2rem;line-height:1.75}
-.build-desc code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
-.build-desc strong{color:#14532d}
-
-/* GITHUB ACCORDION */
-.gh-acc{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
-.gh-acc-head{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none}
-.gh-acc-body{display:none;padding:1.2rem;border-top:1px solid var(--border)}
-.gh-acc-body.open{display:block}
-.gh-step{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
-.gh-step-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;
-  font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;margin-top:2px}
-.gh-step p{font-size:.88rem;color:var(--t2);line-height:1.7}
-.gh-step code{background:var(--acc-pale);color:var(--acc-d);border-radius:4px;
-  padding:1px 6px;font-family:var(--M);font-size:.82em}
-
-/* SESSION END */
-.session-end{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#fff;
-  border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
-.session-end.visible{display:block}
-.session-end h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
-.session-end ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.session-end li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
-.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);
-  color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;
-  padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;
-  border:1.5px solid var(--border);transition:border-color .2s,color .2s}
+.build-box.visible{display:block;animation:fi .4s ease}
+.build-lbl{font-family:var(--M);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#15803d;margin-bottom:.4rem}
+.build-name{font-family:var(--D);font-weight:700;font-size:1.15rem;color:#14532d;margin-bottom:.6rem}
+.build-req{font-size:.93rem;color:#166534;line-height:1.8;margin-bottom:.8rem}
+.build-req code{background:rgba(22,163,74,.12);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.build-req strong{color:#14532d}
+.gh-acc{border:1.5px solid var(--br);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+.gh-hd{padding:1rem 1.2rem;background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:var(--D);font-weight:600;font-size:.9rem;user-select:none;transition:background .2s}
+.gh-hd:hover{background:#f1f5f9}
+.gh-bd{display:none;padding:1.2rem;border-top:1px solid var(--br)}
+.gh-bd.open{display:block;animation:fi .25s ease}
+.gh-st{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+.gh-n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.gh-st p{font-size:.88rem;color:var(--t2);line-height:1.7}
+.gh-st code{background:var(--acp);color:var(--acd);border-radius:4px;padding:1px 6px;font-family:var(--M);font-size:.82em}
+.gh-nop{background:#fef3c7;border:1.5px solid #fde68a;border-radius:10px;padding:1rem 1.2rem;font-size:.9rem;color:#78350f;line-height:1.75;margin-bottom:1rem}
+.se{background:linear-gradient(135deg,var(--acc),var(--acd));color:#fff;border-radius:16px;padding:1.6rem 1.8rem;margin:2rem 0;display:none}
+.se.visible{display:block;animation:fi .4s ease}
+.se h2{font-family:var(--D);font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+.se ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.se li{font-size:.9rem;opacity:.93;display:flex;align-items:center;gap:.5rem}
+.ln-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--sf);color:var(--t2);font-family:var(--D);font-weight:600;font-size:.82rem;padding:.65rem 1.2rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--br);transition:border-color .2s,color .2s}
 .ln-btn:hover{border-color:var(--acc);color:var(--acc)}
 .ln-btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ln-btn.primary:hover{opacity:.9}
-.lesson-nav{display:flex;align-items:center;justify-content:space-between;
-  padding-top:2rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
-.lesson-footer{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;
-  color:var(--muted);border-top:1px solid var(--border);background:var(--surface)}
+.ln{display:flex;align-items:center;justify-content:space-between;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.25);margin-top:1.5rem;flex-wrap:wrap;gap:.75rem}
+.ub{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);color:#fff;font-family:var(--D);font-weight:700;font-size:.88rem;padding:.75rem 1.6rem;border-radius:10px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px var(--acs);margin-top:1.2rem}
+.ub:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--acs)}
+.ub:active{transform:scale(.97)}
+#toast{position:fixed;bottom:90px;right:1.5rem;z-index:999;background:#1e293b;color:#fff;border-radius:10px;padding:.75rem 1.2rem;font-family:var(--D);font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+#toast.show{transform:translateY(0);opacity:1}
+#go-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;border:none;cursor:pointer;font-size:1.15rem;box-shadow:0 4px 16px var(--acs);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,box-shadow .2s;pointer-events:none}
+#go-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#go-top:hover{box-shadow:0 8px 24px var(--acs);transform:translateY(-2px)}
+#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none}
+.lf{text-align:center;padding:1.5rem;font-family:var(--M);font-size:.72rem;color:var(--mu);border-top:1px solid var(--br);background:var(--sf)}
 </style>
 </head>
 <body>
 <nav class="l-nav">
   <a href="../index.html" class="l-nav-logo">⚡ Techbase CSS</a>
-  <span class="l-nav-label">Lesson 65 of 73</span>
+  <span class="l-nav-lbl">Lesson 65 of 73</span>
   <a href="../index.html" class="l-nav-back">← All Lessons</a>
 </nav>
-<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
-
-<div class="l-hero">
-  <div class="l-hero-inner">
-    <div class="l-badge">CSS · Lesson 65</div>
-    <h1>CSS Variables — The var() Function, Overriding, JavaScript, and Media Queries</h1>
-    <div class="l-hero-sub">8 phases · Build: Project Overview</div>
-  </div>
-</div>
-
-<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--border)">
-  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="welcome-box">
-  <h2>👋 Welcome to Lesson 65</h2>
-  <div style="font-size:.9rem;line-height:1.85;opacity:.93"><p class="v2-p">Have you ever built a webpage and needed to use the same colour — say, a brand blue — in twenty different places? And then the client says "change it to green." Suddenly you are hunting through hundreds of lines of CSS making the same edit over and over.</p>
-<p class="v2-p">CSS Variables (also called <strong>CSS Custom Properties</strong>) solve this problem completely. You store a value once, give it a name, and reuse that name everywhere. When you want to change the value, you change it in exactly one place and the whole page updates instantly.</p>
-<p class="v2-p">In this lesson you will learn:</p>
-<ul class="v2-ul"><li>What a CSS variable is and how to declare one</li><li>How to use the <code>var()</code> function to insert variable values</li><li>How global and local scope work</li><li>How to override variables for specific sections of a page</li><li>How to read and change CSS variables with JavaScript</li><li>How to use CSS variables inside media queries to build responsive designs</li><li>How to apply all of this in a real mini-project</li></ul>
-<p class="v2-p">No prior knowledge of CSS variables is required. If you know basic CSS (selectors, properties, values) you are ready.</p>
-<hr class="v2-hr"></div>
-  <div class="welcome-meta">
-    <span>📚 8 phases</span>
-    <span>🏗️ Project Overview</span>
-  </div>
+<div class="pw"><div class="pb" id="pbar"></div></div>
+<div class="l-hero"><div class="l-hero-in">
+  <div class="badge">CSS · Lesson 65</div>
+  <h1>CSS Variables — The var() Function, Overriding, JavaScript, and Media Queries</h1>
+  <div class="l-hero-sub">8 phases &nbsp;·&nbsp; Build: Project Overview</div>
 </div></div>
-</section>
-
-<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
-<div class="phase" id="phase1">
-  <div class="phase-header">
-    <div class="phase-num">Phase 1 of 8</div>
-    <div class="phase-title">Lesson Introduction</div>
-    <div class="phase-check" id="chk1"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Have you ever built a webpage and needed to use the same colour — say, a brand blue — in twenty different places? And then the client says "change it to green." Suddenly you are hunting through hundreds of lines of CSS making the same edit over and over.</p>
+<section style="background:linear-gradient(160deg,#f0f9ff 0%,#f8fafc 55%,#e0f2fe 100%);padding-bottom:1.5rem;border-bottom:1px solid var(--br)">
+  <div style="max-width:860px;margin:0 auto;padding:0 1.5rem"><div class="wb"><h2>👋 Welcome to Lesson 65</h2><div style="font-size:.92rem;line-height:1.85;color:var(--t2)"><p class="v2-p">Have you ever built a webpage and needed to use the same colour — say, a brand blue — in twenty different places? And then the client says "change it to green." Suddenly you are hunting through hundreds of lines of CSS making the same edit over and over.</p>
 <p class="v2-p">CSS Variables (also called <strong>CSS Custom Properties</strong>) solve this problem completely. You store a value once, give it a name, and reuse that name everywhere. When you want to change the value, you change it in exactly one place and the whole page updates instantly.</p>
 <p class="v2-p">In this lesson you will learn:</p>
 <ul class="v2-ul"><li>What a CSS variable is and how to declare one</li><li>How to use the <code>var()</code> function to insert variable values</li><li>How global and local scope work</li><li>How to override variables for specific sections of a page</li><li>How to read and change CSS variables with JavaScript</li><li>How to use CSS variables inside media queries to build responsive designs</li><li>How to apply all of this in a real mini-project</li></ul>
 <p class="v2-p">No prior knowledge of CSS variables is required. If you know basic CSS (selectors, properties, values) you are ready.</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(1)">Start Lesson ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase2">
-  <div class="phase-header">
-    <div class="phase-num">Phase 2 of 8</div>
-    <div class="phase-title">Prerequisite Concepts</div>
-    <div class="phase-check" id="chk2"></div>
-  </div>
-  <div class="phase-body">
-    <p class="v2-p">Before we dive into CSS variables, let us quickly review two concepts you need to understand first.</p>
+<hr class="v2-hr"></div><div class="wm"><span>📚 8 phases</span><span>🏗️ Project Overview</span><span>🌐 GitHub Pages</span></div></div></div>
+</section>
+<main style="max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem">
+<div class="phase" id="phase1"><div class="ph"><div class="pn">Phase 1/8</div><div class="pt">Lesson Introduction</div><div class="pc" id="chk1"></div></div><div class="pb2"><p class="v2-p">Have you ever built a webpage and needed to use the same colour — say, a brand blue — in twenty different places? And then the client says "change it to green." Suddenly you are hunting through hundreds of lines of CSS making the same edit over and over.</p>
+<p class="v2-p">CSS Variables (also called <strong>CSS Custom Properties</strong>) solve this problem completely. You store a value once, give it a name, and reuse that name everywhere. When you want to change the value, you change it in exactly one place and the whole page updates instantly.</p>
+<p class="v2-p">In this lesson you will learn:</p>
+<ul class="v2-ul"><li>What a CSS variable is and how to declare one</li><li>How to use the <code>var()</code> function to insert variable values</li><li>How global and local scope work</li><li>How to override variables for specific sections of a page</li><li>How to read and change CSS variables with JavaScript</li><li>How to use CSS variables inside media queries to build responsive designs</li><li>How to apply all of this in a real mini-project</li></ul>
+<p class="v2-p">No prior knowledge of CSS variables is required. If you know basic CSS (selectors, properties, values) you are ready.</p>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Lesson Introduction</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(1)">Start Lesson ✓</button></div></div>
+<div class="phase locked" id="phase2"><div class="ph"><div class="pn">Phase 2/8</div><div class="pt">Prerequisite Concepts</div><div class="pc" id="chk2"></div></div><div class="pb2"><p class="v2-p">Before we dive into CSS variables, let us quickly review two concepts you need to understand first.</p>
 <h3 class="v2-h3">What is a CSS Property?</h3>
 <p class="v2-p">A CSS property is an instruction you give to the browser about how something should look. For example:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>p {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>p {
   color: red;
   font-size: 16px;
 }</code></pre></div></div>
@@ -235,22 +155,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <h3 class="v2-h3">What is a Selector?</h3>
 <p class="v2-p">A selector targets which HTML elements you want to style. <code>p</code> targets all paragraph elements, <code>.note</code> targets all elements with class <code>note</code>, and so on.</p>
 <p class="v2-p">Now you are ready!</p>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase3">
-  <div class="phase-header">
-    <div class="phase-num">Phase 3 of 8</div>
-    <div class="phase-title">Part 1 — CSS Variables and the var() Function</div>
-    <div class="phase-check" id="chk3"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is a CSS Variable?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Prerequisite Concepts</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(2)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase3"><div class="ph"><div class="pn">Phase 3/8</div><div class="pt">Part 1 — CSS Variables and the var() Function</div><div class="pc" id="chk3"></div></div><div class="pb2"><h3 class="v2-h3">What is a CSS Variable?</h3>
 <p class="v2-p">A CSS variable is a <strong>named storage container</strong> for a value you want to reuse. Think of it like a labelled jar in your kitchen. Instead of remembering that your favourite spice is "reddish-orange powder", you label the jar "paprika". Now whenever you need it you just say "grab the paprika jar."</p>
 <p class="v2-p">In CSS:</p>
 <ul class="v2-ul"><li>Instead of writing <code>#1e90ff</code> in twenty places, you store it in a variable named <code>--brand-color</code>.</li><li>Whenever you need that colour, you write <code>var(--brand-color)</code> and CSS grabs the value from the jar.</li></ul>
@@ -261,7 +167,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 <h3 class="v2-h3">Naming Rules</h3>
 <p class="v2-p">A CSS variable name <strong>must</strong>:</p>
 <ul class="v2-ul"><li>Begin with exactly <strong>two dashes</strong>: <code>--</code></li><li>Be followed by a descriptive name using letters, numbers, and hyphens</li><li>Be <strong>case-sensitive</strong> — <code>--MyColor</code> and <code>--mycolor</code> are two different variables</li></ul>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ✅ Valid variable names */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ✅ Valid variable names */
 --primary-color: blue;
 --font-size-large: 24px;
 --spacing-unit: 8px;
@@ -272,7 +178,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--B);font-size:16px;
 primary-color: blue;     /* wrong */</code></pre></div></div>
 <h3 class="v2-h3">Declaring a Variable</h3>
 <p class="v2-p">You declare a variable inside a CSS selector block, like any other property:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>selector {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>selector {
   --variable-name: value;
 }</code></pre></div></div>
 <p class="v2-p">There are two scopes — <strong>global</strong> and <strong>local</strong>. Let us learn them one at a time.</p>
@@ -281,7 +187,7 @@ primary-color: blue;     /* wrong */</code></pre></div></div>
 <p class="v2-p">A <strong>global variable</strong> is available to every single element on the page. To make a variable global, declare it inside the <code>:root</code> selector.</p>
 <p class="v2-p"><strong>What is <code>:root</code>?</strong> <code>:root</code> is a special CSS selector that matches the very top of your HTML document — the <code>&lt;html&gt;</code> element. Because every other element on the page is a child of <code>&lt;html&gt;</code>, any variable declared in <code>:root</code> is visible everywhere on the page.</p>
 <p class="v2-p">Analogy: <code>:root</code> is like the front lobby of a building. Anything placed in the lobby can be seen by everyone in the building.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Declaring two global variables */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Declaring two global variables */
 :root {
   --primary-color: #1e90ff;    /* a nice blue colour */
   --text-color: #ffffff;       /* white */
@@ -289,7 +195,7 @@ primary-color: blue;     /* wrong */</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Local Variables — Inside a Regular Selector</h3>
 <p class="v2-p">A <strong>local variable</strong> is only available to the selector where it is declared, and to any elements nested inside it. Elements outside that selector cannot see it.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>.card {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>.card {
   --card-bg: lightyellow;    /* local — only .card and its children can use this */
 }</code></pre></div></div>
 <p class="v2-p">Analogy: A local variable is like a note pinned to a specific desk. Only the person sitting at that desk (and anyone they share it with) can read it.</p>
@@ -297,10 +203,10 @@ primary-color: blue;     /* wrong */</code></pre></div></div>
 <h3 class="v2-h3">The <code>var()</code> Function — Using Your Variables</h3>
 <p class="v2-p">Once you have declared a variable, you use the <code>var()</code> function to insert its value anywhere in your CSS.</p>
 <p class="v2-p"><strong>Syntax:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>var(--variable-name, fallback-value)</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>var(--variable-name, fallback-value)</code></pre></div></div>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Part</th><th>What it means</th></tr></thead><tbody><tr><td><code>--variable-name</code></td><td><strong>Required.</strong> The name of the variable you want to use. Must start with <code>--</code>.</td></tr><tr><td><code>fallback-value</code></td><td><strong>Optional.</strong> If the variable is not found, CSS uses this value instead.</td></tr></tbody></table></div>
 <p class="v2-p"><strong>Simple Example 1 — Using a colour variable:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>:root {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root {
   --brand-color: tomato;
 }
 
@@ -310,7 +216,7 @@ h1 {
 <p class="v2-p"><strong>Expected Result:</strong> The <code>&lt;h1&gt;</code> heading will display in tomato red.</p>
 <hr class="v2-hr">
 <p class="v2-p"><strong>Simple Example 2 — Using a fallback value:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>:root {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root {
   /* --missing-var is NOT declared */
 }
 
@@ -322,7 +228,7 @@ p {
 <hr class="v2-hr">
 <h3 class="v2-h3">Full Global Variable Example</h3>
 <p class="v2-p">Here is a complete realistic example. Notice how <code>--primary-bg-color</code> and <code>--primary-color</code> are declared once but used in four different places.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>:root {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root {
   --primary-bg-color: #1e90ff;   /* dodger blue background colour */
   --primary-color: #ffffff;      /* white text colour */
 }
@@ -349,7 +255,7 @@ body {
 <ul class="v2-ul"><li>The whole page body has a blue background</li><li>The container has a white background with blue text</li><li>The <code>h2</code> heading has a blue underline</li><li>The <code>.note</code> box has a blue border</li><li>All blue values come from the single variable <code>--primary-bg-color</code></li></ul>
 <hr class="v2-hr">
 <p class="v2-p"><strong>Now for the magic — changing the entire look with 2 lines:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>:root {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root {
   --primary-bg-color: #8FBC8F;   /* ← changed from blue to soft green */
   --primary-color: #FFFAF0;      /* ← changed from white to floral white */
 }</code></pre></div></div>
@@ -359,22 +265,8 @@ body {
 <h3 class="v2-h3">Advantages of CSS Variables — Summary</h3>
 <p class="v2-p">Using <code>var()</code> gives you three key advantages:</p>
 <ol class="v2-ol"><li><strong>Easier maintenance</strong> — change one value, everything updates</li><li><strong>Easier to read</strong> — <code>--primary-bg-color</code> is far more meaningful than <code>#1e90ff</code></li><li><strong>Easier to update colours across an entire page</strong> with minimal effort</li></ol>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>CSS Variables and the var() Function</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase4">
-  <div class="phase-header">
-    <div class="phase-num">Phase 4 of 8</div>
-    <div class="phase-title">Part 2 — Overriding CSS Variables</div>
-    <div class="phase-check" id="chk4"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What Does "Overriding a Variable" Mean?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>CSS Variables and the var() Function</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(3)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase4"><div class="ph"><div class="pn">Phase 4/8</div><div class="pt">Part 2 — Overriding CSS Variables</div><div class="pc" id="chk4"></div></div><div class="pb2"><h3 class="v2-h3">What Does "Overriding a Variable" Mean?</h3>
 <p class="v2-p">Overriding means giving a variable a <strong>different value in a specific context</strong>, while keeping the original global value everywhere else.</p>
 <p class="v2-p">Think of it this way: your company's brand colour is blue globally across the entire website. But one special "danger" section of the page needs to use red. You can override <code>--primary-color</code> just for that section, setting it to red, without changing the global blue definition.</p>
 <p class="v2-p">This works because of a concept called <strong>the cascade and inheritance</strong>.</p>
@@ -385,7 +277,7 @@ body {
 <ul class="v2-ul"><li>A variable declared closer to an element <strong>wins over</strong> the global <code>:root</code> version</li><li>The more specific (closer) declaration <strong>overrides</strong> the more general one</li></ul>
 <hr class="v2-hr">
 <h3 class="v2-h3">Example 1 — Simple Override</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* STEP 1: Declare globally in :root */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* STEP 1: Declare globally in :root */
 :root {
   --button-color: #1e90ff;   /* default blue */
 }
@@ -406,7 +298,7 @@ button {
 <hr class="v2-hr">
 <h3 class="v2-h3">Example 2 — Overriding for a Specific Element Class</h3>
 <p class="v2-p">Imagine a card design where most cards use a white background, but "featured" cards use gold.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>:root {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root {
   --card-bg: white;           /* global default */
   --card-border: #cccccc;     /* grey border globally */
 }
@@ -428,7 +320,7 @@ button {
 <hr class="v2-hr">
 <h3 class="v2-h3">Example 3 — Using Local Variables for Component Theming</h3>
 <p class="v2-p">This pattern is extremely common in professional web development. Each component declares its own local variables that can be customised without affecting other components.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>:root {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root {
   --spacing: 10px;
   --text-color: #333;
 }
@@ -459,13 +351,13 @@ main {
 <blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Think About This:</strong> What happens if you add <code>--text-color: red</code> inside <code>main p {}</code>? Which elements would become red?</p></blockquote>
 <hr class="v2-hr">
 <h3 class="v2-h3">The Override Hierarchy — Visualised</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span></div><div class="v2-code-body"><pre><code>:root { --color: blue }         ← global fallback (used by everything by default)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">code</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root { --color: blue }         ← global fallback (used by everything by default)
    └── .section { --color: green }  ← overrides for .section and all its children
          └── .highlight { --color: red }  ← overrides again, only for .highlight</code></pre></div></div>
 <p class="v2-p">An element inside <code>.highlight</code> will see red. An element inside <code>.section</code> but NOT <code>.highlight</code> will see green. Everything else sees blue.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Common Mistake: Forgetting Variable Scope</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ MISTAKE: Declaring a variable in a child, trying to use it in a parent */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ MISTAKE: Declaring a variable in a child, trying to use it in a parent */
 .card-body {
   --card-accent: purple;
 }
@@ -475,27 +367,13 @@ main {
 }</code></pre></div></div>
 <p class="v2-p"><strong>Why it fails:</strong> Variables only flow <strong>downward</strong> through child elements, not upward to parents.</p>
 <p class="v2-p"><strong>Fix:</strong> Move the declaration to the parent (<code>.card</code>) or to <code>:root</code>.</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ✅ CORRECT */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ✅ CORRECT */
 .card {
   --card-accent: purple;
   border-color: var(--card-accent);  /* ✅ Works — declared in the same element */
 }</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>Overriding CSS Variables</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase5">
-  <div class="phase-header">
-    <div class="phase-num">Phase 5 of 8</div>
-    <div class="phase-title">Part 3 — CSS Variables and JavaScript</div>
-    <div class="phase-check" id="chk5"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Why Use JavaScript with CSS Variables?</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>Overriding CSS Variables</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(4)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase5"><div class="ph"><div class="pn">Phase 5/8</div><div class="pt">Part 3 — CSS Variables and JavaScript</div><div class="pc" id="chk5"></div></div><div class="pb2"><h3 class="v2-h3">Why Use JavaScript with CSS Variables?</h3>
 <p class="v2-p">CSS by itself is static — it applies styles when the page loads and those styles stay the same. But real websites are dynamic. Users click buttons, toggle dark mode, adjust font sizes, or interact with controls. JavaScript lets you:</p>
 <ul class="v2-ul"><li><strong>Read</strong> the current value of a CSS variable</li><li><strong>Change</strong> a CSS variable's value at any time</li><li><strong>React</strong> to user actions and update the entire page's look instantly</li></ul>
 <p class="v2-p">Because CSS variables are part of the DOM (Document Object Model — the live, interactive version of your webpage), JavaScript can see and modify them directly.</p>
@@ -504,12 +382,12 @@ main {
 <p class="v2-p">You need two browser built-in methods:</p>
 <div class="v2-table-wrap"><table class="v2-table"><thead><tr><th>Method</th><th>What it does</th></tr></thead><tbody><tr><td><code>getPropertyValue('--name')</code></td><td>Reads the current value of a CSS variable</td></tr><tr><td><code>setProperty('--name', 'value')</code></td><td>Sets or changes a CSS variable's value</td></tr></tbody></table></div>
 <p class="v2-p">These methods work on a <strong>style object</strong>. To access <code>:root</code> variables from JavaScript, you use:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span></div><div class="v2-code-body"><pre><code>document.documentElement.style</code></pre></div></div>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>document.documentElement.style</code></pre></div></div>
 <p class="v2-p"><code>document.documentElement</code> refers to the <code>&lt;html&gt;</code> element, which is the same element <code>:root</code> targets in CSS.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Reading a CSS Variable with JavaScript</h3>
 <p class="v2-p"><strong>Step-by-step breakdown:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span></div><div class="v2-code-body"><pre><code>// Step 1: Get a reference to the root element (the &lt;html&gt; element)
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>// Step 1: Get a reference to the root element (the &lt;html&gt; element)
 var root = document.querySelector(&#x27;:root&#x27;);
 
 // Step 2: Get the computed styles of the root element
@@ -525,7 +403,7 @@ alert(value);   // shows: &quot; #1e90ff&quot; (note there may be a leading spac
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Note:</strong> <code>getPropertyValue</code> returns the value as a string. It may include leading or trailing spaces, so use <code>.trim()</code> if you need a clean value: <code>value.trim()</code></p></blockquote>
 <hr class="v2-hr">
 <h3 class="v2-h3">Changing a CSS Variable with JavaScript</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span></div><div class="v2-code-body"><pre><code>// Step 1: Get the root element
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>// Step 1: Get the root element
 var root = document.querySelector(&#x27;:root&#x27;);
 
 // Step 2: Set a new value for a CSS variable
@@ -535,7 +413,7 @@ root.style.setProperty(&#x27;--primary-color&#x27;, &#x27;coral&#x27;);</code></
 <h3 class="v2-h3">Complete Interactive Example — Colour Switcher</h3>
 <p class="v2-p">Here is a complete working example. When the user clicks a button, JavaScript changes the CSS variable and the whole page updates instantly.</p>
 <p class="v2-p"><strong>HTML:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -593,7 +471,7 @@ root.style.setProperty(&#x27;--primary-color&#x27;, &#x27;coral&#x27;);</code></
 <p class="v2-p"><strong>Why this is powerful:</strong> All the colour rules (<code>body</code>, any headings, paragraphs, borders, etc.) could all reference the same two variables. Changing just those two variables from JavaScript updates the entire page in one moment.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Reading and Displaying a Variable Value</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;button onclick=&quot;showColor()&quot;&gt;Show Current Background Color&lt;/button&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;button onclick=&quot;showColor()&quot;&gt;Show Current Background Color&lt;/button&gt;
 
 &lt;script&gt;
   function showColor() {
@@ -605,24 +483,10 @@ root.style.setProperty(&#x27;--primary-color&#x27;, &#x27;coral&#x27;);</code></
 &lt;/script&gt;</code></pre></div></div>
 <p class="v2-p"><strong>Expected Behaviour:</strong> Clicking the button shows an alert like: <code>Current background color variable: #1e90ff</code></p>
 <blockquote class="v2-bq"><p class="v2-p">🤔 <strong>Think About This:</strong> If you call <code>setProperty</code> to change <code>--page-bg</code>, then call <code>getPropertyValue</code> to read it — will you get the new value or the old one? Try it!</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>CSS Variables and JavaScript</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase6">
-  <div class="phase-header">
-    <div class="phase-num">Phase 6 of 8</div>
-    <div class="phase-title">Part 4 — CSS Variables in Media Queries</div>
-    <div class="phase-check" id="chk6"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">What is a Media Query? (Quick Prerequisite)</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>CSS Variables and JavaScript</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(5)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase6"><div class="ph"><div class="pn">Phase 6/8</div><div class="pt">Part 4 — CSS Variables in Media Queries</div><div class="pc" id="chk6"></div></div><div class="pb2"><h3 class="v2-h3">What is a Media Query? (Quick Prerequisite)</h3>
 <p class="v2-p">A <strong>media query</strong> is a CSS technique that lets you apply different styles depending on the screen size or device type. For example:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* Default styles for all screens */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* Default styles for all screens */
 p { font-size: 16px; }
 
 /* Extra styles ONLY on screens narrower than 600px (mobile) */
@@ -637,7 +501,7 @@ p { font-size: 16px; }
 <ol class="v2-ol"><li>Define your variables globally in <code>:root</code> (for large screens)</li><li>Inside a media query, override those variables with new values (for small screens)</li><li>All your element rules stay unchanged — they still just say <code>var(--name)</code></li></ol>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 1 — Responsive Font Sizing</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ✅ GLOBAL: Large screen font sizes */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ✅ GLOBAL: Large screen font sizes */
 :root {
   --heading-size: 48px;
   --body-size: 18px;
@@ -657,7 +521,7 @@ p  { font-size: var(--body-size); }
 <ul class="v2-ul"><li>On desktop (wider than 600px): <code>h1</code> = 48px, <code>p</code> = 18px</li><li>On mobile (600px or narrower): <code>h1</code> = 28px, <code>p</code> = 14px</li><li>The <code>h1</code> and <code>p</code> CSS rules themselves never changed — only the variables changed</li></ul>
 <hr class="v2-hr">
 <h3 class="v2-h3">Simple Example 2 — Responsive Spacing</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>:root {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root {
   --page-padding: 40px;      /* comfortable spacing on large screens */
   --card-gap: 20px;
 }
@@ -682,7 +546,7 @@ p  { font-size: var(--body-size); }
 <hr class="v2-hr">
 <h3 class="v2-h3">Full Responsive Colour Theme Example</h3>
 <p class="v2-p">This is a practical, real-world pattern where variables control both layout AND colours across breakpoints:</p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ===== GLOBAL VARIABLES (Desktop defaults) ===== */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ===== GLOBAL VARIABLES (Desktop defaults) ===== */
 :root {
   /* Colors */
   --bg-color: #f5f5f5;
@@ -742,30 +606,21 @@ body {
 <ul class="v2-ul"><li>Desktop: wide container, 260px sidebar, 30px padding, 18px font, grey background</li><li>Tablet: 200px sidebar, 20px padding, 16px font</li><li>Mobile: full-width sidebar, 12px padding, 14px font, white background</li></ul>
 <p class="v2-p"><strong>The key insight:</strong> The <code>.sidebar</code>, <code>body</code>, <code>.container</code>, and <code>.accent-button</code> rules never changed. Only the variable values at the top changed at each breakpoint.</p>
 <blockquote class="v2-bq"><p class="v2-p">💡 <strong>Real-World Tip:</strong> This pattern — variables in <code>:root</code>, overrides in media queries — is how professional CSS design systems like those used at large companies are built. Change the variables, and the entire system adapts.</p></blockquote>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Now practise what you just learned about <strong>CSS Variables in Media Queries</strong>. Open your editor, type the examples above by hand, then modify them — change values, rename variables, and observe what happens. Active experimentation is how code sticks.</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase7">
-  <div class="phase-header">
-    <div class="phase-num">Phase 7 of 8</div>
-    <div class="phase-title">Part 5 — Guided Practice Exercises</div>
-    <div class="phase-check" id="chk7"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Exercise 1 — Brand Colour System (Beginner)</h3>
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">Practise what you just learned about <strong>CSS Variables in Media Queries</strong>. Open your editor, type the examples above by hand, modify them, and observe what changes.</div></div><button class="ub" onclick="unlockNext(6)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase7"><div class="ph"><div class="pn">Phase 7/8</div><div class="pt">Part 5 — Guided Practice Exercises</div><div class="pc" id="chk7"></div></div><div class="pb2"><div class="chal-box"><div class="chal-lbl">🎯 Your Challenge</div><div class="chal-body"><h3 class="v2-h3">Exercise 1 — Brand Colour System (Beginner)</h3>
 <p class="v2-p"><strong>Objective:</strong> Practice declaring and using global CSS variables.</p>
 <p class="v2-p"><strong>Scenario:</strong> You are styling a simple webpage for a fictional company called "LeafCo" whose brand colour is <code>#2e8b57</code> (sea green).</p>
 <p class="v2-p"><strong>Your Task:</strong></p>
 <ol class="v2-ol"><li>Declare two global variables in <code>:root</code>:</li></ol>
 <p class="v2-p">- <code>--brand-color</code> set to <code>#2e8b57</code>    - <code>--brand-text</code> set to <code>#ffffff</code></p>
 <ol class="v2-ol"><li>Use <code>var(--brand-color)</code> as the <code>background-color</code> for the <code>header</code></li><li>Use <code>var(--brand-text)</code> as the <code>color</code> for <code>header h1</code></li><li>Use <code>var(--brand-color)</code> as the <code>border-left</code> colour for all <code>blockquote</code> elements (4px solid)</li><li>Use <code>var(--brand-color)</code> as the text <code>color</code> for all <code>a</code> links</li></ol>
-<p class="v2-p"><strong>Starter HTML:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<p class="v2-p"><strong>Starter HTML:</strong></p></div></div><div class="task-box"><div class="task-lbl">✏️ Task</div><div class="task-body">Expected Behaviour:
+
+- Starts in light mode (white background)
+- Clicking the button switches to dark mode (dark blue tones)
+- Clicking again returns to light mode
+
+---</div></div><button class="reveal-btn" onclick="toggleReveal(this)">👁️ Reveal Answer</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -791,7 +646,7 @@ body {
 <p class="v2-p"><strong>Objective:</strong> Practice local overrides of global variables.</p>
 <p class="v2-p"><strong>Scenario:</strong> A blog website has a default card style (white background, blue accent). But the "Featured Posts" section should have a gold accent.</p>
 <p class="v2-p"><strong>Your Task:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>:root {
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root {
   --card-bg: #ffffff;
   --card-accent: #1e90ff;   /* blue */
   --card-border-radius: 8px;
@@ -817,7 +672,7 @@ body {
 <p class="v2-p"><strong>Objective:</strong> Use JavaScript to read and change CSS variables.</p>
 <p class="v2-p"><strong>Scenario:</strong> Build a simple "light mode / dark mode" toggle button.</p>
 <p class="v2-p"><strong>Starter Code:</strong></p>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;style&gt;
@@ -877,29 +732,9 @@ body {
 <p class="v2-p"><strong>Your Task:</strong> Fill in the TODO comments with the correct <code>root.style.setProperty(...)</code> calls.</p>
 <p class="v2-p"><strong>Expected Behaviour:</strong></p>
 <ul class="v2-ul"><li>Starts in light mode (white background)</li><li>Clicking the button switches to dark mode (dark blue tones)</li><li>Clicking again returns to light mode</li></ul>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">Expected Behaviour:
-
-- Starts in light mode (white background)
-- Clicking the button switches to dark mode (dark blue tones)
-- Clicking again returns to light mode
-
----</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(7)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="phase locked" id="phase8">
-  <div class="phase-header">
-    <div class="phase-num">Phase 8 of 8</div>
-    <div class="phase-title">Part 7 — Common Beginner Mistakes</div>
-    <div class="phase-check" id="chk8"></div>
-  </div>
-  <div class="phase-body">
-    <h3 class="v2-h3">Mistake 1: Forgetting the Double Dash</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — only one dash */
+<hr class="v2-hr"></div><button class="ub" onclick="unlockNext(7)">Mark Complete — Unlock Next ✓</button></div></div>
+<div class="phase locked" id="phase8"><div class="ph"><div class="pn">Phase 8/8</div><div class="pt">Part 7 — Common Beginner Mistakes</div><div class="pc" id="chk8"></div></div><div class="pb2"><h3 class="v2-h3">Mistake 1: Forgetting the Double Dash</h3>
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — only one dash */
 :root {
   -my-color: blue;
 }
@@ -911,7 +746,7 @@ body {
 <p class="v2-p"><strong>Why:</strong> CSS custom property names MUST start with <code>--</code>. A single dash is valid CSS but means something else (it could be a vendor prefix).</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 2: Forgetting <code>var()</code> When Using the Variable</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — writing the variable name directly */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — writing the variable name directly */
 h1 {
   color: --my-color;    /* CSS does NOT do this */
 }
@@ -923,7 +758,7 @@ h1 {
 <p class="v2-p"><strong>Why:</strong> CSS variables are not automatically expanded. You must explicitly call <code>var()</code> to insert the value.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 3: Trying to Use a Variable Before Declaring It</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — using it before declaring it */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — using it before declaring it */
 h1 {
   color: var(--brand);
 }
@@ -934,7 +769,7 @@ h1 {
 <p class="v2-p"><strong>Result:</strong> This actually works in CSS because <code>:root</code> is processed first regardless of order, but it is bad practice and confusing. Always declare variables in <code>:root</code> at the TOP of your stylesheet.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 4: Using a Variable in the Wrong Scope</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ MISTAKE — variable declared in child, used in sibling or parent */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ MISTAKE — variable declared in child, used in sibling or parent */
 .card-footer {
   --footer-bg: lightgrey;
 }
@@ -945,7 +780,7 @@ h1 {
 <p class="v2-p"><strong>Fix:</strong> Move the variable to the shared parent element, or to <code>:root</code>.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 5: Wrong JavaScript Method Name</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ WRONG */
 root.setProperty(&#x27;--color&#x27;, &#x27;red&#x27;);          /* not a method on the element */
 root.style.getProperty(&#x27;--color&#x27;);           /* wrong name — it&#x27;s getPropertyValue */
 
@@ -954,7 +789,7 @@ root.style.setProperty(&#x27;--color&#x27;, &#x27;red&#x27;);
 getComputedStyle(root).getPropertyValue(&#x27;--color&#x27;);</code></pre></div></div>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 6: Forgetting getComputedStyle When Reading Variables</h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — this reads inline styles only, not :root CSS variables */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">javascript</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — this reads inline styles only, not :root CSS variables */
 var color = root.style.getPropertyValue(&#x27;--color&#x27;);   /* likely returns empty string */
 
 /* ✅ CORRECT — use getComputedStyle to read all applied styles */
@@ -962,7 +797,7 @@ var color = getComputedStyle(root).getPropertyValue(&#x27;--color&#x27;);</code>
 <p class="v2-p"><strong>Why:</strong> <code>root.style</code> only contains inline styles. CSS variables declared in a stylesheet are only visible through <code>getComputedStyle</code>.</p>
 <hr class="v2-hr">
 <h3 class="v2-h3">Mistake 7: Media Query Override Not in <code>:root</code></h3>
-<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — variable declared on body, but elements inherit from :root */
+<div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">css</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>/* ❌ WRONG — variable declared on body, but elements inherit from :root */
 @media (max-width: 600px) {
   body {
     --font-size: 14px;    /* ⚠️ This might not reach all elements */
@@ -975,10 +810,7 @@ var color = getComputedStyle(root).getPropertyValue(&#x27;--color&#x27;);</code>
     --font-size: 14px;    /* ✅ All elements can see this */
   }
 }</code></pre></div></div>
-<hr class="v2-hr">
-    <div class="task-box">
-      <div class="task-label">✏️ Your Task</div>
-      <div class="task-body">---
+<hr class="v2-hr"><div class="task-box"><div class="task-lbl">✏️ Your Task</div><div class="task-body">---
 
 ### Mistake 4: Using a Variable in the Wrong Scope
 
@@ -995,21 +827,12 @@ var color = getComputedStyle(root).getPropertyValue(&#x27;--color&#x27;);</code>
 
 Fix: Move the variable to the shared parent element, or to :root.
 
----</div>
-    </div>
-    <button class="unlock-btn" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button>
-  </div>
-</div>
-<div class="build-box" id="build-it">
-  <div class="build-label">🏗️ Build It</div>
-  <div class="build-name">Project Overview</div>
-  <div class="build-desc">You will build a simple single-page website for a fictional café called <strong>"The Bean Scene"</strong>. The page will:</div>
-  <div class="v2-code-wrap">
-    <div class="v2-code-bar">
-      <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
-      <span class="v2-code-lang">starter.html</span>
-    </div>
-    <div class="v2-code-body"><pre><code>:root {
+---</div></div><button class="ub" onclick="unlockNext(8)">Phase Complete — Unlock Next ✓</button></div></div>
+<div class="build-box" id="build-it"><div class="build-lbl">🏗️ Build It — Mini Project</div><div class="build-name">Project Overview</div><div class="build-req"><h3 class="v2-h3">Project Overview</h3>
+<p class="v2-p">You will build a simple single-page website for a fictional café called <strong>"The Bean Scene"</strong>. The page will:</p>
+<ul class="v2-ul"><li>Use CSS variables for all colours, fonts, and spacing</li><li>Override variables for different sections (hero, menu, footer)</li><li>Include a JavaScript theme switcher (Day Mode / Night Mode)</li><li>Update its layout variables for mobile screens via media queries</li></ul>
+<h3 class="v2-h3">Stage 1 — Setup: Define Your Design Tokens</h3>
+<p class="v2-p">In CSS, "design tokens" are just what professionals call the set of global variables that define your visual design system.</p></div><button class="reveal-btn" onclick="toggleCode(this)">💻 Reveal Starter Code</button><div class="reveal-content"><div class="v2-code-wrap"><div class="v2-code-bar"><span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span><span class="v2-code-lang">starter.html</span><button class="copy-btn" onclick="copyCode(this)">⎘ Copy</button></div><div class="v2-code-body"><pre><code>:root {
   /* ===== COLOURS ===== */
   --color-primary: #6b4226;       /* coffee brown */
   --color-secondary: #d4a96a;     /* warm caramel */
@@ -1031,10 +854,7 @@ Fix: Move the variable to the shared parent element, or to :root.
 
   /* ===== SHAPES ===== */
   --border-radius: 10px;
-}</code></pre></div>
-  </div>
-  <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem">
-    <button class="unlock-btn" onclick="downloadStarter(`:root {
+}</code></pre></div></div><div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem"><button class="ub" onclick="downloadStarter(`:root {
   /* ===== COLOURS ===== */
   --color-primary: #6b4226;       /* coffee brown */
   --color-secondary: #d4a96a;     /* warm caramel */
@@ -1056,87 +876,66 @@ Fix: Move the variable to the shared parent element, or to :root.
 
   /* ===== SHAPES ===== */
   --border-radius: 10px;
-}`)"
-      style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">
-      ⬇ Download starter.html
-    </button>
-    <button class="unlock-btn" onclick="showGithub()"
-      style="background:#0f172a;box-shadow:none">
-      🐙 Push to GitHub →
-    </button>
-  </div>
-</div>
+}`)" style="background:#10b981;box-shadow:0 4px 14px rgba(16,185,129,.3)">⬇ Download starter.html</button><button class="ub" onclick="showGithub()" style="background:#0f172a;box-shadow:none">🐙 Push to GitHub Pages →</button></div></div></div>
 <div class="gh-acc" id="gh-steps" style="display:none">
-  <div class="gh-acc-head" onclick="toggleGh(this)">
-    🐙 Push Your Project to GitHub Pages &nbsp;<span>▼</span>
-  </div>
-  <div class="gh-acc-body">
-    <div class="gh-step"><div class="gh-step-n">1</div>
-    <p>Go to <strong>github.com</strong> → click <strong>New repository</strong> → name it <code>css-lesson-65-project-overview</code>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">2</div>
-    <p>Set it to <strong>Public</strong>, tick <strong>Add a README</strong>, then click <strong>Create repository</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">3</div>
-    <p>Click <strong>Add file → Upload files</strong>. Upload your <code>starter.html</code> — rename it to <code>index.html</code> before uploading.</p></div>
-    <div class="gh-step"><div class="gh-step-n">4</div>
-    <p>Commit message: <em>"Add CSS lesson 65 project"</em> → click <strong>Commit changes</strong>.</p></div>
-    <div class="gh-step"><div class="gh-step-n">5</div>
-    <p>Go to <strong>Settings → Pages</strong> → branch <strong>main</strong> → <strong>Save</strong>. Your project goes live at <code>https://YOUR-NAME.github.io/css-lesson-65-project-overview/</code> in about 1 minute! 🎉</p></div>
-    <button class="unlock-btn" onclick="showEnd()" style="margin-top:.5rem">I've pushed to GitHub — Finish Session ✅</button>
-  </div>
-</div>
-<div class="session-end" id="session-end">
-  <h2>🎉 Lesson 65 complete!</h2>
-  <p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p>
-  <ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — CSS Variables and the var() Function</li><li>✅ Part 2 — Overriding CSS Variables</li><li>✅ Part 3 — CSS Variables and JavaScript</li><li>✅ Part 4 — CSS Variables in Media Queries</li><li>✅ Part 5 — Guided Practice Exercises</li><li>✅ Part 7 — Common Beginner Mistakes</li></ul>
-  <div class="lesson-nav"><a href="lesson_64.html" class="ln-btn">← Lesson 64</a><a href="lesson_66.html" class="ln-btn primary">Lesson 66 →</a></div>
-</div>
+<div class="gh-hd" onclick="toggleGh(this)">🐙 Push to GitHub Pages &nbsp;<span>▼</span></div>
+<div class="gh-bd">
+<div class="gh-st"><div class="gh-n">1</div><p>Go to <strong>github.com → New repository</strong> → name it <code>css-lesson-65-project-overview</code>. Set <strong>Public</strong>, tick <strong>Add README</strong>, click <strong>Create</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">2</div><p>Click <strong>Add file → Upload files</strong>. Rename your file to <code>index.html</code> then upload it.</p></div>
+<div class="gh-st"><div class="gh-n">3</div><p>Commit message: <em>"Add CSS lesson 65 project"</em> → <strong>Commit changes</strong>.</p></div>
+<div class="gh-st"><div class="gh-n">4</div><p>Go to <strong>Settings → Pages</strong> → Source: <strong>main</strong> → <strong>Save</strong>. Live in ~1 min at <code>https://YOUR-NAME.github.io/css-lesson-65-project-overview/</code> 🎉</p></div>
+<button class="ub" onclick="showEnd()" style="margin-top:.5rem">Done — Finish Session ✅</button>
+</div></div>
+<div class="se" id="session-end"><h2>🎉 Lesson 65 complete!</h2><p style="margin-bottom:.8rem;font-size:.9rem;opacity:.9">You covered:</p><ul><li>✅ Lesson Introduction</li><li>✅ Prerequisite Concepts</li><li>✅ Part 1 — CSS Variables and the var() Function</li><li>✅ Part 2 — Overriding CSS Variables</li><li>✅ Part 3 — CSS Variables and JavaScript</li><li>✅ Part 4 — CSS Variables in Media Queries</li><li>✅ Part 5 — Guided Practice Exercises</li><li>✅ Part 7 — Common Beginner Mistakes</li></ul><div class="ln"><a href="lesson_64.html" class="ln-btn">← Lesson 64</a><a href="lesson_66.html" class="ln-btn primary">Lesson 66 →</a></div></div>
 </main>
-
-<footer class="lesson-footer">
-  Techbase Code Coach · CSS Course · Lesson 65 · © 2025 Techbase Consultant Services, Ibadan
-</footer>
+<footer class="lf">Techbase Code Coach &nbsp;·&nbsp; CSS Course &nbsp;·&nbsp; Lesson 65 &nbsp;·&nbsp; © 2025 Techbase Consultant Services, Ibadan</footer>
+<div id="toast"></div>
+<button id="go-top" title="Back to top">↑</button>
+<canvas id="cc"></canvas>
 <script>
 const TOTAL=8,KEY='techbase_css_l65';
-let current=parseInt(localStorage.getItem(KEY)||'1');
-function init(){
-  for(let i=2;i<=current;i++) unlockPhase(i,false);
-  updateBar();
-}
+let cur=parseInt(localStorage.getItem(KEY)||'1');
+function init(){for(let i=2;i<=cur;i++)unlock(i,false);bar();}
 function unlockNext(n){
-  const chk=document.getElementById('chk'+n);
-  if(chk){chk.classList.add('done');chk.textContent='✓';}
-  localStorage.setItem(KEY,n+1); current=n+1;
+  const c=document.getElementById('chk'+n);
+  if(c){c.classList.add('done');c.textContent='✓';}
+  localStorage.setItem(KEY,n+1);cur=n+1;
   if(n===TOTAL){
-    document.getElementById('build-it').style.display='block';
-    updateBar(100);
+    document.getElementById('build-it').classList.add('visible');
+    bar(100);toast('🏗️ Build It unlocked!');
     setTimeout(()=>document.getElementById('build-it').scrollIntoView({behavior:'smooth'}),200);
-  }else{
-    unlockPhase(n+1,true); updateBar();
-  }
+    setTimeout(confetti,600);
+  }else{unlock(n+1,true);bar();toast(['✅ Phase complete!','🎯 Keep going!','💡 Nice work!','🚀 Nailed it!'][n%4]);}
 }
-function unlockPhase(n,scroll){
-  const el=document.getElementById('phase'+n);
-  if(el){el.classList.remove('locked');if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),150);}
+function unlock(n,scroll){
+  const el=document.getElementById('phase'+n);if(!el)return;
+  el.classList.remove('locked');
+  if(scroll)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),180);
 }
-function updateBar(pct){
-  const p=pct!==undefined?pct:Math.round((current-1)/TOTAL*95);
-  document.getElementById('pbar').style.width=p+'%';
+function bar(p){document.getElementById('pbar').style.width=(p!==undefined?p:Math.round((cur-1)/TOTAL*95))+'%';}
+function toggleReveal(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Answer':'👁️ Reveal Answer';}
+function toggleCode(btn){const w=btn.nextElementSibling;const o=w.classList.toggle('open');btn.textContent=o?'🙈 Hide Starter Code':'💻 Reveal Starter Code';}
+function copyCode(btn){
+  const code=btn.closest('.v2-code-wrap').querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(()=>{btn.textContent='✓ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='⎘ Copy';btn.classList.remove('copied');},1800);}).catch(()=>{});
 }
-function showGithub(){
-  const g=document.getElementById('gh-steps');
-  if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}
-}
-function showEnd(){
-  const e=document.getElementById('session-end');
-  if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}
-}
+const tEl=document.getElementById('toast');let tT;
+function toast(msg){tEl.innerHTML=msg;tEl.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>tEl.classList.remove('show'),2400);}
+const gEl=document.getElementById('go-top');
+window.addEventListener('scroll',()=>gEl.classList.toggle('visible',scrollY>320),{passive:true});
+gEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 function toggleGh(el){el.nextElementSibling.classList.toggle('open');}
-function downloadStarter(code){
-  const a=document.createElement('a');
-  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(code);
-  a.download='starter.html';a.click();
+function showGithub(){const g=document.getElementById('gh-steps');if(g){g.style.display='block';setTimeout(()=>g.scrollIntoView({behavior:'smooth'}),150);}}
+function showEnd(){const e=document.getElementById('session-end');if(e){e.classList.add('visible');setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),150);}}
+function downloadStarter(code){const ext='css'==='python'?'py':'html';const a=document.createElement('a');a.href='data:text/'+(ext==='py'?'x-python':'html')+';charset=utf-8,'+encodeURIComponent(code);a.download='starter.'+ext;a.click();}
+function confetti(){
+  const cv=document.getElementById('cc');cv.style.display='block';const ctx=cv.getContext('2d');
+  cv.width=innerWidth;cv.height=innerHeight;
+  const ps=Array.from({length:130},()=>{return{x:Math.random()*cv.width,y:-10-Math.random()*120,r:4+Math.random()*6,d:2+Math.random()*3,c:['#e34c26','#0284c7','#d97706','#059669','#7c3aed','#ec4899'][Math.floor(Math.random()*6)],ta:0};}); 
+  let f=0;
+  function draw(){ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.ta+=.1;p.y+=p.d;p.x+=Math.sin(f/20);ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});f++;if(f<200)requestAnimationFrame(draw);else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}}
+  draw();toast('🎉 All phases done! Build It awaits!');
 }
 init();
 </script>
-</body>
-</html>
+</body></html>
