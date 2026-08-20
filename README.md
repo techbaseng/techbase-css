@@ -5,6 +5,10 @@ title: CSS Styling — Techbase STEM Academy
 
 # 🎨 CSS Styling — Techbase STEM Academy
 
+**Live:** https://techbaseng.github.io/techbase-css/
+
+**Tech stack:** static HTML lessons (one file per lesson) + Jekyll (`minima` theme) for the course README page; `index.html` is a hand-built static homepage served as-is, outside Jekyll's layout system.
+
 > Free CSS course · Techbase Consultant Services, Ibadan, Nigeria  
 > Instructor: Babatunde Awoyemi · [All Courses →](https://techbaseng.github.io)
 
